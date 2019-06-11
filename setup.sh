@@ -31,4 +31,11 @@ fi
 cd server/js
 yarn install
 cd ../..
+cd app
+flutter packages get
+cd ../models
+pub get
+cd ../server
+pub get
+cd ..
 bash generate.sh
