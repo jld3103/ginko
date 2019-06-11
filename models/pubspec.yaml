@@ -1,0 +1,13 @@
+name: models
+description: The Ginko data models
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.1.0 <3.0.0"
+
+dependencies:
+  meta: ^1.1.6
+  intl: ^0.15.8
+
+dev_dependencies:
+  pedantic: ^1.7.0
