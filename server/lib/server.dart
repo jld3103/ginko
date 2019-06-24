@@ -18,6 +18,8 @@ Future main() async {
   print('Listening on *:$port');
 
   await for (final request in server) {
+    request.response.headers.add('Access-Control-Allow-Origin', '*');
+    request.response.headers.add('Access-Control-Allow-Methods', '*');
     if (request.uri.path == '/' && request.method == 'GET') {
       final queryParams = request.uri.queryParameters;
       if (queryParams[Keys.username] == null ||
@@ -33,7 +35,7 @@ Future main() async {
           // ignore: omit_local_variable_types
           final Map<String, dynamic> data = {'status': 'ok'};
           for (final key in queryParams.keys.where((key) =>
-              key != Keys.username &&
+          key != Keys.username &&
               key != Keys.password &&
               key != Keys.grade)) {
             try {

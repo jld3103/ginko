@@ -1,5 +1,5 @@
 import 'package:app/utils/data.dart';
-import 'package:app/utils/storage.dart';
+import 'package:app/utils/storage/storage_holder.dart';
 import 'package:models/models.dart';
 
 // ignore: avoid_classes_with_only_static_members
@@ -12,9 +12,9 @@ class Selection {
       for (final day in Data.unitPlan.days) {
         for (final lesson in day.lessons) {
           if (lesson.subjects.length == 1) {
-            Storage.setString(Keys.selection('${lesson.block}-a'),
+            StorageHolder.storage.setString(Keys.selection('${lesson.block}-a'),
                 lesson.subjects[0].identifier);
-            Storage.setString(Keys.selection('${lesson.block}-b'),
+            StorageHolder.storage.setString(Keys.selection('${lesson.block}-b'),
                 lesson.subjects[0].identifier);
           }
         }
@@ -24,11 +24,12 @@ class Selection {
 
   /// Get the selection for a day and unit
   static String get(String block, bool weekA) =>
-      Storage.getString(Keys.selection('$block-${weekA ? 'a' : 'b'}'));
+      StorageHolder.storage
+          .getString(Keys.selection('$block-${weekA ? 'a' : 'b'}'));
 
   /// Get the selection for a day and unit
   static void set(String block, bool weekA, String identifier) {
-    Storage.setString(
-        Keys.selection('$block-${weekA ? 'a' : 'b'}'), identifier);
+    StorageHolder.storage
+        .setString(Keys.selection('$block-${weekA ? 'a' : 'b'}'), identifier);
   }
 }

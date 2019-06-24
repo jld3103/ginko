@@ -11,20 +11,20 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   cupertino_icons: ^0.1.2
-  http: ^0.12.0+2
+  http: # TODO: Until https://github.com/dart-lang/http/pull/286 is merged
+    git:
+      url: https://github.com/jld3103/http.git
+      ref: fix-multipart-file
   shared_preferences: ^0.5.3
   crypto: ^2.0.6
   flutter_svg: ^0.13.0+1
   intl: ^0.15.8
-  models: any
+  models:
+    path: ../models
 
 dev_dependencies:
   pedantic: ^1.7.0
   flutter_launcher_icons: ^0.7.2
-
-dependency_overrides:
-  models:
-    path: ../models
 
 flutter:
   uses-material-design: true
@@ -46,6 +46,10 @@ flutter:
           weight: 700
         - asset: fonts/Roboto/Roboto-Black.ttf
           weight: 900
+    - family: MaterialIcons
+      fonts:
+        - asset: fonts/Material-Icons/MaterialIcons-Regular.ttf
+          weight: 400
 
 flutter_icons:
   android: true

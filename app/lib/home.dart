@@ -1,7 +1,6 @@
-import 'dart:io';
-
 import 'package:app/utils/data.dart';
 import 'package:app/utils/localizations.dart';
+import 'package:app/utils/platform/platform.dart';
 import 'package:app/views/calendar/row.dart';
 import 'package:app/views/day.dart';
 import 'package:app/views/item.dart';
@@ -36,7 +35,7 @@ class HomeState extends State<Home> {
         appBar: AppBar(
           title: Text(AppLocalization.of(context).appName),
         ),
-        body: Platform.isAndroid || Platform.isIOS
+    body: Platform().isMobile
             ? modes.PageMode(_itemBuilder)
             : modes.ListMode(_itemBuilder),
       );

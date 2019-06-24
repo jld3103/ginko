@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:app/utils/storage.dart';
+import 'package:app/utils/storage/storage_holder.dart';
 import 'package:crypto/crypto.dart';
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 import 'package:models/models.dart';
 
 // ignore: avoid_classes_with_only_static_members
@@ -55,22 +55,24 @@ class Data {
 
   /// Load all the data from the server
   static Future<int> load() async {
-    if (Storage.getString(Keys.unitPlan) != null) {
+    if (StorageHolder.storage.getString(Keys.unitPlan) != null) {
       unitPlan = UnitPlanForGrade.fromJSON(
-          json.decode(Storage.getString(Keys.unitPlan)));
+          json.decode(StorageHolder.storage.getString(Keys.unitPlan)));
     }
-    if (Storage.getString(Keys.calendar) != null) {
-      calendar =
-          Calendar.fromJSON(json.decode(Storage.getString(Keys.calendar)));
+    if (StorageHolder.storage.getString(Keys.calendar) != null) {
+      calendar = Calendar.fromJSON(
+          json.decode(StorageHolder.storage.getString(Keys.calendar)));
     }
     final parameters = {
       Keys.username: sha256
-          .convert(utf8.encode(Storage.get(Keys.username) ?? ''))
+          .convert(
+          utf8.encode(StorageHolder.storage.getString(Keys.username) ?? ''))
           .toString(),
       Keys.password: sha256
-          .convert(utf8.encode(Storage.get(Keys.password) ?? ''))
+          .convert(
+          utf8.encode(StorageHolder.storage.getString(Keys.password) ?? ''))
           .toString(),
-      Keys.grade: Storage.get(Keys.grade) ?? '',
+      Keys.grade: StorageHolder.storage.getString(Keys.grade) ?? '',
       Keys.unitPlan:
           unitPlan == null ? 0 : unitPlan.date.millisecondsSinceEpoch / 1000,
       Keys.calendar:
@@ -78,7 +80,7 @@ class Data {
     };
 
     try {
-      final response = await http.get(
+      final response = await Client().get(
           '$baseUrl/?${parameters.keys.map((name) => '$name=${parameters[name]}').join('&')}');
       if (response.statusCode != 200) {
         print(response.statusCode);
@@ -87,11 +89,13 @@ class Data {
       final data = json.decode(response.body);
       if (data[Keys.unitPlan] != null) {
         unitPlan = UnitPlanForGrade.fromJSON(data[Keys.unitPlan]);
-        Storage.setString(Keys.unitPlan, json.encode(data[Keys.unitPlan]));
+        StorageHolder.storage
+            .setString(Keys.unitPlan, json.encode(data[Keys.unitPlan]));
       }
       if (data[Keys.calendar] != null) {
         calendar = Calendar.fromJSON(data[Keys.calendar]);
-        Storage.setString(Keys.calendar, json.encode(data[Keys.calendar]));
+        StorageHolder.storage
+            .setString(Keys.calendar, json.encode(data[Keys.calendar]));
       }
       online = true;
       return 0;

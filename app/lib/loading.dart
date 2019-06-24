@@ -1,8 +1,8 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:app/utils/data.dart';
 import 'package:app/utils/localizations.dart';
+import 'package:app/utils/platform/platform.dart';
 import 'package:app/utils/selection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,7 +21,7 @@ class LoadingState extends State<Loading> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((a) {
-      if (Platform.isAndroid) {
+      if (Platform().isAndroid) {
         MethodChannel('ginko').invokeMethod('applyTheme', {
           'color': Theme.of(context)
               .primaryColor
@@ -54,7 +54,8 @@ class LoadingState extends State<Loading> {
   }
 
   @override
-  Widget build(BuildContext context) => Platform.isAndroid
+  Widget build(BuildContext context) =>
+      Platform().isAndroid
       ? Center(
           child: SizedBox(
             width: 48,

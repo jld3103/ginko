@@ -1,7 +1,7 @@
 import 'package:app/utils/data.dart';
 import 'package:app/utils/localizations.dart';
 import 'package:app/utils/selection.dart';
-import 'package:app/utils/storage.dart';
+import 'package:app/utils/storage/storage_holder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:models/models.dart';
@@ -31,9 +31,9 @@ class LoginState extends State<Login> {
       _validInputs = _formKey.currentState.validate();
     });
     if (_validInputs) {
-      Storage.setString(Keys.username, _usernameController.text);
-      Storage.setString(Keys.password, _passwordController.text);
-      Storage.setString(Keys.grade, _grade);
+      StorageHolder.storage.setString(Keys.username, _usernameController.text);
+      StorageHolder.storage.setString(Keys.password, _passwordController.text);
+      StorageHolder.storage.setString(Keys.grade, _grade);
       await Data.load().then((code) {
         setState(() {
           _credentialsCorrect = code != 2;

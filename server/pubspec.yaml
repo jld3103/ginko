@@ -10,11 +10,8 @@ dependencies:
   html: ^0.14.0+2
   intl: ^0.15.8
   crypto: ^2.0.6
-  models: any
+  models:
+    path: ../models
 
 dev_dependencies:
   pedantic: ^1.7.0
-
-dependency_overrides:
-  models:
-    path: ../models
