@@ -66,7 +66,6 @@ class Rooms {
     if (name == null) {
       return null;
     }
-    // ignore: parameter_assignments
     name = name.trim().toUpperCase();
     if (RegExp('^([ABCDEF])\$').hasMatch(name)) {
       return name;

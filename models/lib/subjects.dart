@@ -62,7 +62,6 @@ class Subjects {
     if (name == null) {
       return null;
     }
-    // ignore: parameter_assignments
     name = name.trim().toUpperCase().replaceAll(RegExp('[0-9]'), '');
     if (_subjects[name] == null) {
       if (name != '') {

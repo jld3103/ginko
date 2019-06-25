@@ -40,6 +40,7 @@ class CalendarEvent {
     @required this.type,
     @required this.start,
     @required this.end,
+    this.shortUnits = false,
     this.info,
   });
 
@@ -49,6 +50,7 @@ class CalendarEvent {
         type: EventTypes.values[json['type']],
         start: DateTime.parse(json['start']),
         end: DateTime.parse(json['end']),
+    shortUnits: json['shortUnits'],
         info: json['info'],
       );
 
@@ -58,6 +60,7 @@ class CalendarEvent {
         'type': type.index,
         'start': start.toIso8601String(),
         'end': end.toIso8601String(),
+    'shortUnits': shortUnits,
         'info': info,
       };
 
@@ -74,6 +77,9 @@ class CalendarEvent {
   DateTime end;
 
   // ignore: public_member_api_docs
+  bool shortUnits;
+
+  // ignore: public_member_api_docs
   String info;
 }
 
@@ -82,8 +88,6 @@ class CalendarEvent {
 enum EventTypes {
   // ignore: public_member_api_docs
   vacation,
-  // ignore: public_member_api_docs
-  holiday,
   // ignore: public_member_api_docs
   free,
   // ignore: public_member_api_docs
@@ -94,4 +98,8 @@ enum EventTypes {
   noAfternoonClasses,
   // ignore: public_member_api_docs
   earlyEnd,
+  // ignore: public_member_api_docs
+  openDoorDay,
+  // ignore: public_member_api_docs
+  gradeRelease,
 }
