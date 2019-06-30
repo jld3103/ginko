@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:app/utils/storage/storage_holder.dart';
+import 'package:app/utils/static.dart';
 import 'package:crypto/crypto.dart';
 import 'package:http/http.dart';
 import 'package:models/models.dart';
@@ -55,24 +55,22 @@ class Data {
 
   /// Load all the data from the server
   static Future<int> load() async {
-    if (StorageHolder.storage.getString(Keys.unitPlan) != null) {
+    if (Static.storage.getString(Keys.unitPlan) != null) {
       unitPlan = UnitPlanForGrade.fromJSON(
-          json.decode(StorageHolder.storage.getString(Keys.unitPlan)));
+          json.decode(Static.storage.getString(Keys.unitPlan)));
     }
-    if (StorageHolder.storage.getString(Keys.calendar) != null) {
+    if (Static.storage.getString(Keys.calendar) != null) {
       calendar = Calendar.fromJSON(
-          json.decode(StorageHolder.storage.getString(Keys.calendar)));
+          json.decode(Static.storage.getString(Keys.calendar)));
     }
     final parameters = {
       Keys.username: sha256
-          .convert(
-          utf8.encode(StorageHolder.storage.getString(Keys.username) ?? ''))
+          .convert(utf8.encode(Static.storage.getString(Keys.username) ?? ''))
           .toString(),
       Keys.password: sha256
-          .convert(
-          utf8.encode(StorageHolder.storage.getString(Keys.password) ?? ''))
+          .convert(utf8.encode(Static.storage.getString(Keys.password) ?? ''))
           .toString(),
-      Keys.grade: StorageHolder.storage.getString(Keys.grade) ?? '',
+      Keys.grade: Static.storage.getString(Keys.grade) ?? '',
       Keys.unitPlan:
           unitPlan == null ? 0 : unitPlan.date.millisecondsSinceEpoch / 1000,
       Keys.calendar:
@@ -89,12 +87,12 @@ class Data {
       final data = json.decode(response.body);
       if (data[Keys.unitPlan] != null) {
         unitPlan = UnitPlanForGrade.fromJSON(data[Keys.unitPlan]);
-        StorageHolder.storage
+        Static.storage
             .setString(Keys.unitPlan, json.encode(data[Keys.unitPlan]));
       }
       if (data[Keys.calendar] != null) {
         calendar = Calendar.fromJSON(data[Keys.calendar]);
-        StorageHolder.storage
+        Static.storage
             .setString(Keys.calendar, json.encode(data[Keys.calendar]));
       }
       online = true;

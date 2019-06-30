@@ -5,15 +5,15 @@ import 'package:models/times.dart';
 
 /// UnitPlanItem class
 /// renders a lesson/subject
-class UnitPlanItem {
+class UnitPlanItem extends StatelessWidget {
   // ignore: public_member_api_docs
-  UnitPlanItem(this.subject);
+  const UnitPlanItem(this.subject);
 
   // ignore: public_member_api_docs
-  Subject subject;
+  final Subject subject;
 
-  /// renders a lesson/subject
-  Widget render(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     final unit = subject.unit;
 
     final times = Times.getUnitTimes(unit, false);
@@ -40,8 +40,14 @@ class UnitPlanItem {
                 Expanded(
                   flex: 50,
                   child: Text(
-                      AppLocalization.of(context).subject(subject.subject) ??
-                          ''),
+                    AppLocalization.of(context).subject(subject.subject) ?? '',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Theme
+                          .of(context)
+                          .primaryColor,
+                    ),
+                  ),
                 ),
                 Expanded(
                   flex: 50,
@@ -57,7 +63,12 @@ class UnitPlanItem {
               children: <Widget>[
                 Expanded(
                   flex: 50,
-                  child: Text(timeStr),
+                  child: Text(
+                    timeStr,
+                    style: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
                 ),
                 Expanded(
                   flex: 50,

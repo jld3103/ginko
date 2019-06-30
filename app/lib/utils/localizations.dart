@@ -145,6 +145,10 @@ class AppLocalization {
       _localizedValues[_locale.languageCode]['weekdays'][day];
 
   // ignore: public_member_api_docs
+  List<String> get weekdays =>
+      _localizedValues[_locale.languageCode]['weekdays'];
+
+  // ignore: public_member_api_docs
   String get appName => _localizedValues[_locale.languageCode]['app_name'];
 
   // ignore: public_member_api_docs

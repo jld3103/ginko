@@ -3,8 +3,8 @@ import 'package:app/loading.dart';
 import 'package:app/login.dart';
 import 'package:app/utils/localizations.dart';
 import 'package:app/utils/platform/platform.dart';
+import 'package:app/utils/static.dart';
 import 'package:app/utils/storage/storage.dart';
-import 'package:app/utils/storage/storage_holder.dart';
 import 'package:flutter/foundation.dart'
     show debugDefaultTargetPlatformOverride;
 import 'package:flutter/material.dart';
@@ -15,8 +15,8 @@ Future main() async {
     debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
   }
 
-  StorageHolder.storage = Storage();
-  await StorageHolder.storage.init();
+  Static.storage = Storage();
+  await Static.storage.init();
 
   runApp(MaterialApp(
     title: 'Ginko',

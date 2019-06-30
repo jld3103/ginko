@@ -1,4 +1,5 @@
 import 'package:app/utils/selection.dart';
+import 'package:app/utils/static.dart';
 import 'package:app/views/unitplan/item.dart';
 import 'package:flutter/material.dart';
 import 'package:models/models.dart';
@@ -50,24 +51,24 @@ class UnitPlanRowState extends State<UnitPlanRow> {
           showDialog(
             context: context,
             builder: (context) => SimpleDialog(
-                  contentPadding: EdgeInsets.all(10),
-                  children: widget.lesson.subjects
-                      .map((subject) => GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                Navigator.of(context).pop();
-                                Selection.set(widget.lesson.block, weekA,
-                                    subject.identifier);
-                              });
-                            },
-                            child: UnitPlanItem(subject).render(context),
-                          ))
-                      .toList(),
-                ),
+              contentPadding: EdgeInsets.all(10),
+              children: widget.lesson.subjects
+                  .map((subject) =>
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      Selection.set(
+                          widget.lesson.block, weekA, subject.identifier);
+                      Static.rebuildUnitPlan();
+                    },
+                    child: UnitPlanItem(subject),
+                  ))
+                  .toList(),
+            ),
           );
         }
       },
-      child: UnitPlanItem(subject).render(context),
+      child: UnitPlanItem(subject),
     );
   }
 }
