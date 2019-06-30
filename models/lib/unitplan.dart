@@ -11,13 +11,15 @@ class UnitPlan {
 
   /// Creates a UnitPlan object from json
   factory UnitPlan.fromJSON(json) => UnitPlan(
-        unitPlans:
-            json['unitplans'].map((i) => UnitPlanForGrade.fromJSON(i)).toList(),
+    unitPlans: json['unitPlans']
+        .map((i) => UnitPlanForGrade.fromJSON(i))
+        .toList()
+        .cast<UnitPlanForGrade>(),
       );
 
   /// Creates json from a UnitPlan object
   Map<String, dynamic> toJSON() => {
-        'unitplans': unitPlans.map((i) => i.toJSON()).toList(),
+    'unitPlans': unitPlans.map((i) => i.toJSON()).toList(),
       };
 
   // ignore: public_member_api_docs
@@ -75,7 +77,7 @@ class UnitPlanDay {
   factory UnitPlanDay.fromJSON(json) => UnitPlanDay(
         weekday: json['weekday'],
         replacementPlan:
-            UnitPlanDayReplacementPlan.fromJSON(json['replacementplan']),
+        UnitPlanDayReplacementPlan.fromJSON(json['replacementPlan']),
         lessons: json['lessons']
             .map((i) => Lesson.fromJSON(i))
             .toList()
@@ -85,7 +87,7 @@ class UnitPlanDay {
   /// Creates json from a UnitPlanDay object
   Map<String, dynamic> toJSON() => {
         'weekday': weekday ?? '',
-        'replacementplan': replacementPlan.toJSON(),
+    'replacementPlan': replacementPlan.toJSON(),
         'lessons': lessons.map((i) => i.toJSON()).toList(),
       };
 
@@ -114,14 +116,14 @@ class UnitPlanDayReplacementPlan {
       UnitPlanDayReplacementPlan(
         applies: json['applies'] == '' ? null : DateTime.parse(json['applies']),
         updated: json['updated'] == '' ? null : DateTime.parse(json['updated']),
-        weekA: json['weeka'],
+        weekA: json['weekA'],
       );
 
   /// Creates json from a UnitPlanDayReplacementPlan object
   Map<String, dynamic> toJSON() => {
         'applies': applies == null ? '' : applies.toIso8601String() ?? '',
         'updated': updated == null ? '' : updated.toIso8601String() ?? '',
-        'weeka': weekA ?? true,
+    'weekA': weekA ?? true,
       };
 
   // ignore: public_member_api_docs

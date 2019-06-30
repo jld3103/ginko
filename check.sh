@@ -1,11 +1,18 @@
 #!/bin/bash
-folders=("models" "server" "app")
+bash setup.sh
+folders=("models" "server" "tests" "app" )
 for d in ${folders[@]} ; do
     cd ${d}
 
-    dartfmt -w --fix lib
+    if [[ -d "test" ]]
+    then
+        dartfmt -w --fix test
+        output=$(dartanalyzer test)
+    else
+        dartfmt -w --fix lib
+        output=$(dartanalyzer lib)
+    fi
 
-    output=$(dartanalyzer lib)
     status=$?
     echo "$output"
     if [[ "$status" != 0 ]] || echo "$output" | grep -q "lint"; then
@@ -15,3 +22,11 @@ for d in ${folders[@]} ; do
     fi
     cd ..
 done
+
+cd tests
+flutter test
+status=$?
+if [[ "$status" != 0 ]]; then
+    exit 1
+fi
+cd ..

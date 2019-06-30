@@ -33,6 +33,8 @@ yarn install
 cd ../..
 cd app
 flutter packages get
+cd ../tests
+flutter packages get
 cd ../models
 pub get
 cd ../server

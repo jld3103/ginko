@@ -71,7 +71,7 @@ class Rooms {
       return name;
     }
     if (_rooms[name] == null) {
-      if (name != '') {
+      if (name != '' && name != 'TEST') {
         print('Unknown room $name');
       }
       return name;

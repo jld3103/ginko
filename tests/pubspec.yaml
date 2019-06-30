@@ -1,0 +1,19 @@
+name: tests
+description: The Ginko tests
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.1.0 <3.0.0"
+
+dependencies:
+  models:
+    path: ../models
+  server:
+    path: ../server
+  app:
+    path: ../app
+
+dev_dependencies:
+  test: ^1.6.3
+  flutter_test:
+    sdk: flutter
