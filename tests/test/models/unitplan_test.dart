@@ -476,7 +476,7 @@ void main() {
         unitPlan.unitPlans
             .map((unitPlanForGrade) => unitPlanForGrade.toJSON())
             .toList(),
-        unitPlanForGrade.toJSON(),
+        [unitPlanForGrade.toJSON()],
       );
     });
 
