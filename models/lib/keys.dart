@@ -11,7 +11,7 @@ class Keys {
   static const String grade = 'grade';
 
   // ignore: public_member_api_docs
-  static const String unitPlan = 'unitplan';
+  static const String unitPlan = 'unitPlan';
 
   // ignore: public_member_api_docs
   static String selection(String block) => 'selection-$block';
