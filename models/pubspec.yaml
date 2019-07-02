@@ -8,3 +8,8 @@ environment:
 dependencies:
   meta: ^1.1.6
   intl: ^0.15.8
+
+dev_dependencies:
+  test: ^1.6.3
+  flutter_test:
+    sdk: flutter

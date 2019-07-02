@@ -11,6 +11,7 @@ addons:
     packages:
       - libstdc++6
       - fonts-droid
+      - lcov
 install:
   - echo 'Avoid default Travis CI install step' # this is to avoid an error with pub in Travis
 before_script:
@@ -18,11 +19,11 @@ before_script:
   - git clone https://github.com/flutter/flutter.git
   - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:`pwd`/.pub-cache/bin:$PATH
   - flutter doctor
+  - pub global activate coverage
 script:
   - cd $TRAVIS_BUILD_DIR
-  - cd tests
-  - flutter packages get
-  - flutter test
+  - bash test-coverage.sh
+after_success: bash <(curl -s https://codecov.io/bash) -f coverage/lcov.info
 cache:
   directories:
     - $HOME/.pub-cache

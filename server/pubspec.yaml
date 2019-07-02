@@ -14,3 +14,8 @@ dependencies:
   cookie_jar: ^1.0.0
   models:
     path: ../models
+
+dev_dependencies:
+  test: ^1.6.3
+  flutter_test:
+    sdk: flutter
