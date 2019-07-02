@@ -40,8 +40,19 @@ class UnitPlanData {
 
   /// Extract unit plans from html
   static List<UnitPlanForGrade> extract(Document document) {
-    final date = dateFormat
-        .parse(document.querySelector('div').text.split(' den ')[1].trim());
+    final date = dateFormat.parse(document
+        .querySelector('div')
+        .text
+        .split(' den ')[1]
+        .trim()
+        .split('')
+        .reversed
+        .join('')
+        .toString()
+        .replaceFirst('.', '02.')
+        .split('')
+        .reversed
+        .join(''));
     return grades.map((grade) {
       final table = List.generate(5, (i) => List.generate(9, (i) => []));
       final rows = document

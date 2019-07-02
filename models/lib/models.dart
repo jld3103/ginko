@@ -2,6 +2,7 @@ library models;
 
 import 'package:intl/intl.dart';
 
+export 'package:models/cafetoria.dart';
 export 'package:models/calendar.dart';
 export 'package:models/keys.dart';
 export 'package:models/replacementplan.dart';

@@ -24,6 +24,9 @@ class Calendar {
         'events': events.map((event) => event.toJSON()).toList(),
       };
 
+  /// Get the time stamp of this object
+  int get timeStamp => years.reduce((a, b) => a * 10000 + b);
+
   // ignore: public_member_api_docs
   List<int> years;
 

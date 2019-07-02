@@ -53,7 +53,10 @@ class UnitPlanForGrade {
         'days': days.map((i) => i.toJSON()).toList(),
       };
 
-// ignore: public_member_api_docs
+  /// Get the time stamp of this object
+  int get timeStamp => date.millisecondsSinceEpoch ~/ 1000;
+
+  // ignore: public_member_api_docs
   String grade;
 
   // ignore: public_member_api_docs

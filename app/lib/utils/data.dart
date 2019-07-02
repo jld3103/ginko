@@ -23,6 +23,9 @@ class Data {
   // ignore: public_member_api_docs
   static Calendar calendar;
 
+  // ignore: public_member_api_docs
+  static Cafetoria cafetoria;
+
   /// Setup the config of the server
   static void setup([int port, String host, String protocol]) {
     _protocol = protocol;
@@ -63,6 +66,10 @@ class Data {
       calendar = Calendar.fromJSON(
           json.decode(Static.storage.getString(Keys.calendar)));
     }
+    if (Static.storage.getString(Keys.cafetoria) != null) {
+      cafetoria = Cafetoria.fromJSON(
+          json.decode(Static.storage.getString(Keys.cafetoria)));
+    }
     final parameters = {
       Keys.username: sha256
           .convert(utf8.encode(Static.storage.getString(Keys.username) ?? ''))
@@ -71,10 +78,9 @@ class Data {
           .convert(utf8.encode(Static.storage.getString(Keys.password) ?? ''))
           .toString(),
       Keys.grade: Static.storage.getString(Keys.grade) ?? '',
-      Keys.unitPlan:
-          unitPlan == null ? 0 : unitPlan.date.millisecondsSinceEpoch / 1000,
-      Keys.calendar:
-          calendar == null ? 0 : calendar.years.reduce((a, b) => a * 10000 + b),
+      Keys.unitPlan: unitPlan == null ? 0 : unitPlan.timeStamp,
+      Keys.calendar: calendar == null ? 0 : calendar.timeStamp,
+      Keys.cafetoria: cafetoria == null ? 0 : cafetoria.timeStamp,
     };
 
     try {
@@ -85,6 +91,9 @@ class Data {
         return 2;
       }
       final data = json.decode(response.body);
+      for (final key in data.keys.where((key) => key != 'status')) {
+        print('$key updated');
+      }
       if (data[Keys.unitPlan] != null) {
         unitPlan = UnitPlanForGrade.fromJSON(data[Keys.unitPlan]);
         Static.storage
@@ -94,6 +103,11 @@ class Data {
         calendar = Calendar.fromJSON(data[Keys.calendar]);
         Static.storage
             .setString(Keys.calendar, json.encode(data[Keys.calendar]));
+      }
+      if (data[Keys.cafetoria] != null) {
+        cafetoria = Cafetoria.fromJSON(data[Keys.cafetoria]);
+        Static.storage
+            .setString(Keys.cafetoria, json.encode(data[Keys.cafetoria]));
       }
       online = true;
       return 0;

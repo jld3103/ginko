@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:models/models.dart';
+import 'package:server/cafetoria.dart';
 import 'package:server/calendar.dart';
 import 'package:server/config.dart';
 import 'package:server/unitplan.dart';
@@ -41,18 +42,33 @@ Future main() async {
             try {
               final value = int.parse(queryParams[key]);
               if (key == Keys.unitPlan) {
-                data[key] = UnitPlanData.unitPlans.unitPlans
-                    .where(
-                        (unitPlan) => unitPlan.grade == queryParams[Keys.grade])
-                    .toList()[0]
-                    .toJSON();
+                if (value <
+                    UnitPlanData.unitPlans.unitPlans
+                        .where((unitPlan) =>
+                    unitPlan.grade == queryParams[Keys.grade])
+                        .toList()[0]
+                        .timeStamp) {
+                  data[key] = UnitPlanData.unitPlans.unitPlans
+                      .where((unitPlan) =>
+                  unitPlan.grade == queryParams[Keys.grade])
+                      .toList()[0]
+                      .toJSON();
+                }
               } else if (key == Keys.calendar) {
-                data[key] = CalendarData.calendar.toJSON();
+                if (value < CalendarData.calendar.timeStamp) {
+                  data[key] = CalendarData.calendar.toJSON();
+                }
+              } else if (key == Keys.cafetoria) {
+                if (value < CafetoriaData.cafetoria.timeStamp) {
+                  data[key] = CafetoriaData.cafetoria.toJSON();
+                }
               } else {
                 print('$key: $value');
               }
               // ignore: unused_catch_clause, empty_catches
-            } on Exception catch (e) {}
+            } on Exception catch (e) {
+              print(e);
+            }
           }
           request.response.headers.contentType =
               ContentType('application', 'json', charset: 'utf-8');
@@ -80,5 +96,7 @@ Future setup() async {
   print('Unit plan loaded');
   await CalendarData.load();
   print('Calendar loaded');
+  await CafetoriaData.load();
+  print('Cafetoria loaded');
   Timer.periodic(Duration(minutes: 1), (a) {});
 }

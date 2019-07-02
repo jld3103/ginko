@@ -1,7 +1,7 @@
 import 'package:app/utils/data.dart';
 import 'package:app/utils/localizations.dart';
+import 'package:app/views/cafetoria/row.dart';
 import 'package:app/views/calendar/row.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:models/models.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -51,6 +51,8 @@ class ExtraInformationState extends State<ExtraInformation> {
       }
       return false;
     }).toList();
+    final cafetoriaDays =
+    Data.cafetoria.days.where((day) => day.date == start).toList();
     return Column(
       children: [
         GestureDetector(
@@ -83,9 +85,18 @@ class ExtraInformationState extends State<ExtraInformation> {
             ),
           ),
         ),
-        Divider(),
+        SizedBox(
+          height: 1,
+          child: Center(
+            child: Container(
+              margin: EdgeInsetsDirectional.only(start: 1, end: 1),
+              height: 1,
+              color: Colors.grey,
+            ),
+          ),
+        ),
         ListView(
-          padding: EdgeInsets.only(left: 10, right: 10),
+          padding: EdgeInsets.only(left: 10, right: 10, top: 10),
           shrinkWrap: true,
           children: [
             ...events
@@ -93,6 +104,10 @@ class ExtraInformationState extends State<ExtraInformation> {
                       event: event,
                     ))
                 .toList(),
+            if (cafetoriaDays.isNotEmpty)
+              CafetoriaRow(
+                day: cafetoriaDays[0],
+              )
           ],
         ),
       ],

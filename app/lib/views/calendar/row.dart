@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:models/models.dart';
 
 /// CalendarRow class
-/// wrapper for calendar item
+/// renders an event
 class CalendarRow extends StatefulWidget {
   // ignore: public_member_api_docs
   const CalendarRow({
@@ -20,7 +20,7 @@ class CalendarRow extends StatefulWidget {
 }
 
 /// CalendarRowState class
-/// wrapper state for a calendar item
+/// state of an event widget
 class CalendarRowState extends State<CalendarRow> {
   DateFormat _dateFormat;
   DateFormat _dateTimeFormat;
@@ -70,18 +70,26 @@ class CalendarRowState extends State<CalendarRow> {
     return GestureDetector(
       onTap: () {},
       child: Card(
-        child: Container(
-          width: double.infinity,
-          padding: EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                widget.event.name,
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Text(dateStr),
-            ],
+        child: ListTile(
+          leading: Icon(
+            Icons.calendar_today,
+            color: Theme
+                .of(context)
+                .primaryColor,
+          ),
+          title: Container(
+            width: double.infinity,
+            padding: EdgeInsets.only(top: 10, bottom: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.event.name,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Text(dateStr),
+              ],
+            ),
           ),
         ),
       ),

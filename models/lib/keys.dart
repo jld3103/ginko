@@ -21,4 +21,7 @@ class Keys {
 
   // ignore: public_member_api_docs
   static const String calendar = 'calendar';
+
+  // ignore: public_member_api_docs
+  static const String cafetoria = 'cafetoria';
 }

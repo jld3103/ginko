@@ -12,6 +12,12 @@ class Config {
   static String password;
 
   // ignore: public_member_api_docs
+  static String cafetoriaUsername;
+
+  // ignore: public_member_api_docs
+  static String cafetoriaPassword;
+
+  // ignore: public_member_api_docs
   static Map<String, String> headers;
 
   /// Load all config
@@ -20,6 +26,8 @@ class Config {
         json.decode(File('config.json').readAsStringSync());
     username = data['username'];
     password = data['password'];
+    cafetoriaUsername = data['cafetoriaUsername'];
+    cafetoriaPassword = data['cafetoriaPassword'];
     headers = {
       'authorization':
           // ignore: lines_longer_than_80_chars
