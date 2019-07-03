@@ -1,6 +1,7 @@
-#CHANGELOG ON 2019-07-03
+# CHANGELOG ON 2019-07-03
 
 ### 2019-07-03
+    - jld3103: Fix changelog script
     - jld3103: Add changelog script
     - jld3103: Fix homepage URLs for packages
     - jld3103: Create packages for platform and storage

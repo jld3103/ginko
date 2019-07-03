@@ -1,7 +1,7 @@
 #!/bin/bash
 DATE=$(date +%F)
 FILE="CHANGELOG.md"
-echo "#CHANGELOG ON" ${DATE} > ${FILE}
+echo "# CHANGELOG ON" ${DATE} > ${FILE}
 
 parent=$(/bin/ps -o ppid -p $PPID | tail -1)
 if [[ -n "$parent" ]]; then
@@ -26,5 +26,4 @@ if [[ "$res" -gt 0 ]]; then
 
   git add ${FILE}
   git commit --amend
-  echo "Populated Changelog in ${FILE}"
 fi
