@@ -1,8 +1,8 @@
 name: flutter_platform
 description: A plugin to detect the platform on any platform. Mobile, Desktop, Web all included
-version: 1.0.0+1
+version: 1.0.1+2
 author: jld3103 <pub@2bad2c0.de>
-homepage: https://github.com/jld3103/ginko/packages/flutter_platform
+homepage: https://github.com/jld3103/ginko/tree/master/packages/flutter_platform
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
