@@ -23,8 +23,8 @@ before_script:
   - pub global activate coverage
 script:
   - cd $TRAVIS_BUILD_DIR
-  - bash generate.sh
-  - bash test-coverage.sh
+  - bash scripts/generate.sh
+  - bash scripts/test-coverage.sh
   - bash <(curl -s https://codecov.io/bash) -f coverage/lcov.info
 cache:
   directories:

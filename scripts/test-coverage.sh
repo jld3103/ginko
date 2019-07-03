@@ -20,6 +20,6 @@ for d in ${folders[@]} ; do
     cd ..
 done
 
-if ! [ "$TRAVIS" ]; then
+if ! [[ "$TRAVIS" ]]; then
   genhtml coverage/lcov.info -o coverage --no-function-coverage -s -q -p `pwd`
 fi
