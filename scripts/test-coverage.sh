@@ -3,7 +3,7 @@
 mkdir -p coverage
 rm -rf coverage/*
 
-folders=("models" "server" "app" )
+folders=("models" "server" "app")
 for d in ${folders[@]} ; do
     cd $d
 

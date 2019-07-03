@@ -1,6 +1,6 @@
 #!/bin/bash
 bash setup.sh
-folders=("models" "server" "tests" "app" )
+folders=("models" "server" "tests" "app")
 for d in ${folders[@]} ; do
     cd ${d}
 
