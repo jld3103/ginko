@@ -1,4 +1,4 @@
-import 'package:app/utils/storage/storage.dart';
+import 'package:flutter_platform_storage/flutter_platform_storage.dart';
 
 // ignore: avoid_classes_with_only_static_members
 /// Static class

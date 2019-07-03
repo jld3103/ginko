@@ -1,8 +1,10 @@
+library flutter_platform_storage;
+
 import 'dart:convert';
 import 'dart:io' hide Platform;
 
-import 'package:app/utils/platform/platform.dart';
-import 'package:app/utils/storage/storage_base.dart';
+import 'package:flutter_platform/flutter_platform.dart';
+import 'package:flutter_platform_storage/flutter_platform_storage_base.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Storage class

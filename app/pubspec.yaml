@@ -12,13 +12,14 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^0.1.2
   http: ^0.12.0+2
-  shared_preferences: ^0.5.3+1
   crypto: ^2.0.6
   flutter_svg: ^0.13.0+1
   intl: ^0.15.8
   sliding_up_panel: ^0.3.4
   models:
     path: ../models
+  flutter_platform: ^1.0.0+1
+  flutter_platform_storage: ^1.0.0+1
 
 dev_dependencies:
   flutter_launcher_icons: ^0.7.2
@@ -26,12 +27,15 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-
-dependecy_overrides:
+dependency_overrides:
   http: # TODO: Until https://github.com/dart-lang/http/pull/286 is merged
     git:
       url: https://github.com/jld3103/http.git
       ref: fix-multipart-file
+  flutter_platform:
+    path: ../packages/flutter_platform
+  flutter_platform_storage:
+    path: ../packages/flutter_platform_storage
 
 flutter:
   uses-material-design: true

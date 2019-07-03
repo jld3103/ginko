@@ -89,12 +89,26 @@ packages:
       name: flutter_launcher_icons
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.7.2"
+    version: "0.7.2+1"
   flutter_localizations:
     dependency: "direct main"
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_platform:
+    dependency: "direct main"
+    description:
+      path: "../packages/flutter_platform"
+      relative: true
+    source: path
+    version: "1.0.0+1"
+  flutter_platform_storage:
+    dependency: "direct main"
+    description:
+      path: "../packages/flutter_platform_storage"
+      relative: true
+    source: path
+    version: "1.0.0+1"
   flutter_svg:
     dependency: "direct main"
     description:
@@ -131,9 +145,11 @@ packages:
   http:
     dependency: "direct main"
     description:
-      name: http
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: fix-multipart-file
+      resolved-ref: "0ae1a350d92deb6e1739f71447ce81e4592cb20a"
+      url: "https://github.com/jld3103/http.git"
+    source: git
     version: "0.12.0+2"
   http_multi_server:
     dependency: transitive
@@ -281,7 +297,7 @@ packages:
       name: petitparser
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.3.0"
+    version: "2.4.0"
   pool:
     dependency: transitive
     description:
@@ -304,7 +320,7 @@ packages:
     source: hosted
     version: "2.0.3"
   shared_preferences:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: shared_preferences
       url: "https://pub.dartlang.org"
@@ -470,5 +486,5 @@ packages:
     source: hosted
     version: "2.1.16"
 sdks:
-  dart: ">=2.3.0 <3.0.0"
+  dart: ">=2.4.0 <3.0.0"
   flutter: ">=1.5.9-pre.94 <2.0.0"

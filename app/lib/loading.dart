@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:app/utils/data.dart';
 import 'package:app/utils/localizations.dart';
-import 'package:app/utils/platform/platform.dart';
 import 'package:app/utils/selection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_platform/flutter_platform.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 /// Loading class

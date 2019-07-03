@@ -1,7 +1,9 @@
+library flutter_platform_storage;
+
 // ignore: uri_does_not_exist
 import 'dart:html';
 
-import 'package:app/utils/storage/storage_base.dart';
+import 'package:flutter_platform_storage/flutter_platform_storage_base.dart';
 
 /// Storage class
 /// handles storage on web devices
