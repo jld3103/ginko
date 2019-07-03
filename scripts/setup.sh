@@ -31,13 +31,10 @@ fi
 cd server/js
 yarn install
 cd ../..
-cd app
-flutter packages get
-cd ../tests
-flutter packages get
-cd ../models
-pub get
-cd ../server
-pub get
-cd ..
-bash generate.sh
+folders=("models" "server" "app" "tests")
+for d in ${folders[@]} ; do
+    cd ${d}
+    flutter packages get
+    cd ..
+done
+bash scripts/generate.sh

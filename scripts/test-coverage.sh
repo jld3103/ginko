@@ -5,11 +5,11 @@ rm -rf coverage/*
 
 folders=("models" "server" "app")
 for d in ${folders[@]} ; do
-    cd $d
+    cd ${d}
 
     flutter test --coverage ../tests || error=true
 
-    escapedPath="$(echo $d | sed 's/\//\\\//g')"
+    escapedPath="$(echo ${d} | sed 's/\//\\\//g')"
     sed "s/^SF:lib/SF:$escapedPath\/lib/g" coverage/lcov.info >> ../coverage/lcov.info
     rm coverage -r
 

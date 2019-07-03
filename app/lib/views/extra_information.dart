@@ -52,7 +52,7 @@ class ExtraInformationState extends State<ExtraInformation> {
       return false;
     }).toList();
     final cafetoriaDays =
-    Data.cafetoria.days.where((day) => day.date == start).toList();
+        Data.cafetoria.days.where((day) => day.date == start).toList();
     return Column(
       children: [
         GestureDetector(

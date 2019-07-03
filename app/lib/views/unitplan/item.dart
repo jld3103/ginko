@@ -43,9 +43,7 @@ class UnitPlanItem extends StatelessWidget {
                     AppLocalization.of(context).subject(subject.subject) ?? '',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: Theme
-                          .of(context)
-                          .primaryColor,
+                      color: Theme.of(context).primaryColor,
                     ),
                   ),
                 ),

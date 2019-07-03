@@ -11,15 +11,15 @@ class UnitPlan {
 
   /// Creates a UnitPlan object from json
   factory UnitPlan.fromJSON(json) => UnitPlan(
-    unitPlans: json['unitPlans']
-        .map((i) => UnitPlanForGrade.fromJSON(i))
-        .toList()
-        .cast<UnitPlanForGrade>(),
+        unitPlans: json['unitPlans']
+            .map((i) => UnitPlanForGrade.fromJSON(i))
+            .toList()
+            .cast<UnitPlanForGrade>(),
       );
 
   /// Creates json from a UnitPlan object
   Map<String, dynamic> toJSON() => {
-    'unitPlans': unitPlans.map((i) => i.toJSON()).toList(),
+        'unitPlans': unitPlans.map((i) => i.toJSON()).toList(),
       };
 
   // ignore: public_member_api_docs
@@ -80,7 +80,7 @@ class UnitPlanDay {
   factory UnitPlanDay.fromJSON(json) => UnitPlanDay(
         weekday: json['weekday'],
         replacementPlan:
-        UnitPlanDayReplacementPlan.fromJSON(json['replacementPlan']),
+            UnitPlanDayReplacementPlan.fromJSON(json['replacementPlan']),
         lessons: json['lessons']
             .map((i) => Lesson.fromJSON(i))
             .toList()
@@ -90,7 +90,7 @@ class UnitPlanDay {
   /// Creates json from a UnitPlanDay object
   Map<String, dynamic> toJSON() => {
         'weekday': weekday ?? '',
-    'replacementPlan': replacementPlan.toJSON(),
+        'replacementPlan': replacementPlan.toJSON(),
         'lessons': lessons.map((i) => i.toJSON()).toList(),
       };
 
@@ -126,7 +126,7 @@ class UnitPlanDayReplacementPlan {
   Map<String, dynamic> toJSON() => {
         'applies': applies == null ? '' : applies.toIso8601String() ?? '',
         'updated': updated == null ? '' : updated.toIso8601String() ?? '',
-    'weekA': weekA ?? true,
+        'weekA': weekA ?? true,
       };
 
   // ignore: public_member_api_docs

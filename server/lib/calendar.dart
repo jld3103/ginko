@@ -53,8 +53,7 @@ class CalendarData {
         .cast<String>();
     events = [
       ...getVacations(
-          data['pageTables'][0]['tables'][1][0].split('\n')
-            ..removeAt(0)),
+          data['pageTables'][0]['tables'][1][0].split('\n')..removeAt(0)),
       ...getOpenDoorDay(lines),
       ...getFreeDays(lines),
       ...getConsultationDays(lines),
@@ -67,7 +66,7 @@ class CalendarData {
         ..addAll(data.keys
             .map((name) => CalendarEvent(
                   name: name,
-          type: EventTypes.free,
+                  type: EventTypes.free,
                   start: DateTime.parse(data[name]['datum']),
                   end: DateTime.parse(data[name]['datum'])
                       .add(Duration(days: 1))
@@ -124,14 +123,13 @@ class CalendarData {
   static List<CalendarEvent> getOpenDoorDay(List<String> lines) {
     final events = [];
     final openDoorDay = lines
-        .firstWhere((line) =>
-        line.contains(
-          // ignore: lines_longer_than_80_chars
+        .firstWhere((line) => line.contains(
+            // ignore: lines_longer_than_80_chars
             'Unterricht am Tag der Offenen Tür für künftige Fünftklässler und deren Eltern.'))
         .replaceAll(
-      // ignore: lines_longer_than_80_chars
-        ': Unterricht am Tag der Offenen Tür für künftige Fünftklässler und deren Eltern.',
-        '');
+            // ignore: lines_longer_than_80_chars
+            ': Unterricht am Tag der Offenen Tür für künftige Fünftklässler und deren Eltern.',
+            '');
     events.add(CalendarEvent(
       name: 'Tag der Offenen Tür',
       type: EventTypes.openDoorDay,
@@ -142,11 +140,11 @@ class CalendarData {
           .subtract(Duration(seconds: 1)),
     ));
     var openDoorDayReplacement = (lines
-        .firstWhere((line) => line.contains('Dafür ist unterrichtsfrei am'))
-        .replaceAll('Dafür ist unterrichtsfrei am ', '')
-        .replaceAll(', dem', '')
-        .split(' ')
-      ..removeAt(0))
+            .firstWhere((line) => line.contains('Dafür ist unterrichtsfrei am'))
+            .replaceAll('Dafür ist unterrichtsfrei am ', '')
+            .replaceAll(', dem', '')
+            .split(' ')
+              ..removeAt(0))
         .join(' ');
     openDoorDayReplacement =
         openDoorDayReplacement.substring(0, openDoorDayReplacement.length - 1);
@@ -168,8 +166,7 @@ class CalendarData {
     final lines1 = lines.join('\n').split('Sprechtage')[0].split('\n');
     for (final line in lines1) {
       if (RegExp('^[0-9]\. ').hasMatch(line)) {
-        final arr1 = (line.split(' ')
-          ..removeAt(0)).join(' ').split(', ');
+        final arr1 = (line.split(' ')..removeAt(0)).join(' ').split(', ');
         final arr2 = arr1[1]
             .split('(')
             .map((a) => a.replaceAll(')', '').trim())
@@ -234,10 +231,8 @@ class CalendarData {
           parts[1] = parts[1].split('(')[0];
           parts = parts
               .map((part) =>
-              (part
-                  .split(',')
-                  .length > 1 ? part.split(',')[1] : part)
-                  .trim())
+                  (part.split(',').length > 1 ? part.split(',')[1] : part)
+                      .trim())
               .toList();
           var start1 = _format.parse(parts[0]);
           var start2 = _format.parse(parts[1]);
@@ -256,17 +251,19 @@ class CalendarData {
           final end2 = start2.add(endOffset);
           start1 = start1.add(startOffset);
           start2 = start2.add(startOffset);
-          events..add(CalendarEvent(
-            type: EventTypes.parentConsulting,
-            start: start1,
-            name: name,
-            end: end1,
-          ))..add(CalendarEvent(
-            type: EventTypes.parentConsulting,
-            start: start2,
-            name: name,
-            end: end2,
-          ));
+          events
+            ..add(CalendarEvent(
+              type: EventTypes.parentConsulting,
+              start: start1,
+              name: name,
+              end: end1,
+            ))
+            ..add(CalendarEvent(
+              type: EventTypes.parentConsulting,
+              start: start2,
+              name: name,
+              end: end2,
+            ));
         } else {
           var parts = line.split(',')[1].split('(');
           parts[1] = parts[1].replaceAll(')', '');
@@ -276,7 +273,7 @@ class CalendarData {
           if (parts[1].toLowerCase().contains('uhr')) {
             final startTimeStr = parts[1].split('–')[0].trim();
             final endTimeStr =
-            parts[1].split('–')[1].trim().split(' ')[0].trim();
+                parts[1].split('–')[1].trim().split(' ')[0].trim();
             final startOffset = Duration(
               hours: int.parse(startTimeStr.split('.')[0]),
               minutes: int.parse(startTimeStr.split('.')[1]),
@@ -319,7 +316,7 @@ class CalendarData {
         name: 'Zeugnisausgabe',
         end: date.add(Duration(
           hours:
-          int.parse(line.split('Unterrichtsende')[1].trim().split(' ')[0]),
+              int.parse(line.split('Unterrichtsende')[1].trim().split(' ')[0]),
         )),
         type: EventTypes.gradeRelease,
         start: date,
@@ -368,7 +365,7 @@ class CalendarData {
             d.split('/')[0] + d.split('/')[1].split('.').sublist(1).join('.');
         d = d.split('/')[1];
         final dates =
-        [a, b, c, d].map((date) => dateFormat.parse(date)).toList();
+            [a, b, c, d].map((date) => dateFormat.parse(date)).toList();
         for (final date in dates) {
           events.add(CalendarEvent(
             name: 'Beratungskonferenz',
@@ -382,7 +379,7 @@ class CalendarData {
         line = line.split(',').sublist(1).join(',').trim();
         final date = _format.parse(line.split('(')[0].trim());
         final grades =
-        line.split('(')[1].split(')')[0].toUpperCase().split(', ');
+            line.split('(')[1].split(')')[0].toUpperCase().split(', ');
         if (grades.contains('SI')) {
           grades
             ..add('5 - 9')
@@ -393,25 +390,24 @@ class CalendarData {
             ..add('EF - Q2')
             ..removeAt(grades.indexOf('SII'));
         }
-        final description = line
-            .split(',')
-            .last
-            .trim();
+        final description = line.split(',').last.trim();
         if (line.toLowerCase().contains('ausgabe der leistungsnachweise')) {
           final date2 = _format.parse(
               description.split('Ausgabe der Leistungsnachweise am')[1].trim());
-          events..add(CalendarEvent(
-            type: EventTypes.teacherConsulting,
-            name: 'Zeugniskonferenzen (${grades.join(', ')})',
-            start: date,
-            end: date.add(Duration(days: 1)).subtract(Duration(seconds: 1)),
-          ))..add(CalendarEvent(
-            type: EventTypes.teacherConsulting,
-            name:
-            '${description.split('am')[0].trim()} (${grades.join(', ')})',
-            start: date2,
-            end: date2.add(Duration(days: 1)).subtract(Duration(seconds: 1)),
-          ));
+          events
+            ..add(CalendarEvent(
+              type: EventTypes.teacherConsulting,
+              name: 'Zeugniskonferenzen (${grades.join(', ')})',
+              start: date,
+              end: date.add(Duration(days: 1)).subtract(Duration(seconds: 1)),
+            ))
+            ..add(CalendarEvent(
+              type: EventTypes.teacherConsulting,
+              name:
+                  '${description.split('am')[0].trim()} (${grades.join(', ')})',
+              start: date2,
+              end: date2.add(Duration(days: 1)).subtract(Duration(seconds: 1)),
+            ));
         } else {
           events.add(CalendarEvent(
               type: description.contains('unterrichtsfrei')
@@ -423,8 +419,8 @@ class CalendarData {
               end: description == 'kein Nachmittagsunterricht'
                   ? date.add(Times.getUnitTimes(4, false)[1])
                   : date
-                  .add(Duration(days: 1))
-                  .subtract(Duration(seconds: 1))));
+                      .add(Duration(days: 1))
+                      .subtract(Duration(seconds: 1))));
         }
       }
     }

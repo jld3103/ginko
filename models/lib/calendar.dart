@@ -53,7 +53,7 @@ class CalendarEvent {
         type: EventTypes.values[json['type']],
         start: DateTime.parse(json['start']),
         end: DateTime.parse(json['end']),
-    shortUnits: json['shortUnits'],
+        shortUnits: json['shortUnits'],
         info: json['info'],
       );
 
@@ -63,7 +63,7 @@ class CalendarEvent {
         'type': type.index,
         'start': start.toIso8601String(),
         'end': end.toIso8601String(),
-    'shortUnits': shortUnits,
+        'shortUnits': shortUnits,
         'info': info,
       };
 

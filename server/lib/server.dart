@@ -36,7 +36,7 @@ Future main() async {
           // ignore: omit_local_variable_types
           final Map<String, dynamic> data = {'status': 'ok'};
           for (final key in queryParams.keys.where((key) =>
-          key != Keys.username &&
+              key != Keys.username &&
               key != Keys.password &&
               key != Keys.grade)) {
             try {
@@ -45,12 +45,12 @@ Future main() async {
                 if (value <
                     UnitPlanData.unitPlans.unitPlans
                         .where((unitPlan) =>
-                    unitPlan.grade == queryParams[Keys.grade])
+                            unitPlan.grade == queryParams[Keys.grade])
                         .toList()[0]
                         .timeStamp) {
                   data[key] = UnitPlanData.unitPlans.unitPlans
                       .where((unitPlan) =>
-                  unitPlan.grade == queryParams[Keys.grade])
+                          unitPlan.grade == queryParams[Keys.grade])
                       .toList()[0]
                       .toJSON();
                 }

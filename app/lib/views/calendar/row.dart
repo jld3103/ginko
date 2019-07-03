@@ -73,9 +73,7 @@ class CalendarRowState extends State<CalendarRow> {
         child: ListTile(
           leading: Icon(
             Icons.calendar_today,
-            color: Theme
-                .of(context)
-                .primaryColor,
+            color: Theme.of(context).primaryColor,
           ),
           title: Container(
             width: double.infinity,

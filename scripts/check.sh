@@ -1,5 +1,14 @@
 #!/bin/bash
-bash setup.sh
+
+parent=$(/bin/ps -o ppid -p $PPID | tail -1)
+if [[ -n "$parent" ]]; then
+    amended=$(/bin/ps -o command -p ${parent} | grep -e '--amend')
+    if [[ -n "$amended" ]]; then
+        exit 0
+    fi
+fi
+
+bash scripts/setup.sh
 folders=("models" "server" "tests" "app")
 for d in ${folders[@]} ; do
     cd ${d}
@@ -15,7 +24,7 @@ for d in ${folders[@]} ; do
 
     status=$?
     echo "$output"
-    if [[ "$status" != 0 ]] || echo "$output" | grep -q "lint"; then
+    if [[ "$status" != 0 ]] || echo "$output" | grep -q "(l|h)int"; then
 	d=${d%/}
         echo "$d failed checks"
         exit 1

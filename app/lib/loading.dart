@@ -54,8 +54,7 @@ class LoadingState extends State<Loading> {
   }
 
   @override
-  Widget build(BuildContext context) =>
-      Platform().isAndroid
+  Widget build(BuildContext context) => Platform().isAndroid
       ? Center(
           child: SizedBox(
             width: 48,

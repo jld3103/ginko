@@ -53,16 +53,15 @@ class UnitPlanRowState extends State<UnitPlanRow> {
             builder: (context) => SimpleDialog(
               contentPadding: EdgeInsets.all(10),
               children: widget.lesson.subjects
-                  .map((subject) =>
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).pop();
-                      Selection.set(
-                          widget.lesson.block, weekA, subject.identifier);
-                      Static.rebuildUnitPlan();
-                    },
-                    child: UnitPlanItem(subject),
-                  ))
+                  .map((subject) => GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pop();
+                          Selection.set(
+                              widget.lesson.block, weekA, subject.identifier);
+                          Static.rebuildUnitPlan();
+                        },
+                        child: UnitPlanItem(subject),
+                      ))
                   .toList(),
             ),
           );

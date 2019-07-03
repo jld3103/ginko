@@ -30,13 +30,13 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
     final now = DateTime.now();
     return now
         .subtract(Duration(
-      days: now.weekday - 1,
-      hours: now.hour,
-      minutes: now.minute,
-      seconds: now.second,
-      milliseconds: now.millisecond,
-      microseconds: now.microsecond,
-    ))
+          days: now.weekday - 1,
+          hours: now.hour,
+          minutes: now.minute,
+          seconds: now.second,
+          milliseconds: now.millisecond,
+          microseconds: now.microsecond,
+        ))
         .add(Duration(days: now.weekday > 5 ? 7 : 0));
   }
 
@@ -70,36 +70,28 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
   }
 
   @override
-  Widget build(BuildContext context) =>
-      DefaultTabController(
+  Widget build(BuildContext context) => DefaultTabController(
         length: 5,
         child: Scaffold(
           appBar: AppBar(
-            title: Text(AppLocalization
-                .of(context)
-                .appName),
+            title: Text(AppLocalization.of(context).appName),
             bottom: TabBar(
                 controller: _tabController,
-                tabs: AppLocalization
-                    .of(context)
+                tabs: AppLocalization.of(context)
                     .weekdays
                     .sublist(0, 5)
                     .map(
-                      (weekday) =>
-                      Tab(
+                      (weekday) => Tab(
                         child: Text(weekday.substring(0, 2).toUpperCase()),
                       ),
-                )
+                    )
                     .toList()),
           ),
           body: SlidingUpPanel(
             controller: _panelController,
             parallaxEnabled: true,
             parallaxOffset: .1,
-            maxHeight: MediaQuery
-                .of(context)
-                .size
-                .height * 0.75,
+            maxHeight: MediaQuery.of(context).size.height * 0.75,
             minHeight: 30,
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(24),
@@ -116,21 +108,19 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
               controller: _tabController,
               children: List.generate(
                 5,
-                    (weekday) =>
-                    ListView(
-                      padding: EdgeInsets.all(10),
-                      shrinkWrap: true,
-                      children: Data.unitPlan.days[weekday].lessons
-                          .map(
-                            (lesson) =>
-                            UnitPlanRow(
-                              lesson: lesson,
-                              start: getMonday.add(Duration(days: weekday)),
-                            ),
+                (weekday) => ListView(
+                  padding: EdgeInsets.all(10),
+                  shrinkWrap: true,
+                  children: Data.unitPlan.days[weekday].lessons
+                      .map(
+                        (lesson) => UnitPlanRow(
+                          lesson: lesson,
+                          start: getMonday.add(Duration(days: weekday)),
+                        ),
                       )
-                          .toList()
-                          .cast<Widget>(),
-                    ),
+                      .toList()
+                      .cast<Widget>(),
+                ),
               ).toList().cast<Widget>(),
             ),
           ),
