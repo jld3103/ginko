@@ -22,7 +22,6 @@ class CafetoriaRow extends StatefulWidget {
 /// CafetoriaRowState class
 /// state of a day widget
 class CafetoriaRowState extends State<CafetoriaRow> {
-  DateFormat _dateFormat;
   DateFormat _timeFormat;
 
   @override
@@ -31,7 +30,6 @@ class CafetoriaRowState extends State<CafetoriaRow> {
       final languageCode = AppLocalization.of(context).getLocale.languageCode;
       initializeDateFormatting(languageCode, null).then((_) {
         setState(() {
-          _dateFormat = DateFormat.yMMMMd(languageCode);
           _timeFormat = DateFormat.Hm(languageCode);
         });
       });

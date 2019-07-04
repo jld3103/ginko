@@ -346,6 +346,10 @@ void main() {
         unitPlanForGrade.days.map((day) => day.toJSON()).toList(),
         [unitPlanDay.toJSON()],
       );
+      expect(
+        unitPlanForGrade.date.millisecondsSinceEpoch ~/ 1000,
+        unitPlanForGrade.timeStamp,
+      );
     });
 
     test('Can create unit plan for grade from JSON', () {
@@ -372,6 +376,10 @@ void main() {
       expect(
         unitPlanForGrade.days.map((day) => day.toJSON()).toList(),
         [unitPlanDay.toJSON()],
+      );
+      expect(
+        unitPlanForGrade.date.millisecondsSinceEpoch ~/ 1000,
+        unitPlanForGrade.timeStamp,
       );
     });
 

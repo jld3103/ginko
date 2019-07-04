@@ -11,19 +11,20 @@ if [[ -n "$parent" ]]; then
     fi
 fi
 
-
-res=$(git status --porcelain | grep ${FILE} | wc -l)
-if [[ "$res" -gt 0 ]]; then
-  git log --no-merges --format="%cd" --date=short --no-merges --all | sort -u -r | while read DATE ; do
-    if [[ ${NEXT} != "" ]]
-    then
-      echo >> ${FILE}
-      echo "###" ${NEXT} >> ${FILE}
+rm ${FILE}
+PREVIOUS=""
+while read -r line
+do
+    IFS=', ' read -r -a array <<< "$line"
+    if [[ "${array[2]}" != "$PREVIOUS" ]]; then
+      echo "" >> ${FILE}
+      echo "# ${array[2]}  " >> ${FILE}
     fi
-    GIT_PAGER=cat git log --no-merges --format="    - %an: %s" --since=${DATE} --until=${NEXT}  --all >> ${FILE}
-    NEXT=${DATE}
-  done
+    echo "$line  " >> ${FILE}
+    PREVIOUS="${array[2]}"
+done < <(git log --pretty=format:"%h %an %ad: %s" --date=short --no-merges)
 
-  git add ${FILE}
-  git commit --amend
-fi
+git add ${FILE}
+git commit --amend
+git checkout $(git branch | grep \* | cut -d ' ' -f2) -- ${FILE}
+echo "Populated Changelog in ${FILE}"

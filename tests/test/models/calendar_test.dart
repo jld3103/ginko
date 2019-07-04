@@ -86,6 +86,10 @@ void main() {
       );
       expect(calendar.years, [2018, 2019]);
       expect(calendar.events, [event]);
+      expect(
+        calendar.years.reduce((a, b) => a * 10000 + b),
+        calendar.timeStamp,
+      );
     });
 
     test('Can create calendar from JSON', () {
@@ -105,6 +109,10 @@ void main() {
       expect(
         calendar.events.map((event) => event.toJSON()).toList(),
         [event.toJSON()],
+      );
+      expect(
+        calendar.years.reduce((a, b) => a * 10000 + b),
+        calendar.timeStamp,
       );
     });
 

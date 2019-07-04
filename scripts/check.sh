@@ -24,7 +24,7 @@ for d in ${folders[@]} ; do
 
     status=$?
     echo "$output"
-    if [[ "$status" != 0 ]] || echo "$output" | grep -q "(l|h)int"; then
+    if [[ "$status" != 0 ]] || echo "$output" | grep -q "lint" || echo "$output" | grep -q "hint"; then
 	d=${d%/}
         echo "$d failed checks"
         exit 1
