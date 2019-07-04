@@ -16,13 +16,14 @@ PREVIOUS=""
 while read -r line
 do
     IFS=', ' read -r -a array <<< "$line"
-    if [[ "${array[2]}" != "$PREVIOUS" ]]; then
+    if [[ "${array[0]}" != "$PREVIOUS" ]]; then
       echo "" >> ${FILE}
-      echo "# ${array[2]}  " >> ${FILE}
+      echo "# ${array[0]}  " >> ${FILE}
     fi
-    echo "$line  " >> ${FILE}
-    PREVIOUS="${array[2]}"
-done < <(git log --pretty=format:"%h %an %ad: %s" --date=short --no-merges)
+    PREVIOUS="${array[0]}"
+    array=("${array[@]:1}")
+    echo "$(printf " %s" "${array[@]}")  " >> ${FILE}
+done < <(git log --pretty=format:"%ad %an: %s" --date=short --no-merges)
 
 git add ${FILE}
 git commit --amend

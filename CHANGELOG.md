@@ -1,46 +1,47 @@
 
-# 2019-07-04:  
-3df2081 jld3103 2019-07-04: Fix code style check and changelog script and add time stamp tests  
+# 2019-07-04  
+ jld3103: Fix changelog format  
+ jld3103: Fix code style check and changelog script and add time stamp tests  
 
-# 2019-07-03:  
-b4a566a jld3103 2019-07-03: Fix changelog script  
-8f7ea4a jld3103 2019-07-03: Add changelog script  
-c4608eb jld3103 2019-07-03: Fix homepage URLs for packages  
-3fa158b jld3103 2019-07-03: Create packages for platform and storage  
-43b61a7 jld3103 2019-07-03: Add Github language badges  
-5853bf8 jld3103 2019-07-03: Added docs script  
-ac2a082 jld3103 2019-07-03: Move scripts in their own folder  
-68818f6 jld3103 2019-07-03: Merge .gitignores  
+# 2019-07-03  
+ jld3103: Fix changelog script  
+ jld3103: Add changelog script  
+ jld3103: Fix homepage URLs for packages  
+ jld3103: Create packages for platform and storage  
+ jld3103: Add Github language badges  
+ jld3103: Added docs script  
+ jld3103: Move scripts in their own folder  
+ jld3103: Merge .gitignores  
 
-# 2019-07-02:  
-4835c9b jld3103 2019-07-02: Added codecov and github license badges  
-32cb85b jld3103 2019-07-02: Fix asset generation script  
-ba1be71 jld3103 2019-07-02: Fix test coverage in travis configuration  
-8af070b jld3103 2019-07-02: Add test coverage  
-6d7ec20 jld3103 2019-07-02: Add cafetoria and fix data fetching in app  
-cac1f8d jld3103 2019-07-02: Fix android debug builds  
+# 2019-07-02  
+ jld3103: Added codecov and github license badges  
+ jld3103: Fix asset generation script  
+ jld3103: Fix test coverage in travis configuration  
+ jld3103: Add test coverage  
+ jld3103: Add cafetoria and fix data fetching in app  
+ jld3103: Fix android debug builds  
 
-# 2019-07-01:  
-a860058 jld3103 2019-07-01: Fix unit plan key  
+# 2019-07-01  
+ jld3103: Fix unit plan key  
 
-# 2019-06-30:  
-b41b6b7 jld3103 2019-06-30: Add travis ci badge  
-bc485c3 jld3103 2019-06-30: Fix test  
-a1f417d jld3103 2019-06-30: Add tests for models  
-1e26b44 jld3103 2019-06-30: Remove unused dependencies  
-7b8d5e1 jld3103 2019-06-30: Fix ios launch images  
-9a8c8c0 jld3103 2019-06-30: Implement tab based view  
+# 2019-06-30  
+ jld3103: Add travis ci badge  
+ jld3103: Fix test  
+ jld3103: Add tests for models  
+ jld3103: Remove unused dependencies  
+ jld3103: Fix ios launch images  
+ jld3103: Implement tab based view  
 
-# 2019-06-26:  
-26b86a7 jld3103 2019-06-26: Fixed dependencies not resolving  
+# 2019-06-26  
+ jld3103: Fixed dependencies not resolving  
 
-# 2019-06-25:  
-5afeb72 jld3103 2019-06-25: Add missing calendar parsers  
-83a5e98 jld3103 2019-06-25: Add missing material icons font  
+# 2019-06-25  
+ jld3103: Add missing calendar parsers  
+ jld3103: Add missing material icons font  
 
-# 2019-06-24:  
-4a5c641 jld3103 2019-06-24: Add web platform  
+# 2019-06-24  
+ jld3103: Add web platform  
 
-# 2019-06-11:  
-47afc51 jld3103 2019-06-11: Fixed setup script  
-75f5625 jld3103 2019-06-11: Initial code commit  
+# 2019-06-11  
+ jld3103: Fixed setup script  
+ jld3103: Initial code commit  
