@@ -48,8 +48,8 @@ class UnitPlanForGrade {
 
   /// Creates json from a UnitPlanForGrade object
   Map<String, dynamic> toJSON() => {
-        'grade': grade ?? '',
-        'date': date.toIso8601String() ?? '',
+        'grade': grade,
+        'date': date.toIso8601String(),
         'days': days.map((i) => i.toJSON()).toList(),
       };
 
@@ -89,7 +89,7 @@ class UnitPlanDay {
 
   /// Creates json from a UnitPlanDay object
   Map<String, dynamic> toJSON() => {
-        'weekday': weekday ?? '',
+        'weekday': weekday,
         'replacementPlan': replacementPlan.toJSON(),
         'lessons': lessons.map((i) => i.toJSON()).toList(),
       };
@@ -124,8 +124,8 @@ class UnitPlanDayReplacementPlan {
 
   /// Creates json from a UnitPlanDayReplacementPlan object
   Map<String, dynamic> toJSON() => {
-        'applies': applies == null ? '' : applies.toIso8601String() ?? '',
-        'updated': updated == null ? '' : updated.toIso8601String() ?? '',
+        'applies': applies == null ? '' : applies.toIso8601String(),
+        'updated': updated == null ? '' : updated.toIso8601String(),
         'weekA': weekA ?? true,
       };
 
@@ -161,8 +161,8 @@ class Lesson {
 
   /// Creates json from a Lesson object
   Map<String, dynamic> toJSON() => {
-        'unit': unit ?? '',
-        'block': block ?? '',
+        'unit': unit,
+        'block': block,
         'subjects': subjects.map((i) => i.toJSON()).toList(),
       };
 
@@ -204,12 +204,12 @@ class Subject {
 
   /// Creates json from a Subject object
   Map<String, dynamic> toJSON() => {
-        'teacher': teacher ?? '',
-        'subject': subject ?? '',
-        'room': room ?? '',
-        'course': course ?? '',
-        'changes': changes.map((i) => i.toJSON()).toList() ?? '',
-        'weeks': weeks ?? '',
+        'teacher': teacher,
+        'subject': subject,
+        'room': room,
+        'course': course,
+        'changes': changes.map((i) => i.toJSON()).toList(),
+        'weeks': weeks,
       };
 
   // ignore: public_member_api_docs

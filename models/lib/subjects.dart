@@ -64,7 +64,7 @@ class Subjects {
     }
     name = name.trim().toUpperCase().replaceAll(RegExp('[0-9]'), '');
     if (_subjects[name] == null) {
-      if (name != '' && name != 'TEST') {
+      if (name != '') {
         print('Unknown subject $name');
       }
       return name;

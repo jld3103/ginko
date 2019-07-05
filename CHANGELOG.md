@@ -1,4 +1,7 @@
 
+# 2019-07-05  
+ jld3103: Add all missing tests for models and add test without coverage script  
+
 # 2019-07-04  
  jld3103: Fix changelog format  
  jld3103: Fix code style check and changelog script and add time stamp tests  

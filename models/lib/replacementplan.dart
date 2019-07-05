@@ -17,26 +17,26 @@ class Change {
 
   /// Creates a Change object from json
   factory Change.fromJSON(json) => Change(
-        unit: int.parse(json['unit']),
+        unit: json['unit'],
         subject: json['subject'],
         course: json['course'],
         room: json['room'],
         teacher: json['teacher'],
         changed: Changed.fromJSON(json['changed']),
-        sure: bool.fromEnvironment(json['sure']),
-        exam: ExamTypes.values[int.parse(json['exam'])],
+        sure: json['sure'],
+        exam: ExamTypes.values[json['exam']],
       );
 
   /// Creates json from a Change object
   Map<String, dynamic> toJSON() => {
-        'unit': unit ?? '',
-        'subject': subject ?? '',
-        'course': course ?? '',
-        'room': room ?? '',
-        'teacher': teacher ?? '',
+        'unit': unit,
+        'subject': subject,
+        'course': course,
+        'room': room,
+        'teacher': teacher,
         'changed': changed.toJSON(),
-        'sure': sure ?? '',
-        'exam': exam.index ?? '',
+        'sure': sure,
+        'exam': exam.index,
       };
 
   // ignore: public_member_api_docs
@@ -85,10 +85,10 @@ class Changed {
 
   /// Creates json from a Changed object
   Map<String, dynamic> toJSON() => {
-        'subject': subject ?? '',
-        'teacher': teacher ?? '',
-        'room': room ?? '',
-        'info': info ?? '',
+        'subject': subject,
+        'teacher': teacher,
+        'room': room,
+        'info': info,
       };
 
   // ignore: public_member_api_docs

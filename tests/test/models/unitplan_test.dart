@@ -20,6 +20,7 @@ void main() {
       expect(subject.changes, []);
       expect(subject.weeks, 'AB');
       expect(subject.unit, 0);
+      expect(subject.identifier, '${subject.teacher}-${subject.subject}');
     });
 
     test('Can create subject from JSON', () {
@@ -38,6 +39,7 @@ void main() {
       expect(subject.changes, []);
       expect(subject.weeks, 'AB');
       expect(subject.unit, 0);
+      expect(subject.identifier, '${subject.teacher}-${subject.subject}');
     });
 
     test('Can create JSON from subject', () {
