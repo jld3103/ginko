@@ -1,5 +1,6 @@
 
 # 2019-07-06  
+ jld3103: Fix travis config for codecov upload  
  jld3103: Add config from environment variables  
  jld3103: Add tests for parsers  
 

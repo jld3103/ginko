@@ -24,8 +24,7 @@ before_script:
 script:
   - cd $TRAVIS_BUILD_DIR
   - bash scripts/generate.sh
-  - bash scripts/test-coverage.sh
-  - bash <(curl -s https://codecov.io/bash) -f coverage/lcov.info
+  - bash scripts/test-coverage.sh && bash <(curl -s https://codecov.io/bash) -f coverage/lcov.info
 cache:
   directories:
     - $HOME/.pub-cache
