@@ -13,7 +13,7 @@ class Users {
   /// Loads all users
   static void load() {
     final Map<String, String> data = json
-        .decode(File('users.json').readAsStringSync())
+        .decode(File('../server/users.json').readAsStringSync())
         .cast<String, String>();
     for (var username in data.keys) {
       final password = sha256.convert(utf8.encode(data[username])).toString();

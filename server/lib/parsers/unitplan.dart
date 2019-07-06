@@ -9,26 +9,9 @@ import 'package:models/unitplan.dart';
 import 'package:server/config.dart';
 
 // ignore: avoid_classes_with_only_static_members
-/// UnitPlanData class
+/// UnitPlanParser class
 /// handles all unit plan parsing
-class UnitPlanData {
-  // ignore: public_member_api_docs
-  static UnitPlan unitPlans;
-
-  /// Load all unit plans
-  static Future load() async {
-    final plans = [];
-    for (var i = 0; i < 2; i++) {
-      final weekA = i == 0;
-      plans.add(
-        UnitPlan(
-          unitPlans: extract(await download(weekA)),
-        ),
-      );
-    }
-    unitPlans = mergeUnitPlans(plans.cast<UnitPlan>());
-  }
-
+class UnitPlanParser {
   /// Download html unit plan
   static Future<Document> download(bool weekA) async {
     final response = await http.get(

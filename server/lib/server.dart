@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:models/models.dart';
-import 'package:server/cafetoria.dart';
-import 'package:server/calendar.dart';
 import 'package:server/config.dart';
-import 'package:server/unitplan.dart';
+import 'package:server/data/cafetoria.dart';
+import 'package:server/data/calendar.dart';
+import 'package:server/data/unitplan.dart';
 import 'package:server/users.dart';
 
 Future main() async {
@@ -43,12 +43,12 @@ Future main() async {
               final value = int.parse(queryParams[key]);
               if (key == Keys.unitPlan) {
                 if (value <
-                    UnitPlanData.unitPlans.unitPlans
+                    UnitPlanData.unitPlan.unitPlans
                         .where((unitPlan) =>
                             unitPlan.grade == queryParams[Keys.grade])
                         .toList()[0]
                         .timeStamp) {
-                  data[key] = UnitPlanData.unitPlans.unitPlans
+                  data[key] = UnitPlanData.unitPlan.unitPlans
                       .where((unitPlan) =>
                           unitPlan.grade == queryParams[Keys.grade])
                       .toList()[0]

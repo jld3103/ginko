@@ -8,17 +8,9 @@ import 'package:models/models.dart';
 import 'package:server/config.dart';
 
 // ignore: avoid_classes_with_only_static_members
-/// CafetoriaData class
+/// CafetoriaParser class
 /// handles all cafetoria parsing
-class CafetoriaData {
-  // ignore: public_member_api_docs
-  static Cafetoria cafetoria;
-
-  /// Load cafetoria
-  static Future load() async {
-    cafetoria = extract(await download(), false);
-  }
-
+class CafetoriaParser {
   /// Download cafetoria
   static Future<Document> download([String username, String password]) async {
     if (username == null || password == null) {
@@ -78,7 +70,8 @@ class CafetoriaData {
                       name: document
                           .querySelectorAll('.angebot_text')[index]
                           .innerHtml
-                          .replaceAll('<br>', ' '),
+                          .replaceAll('<br>', ' ')
+                          .trim(),
                       times: <Duration>[], // TODO(jld3103): Add times
                       price: price == '' ? 0 : double.parse(price),
                     );

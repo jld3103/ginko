@@ -1,0 +1,1386 @@
+<html>
+<head>
+    <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+    <title>Men&uuml;dispo </title>
+    <link href="formate.css" rel=stylesheet type="text/css">
+    <link href="formateoverride.css" rel=stylesheet type="text/css">
+    <link href="druck.css" media="print" rel=stylesheet type="text/css">
+
+    <style media="print" type="text/css">
+@page { size:landscape; }
+
+
+    </style>
+    <!--[if IE]>
+    <style type="text/css">
+	 html>body #wrap {
+	   height: auto !important;
+	 }
+	 #wrap {
+	   height: 100% !important;
+	 }
+
+
+    </style>
+    <![endif]-->
+    <script src="popup.js" type="text/javascript">//</script>
+    <script language="javascript" src="blendtrans.js" type="text/javascript"></script>
+    <script charset="iso-8859-1" language="javascript" src="java.js"
+            type="text/javascript"></script>
+    <script charset="iso-8859-1" language="javascript" src="superdialog/superdialog.js"
+            type="text/javascript"></script>
+    <script language="JavaScript1.2">
+    function disabletext(e) {
+        return false
+    }
+    function reEnable() {
+        return true
+    }
+    //if the browser is IE4+
+    document.onselectstart = new Function("return false")
+    //if the browser is NS6
+    if (window.sidebar) {
+        document.onmousedown = disabletext
+        document.onclick = reEnable
+    }
+
+
+    </script>
+    <script language="javascript">
+    //܂ERPR܆UNG FERIEN
+
+
+	//܂ERPR܆UNG FERIEN  --ENDE--
+
+
+    aktuellesKartenSaldo = eval(0.00);
+    	aktuellesKreditLimit = eval(0.00);
+
+	maxBestProKat = eval(1.);
+    maxBestImVoraus = eval(-1.);
+    LSVerzehr = eval(0);
+    var maxBestProWoche =  eval();
+    meldungZeit = eval(4000.);
+    saldoMeldung = eval(9.);
+    essenzwang_option = eval(0);
+    kontigent_option = eval();
+
+	saldoAusblend = eval(-1);
+    var closing;
+    var kid = eval(999999);
+
+	function BeimLaden() {
+        //ScriptBeimLaden();
+
+	clearErrMsg();
+    updateSalden();
+	//alert(angebotAenderungen.size());
+
+	loadAngebotAenderungen();
+    setWochenIndex(0);        }
+
+
+    /*
+    if(document.getElementById) {
+      window.alert = function(txt) {
+          myDialog.setDialog('info','Hinweis',txt);
+          myDialog.start();
+      }
+    }
+    */
+    var tmp_angebote = new Array();
+tmp_angebote["0"] = new Array();
+tmp_angebote["0"]["AngebotID"] = "7065";
+tmp_angebote["0"]["Datum"] = "2019-07-01";
+tmp_angebote["0"]["Spalte"] = "1";
+tmp_angebote["0"]["ArtNr"] = "101";
+tmp_angebote["0"]["ArtBez"] = "Lahmacun";
+tmp_angebote["0"]["bon"] = "Men� 1";
+tmp_angebote["0"]["ArtPreis"] = "3.99";
+tmp_angebote["0"]["PreisEbene"] = "";
+tmp_angebote["0"]["BID"] = "";
+tmp_angebote["0"]["KID"] = "";
+tmp_angebote["0"]["Storno"] = "";
+tmp_angebote["0"]["Angezeigt"] = "";
+tmp_angebote["0"]["Geloescht"] = "";
+tmp_angebote["0"]["AusgabeTag"] = "";
+tmp_angebote["0"]["AusgabeZeit"] = "";
+tmp_angebote["0"]["MKatID"] = "1409";
+tmp_angebote["0"]["AnzWhBestellt"] = "";
+tmp_angebote["0"]["Bestellt"] = "";
+tmp_angebote["0"]["Sonderfrist"] = "";
+tmp_angebote["0"]["ArtKatID"] = "10";
+tmp_angebote["0"]["StandardVorbestellt"] = "";
+tmp_angebote["0"]["InfoAngebot"] = "";
+tmp_angebote["0"]["Symbolik"] = "0";
+tmp_angebote["0"]["Kontigent"] = "-1";
+tmp_angebote["0"]["AnzBestellt"] = "17";
+tmp_angebote["0"]["KeineBestellung"] = "";
+tmp_angebote["0"]["AusgabeIdx"] = "0";
+tmp_angebote["0"]["KeineBestellungSpalte"] = "";
+tmp_angebote["1"] = new Array();
+tmp_angebote["1"]["AngebotID"] = "7070";
+tmp_angebote["1"]["Datum"] = "2019-07-01";
+tmp_angebote["1"]["Spalte"] = "2";
+tmp_angebote["1"]["ArtNr"] = "102";
+tmp_angebote["1"]["ArtBez"] = "Falafel mit Reis";
+tmp_angebote["1"]["bon"] = "Men� 2";
+tmp_angebote["1"]["ArtPreis"] = "3.99";
+tmp_angebote["1"]["PreisEbene"] = "";
+tmp_angebote["1"]["BID"] = "";
+tmp_angebote["1"]["KID"] = "";
+tmp_angebote["1"]["Storno"] = "";
+tmp_angebote["1"]["Angezeigt"] = "";
+tmp_angebote["1"]["Geloescht"] = "";
+tmp_angebote["1"]["AusgabeTag"] = "";
+tmp_angebote["1"]["AusgabeZeit"] = "";
+tmp_angebote["1"]["MKatID"] = "1410";
+tmp_angebote["1"]["AnzWhBestellt"] = "";
+tmp_angebote["1"]["Bestellt"] = "";
+tmp_angebote["1"]["Sonderfrist"] = "";
+tmp_angebote["1"]["ArtKatID"] = "10";
+tmp_angebote["1"]["StandardVorbestellt"] = "";
+tmp_angebote["1"]["InfoAngebot"] = "";
+tmp_angebote["1"]["Symbolik"] = "0";
+tmp_angebote["1"]["Kontigent"] = "-1";
+tmp_angebote["1"]["AnzBestellt"] = "4";
+tmp_angebote["1"]["KeineBestellung"] = "";
+tmp_angebote["1"]["AusgabeIdx"] = "0";
+tmp_angebote["1"]["KeineBestellungSpalte"] = "";
+tmp_angebote["2"] = new Array();
+tmp_angebote["2"]["AngebotID"] = "7075";
+tmp_angebote["2"]["Datum"] = "2019-07-01";
+tmp_angebote["2"]["Spalte"] = "3";
+tmp_angebote["2"]["ArtNr"] = "103";
+tmp_angebote["2"]["ArtBez"] = "Beilagensalat<br>Obst/Dessert";
+tmp_angebote["2"]["bon"] = "Veg. Gerich";
+tmp_angebote["2"]["ArtPreis"] = "0.";
+tmp_angebote["2"]["PreisEbene"] = "";
+tmp_angebote["2"]["BID"] = "";
+tmp_angebote["2"]["KID"] = "";
+tmp_angebote["2"]["Storno"] = "";
+tmp_angebote["2"]["Angezeigt"] = "";
+tmp_angebote["2"]["Geloescht"] = "";
+tmp_angebote["2"]["AusgabeTag"] = "";
+tmp_angebote["2"]["AusgabeZeit"] = "";
+tmp_angebote["2"]["MKatID"] = "1411";
+tmp_angebote["2"]["AnzWhBestellt"] = "";
+tmp_angebote["2"]["Bestellt"] = "";
+tmp_angebote["2"]["Sonderfrist"] = "";
+tmp_angebote["2"]["ArtKatID"] = "10";
+tmp_angebote["2"]["StandardVorbestellt"] = "";
+tmp_angebote["2"]["InfoAngebot"] = "1";
+tmp_angebote["2"]["Symbolik"] = "0";
+tmp_angebote["2"]["Kontigent"] = "-1";
+tmp_angebote["2"]["AnzBestellt"] = "";
+tmp_angebote["2"]["KeineBestellung"] = "";
+tmp_angebote["2"]["AusgabeIdx"] = "0";
+tmp_angebote["2"]["KeineBestellungSpalte"] = "";
+tmp_angebote["3"] = new Array();
+tmp_angebote["3"]["AngebotID"] = "7080";
+tmp_angebote["3"]["Datum"] = "2019-07-01";
+tmp_angebote["3"]["Spalte"] = "4";
+tmp_angebote["3"]["ArtNr"] = "104";
+tmp_angebote["3"]["ArtBez"] = "";
+tmp_angebote["3"]["bon"] = "Salatteller";
+tmp_angebote["3"]["ArtPreis"] = "0.";
+tmp_angebote["3"]["PreisEbene"] = "";
+tmp_angebote["3"]["BID"] = "";
+tmp_angebote["3"]["KID"] = "";
+tmp_angebote["3"]["Storno"] = "";
+tmp_angebote["3"]["Angezeigt"] = "";
+tmp_angebote["3"]["Geloescht"] = "";
+tmp_angebote["3"]["AusgabeTag"] = "";
+tmp_angebote["3"]["AusgabeZeit"] = "";
+tmp_angebote["3"]["MKatID"] = "1412";
+tmp_angebote["3"]["AnzWhBestellt"] = "";
+tmp_angebote["3"]["Bestellt"] = "";
+tmp_angebote["3"]["Sonderfrist"] = "";
+tmp_angebote["3"]["ArtKatID"] = "10";
+tmp_angebote["3"]["StandardVorbestellt"] = "";
+tmp_angebote["3"]["InfoAngebot"] = "1";
+tmp_angebote["3"]["Symbolik"] = "0";
+tmp_angebote["3"]["Kontigent"] = "-1";
+tmp_angebote["3"]["AnzBestellt"] = "";
+tmp_angebote["3"]["KeineBestellung"] = "";
+tmp_angebote["3"]["AusgabeIdx"] = "0";
+tmp_angebote["3"]["KeineBestellungSpalte"] = "";
+tmp_angebote["4"] = new Array();
+tmp_angebote["4"]["AngebotID"] = "7066";
+tmp_angebote["4"]["Datum"] = "2019-07-02";
+tmp_angebote["4"]["Spalte"] = "1";
+tmp_angebote["4"]["ArtNr"] = "101";
+tmp_angebote["4"]["ArtBez"] = "Spaghetti Bolognese";
+tmp_angebote["4"]["bon"] = "Men� 1";
+tmp_angebote["4"]["ArtPreis"] = "3.99";
+tmp_angebote["4"]["PreisEbene"] = "";
+tmp_angebote["4"]["BID"] = "";
+tmp_angebote["4"]["KID"] = "";
+tmp_angebote["4"]["Storno"] = "";
+tmp_angebote["4"]["Angezeigt"] = "";
+tmp_angebote["4"]["Geloescht"] = "";
+tmp_angebote["4"]["AusgabeTag"] = "";
+tmp_angebote["4"]["AusgabeZeit"] = "";
+tmp_angebote["4"]["MKatID"] = "1409";
+tmp_angebote["4"]["AnzWhBestellt"] = "";
+tmp_angebote["4"]["Bestellt"] = "";
+tmp_angebote["4"]["Sonderfrist"] = "";
+tmp_angebote["4"]["ArtKatID"] = "10";
+tmp_angebote["4"]["StandardVorbestellt"] = "";
+tmp_angebote["4"]["InfoAngebot"] = "";
+tmp_angebote["4"]["Symbolik"] = "0";
+tmp_angebote["4"]["Kontigent"] = "-1";
+tmp_angebote["4"]["AnzBestellt"] = "16";
+tmp_angebote["4"]["KeineBestellung"] = "";
+tmp_angebote["4"]["AusgabeIdx"] = "0";
+tmp_angebote["4"]["KeineBestellungSpalte"] = "";
+tmp_angebote["5"] = new Array();
+tmp_angebote["5"]["AngebotID"] = "7071";
+tmp_angebote["5"]["Datum"] = "2019-07-02";
+tmp_angebote["5"]["Spalte"] = "2";
+tmp_angebote["5"]["ArtNr"] = "102";
+tmp_angebote["5"]["ArtBez"] = "gebackener Schafsk&auml;se mit Ofengem&uuml;se und Rosmarin-Kartoffeln";
+tmp_angebote["5"]["bon"] = "Men� 2";
+tmp_angebote["5"]["ArtPreis"] = "3.99";
+tmp_angebote["5"]["PreisEbene"] = "";
+tmp_angebote["5"]["BID"] = "";
+tmp_angebote["5"]["KID"] = "";
+tmp_angebote["5"]["Storno"] = "";
+tmp_angebote["5"]["Angezeigt"] = "";
+tmp_angebote["5"]["Geloescht"] = "";
+tmp_angebote["5"]["AusgabeTag"] = "";
+tmp_angebote["5"]["AusgabeZeit"] = "";
+tmp_angebote["5"]["MKatID"] = "1410";
+tmp_angebote["5"]["AnzWhBestellt"] = "";
+tmp_angebote["5"]["Bestellt"] = "";
+tmp_angebote["5"]["Sonderfrist"] = "";
+tmp_angebote["5"]["ArtKatID"] = "10";
+tmp_angebote["5"]["StandardVorbestellt"] = "";
+tmp_angebote["5"]["InfoAngebot"] = "";
+tmp_angebote["5"]["Symbolik"] = "0";
+tmp_angebote["5"]["Kontigent"] = "-1";
+tmp_angebote["5"]["AnzBestellt"] = "4";
+tmp_angebote["5"]["KeineBestellung"] = "";
+tmp_angebote["5"]["AusgabeIdx"] = "0";
+tmp_angebote["5"]["KeineBestellungSpalte"] = "";
+tmp_angebote["6"] = new Array();
+tmp_angebote["6"]["AngebotID"] = "7076";
+tmp_angebote["6"]["Datum"] = "2019-07-02";
+tmp_angebote["6"]["Spalte"] = "3";
+tmp_angebote["6"]["ArtNr"] = "103";
+tmp_angebote["6"]["ArtBez"] = "Beilagensalat<br>Obst/Dessert";
+tmp_angebote["6"]["bon"] = "Veg. Gerich";
+tmp_angebote["6"]["ArtPreis"] = "0.";
+tmp_angebote["6"]["PreisEbene"] = "";
+tmp_angebote["6"]["BID"] = "";
+tmp_angebote["6"]["KID"] = "";
+tmp_angebote["6"]["Storno"] = "";
+tmp_angebote["6"]["Angezeigt"] = "";
+tmp_angebote["6"]["Geloescht"] = "";
+tmp_angebote["6"]["AusgabeTag"] = "";
+tmp_angebote["6"]["AusgabeZeit"] = "";
+tmp_angebote["6"]["MKatID"] = "1411";
+tmp_angebote["6"]["AnzWhBestellt"] = "";
+tmp_angebote["6"]["Bestellt"] = "";
+tmp_angebote["6"]["Sonderfrist"] = "";
+tmp_angebote["6"]["ArtKatID"] = "10";
+tmp_angebote["6"]["StandardVorbestellt"] = "";
+tmp_angebote["6"]["InfoAngebot"] = "1";
+tmp_angebote["6"]["Symbolik"] = "0";
+tmp_angebote["6"]["Kontigent"] = "-1";
+tmp_angebote["6"]["AnzBestellt"] = "";
+tmp_angebote["6"]["KeineBestellung"] = "";
+tmp_angebote["6"]["AusgabeIdx"] = "0";
+tmp_angebote["6"]["KeineBestellungSpalte"] = "";
+tmp_angebote["7"] = new Array();
+tmp_angebote["7"]["AngebotID"] = "7081";
+tmp_angebote["7"]["Datum"] = "2019-07-02";
+tmp_angebote["7"]["Spalte"] = "4";
+tmp_angebote["7"]["ArtNr"] = "104";
+tmp_angebote["7"]["ArtBez"] = "";
+tmp_angebote["7"]["bon"] = "Salatteller";
+tmp_angebote["7"]["ArtPreis"] = "0.";
+tmp_angebote["7"]["PreisEbene"] = "";
+tmp_angebote["7"]["BID"] = "";
+tmp_angebote["7"]["KID"] = "";
+tmp_angebote["7"]["Storno"] = "";
+tmp_angebote["7"]["Angezeigt"] = "";
+tmp_angebote["7"]["Geloescht"] = "";
+tmp_angebote["7"]["AusgabeTag"] = "";
+tmp_angebote["7"]["AusgabeZeit"] = "";
+tmp_angebote["7"]["MKatID"] = "1412";
+tmp_angebote["7"]["AnzWhBestellt"] = "";
+tmp_angebote["7"]["Bestellt"] = "";
+tmp_angebote["7"]["Sonderfrist"] = "";
+tmp_angebote["7"]["ArtKatID"] = "10";
+tmp_angebote["7"]["StandardVorbestellt"] = "";
+tmp_angebote["7"]["InfoAngebot"] = "1";
+tmp_angebote["7"]["Symbolik"] = "0";
+tmp_angebote["7"]["Kontigent"] = "-1";
+tmp_angebote["7"]["AnzBestellt"] = "";
+tmp_angebote["7"]["KeineBestellung"] = "";
+tmp_angebote["7"]["AusgabeIdx"] = "0";
+tmp_angebote["7"]["KeineBestellungSpalte"] = "";
+tmp_angebote["8"] = new Array();
+tmp_angebote["8"]["AngebotID"] = "7067";
+tmp_angebote["8"]["Datum"] = "2019-07-03";
+tmp_angebote["8"]["Spalte"] = "1";
+tmp_angebote["8"]["ArtNr"] = "101";
+tmp_angebote["8"]["ArtBez"] = "Kartoffelsalat mit Bratwurst";
+tmp_angebote["8"]["bon"] = "Men� 1";
+tmp_angebote["8"]["ArtPreis"] = "3.99";
+tmp_angebote["8"]["PreisEbene"] = "";
+tmp_angebote["8"]["BID"] = "";
+tmp_angebote["8"]["KID"] = "";
+tmp_angebote["8"]["Storno"] = "";
+tmp_angebote["8"]["Angezeigt"] = "";
+tmp_angebote["8"]["Geloescht"] = "";
+tmp_angebote["8"]["AusgabeTag"] = "";
+tmp_angebote["8"]["AusgabeZeit"] = "";
+tmp_angebote["8"]["MKatID"] = "1409";
+tmp_angebote["8"]["AnzWhBestellt"] = "";
+tmp_angebote["8"]["Bestellt"] = "";
+tmp_angebote["8"]["Sonderfrist"] = "";
+tmp_angebote["8"]["ArtKatID"] = "10";
+tmp_angebote["8"]["StandardVorbestellt"] = "";
+tmp_angebote["8"]["InfoAngebot"] = "";
+tmp_angebote["8"]["Symbolik"] = "0";
+tmp_angebote["8"]["Kontigent"] = "-1";
+tmp_angebote["8"]["AnzBestellt"] = "15";
+tmp_angebote["8"]["KeineBestellung"] = "";
+tmp_angebote["8"]["AusgabeIdx"] = "0";
+tmp_angebote["8"]["KeineBestellungSpalte"] = "";
+tmp_angebote["9"] = new Array();
+tmp_angebote["9"]["AngebotID"] = "7072";
+tmp_angebote["9"]["Datum"] = "2019-07-03";
+tmp_angebote["9"]["Spalte"] = "2";
+tmp_angebote["9"]["ArtNr"] = "102";
+tmp_angebote["9"]["ArtBez"] = "R&uuml;hrei mit Spinat und P&uuml;ree";
+tmp_angebote["9"]["bon"] = "Men� 2";
+tmp_angebote["9"]["ArtPreis"] = "3.99";
+tmp_angebote["9"]["PreisEbene"] = "";
+tmp_angebote["9"]["BID"] = "";
+tmp_angebote["9"]["KID"] = "";
+tmp_angebote["9"]["Storno"] = "";
+tmp_angebote["9"]["Angezeigt"] = "";
+tmp_angebote["9"]["Geloescht"] = "";
+tmp_angebote["9"]["AusgabeTag"] = "";
+tmp_angebote["9"]["AusgabeZeit"] = "";
+tmp_angebote["9"]["MKatID"] = "1410";
+tmp_angebote["9"]["AnzWhBestellt"] = "";
+tmp_angebote["9"]["Bestellt"] = "";
+tmp_angebote["9"]["Sonderfrist"] = "";
+tmp_angebote["9"]["ArtKatID"] = "10";
+tmp_angebote["9"]["StandardVorbestellt"] = "";
+tmp_angebote["9"]["InfoAngebot"] = "";
+tmp_angebote["9"]["Symbolik"] = "0";
+tmp_angebote["9"]["Kontigent"] = "-1";
+tmp_angebote["9"]["AnzBestellt"] = "14";
+tmp_angebote["9"]["KeineBestellung"] = "";
+tmp_angebote["9"]["AusgabeIdx"] = "0";
+tmp_angebote["9"]["KeineBestellungSpalte"] = "";
+tmp_angebote["10"] = new Array();
+tmp_angebote["10"]["AngebotID"] = "7077";
+tmp_angebote["10"]["Datum"] = "2019-07-03";
+tmp_angebote["10"]["Spalte"] = "3";
+tmp_angebote["10"]["ArtNr"] = "103";
+tmp_angebote["10"]["ArtBez"] = "Beilagensalat<br>Obst/Dessert";
+tmp_angebote["10"]["bon"] = "Veg. Gerich";
+tmp_angebote["10"]["ArtPreis"] = "0.";
+tmp_angebote["10"]["PreisEbene"] = "";
+tmp_angebote["10"]["BID"] = "";
+tmp_angebote["10"]["KID"] = "";
+tmp_angebote["10"]["Storno"] = "";
+tmp_angebote["10"]["Angezeigt"] = "";
+tmp_angebote["10"]["Geloescht"] = "";
+tmp_angebote["10"]["AusgabeTag"] = "";
+tmp_angebote["10"]["AusgabeZeit"] = "";
+tmp_angebote["10"]["MKatID"] = "1411";
+tmp_angebote["10"]["AnzWhBestellt"] = "";
+tmp_angebote["10"]["Bestellt"] = "";
+tmp_angebote["10"]["Sonderfrist"] = "";
+tmp_angebote["10"]["ArtKatID"] = "10";
+tmp_angebote["10"]["StandardVorbestellt"] = "";
+tmp_angebote["10"]["InfoAngebot"] = "1";
+tmp_angebote["10"]["Symbolik"] = "0";
+tmp_angebote["10"]["Kontigent"] = "-1";
+tmp_angebote["10"]["AnzBestellt"] = "";
+tmp_angebote["10"]["KeineBestellung"] = "";
+tmp_angebote["10"]["AusgabeIdx"] = "0";
+tmp_angebote["10"]["KeineBestellungSpalte"] = "";
+tmp_angebote["11"] = new Array();
+tmp_angebote["11"]["AngebotID"] = "7082";
+tmp_angebote["11"]["Datum"] = "2019-07-03";
+tmp_angebote["11"]["Spalte"] = "4";
+tmp_angebote["11"]["ArtNr"] = "104";
+tmp_angebote["11"]["ArtBez"] = "";
+tmp_angebote["11"]["bon"] = "Salatteller";
+tmp_angebote["11"]["ArtPreis"] = "0.";
+tmp_angebote["11"]["PreisEbene"] = "";
+tmp_angebote["11"]["BID"] = "";
+tmp_angebote["11"]["KID"] = "";
+tmp_angebote["11"]["Storno"] = "";
+tmp_angebote["11"]["Angezeigt"] = "";
+tmp_angebote["11"]["Geloescht"] = "";
+tmp_angebote["11"]["AusgabeTag"] = "";
+tmp_angebote["11"]["AusgabeZeit"] = "";
+tmp_angebote["11"]["MKatID"] = "1412";
+tmp_angebote["11"]["AnzWhBestellt"] = "";
+tmp_angebote["11"]["Bestellt"] = "";
+tmp_angebote["11"]["Sonderfrist"] = "";
+tmp_angebote["11"]["ArtKatID"] = "10";
+tmp_angebote["11"]["StandardVorbestellt"] = "";
+tmp_angebote["11"]["InfoAngebot"] = "1";
+tmp_angebote["11"]["Symbolik"] = "0";
+tmp_angebote["11"]["Kontigent"] = "-1";
+tmp_angebote["11"]["AnzBestellt"] = "";
+tmp_angebote["11"]["KeineBestellung"] = "";
+tmp_angebote["11"]["AusgabeIdx"] = "0";
+tmp_angebote["11"]["KeineBestellungSpalte"] = "";
+tmp_angebote["12"] = new Array();
+tmp_angebote["12"]["AngebotID"] = "7068";
+tmp_angebote["12"]["Datum"] = "2019-07-04";
+tmp_angebote["12"]["Spalte"] = "1";
+tmp_angebote["12"]["ArtNr"] = "101";
+tmp_angebote["12"]["ArtBez"] = "Pizza Salami";
+tmp_angebote["12"]["bon"] = "Men� 1";
+tmp_angebote["12"]["ArtPreis"] = "3.99";
+tmp_angebote["12"]["PreisEbene"] = "";
+tmp_angebote["12"]["BID"] = "";
+tmp_angebote["12"]["KID"] = "";
+tmp_angebote["12"]["Storno"] = "";
+tmp_angebote["12"]["Angezeigt"] = "";
+tmp_angebote["12"]["Geloescht"] = "";
+tmp_angebote["12"]["AusgabeTag"] = "";
+tmp_angebote["12"]["AusgabeZeit"] = "";
+tmp_angebote["12"]["MKatID"] = "1409";
+tmp_angebote["12"]["AnzWhBestellt"] = "";
+tmp_angebote["12"]["Bestellt"] = "";
+tmp_angebote["12"]["Sonderfrist"] = "";
+tmp_angebote["12"]["ArtKatID"] = "10";
+tmp_angebote["12"]["StandardVorbestellt"] = "";
+tmp_angebote["12"]["InfoAngebot"] = "";
+tmp_angebote["12"]["Symbolik"] = "0";
+tmp_angebote["12"]["Kontigent"] = "-1";
+tmp_angebote["12"]["AnzBestellt"] = "6";
+tmp_angebote["12"]["KeineBestellung"] = "";
+tmp_angebote["12"]["AusgabeIdx"] = "0";
+tmp_angebote["12"]["KeineBestellungSpalte"] = "";
+tmp_angebote["13"] = new Array();
+tmp_angebote["13"]["AngebotID"] = "7073";
+tmp_angebote["13"]["Datum"] = "2019-07-04";
+tmp_angebote["13"]["Spalte"] = "2";
+tmp_angebote["13"]["ArtNr"] = "102";
+tmp_angebote["13"]["ArtBez"] = "Pizza Margharita";
+tmp_angebote["13"]["bon"] = "Men� 2";
+tmp_angebote["13"]["ArtPreis"] = "3.99";
+tmp_angebote["13"]["PreisEbene"] = "";
+tmp_angebote["13"]["BID"] = "";
+tmp_angebote["13"]["KID"] = "";
+tmp_angebote["13"]["Storno"] = "";
+tmp_angebote["13"]["Angezeigt"] = "";
+tmp_angebote["13"]["Geloescht"] = "";
+tmp_angebote["13"]["AusgabeTag"] = "";
+tmp_angebote["13"]["AusgabeZeit"] = "";
+tmp_angebote["13"]["MKatID"] = "1410";
+tmp_angebote["13"]["AnzWhBestellt"] = "";
+tmp_angebote["13"]["Bestellt"] = "";
+tmp_angebote["13"]["Sonderfrist"] = "";
+tmp_angebote["13"]["ArtKatID"] = "10";
+tmp_angebote["13"]["StandardVorbestellt"] = "";
+tmp_angebote["13"]["InfoAngebot"] = "";
+tmp_angebote["13"]["Symbolik"] = "0";
+tmp_angebote["13"]["Kontigent"] = "-1";
+tmp_angebote["13"]["AnzBestellt"] = "14";
+tmp_angebote["13"]["KeineBestellung"] = "";
+tmp_angebote["13"]["AusgabeIdx"] = "0";
+tmp_angebote["13"]["KeineBestellungSpalte"] = "";
+tmp_angebote["14"] = new Array();
+tmp_angebote["14"]["AngebotID"] = "7078";
+tmp_angebote["14"]["Datum"] = "2019-07-04";
+tmp_angebote["14"]["Spalte"] = "3";
+tmp_angebote["14"]["ArtNr"] = "103";
+tmp_angebote["14"]["ArtBez"] = "Beilagensalat<br>Obst/Dessert";
+tmp_angebote["14"]["bon"] = "Veg. Gerich";
+tmp_angebote["14"]["ArtPreis"] = "0.";
+tmp_angebote["14"]["PreisEbene"] = "";
+tmp_angebote["14"]["BID"] = "";
+tmp_angebote["14"]["KID"] = "";
+tmp_angebote["14"]["Storno"] = "";
+tmp_angebote["14"]["Angezeigt"] = "";
+tmp_angebote["14"]["Geloescht"] = "";
+tmp_angebote["14"]["AusgabeTag"] = "";
+tmp_angebote["14"]["AusgabeZeit"] = "";
+tmp_angebote["14"]["MKatID"] = "1411";
+tmp_angebote["14"]["AnzWhBestellt"] = "";
+tmp_angebote["14"]["Bestellt"] = "";
+tmp_angebote["14"]["Sonderfrist"] = "";
+tmp_angebote["14"]["ArtKatID"] = "10";
+tmp_angebote["14"]["StandardVorbestellt"] = "";
+tmp_angebote["14"]["InfoAngebot"] = "1";
+tmp_angebote["14"]["Symbolik"] = "0";
+tmp_angebote["14"]["Kontigent"] = "-1";
+tmp_angebote["14"]["AnzBestellt"] = "";
+tmp_angebote["14"]["KeineBestellung"] = "";
+tmp_angebote["14"]["AusgabeIdx"] = "0";
+tmp_angebote["14"]["KeineBestellungSpalte"] = "";
+tmp_angebote["15"] = new Array();
+tmp_angebote["15"]["AngebotID"] = "7083";
+tmp_angebote["15"]["Datum"] = "2019-07-04";
+tmp_angebote["15"]["Spalte"] = "4";
+tmp_angebote["15"]["ArtNr"] = "104";
+tmp_angebote["15"]["ArtBez"] = "Moussaka <br><br>(gr. Gem&uuml;se-Hackfleisch-Auflauf mit Schafsk&auml;se)<br>glutenfrei";
+tmp_angebote["15"]["bon"] = "Salatteller";
+tmp_angebote["15"]["ArtPreis"] = "3.99";
+tmp_angebote["15"]["PreisEbene"] = "";
+tmp_angebote["15"]["BID"] = "";
+tmp_angebote["15"]["KID"] = "";
+tmp_angebote["15"]["Storno"] = "";
+tmp_angebote["15"]["Angezeigt"] = "";
+tmp_angebote["15"]["Geloescht"] = "";
+tmp_angebote["15"]["AusgabeTag"] = "";
+tmp_angebote["15"]["AusgabeZeit"] = "";
+tmp_angebote["15"]["MKatID"] = "1412";
+tmp_angebote["15"]["AnzWhBestellt"] = "";
+tmp_angebote["15"]["Bestellt"] = "";
+tmp_angebote["15"]["Sonderfrist"] = "";
+tmp_angebote["15"]["ArtKatID"] = "10";
+tmp_angebote["15"]["StandardVorbestellt"] = "";
+tmp_angebote["15"]["InfoAngebot"] = "1";
+tmp_angebote["15"]["Symbolik"] = "0";
+tmp_angebote["15"]["Kontigent"] = "-1";
+tmp_angebote["15"]["AnzBestellt"] = "";
+tmp_angebote["15"]["KeineBestellung"] = "";
+tmp_angebote["15"]["AusgabeIdx"] = "0";
+tmp_angebote["15"]["KeineBestellungSpalte"] = "";
+tmp_angebote["16"] = new Array();
+tmp_angebote["16"]["AngebotID"] = "7069";
+tmp_angebote["16"]["Datum"] = "2019-07-05";
+tmp_angebote["16"]["Spalte"] = "1";
+tmp_angebote["16"]["ArtNr"] = "101";
+tmp_angebote["16"]["ArtBez"] = "";
+tmp_angebote["16"]["bon"] = "Men� 1";
+tmp_angebote["16"]["ArtPreis"] = "3.";
+tmp_angebote["16"]["PreisEbene"] = "";
+tmp_angebote["16"]["BID"] = "";
+tmp_angebote["16"]["KID"] = "";
+tmp_angebote["16"]["Storno"] = "";
+tmp_angebote["16"]["Angezeigt"] = "";
+tmp_angebote["16"]["Geloescht"] = "";
+tmp_angebote["16"]["AusgabeTag"] = "";
+tmp_angebote["16"]["AusgabeZeit"] = "";
+tmp_angebote["16"]["MKatID"] = "1409";
+tmp_angebote["16"]["AnzWhBestellt"] = "";
+tmp_angebote["16"]["Bestellt"] = "";
+tmp_angebote["16"]["Sonderfrist"] = "";
+tmp_angebote["16"]["ArtKatID"] = "10";
+tmp_angebote["16"]["StandardVorbestellt"] = "";
+tmp_angebote["16"]["InfoAngebot"] = "1";
+tmp_angebote["16"]["Symbolik"] = "0";
+tmp_angebote["16"]["Kontigent"] = "-1";
+tmp_angebote["16"]["AnzBestellt"] = "";
+tmp_angebote["16"]["KeineBestellung"] = "";
+tmp_angebote["16"]["AusgabeIdx"] = "0";
+tmp_angebote["16"]["KeineBestellungSpalte"] = "";
+tmp_angebote["17"] = new Array();
+tmp_angebote["17"]["AngebotID"] = "7074";
+tmp_angebote["17"]["Datum"] = "2019-07-05";
+tmp_angebote["17"]["Spalte"] = "2";
+tmp_angebote["17"]["ArtNr"] = "102";
+tmp_angebote["17"]["ArtBez"] = "";
+tmp_angebote["17"]["bon"] = "Men� 2";
+tmp_angebote["17"]["ArtPreis"] = "3.";
+tmp_angebote["17"]["PreisEbene"] = "";
+tmp_angebote["17"]["BID"] = "";
+tmp_angebote["17"]["KID"] = "";
+tmp_angebote["17"]["Storno"] = "";
+tmp_angebote["17"]["Angezeigt"] = "";
+tmp_angebote["17"]["Geloescht"] = "";
+tmp_angebote["17"]["AusgabeTag"] = "";
+tmp_angebote["17"]["AusgabeZeit"] = "";
+tmp_angebote["17"]["MKatID"] = "1410";
+tmp_angebote["17"]["AnzWhBestellt"] = "";
+tmp_angebote["17"]["Bestellt"] = "";
+tmp_angebote["17"]["Sonderfrist"] = "";
+tmp_angebote["17"]["ArtKatID"] = "10";
+tmp_angebote["17"]["StandardVorbestellt"] = "";
+tmp_angebote["17"]["InfoAngebot"] = "1";
+tmp_angebote["17"]["Symbolik"] = "0";
+tmp_angebote["17"]["Kontigent"] = "-1";
+tmp_angebote["17"]["AnzBestellt"] = "";
+tmp_angebote["17"]["KeineBestellung"] = "";
+tmp_angebote["17"]["AusgabeIdx"] = "0";
+tmp_angebote["17"]["KeineBestellungSpalte"] = "";
+tmp_angebote["18"] = new Array();
+tmp_angebote["18"]["AngebotID"] = "7079";
+tmp_angebote["18"]["Datum"] = "2019-07-05";
+tmp_angebote["18"]["Spalte"] = "3";
+tmp_angebote["18"]["ArtNr"] = "103";
+tmp_angebote["18"]["ArtBez"] = "";
+tmp_angebote["18"]["bon"] = "Veg. Gerich";
+tmp_angebote["18"]["ArtPreis"] = "3.";
+tmp_angebote["18"]["PreisEbene"] = "";
+tmp_angebote["18"]["BID"] = "";
+tmp_angebote["18"]["KID"] = "";
+tmp_angebote["18"]["Storno"] = "";
+tmp_angebote["18"]["Angezeigt"] = "";
+tmp_angebote["18"]["Geloescht"] = "";
+tmp_angebote["18"]["AusgabeTag"] = "";
+tmp_angebote["18"]["AusgabeZeit"] = "";
+tmp_angebote["18"]["MKatID"] = "1411";
+tmp_angebote["18"]["AnzWhBestellt"] = "";
+tmp_angebote["18"]["Bestellt"] = "";
+tmp_angebote["18"]["Sonderfrist"] = "";
+tmp_angebote["18"]["ArtKatID"] = "10";
+tmp_angebote["18"]["StandardVorbestellt"] = "";
+tmp_angebote["18"]["InfoAngebot"] = "1";
+tmp_angebote["18"]["Symbolik"] = "0";
+tmp_angebote["18"]["Kontigent"] = "-1";
+tmp_angebote["18"]["AnzBestellt"] = "";
+tmp_angebote["18"]["KeineBestellung"] = "";
+tmp_angebote["18"]["AusgabeIdx"] = "0";
+tmp_angebote["18"]["KeineBestellungSpalte"] = "";
+tmp_angebote["19"] = new Array();
+tmp_angebote["19"]["AngebotID"] = "7084";
+tmp_angebote["19"]["Datum"] = "2019-07-05";
+tmp_angebote["19"]["Spalte"] = "4";
+tmp_angebote["19"]["ArtNr"] = "104";
+tmp_angebote["19"]["ArtBez"] = "";
+tmp_angebote["19"]["bon"] = "Salatteller";
+tmp_angebote["19"]["ArtPreis"] = "3.";
+tmp_angebote["19"]["PreisEbene"] = "";
+tmp_angebote["19"]["BID"] = "";
+tmp_angebote["19"]["KID"] = "";
+tmp_angebote["19"]["Storno"] = "";
+tmp_angebote["19"]["Angezeigt"] = "";
+tmp_angebote["19"]["Geloescht"] = "";
+tmp_angebote["19"]["AusgabeTag"] = "";
+tmp_angebote["19"]["AusgabeZeit"] = "";
+tmp_angebote["19"]["MKatID"] = "1412";
+tmp_angebote["19"]["AnzWhBestellt"] = "";
+tmp_angebote["19"]["Bestellt"] = "";
+tmp_angebote["19"]["Sonderfrist"] = "";
+tmp_angebote["19"]["ArtKatID"] = "10";
+tmp_angebote["19"]["StandardVorbestellt"] = "";
+tmp_angebote["19"]["InfoAngebot"] = "1";
+tmp_angebote["19"]["Symbolik"] = "0";
+tmp_angebote["19"]["Kontigent"] = "-1";
+tmp_angebote["19"]["AnzBestellt"] = "";
+tmp_angebote["19"]["KeineBestellung"] = "";
+tmp_angebote["19"]["AusgabeIdx"] = "0";
+tmp_angebote["19"]["KeineBestellungSpalte"] = "";
+angebote = new Hashtable();
+angebote.clear();angebote.put(7065,tmp_angebote["0"]);
+angebote.put(7070,tmp_angebote["1"]);
+angebote.put(7075,tmp_angebote["2"]);
+angebote.put(7080,tmp_angebote["3"]);
+angebote.put(7066,tmp_angebote["4"]);
+angebote.put(7071,tmp_angebote["5"]);
+angebote.put(7076,tmp_angebote["6"]);
+angebote.put(7081,tmp_angebote["7"]);
+angebote.put(7067,tmp_angebote["8"]);
+angebote.put(7072,tmp_angebote["9"]);
+angebote.put(7077,tmp_angebote["10"]);
+angebote.put(7082,tmp_angebote["11"]);
+angebote.put(7068,tmp_angebote["12"]);
+angebote.put(7073,tmp_angebote["13"]);
+angebote.put(7078,tmp_angebote["14"]);
+angebote.put(7083,tmp_angebote["15"]);
+angebote.put(7069,tmp_angebote["16"]);
+angebote.put(7074,tmp_angebote["17"]);
+angebote.put(7079,tmp_angebote["18"]);
+angebote.put(7084,tmp_angebote["19"]);
+var tmp_bestKatAnzahl = new Array();
+tmp_bestKatAnzahl["0"] = new Array();
+tmp_bestKatAnzahl["0"]["Key"] = "2019-07-01_10";
+tmp_bestKatAnzahl["0"]["anz"] = "0";
+tmp_bestKatAnzahl["0"]["ArtKatID"] = "10";
+tmp_bestKatAnzahl["0"]["Datum"] = "2019-07-01";
+tmp_bestKatAnzahl["1"] = new Array();
+tmp_bestKatAnzahl["1"]["Key"] = "2019-07-02_10";
+tmp_bestKatAnzahl["1"]["anz"] = "0";
+tmp_bestKatAnzahl["1"]["ArtKatID"] = "10";
+tmp_bestKatAnzahl["1"]["Datum"] = "2019-07-02";
+tmp_bestKatAnzahl["2"] = new Array();
+tmp_bestKatAnzahl["2"]["Key"] = "2019-07-03_10";
+tmp_bestKatAnzahl["2"]["anz"] = "0";
+tmp_bestKatAnzahl["2"]["ArtKatID"] = "10";
+tmp_bestKatAnzahl["2"]["Datum"] = "2019-07-03";
+tmp_bestKatAnzahl["3"] = new Array();
+tmp_bestKatAnzahl["3"]["Key"] = "2019-07-04_10";
+tmp_bestKatAnzahl["3"]["anz"] = "0";
+tmp_bestKatAnzahl["3"]["ArtKatID"] = "10";
+tmp_bestKatAnzahl["3"]["Datum"] = "2019-07-04";
+tmp_bestKatAnzahl["4"] = new Array();
+tmp_bestKatAnzahl["4"]["Key"] = "2019-07-05_10";
+tmp_bestKatAnzahl["4"]["anz"] = "0";
+tmp_bestKatAnzahl["4"]["ArtKatID"] = "10";
+tmp_bestKatAnzahl["4"]["Datum"] = "2019-07-05";
+bestKatAnzahl = new Hashtable();
+bestKatAnzahl.clear();bestKatAnzahl.put('2019-07-01_10',tmp_bestKatAnzahl["0"]);
+bestKatAnzahl.put('2019-07-02_10',tmp_bestKatAnzahl["1"]);
+bestKatAnzahl.put('2019-07-03_10',tmp_bestKatAnzahl["2"]);
+bestKatAnzahl.put('2019-07-04_10',tmp_bestKatAnzahl["3"]);
+bestKatAnzahl.put('2019-07-05_10',tmp_bestKatAnzahl["4"]);
+
+    	function loadAngebotAenderungen() {
+        }
+
+
+    </script>
+    <style>
+
+.defSym1 {float:left;height:20px;width:20px;background-image:url(/mdsymbolic/icon_blank.png);font:small-caps bold 11px verdana, sans-serif;cursor:default;}
+.defSym2 {text-align:center;width:20px;display:block;margin-left:-1px;margin-top:2px;padding-top:0px;cursor:default;}
+
+.angebot_text {
+	text-align: center;
+	vertical-align: middle;
+	font-size: 11px;
+ height:100%;
+ width:100%;
+}
+<!--
+div.angebot_text {
+  position:relative;
+  height:100%;
+  width: 100%;
+  text-align: center;
+  vertical-align: middle;
+}-->
+
+
+    </style>
+</head>
+<body alink="#4D4D4D" bgcolor="#FFF2D9" link="#4D4D4D" onLoad="BeimLaden();closing=true"
+      onUnload="if (closing) {checkNotSaved(true,false);}" text="#000000"
+      vlink="#4D4D4D">
+
+<div id="wrap" style="min-height:600px;min-width:800px">
+    <!--Haupttabelle-->
+    <table align="center" border="0" cellpadding="0" cellspacing="0" style="height:100%;"
+           width="100%">
+        <tr>
+            <td id="seite_left_tdspace" width="5%"></td>
+            <td id="seite_middle_td" style="height:100%" valign="top">
+                <table border="0" cellpadding="0" cellspacing="0" class="Seite" width="100%">
+                    <tr>
+                        <td align="center" colspan="3" id="headertable">
+                            <div id="header">
+                                <script language="javascript">
+function clickOnlyOnceLink(aLink){
+	var link = aLink.href;
+	aLink.disabled = true;
+	aLink.removeAttribute('href');
+	window.location.href = link;
+	return true;
+}
+
+
+                                </script>
+                                <div id="head_left" style="background-image: none;"></div>
+                                <div id="head_left2" style="background-image: none;"></div>
+                                <div id="head_right" style="background-image: none;">
+                                </div>
+                                <div id="head_mid">
+<span class="mainheader">
+Men&uuml;dispo                            &nbsp;<i>-ONLINE-</i>
+</span>
+                                </div>
+
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!--MainMenue-->
+                    <tr>
+                        <td class="MainMenue" colspan="3">
+                            <table border="0" width="100%">
+                                <tr>
+                                    <td align="left">
+                                        <b>::&nbsp;<a href="#"
+                                                      onClick='formular.GoToPage.value=1;closing=false;clickOnlyOnceLink(this);saveBestellungen(true);return false;'
+                                                      ondblclick='clickOnlyOnceLink(this);'>STARTSEITE</a></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>::&nbsp;<font
+                                            class="aktmainlink">MEN&Uuml;PLAN</font></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>::&nbsp;<a
+                                            href="#"
+                                            onClick='formular.GoToPage.value=3;closing=false;clickOnlyOnceLink(this);saveBestellungen(true);return false;'
+                                            ondblclick='clickOnlyOnceLink(this);'>VERZEHRHISTORIE</a></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>::&nbsp;<a
+                                            href="#"
+                                            onClick='formular.GoToPage.value=4;closing=false;clickOnlyOnceLink(this);saveBestellungen(true);return false;'
+                                            ondblclick='clickOnlyOnceLink(this);'>PASSWORT &Auml;NDERN</a></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>::&nbsp;<a
+                                            href="#"
+                                            onClick='formular.GoToPage.value=5;closing=false;clickOnlyOnceLink(this);saveBestellungen(true);return false;'
+                                            ondblclick='clickOnlyOnceLink(this);'>EINSTELLUNGEN</a></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    </td>
+                                    <td align="right"><b>::&nbsp;<a href="#"
+                                                                    onClick='formular.GoToPage.value=0;closing=false;clickOnlyOnceLink(this);return checkNotSaved(false,true)'
+                                                                    ondblclick='clickOnlyOnceLink(this);'>LOGOUT</a></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <!--MainMenue ENDE-->
+                    <tr>
+                        <td id="mptab_tdspace_left"></td>
+                        <td id="mptab_cell" style="height:100%;right:0px;" valign="top">
+
+                            <!--Seiteninhalt-->
+
+                            <table border="0" id="MenuePlanTabelle"
+                                   style="height:100%;visible:hidden;"
+                                   width="100%">
+                                <tr id="mpspaltenrow" style="height:16%">
+                                    <td align="center" class="MPWeekNavi">
+                                        <div id="MPWeekNavi">
+
+                                            <img class="MPWeekNavi" height="1" src="trans.gif">
+                                            <table border="0" cellpadding="0" cellspacing="0"
+                                                   width="90%">
+                                                <tr>
+                                                    <td colspan="3">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td align="right" width="50%">
+                                                    </td>
+                                                    <td><img height="30" hspace="10"
+                                                             src="calendarico.gif" vspace="5"
+                                                             width="30">
+                                                    </td>
+                                                    <td align="left" width="50%">
+                                                        <div class="button_calvor"><input
+                                                                id="WVor" name="WVor"
+                                                                onClick="formular.WID.value=eval(formular.WID.value)+1;;javascript:formular.HASH.value='3344769a51b8b1a7c80566bff4d2a9e8';formular.Richtung.value=1;formular.Return.value=-1;saveBestellungen(true);"
+                                                                style="width:50px;height:30px"
+                                                                type="Button"
+                                                                value="&nbsp;&gt;&gt;&nbsp;">
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </td>
+                                    <td axis="spalte_1" class="MPSpalten" id="MKatID_1409"
+                                        width="25%">Men&uuml; 1
+                                    </td>
+                                    <td axis="spalte_2" class="MPSpalten" id="MKatID_1410"
+                                        width="25%">Men&uuml; 2
+                                    </td>
+                                    <td axis="spalte_3" class="MPSpalten" id="MKatID_1411"
+                                        width="25%">Beilagen
+                                    </td>
+                                    <td axis="spalte_4" class="MPSpalten" id="MKatID_1412"
+                                        width="25%">Snack
+                                    </td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr id="mpdatum_20190701" style="height:16%">
+                                    <td class="MPDatum"><b>01.07.2019</b><br>Montag</td>
+                                    <td axis="spalte_1" class="angebot_noedit" id="ang_7065"
+                                        onClick="showErrMsg('errBestellung','');" width="25%">
+                                        <table height="100%" style="width:100%;height:100%"
+                                               width="100%">
+                                            <tr>
+                                                <td class="angebot_text" colspan="2" height="100%">
+                                                    Lahmacun
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="bottom">
+                                                    <div class="angebot_preis">3,99 &euro;</div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td axis="spalte_2" class="angebot_noedit" id="ang_7070"
+                                        onClick="showErrMsg('errBestellung','');" width="25%">
+                                        <table height="100%" style="width:100%;height:100%"
+                                               width="100%">
+                                            <tr>
+                                                <td class="angebot_text" colspan="2" height="100%">
+                                                    Falafel mit Reis
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="bottom">
+                                                    <div class="angebot_preis">3,99 &euro;</div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td axis="spalte_3" class="angebot_infoangebot" id="ang_7075"
+                                        onClick="return false;" width="25%">
+                                        <table height="100%" style="width:100%;height:100%"
+                                               width="100%">
+                                            <tr>
+                                                <td class="angebot_text" colspan="2" height="100%">
+                                                    Beilagensalat<br>Obst/Dessert
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="bottom">
+                                                    <div class="angebot_preis"></div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td axis="spalte_4" class="angebot_infoangebot" id="ang_7080"
+                                        onClick="return false;" width="25%">
+                                        <table height="100%" style="width:100%;height:100%"
+                                               width="100%">
+                                            <tr>
+                                                <td class="angebot_text" colspan="2"
+                                                    height="100%"></td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="bottom">
+                                                    <div class="angebot_preis"></div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr id="mpdatum_20190702" style="height:16%">
+                                    <td class="MPDatum"><b>02.07.2019</b><br>Dienstag</td>
+                                    <td axis="spalte_1" class="angebot_noedit" id="ang_7066"
+                                        onClick="showErrMsg('errBestellung','');" width="25%">
+                                        <table height="100%" style="width:100%;height:100%"
+                                               width="100%">
+                                            <tr>
+                                                <td class="angebot_text" colspan="2" height="100%">
+                                                    Spaghetti Bolognese
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="bottom">
+                                                    <div class="angebot_preis">3,99 &euro;</div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td axis="spalte_2" class="angebot_noedit" id="ang_7071"
+                                        onClick="showErrMsg('errBestellung','');" width="25%">
+                                        <table height="100%" style="width:100%;height:100%"
+                                               width="100%">
+                                            <tr>
+                                                <td class="angebot_text" colspan="2" height="100%">
+                                                    gebackener Schafsk&auml;se mit Ofengem&uuml;se
+                                                    und Rosmarin-Kartoffeln
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="bottom">
+                                                    <div class="angebot_preis">3,99 &euro;</div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td axis="spalte_3" class="angebot_infoangebot" id="ang_7076"
+                                        onClick="return false;" width="25%">
+                                        <table height="100%" style="width:100%;height:100%"
+                                               width="100%">
+                                            <tr>
+                                                <td class="angebot_text" colspan="2" height="100%">
+                                                    Beilagensalat<br>Obst/Dessert
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="bottom">
+                                                    <div class="angebot_preis"></div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td axis="spalte_4" class="angebot_infoangebot" id="ang_7081"
+                                        onClick="return false;" width="25%">
+                                        <table height="100%" style="width:100%;height:100%"
+                                               width="100%">
+                                            <tr>
+                                                <td class="angebot_text" colspan="2"
+                                                    height="100%"></td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="bottom">
+                                                    <div class="angebot_preis"></div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr id="mpdatum_20190703" style="height:16%">
+                                    <td class="MPDatum"><b>03.07.2019</b><br>Mittwoch</td>
+                                    <td axis="spalte_1" class="angebot_noedit" id="ang_7067"
+                                        onClick="showErrMsg('errBestellung','');" width="25%">
+                                        <table height="100%" style="width:100%;height:100%"
+                                               width="100%">
+                                            <tr>
+                                                <td class="angebot_text" colspan="2" height="100%">
+                                                    Kartoffelsalat mit Bratwurst
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="bottom">
+                                                    <div class="angebot_preis">3,99 &euro;</div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td axis="spalte_2" class="angebot_noedit" id="ang_7072"
+                                        onClick="showErrMsg('errBestellung','');" width="25%">
+                                        <table height="100%" style="width:100%;height:100%"
+                                               width="100%">
+                                            <tr>
+                                                <td class="angebot_text" colspan="2" height="100%">R&uuml;hrei
+                                                    mit Spinat und P&uuml;ree
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="bottom">
+                                                    <div class="angebot_preis">3,99 &euro;</div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td axis="spalte_3" class="angebot_infoangebot" id="ang_7077"
+                                        onClick="return false;" width="25%">
+                                        <table height="100%" style="width:100%;height:100%"
+                                               width="100%">
+                                            <tr>
+                                                <td class="angebot_text" colspan="2" height="100%">
+                                                    Beilagensalat<br>Obst/Dessert
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="bottom">
+                                                    <div class="angebot_preis"></div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td axis="spalte_4" class="angebot_infoangebot" id="ang_7082"
+                                        onClick="return false;" width="25%">
+                                        <table height="100%" style="width:100%;height:100%"
+                                               width="100%">
+                                            <tr>
+                                                <td class="angebot_text" colspan="2"
+                                                    height="100%"></td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="bottom">
+                                                    <div class="angebot_preis"></div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr id="mpdatum_20190704" style="height:16%">
+                                    <td class="MPDatum"><b>04.07.2019</b><br>Donnerstag</td>
+                                    <td axis="spalte_1" class="angebot_noedit" id="ang_7068"
+                                        onClick="showErrMsg('errBestellung','');" width="25%">
+                                        <table height="100%" style="width:100%;height:100%"
+                                               width="100%">
+                                            <tr>
+                                                <td class="angebot_text" colspan="2" height="100%">
+                                                    Pizza Salami
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="bottom">
+                                                    <div class="angebot_preis">3,99 &euro;</div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td axis="spalte_2" class="angebot_noedit" id="ang_7073"
+                                        onClick="showErrMsg('errBestellung','');" width="25%">
+                                        <table height="100%" style="width:100%;height:100%"
+                                               width="100%">
+                                            <tr>
+                                                <td class="angebot_text" colspan="2" height="100%">
+                                                    Pizza Margharita
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="bottom">
+                                                    <div class="angebot_preis">3,99 &euro;</div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td axis="spalte_3" class="angebot_infoangebot" id="ang_7078"
+                                        onClick="return false;" width="25%">
+                                        <table height="100%" style="width:100%;height:100%"
+                                               width="100%">
+                                            <tr>
+                                                <td class="angebot_text" colspan="2" height="100%">
+                                                    Beilagensalat<br>Obst/Dessert
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="bottom">
+                                                    <div class="angebot_preis"></div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td axis="spalte_4" class="angebot_infoangebot" id="ang_7083"
+                                        onClick="return false;" width="25%">
+                                        <table height="100%" style="width:100%;height:100%"
+                                               width="100%">
+                                            <tr>
+                                                <td class="angebot_text" colspan="2" height="100%">
+                                                    Moussaka <br><br>(gr. Gem&uuml;se-Hackfleisch-Auflauf
+                                                    mit Schafsk&auml;se)<br>glutenfrei
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="bottom">
+                                                    <div class="angebot_preis"></div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr id="mpdatum_20190705" style="height:16%">
+                                    <td class="MPDatum"><b>05.07.2019</b><br>Freitag</td>
+                                    <td axis="spalte_1" class="angebot_infoangebot" id="ang_7069"
+                                        onClick="return false;" width="25%">
+                                        <table height="100%" style="width:100%;height:100%"
+                                               width="100%">
+                                            <tr>
+                                                <td class="angebot_text" colspan="2"
+                                                    height="100%"></td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="bottom">
+                                                    <div class="angebot_preis"></div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td axis="spalte_2" class="angebot_infoangebot" id="ang_7074"
+                                        onClick="return false;" width="25%">
+                                        <table height="100%" style="width:100%;height:100%"
+                                               width="100%">
+                                            <tr>
+                                                <td class="angebot_text" colspan="2"
+                                                    height="100%"></td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="bottom">
+                                                    <div class="angebot_preis"></div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td axis="spalte_3" class="angebot_infoangebot" id="ang_7079"
+                                        onClick="return false;" width="25%">
+                                        <table height="100%" style="width:100%;height:100%"
+                                               width="100%">
+                                            <tr>
+                                                <td class="angebot_text" colspan="2"
+                                                    height="100%"></td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="bottom">
+                                                    <div class="angebot_preis"></div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td axis="spalte_4" class="angebot_infoangebot" id="ang_7084"
+                                        onClick="return false;" width="25%">
+                                        <table height="100%" style="width:100%;height:100%"
+                                               width="100%">
+                                            <tr>
+                                                <td class="angebot_text" colspan="2"
+                                                    height="100%"></td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="bottom">
+                                                    <div class="angebot_preis"></div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            </table>
+
+
+                            <!--Seiteninhalt ENDE-->         </td>
+                        <td id="mptab_tdspace_right"></td>
+                    </tr>
+                    <tr>
+
+                        <td class="Kartenkonto" colspan="3">
+                            <!--HIER INHALTSSTOFFE ANGEBEN-->
+                            <div class="kleinmitte"><br><br></div>
+                            <br>
+
+                            <table border="0" cellpadding="0" cellspacing="0" id="MPUserInfo"
+                                   width="100%">
+                                <tr>
+                                    <td width="400">
+                                        <table border="0" cellpadding="0" cellspacing="0"
+                                               width="100%">
+                                            <tr>
+                                                <td valign="bottom">
+                                                    <table border="0" cellpadding="0"
+                                                           cellspacing="0"
+                                                           class="klein" width="100%">
+                                                        <tr>
+                                                            <td colspan="2">Name:&nbsp;
+                                                                &nbsp;OPC
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Kundennummer:</td>
+                                                            <td>1</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Kartennummer:</td>
+                                                            <td>999999</td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                                <td width="30">&nbsp;&nbsp;</td>
+                                                <td>
+
+                                                    <div id='saldoanzeige'>
+                                                        <table border="0" cellpadding="0"
+                                                               cellspacing="0" width="100%">
+                                                            <tr>
+                                                                <td align="right">Altes&nbsp;Guthaben:</td>
+                                                                <td align="right"
+                                                                    style="white-space:nowrap"
+                                                                    width="100"><span
+                                                                        id="saldoOld">0,00</span>
+                                                                    &nbsp;&euro;
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td align="right">&nbsp;</td>
+                                                                <td align="right"
+                                                                    style="white-space:nowrap"
+                                                                    width="100"><span
+                                                                        id="saldoChange">0,00</span>&nbsp;&euro;
+                                                                </td>
+                                                            </tr>
+                                                            <tr align="right">
+                                                                <td colspan="2">
+                                                                    <hr>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td align="right">Neues&nbsp;Guthaben:</td>
+                                                                <td align="right"
+                                                                    style="white-space:nowrap"
+                                                                    width="100"><span
+                                                                        id="saldoNew">0,00</span>&nbsp;&euro;
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td align="center">
+                                        <div class="meldung" id="errorMsg"
+                                             style="visibility:hidden;">Die eingegeben Benutzerdaten
+                                            sind falsch! Bitte versuchen Sie es noch einmal.
+                                        </div>
+
+                                    </td>
+                                    <td align="right" width="200">
+
+
+                                        <script language="javascript">
+	    document.getElementById("MenuePlanTabelle").style.visibility = "visible";
+        aktAnzBestDerWoche = eval(0);
+        //aktAnzBestDerWoche= eval(0);
+        anzAusstehendeBest = eval(0);
+        kundeIndiStdb =0;
+
+
+                                        </script>
+                                        <form action="savebestellungen.php?KID=999999&OWN=2"
+                                              id="formular" method="post" name="formular"
+                                              onSubmit='saveBestellungen();'>
+                                            <!--Haupttabelle-->
+                                            <input id="WID" name="WID" type="hidden" value="0">
+                                            <input id="HASH" name="HASH" type="hidden" value="0">
+                                            <input id="Richtung" name="Richtung" type="hidden"
+                                                   value="0">
+                                            <input id="Return" name="Return" type="hidden"
+                                                   value="-1">
+                                            <input id="anzAusBest" name="anzAusBest" type="hidden"
+                                                   value="0">
+                                            <input id="Save" name="Save" type="hidden" value="0">
+                                            <input id="KartenSaldo" name="KartenSaldo" type="hidden"
+                                                   value="0">
+                                            <input id="GoToPage" name="GoToPage" type="hidden"
+                                                   value="2">
+                                            <input id="angChanges" name="angChanges" type="hidden">
+                                            <input id="stdAngChanges" name="stdAngChanges"
+                                                   type="hidden">
+                                            <div class="button_bestsave"><input id="SaveToDB"
+                                                                                name="SaveToDB"
+                                                                                onClick="checkGuthaben();formular.Save.value=1;"
+                                                                                style="height:30px;font-weight:bolder"
+                                                                                type="Submit"
+                                                                                value="&nbsp;&nbsp;Bestellungen&nbsp;speichern&nbsp;&nbsp;">
+                                            </div>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                </table>
+                <div id="footer">
+                    <table border="0" cellpadding="0" cellspacing="0" id="footertable" width="100%">
+                        <tr>
+                            <td rowspan="2" style="width:1px;" width="1"><a href="http://www.opc.de"
+                                                                            target="_new"><img
+                                    alt="OPC cardsystems GmbH" border="0" height="22"
+                                    hspace="1" longdesc="http://www.opc.de/index.htm"
+                                    src="opcfooter.png"
+                                    vspace="1"/></a></td>
+                            <td width="1"><a class="footeropc"
+                                             href="http://www.schulverpflegung.net/"
+                                             target="_new">OPC&reg;&nbsp;cardsystems&nbsp;GmbH</a>
+                            </td>
+
+                            <td align="center"
+                                style="white-space:nowrap; padding-left:10px; padding-right:10px;"></td>
+
+                            <td align="right" class="footerklein"
+                                style="width:1%; white-space:nowrap;">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td align="right">
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+            </td>
+            <td id="seite_left_tdspace" width="5%"></td>
+        </tr>
+    </table>
+    <!-- end #wrapper-contents -->
+</div>
+<!-- end #wrapper-main -->
+</body>
+</html>

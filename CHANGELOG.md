@@ -1,4 +1,7 @@
 
+# 2019-07-06  
+ jld3103: Add tests for parsers  
+
 # 2019-07-05  
  jld3103: Add all missing tests for models and add test without coverage script  
 

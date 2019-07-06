@@ -10,7 +10,7 @@ dependencies:
   html: ^0.14.0+2
   intl: ^0.15.8
   crypto: ^2.0.6
-  dio: ^2.1.7
+  dio: ^2.1.10
   cookie_jar: ^1.0.0
   models:
     path: ../models

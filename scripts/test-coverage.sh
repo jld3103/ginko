@@ -7,7 +7,7 @@ folders=("models" "server" "app")
 for d in ${folders[@]} ; do
     cd ${d}
 
-    flutter test --coverage ../tests || error=true
+    flutter test --coverage ../tests/test/${d} || error=true
 
     escapedPath="$(echo ${d} | sed 's/\//\\\//g')"
     sed "s/^SF:lib/SF:$escapedPath\/lib/g" coverage/lcov.info >> ../coverage/lcov.info

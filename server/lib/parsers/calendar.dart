@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:intl/date_symbol_data_local.dart';
@@ -8,31 +7,20 @@ import 'package:models/models.dart';
 import 'package:server/config.dart';
 
 // ignore: avoid_classes_with_only_static_members
-/// CalendarData class
+/// CalendarParser class
 /// handles all calendar parsing
-class CalendarData {
+class CalendarParser {
   static const String _url =
       'https://viktoriaschule-aachen.de/dokumente/upload/9e15f_Terminplanung2018_19_SchuKo_Stand_20180906.pdf';
 
-  // ignore: public_member_api_docs
-  static Calendar calendar;
-
   static DateFormat _format;
 
-  /// Load calendar
-  static Future load() async {
+  /// Extract calendar
+  static Future<Calendar> extract(Map<String, dynamic> data) async {
     await initializeDateFormatting('de_DE', null);
     _format = DateFormat.yMMMMd('de_DE');
-    Directory('build').createSync();
-    File('build/calendar.pdf').writeAsBytesSync(await download());
-    await Process.run('node', [
-      'js/pdf_table.js',
-      'build/calendar.pdf',
-      'build/calendar.json',
-    ]);
     var years = [];
     var events = [];
-    final data = json.decode(File('build/calendar.json').readAsStringSync());
     data['pageTables'][0]['tables'][0][0].split('\n').forEach((line) {
       if (line.contains('Ferienordnung')) {
         years = line
@@ -74,14 +62,14 @@ class CalendarData {
                 ))
             .toList());
     }
-    calendar = Calendar(
+    return Calendar(
       years: years.cast<int>(),
       events: events.cast<CalendarEvent>(),
     );
   }
 
   /// Download pdf calendar
-  static Future download() async {
+  static Future<List<int>> download() async {
     final response = await http.get(_url, headers: Config.headers);
     return response.bodyBytes;
   }

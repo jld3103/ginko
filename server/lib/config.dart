@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:server/path.dart';
+
 // ignore: avoid_classes_with_only_static_members
 /// Config class
 /// handles all config things
@@ -22,8 +24,8 @@ class Config {
 
   /// Load all config
   static void load() {
-    final Map<String, dynamic> data =
-        json.decode(File('config.json').readAsStringSync());
+    final Map<String, dynamic> data = json.decode(
+        File('${Path.getBasePath}server/config.json').readAsStringSync());
     username = data['username'];
     password = data['password'];
     cafetoriaUsername = data['cafetoriaUsername'];
