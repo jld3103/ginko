@@ -34,7 +34,7 @@ void main() {
     });
 
     test('Can download without error', () async {
-      Config.load();
+      Config.load(true);
       expect(await UnitPlanParser.download(true) is Document, true);
       expect(await UnitPlanParser.download(false) is Document, true);
     });

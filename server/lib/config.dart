@@ -23,9 +23,11 @@ class Config {
   static Map<String, String> headers;
 
   /// Load all config
-  static void load() {
-    final Map<String, dynamic> data = json.decode(
-        File('${Path.getBasePath}server/config.json').readAsStringSync());
+  static void load([bool environment]) {
+    final Map<String, dynamic> data = environment
+        ? Platform.environment
+        : json.decode(
+            File('${Path.getBasePath}server/config.json').readAsStringSync());
     username = data['username'];
     password = data['password'];
     cafetoriaUsername = data['cafetoriaUsername'];
