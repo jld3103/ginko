@@ -57,10 +57,12 @@ class ExtraInformationState extends State<ExtraInformation> {
       children: [
         GestureDetector(
           onTap: () {
-            if (widget.panelController.isPanelOpen()) {
-              widget.panelController.close();
-            } else {
-              widget.panelController.open();
+            if (widget.panelController.isPanelOpen != null) {
+              if (widget.panelController.isPanelOpen()) {
+                widget.panelController.close();
+              } else {
+                widget.panelController.open();
+              }
             }
           },
           child: Container(

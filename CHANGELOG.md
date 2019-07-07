@@ -1,5 +1,6 @@
 
 # 2019-07-07  
+ jld3103: Add extra information design for non mobile  
  jld3103: Fix setup script and server config  
 
 # 2019-07-06  
