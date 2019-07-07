@@ -37,4 +37,10 @@ for d in ${folders[@]} ; do
     flutter packages get
     cd ..
 done
+packages=("flutter_platform" "flutter_platform_storage")
+for d in ${packages[@]} ; do
+    cd packages/${d}
+    flutter packages get
+    cd ../..
+done
 bash scripts/generate.sh

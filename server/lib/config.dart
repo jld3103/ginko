@@ -23,7 +23,10 @@ class Config {
   static Map<String, String> headers;
 
   /// Load all config
-  static void load([bool environment]) {
+  static void load([bool environment = false]) {
+    if (File('${Path.getBasePath}server/config.json').existsSync()) {
+      environment = false;
+    }
     final Map<String, dynamic> data = environment
         ? Platform.environment
         : json.decode(

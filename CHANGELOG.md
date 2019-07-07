@@ -1,4 +1,7 @@
 
+# 2019-07-07  
+ jld3103: Fix setup script and server config  
+
 # 2019-07-06  
  jld3103: Fix travis config for codecov upload  
  jld3103: Add config from environment variables  
