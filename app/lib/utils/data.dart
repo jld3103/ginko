@@ -58,14 +58,14 @@ class Data {
 
   /// Load all the data from the server
   static Future<int> load() async {
-    if (Static.storage.getString(Keys.unitPlan) != null) {
+    if (Static.storage.getJSON(Keys.unitPlan) != null) {
       unitPlan =
           UnitPlanForGrade.fromJSON(Static.storage.getJSON(Keys.unitPlan));
     }
-    if (Static.storage.getString(Keys.calendar) != null) {
+    if (Static.storage.getJSON(Keys.calendar) != null) {
       calendar = Calendar.fromJSON(Static.storage.getJSON(Keys.calendar));
     }
-    if (Static.storage.getString(Keys.cafetoria) != null) {
+    if (Static.storage.getJSON(Keys.cafetoria) != null) {
       cafetoria = Cafetoria.fromJSON(Static.storage.getJSON(Keys.cafetoria));
     }
     final parameters = {
