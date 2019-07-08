@@ -1,4 +1,9 @@
 
+# 2019-07-08  
+ jld3103: Add better layout for extra information on non mobile  
+ jld3103: Fix data access to storage  
+ jld3103: Add direct JSON storage  
+
 # 2019-07-07  
  jld3103: Add extra information design for non mobile  
  jld3103: Fix setup script and server config  

@@ -72,7 +72,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) =>
-      Platform().isMobile || MediaQuery.of(context).size.width < 500
+      Platform().isMobile || MediaQuery.of(context).size.width < 600
           ? getHeaderView(
               SlidingUpPanel(
                 controller: _panelController,
@@ -113,18 +113,9 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
                   child: Container(
                     height: double.infinity,
                     width: 300,
-                    child: Column(
-                      children: [
-                        Container(
-                          height: 104,
-                          width: double.infinity,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                        ExtraInformation(
-                          date: getDate,
-                          panelController: _panelController,
-                        ),
-                      ],
+                    child: ExtraInformation(
+                      date: getDate,
+                      panelController: _panelController,
                     ),
                   ),
                 ),
