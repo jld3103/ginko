@@ -72,121 +72,102 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) =>
-      Platform().isMobile || MediaQuery
-          .of(context)
-          .size
-          .width < 500
+      Platform().isMobile || MediaQuery.of(context).size.width < 500
           ? getHeaderView(
-        SlidingUpPanel(
-          controller: _panelController,
-          parallaxEnabled: true,
-          parallaxOffset: .1,
-          maxHeight: MediaQuery
-              .of(context)
-              .size
-              .height * 0.75,
-          minHeight: 30,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(24),
-            topRight: Radius.circular(24),
-          ),
-          panelSnapping: true,
-          backdropEnabled: true,
-          backdropTapClosesPanel: true,
-          panel: ExtraInformation(
-            date: getDate,
-            panelController: _panelController,
-          ),
-          body: getUnitPlanView,
-        ),
-      )
-          : Row(
-        children: [
-          AnimatedSize(
-            vsync: this,
-            duration: Duration(milliseconds: 500),
-            curve: Curves.bounceInOut,
-            child: Container(
-              height: double.infinity,
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width - 300,
-              child: getHeaderView(getUnitPlanView),
-            ),
-          ),
-          AnimatedSize(
-            vsync: this,
-            duration: Duration(milliseconds: 500),
-            curve: Curves.bounceInOut,
-            child: Container(
-              height: double.infinity,
-              width: 300,
-              child: Column(
-                children: [
-                  Container(
-                    height: 104,
-                    width: double.infinity,
-                    color: Theme
-                        .of(context)
-                        .primaryColor,
-                  ),
-                  ExtraInformation(
-                    date: getDate,
-                    panelController: _panelController,
-                  ),
-                ],
+              SlidingUpPanel(
+                controller: _panelController,
+                parallaxEnabled: true,
+                parallaxOffset: .1,
+                maxHeight: MediaQuery.of(context).size.height * 0.75,
+                minHeight: 30,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(24),
+                  topRight: Radius.circular(24),
+                ),
+                panelSnapping: true,
+                backdropEnabled: true,
+                backdropTapClosesPanel: true,
+                panel: ExtraInformation(
+                  date: getDate,
+                  panelController: _panelController,
+                ),
+                body: getUnitPlanView,
               ),
-            ),
-          ),
-        ],
-      );
+            )
+          : Row(
+              children: [
+                AnimatedSize(
+                  vsync: this,
+                  duration: Duration(milliseconds: 500),
+                  curve: Curves.bounceInOut,
+                  child: Container(
+                    height: double.infinity,
+                    width: MediaQuery.of(context).size.width - 300,
+                    child: getHeaderView(getUnitPlanView),
+                  ),
+                ),
+                AnimatedSize(
+                  vsync: this,
+                  duration: Duration(milliseconds: 500),
+                  curve: Curves.bounceInOut,
+                  child: Container(
+                    height: double.infinity,
+                    width: 300,
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 104,
+                          width: double.infinity,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        ExtraInformation(
+                          date: getDate,
+                          panelController: _panelController,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            );
 
   /// Get the view of the unit plan
-  Widget get getUnitPlanView =>
-      TabBarView(
+  Widget get getUnitPlanView => TabBarView(
         controller: _tabController,
         children: List.generate(
           5,
-              (weekday) =>
-              ListView(
-                padding: EdgeInsets.all(10),
-                shrinkWrap: true,
-                children: Data.unitPlan.days[weekday].lessons
-                    .map(
-                      (lesson) =>
-                      UnitPlanRow(
-                        lesson: lesson,
-                        start: getMonday.add(Duration(days: weekday)),
-                      ),
+          (weekday) => ListView(
+            padding: EdgeInsets.all(10),
+            shrinkWrap: true,
+            children: Data.unitPlan.days[weekday].lessons
+                .map(
+                  (lesson) => UnitPlanRow(
+                    lesson: lesson,
+                    start: getMonday.add(Duration(days: weekday)),
+                  ),
                 )
-                    .toList()
-                    .cast<Widget>(),
-              ),
+                .toList()
+                .cast<Widget>(),
+          ),
         ).toList().cast<Widget>(),
       );
 
   /// Get the app bar and tab bar header view
-  Widget getHeaderView(Widget body) =>
-      DefaultTabController(
+  Widget getHeaderView(Widget body) => DefaultTabController(
         length: 5,
         child: Scaffold(
           appBar: AppBar(
-            title: Text(AppLocalization
-                .of(context)
-                .appName),
+            title: Text(AppLocalization.of(context).appName),
             bottom: TabBar(
                 controller: _tabController,
-                tabs: AppLocalization
-                    .of(context)
+                tabs: AppLocalization.of(context)
                     .weekdays
                     .sublist(0, 5)
                     .map(
-                      (weekday) =>
-                      Tab(
+                      (weekday) => Tab(
                         child: Text(weekday.substring(0, 2).toUpperCase()),
                       ),
-                )
+                    )
                     .toList()),
           ),
           body: body,

@@ -93,4 +93,22 @@ class Storage extends StorageBase {
     }
     _save();
   }
+
+  @override
+  Map<String, dynamic> getJSON(String key) {
+    if (_platform.isDesktop) {
+      return _data[key];
+    } else {
+      return json.decode(this.getString(key));
+    }
+  }
+
+  @override
+  void setJSON(String key, Map<String, dynamic> value) {
+    if (_platform.isDesktop) {
+      _data[key] = value;
+    } else {
+      this.setString(key, json.encode(value));
+    }
+  }
 }

@@ -59,16 +59,14 @@ class Data {
   /// Load all the data from the server
   static Future<int> load() async {
     if (Static.storage.getString(Keys.unitPlan) != null) {
-      unitPlan = UnitPlanForGrade.fromJSON(
-          json.decode(Static.storage.getString(Keys.unitPlan)));
+      unitPlan =
+          UnitPlanForGrade.fromJSON(Static.storage.getJSON(Keys.unitPlan));
     }
     if (Static.storage.getString(Keys.calendar) != null) {
-      calendar = Calendar.fromJSON(
-          json.decode(Static.storage.getString(Keys.calendar)));
+      calendar = Calendar.fromJSON(Static.storage.getJSON(Keys.calendar));
     }
     if (Static.storage.getString(Keys.cafetoria) != null) {
-      cafetoria = Cafetoria.fromJSON(
-          json.decode(Static.storage.getString(Keys.cafetoria)));
+      cafetoria = Cafetoria.fromJSON(Static.storage.getJSON(Keys.cafetoria));
     }
     final parameters = {
       Keys.username: sha256
@@ -96,18 +94,15 @@ class Data {
       }
       if (data[Keys.unitPlan] != null) {
         unitPlan = UnitPlanForGrade.fromJSON(data[Keys.unitPlan]);
-        Static.storage
-            .setString(Keys.unitPlan, json.encode(data[Keys.unitPlan]));
+        Static.storage.setJSON(Keys.unitPlan, data[Keys.unitPlan]);
       }
       if (data[Keys.calendar] != null) {
         calendar = Calendar.fromJSON(data[Keys.calendar]);
-        Static.storage
-            .setString(Keys.calendar, json.encode(data[Keys.calendar]));
+        Static.storage.setJSON(Keys.calendar, data[Keys.calendar]);
       }
       if (data[Keys.cafetoria] != null) {
         cafetoria = Cafetoria.fromJSON(data[Keys.cafetoria]);
-        Static.storage
-            .setString(Keys.cafetoria, json.encode(data[Keys.cafetoria]));
+        Static.storage.setJSON(Keys.cafetoria, data[Keys.cafetoria]);
       }
       online = true;
       return 0;

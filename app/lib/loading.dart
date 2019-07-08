@@ -32,7 +32,7 @@ class LoadingState extends State<Loading> {
         });
       }
     });
-    Data.setup(8000, '192.168.1.46', 'http');
+    Data.setup(8000, 'localhost', 'http');
     Data.load().then((code) {
       if (code == 2) {
         Navigator.of(context).pushReplacementNamed('/login');

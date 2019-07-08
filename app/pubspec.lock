@@ -101,14 +101,14 @@ packages:
       path: "../packages/flutter_platform"
       relative: true
     source: path
-    version: "1.0.1+2"
+    version: "1.0.2+3"
   flutter_platform_storage:
     dependency: "direct main"
     description:
       path: "../packages/flutter_platform_storage"
       relative: true
     source: path
-    version: "1.0.1+2"
+    version: "1.0.2+3"
   flutter_svg:
     dependency: "direct main"
     description:
