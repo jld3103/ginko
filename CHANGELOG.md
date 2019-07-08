@@ -1,5 +1,6 @@
 
 # 2019-07-08  
+ jld3103: Add git hooks to setup script  
  jld3103: Add better layout for extra information on non mobile  
  jld3103: Fix data access to storage  
  jld3103: Add direct JSON storage  
