@@ -87,8 +87,8 @@ void main() {
       expect(calendar.years, [2018, 2019]);
       expect(calendar.events, [event]);
       expect(
-        calendar.years.reduce((a, b) => a * 10000 + b),
         calendar.timeStamp,
+        calendar.years.reduce((a, b) => a * 10000 + b),
       );
     });
 
@@ -111,8 +111,8 @@ void main() {
         [event.toJSON()],
       );
       expect(
-        calendar.years.reduce((a, b) => a * 10000 + b),
         calendar.timeStamp,
+        calendar.years.reduce((a, b) => a * 10000 + b),
       );
     });
 

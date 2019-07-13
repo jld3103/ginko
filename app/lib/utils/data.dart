@@ -26,6 +26,9 @@ class Data {
   // ignore: public_member_api_docs
   static Cafetoria cafetoria;
 
+  // ignore: public_member_api_docs
+  static ReplacementPlanForGrade replacementPlan;
+
   /// Setup the config of the server
   static void setup([int port, String host, String protocol]) {
     _protocol = protocol;
@@ -58,15 +61,19 @@ class Data {
 
   /// Load all the data from the server
   static Future<int> load() async {
-    if (Static.storage.getJSON(Keys.unitPlan) != null) {
+    if (Static.storage.has(Keys.unitPlan)) {
       unitPlan =
           UnitPlanForGrade.fromJSON(Static.storage.getJSON(Keys.unitPlan));
     }
-    if (Static.storage.getJSON(Keys.calendar) != null) {
+    if (Static.storage.has(Keys.calendar)) {
       calendar = Calendar.fromJSON(Static.storage.getJSON(Keys.calendar));
     }
-    if (Static.storage.getJSON(Keys.cafetoria) != null) {
+    if (Static.storage.has(Keys.cafetoria)) {
       cafetoria = Cafetoria.fromJSON(Static.storage.getJSON(Keys.cafetoria));
+    }
+    if (Static.storage.has(Keys.replacementPlan)) {
+      replacementPlan = ReplacementPlanForGrade.fromJSON(
+          Static.storage.getJSON(Keys.replacementPlan));
     }
     final parameters = {
       Keys.username: sha256
@@ -79,6 +86,8 @@ class Data {
       Keys.unitPlan: unitPlan == null ? 0 : unitPlan.timeStamp,
       Keys.calendar: calendar == null ? 0 : calendar.timeStamp,
       Keys.cafetoria: cafetoria == null ? 0 : cafetoria.timeStamp,
+      Keys.replacementPlan:
+          replacementPlan == null ? 0 : replacementPlan.timeStamp,
     };
 
     try {
@@ -103,6 +112,12 @@ class Data {
       if (data[Keys.cafetoria] != null) {
         cafetoria = Cafetoria.fromJSON(data[Keys.cafetoria]);
         Static.storage.setJSON(Keys.cafetoria, data[Keys.cafetoria]);
+      }
+      if (data[Keys.replacementPlan] != null) {
+        replacementPlan =
+            ReplacementPlanForGrade.fromJSON(data[Keys.replacementPlan]);
+        Static.storage
+            .setJSON(Keys.replacementPlan, data[Keys.replacementPlan]);
       }
       online = true;
       return 0;

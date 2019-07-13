@@ -20,6 +20,7 @@ class Subjects {
     'FF': 'FF',
     'F': 'F',
     'GE': 'GE',
+    'IV': 'IV', // TODO(jld3103): What subject is this?
     'IF': 'IF',
     'KW': 'KU',
     'KU': 'KU',
@@ -47,6 +48,7 @@ class Subjects {
     'PK': 'PK',
     'PH': 'PH',
     'SW': 'SOWI',
+    'SOWI': 'SOWI',
     'SP': 'SP',
     'SN': 'SOWI',
     'SG': 'SG',
@@ -57,17 +59,14 @@ class Subjects {
     'VD': 'VD'
   };
 
+  // ignore: public_member_api_docs
+  static Map<String, String> get subjects => _subjects;
+
   /// Gets a subject by some variant of it's name
   static String getSubject(String name) {
-    if (name == null) {
-      return null;
-    }
-    name = name.trim().toUpperCase().replaceAll(RegExp('[0-9]'), '');
+    name = name.trim().toUpperCase().replaceAll(RegExp('[ÖÄÜ0-9]'), '');
     if (_subjects[name] == null) {
-      if (name != '') {
-        print('Unknown subject $name');
-      }
-      return name;
+      throw Exception('Unknown subject $name');
     }
     return _subjects[name];
   }

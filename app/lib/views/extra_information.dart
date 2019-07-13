@@ -31,6 +31,7 @@ class ExtraInformation extends StatefulWidget {
 /// describes the state of the list of extra information
 class ExtraInformationState extends State<ExtraInformation> {
   bool _showBig;
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((a) {
@@ -73,20 +74,21 @@ class ExtraInformationState extends State<ExtraInformation> {
       children: [
         GestureDetector(
           onTap: () {
-            if (widget.panelController.isPanelOpen != null) {
+            try {
               if (widget.panelController.isPanelOpen()) {
                 widget.panelController.close();
               } else {
                 widget.panelController.open();
               }
-            }
+              // ignore: empty_catches, avoid_catching_errors
+            } on NoSuchMethodError {}
           },
           child: Container(
             padding: EdgeInsets.only(
-              top: 10,
-              bottom: 5,
+              top: _showBig ? 10 : 0,
+              bottom: _showBig ? 5 : 0,
               left: 15,
-              right: 15,
+              right: _showBig ? 15 : 0,
             ),
             color:
                 _showBig ? Theme.of(context).primaryColor : Colors.transparent,
@@ -94,7 +96,7 @@ class ExtraInformationState extends State<ExtraInformation> {
             height: _showBig ? 104 : null,
             alignment: _showBig ? Alignment.bottomLeft : null,
             child: Container(
-              height: 46,
+              height: _showBig ? 46 : 34,
               alignment: Alignment.center,
               child: Row(
                 children: [
@@ -108,7 +110,7 @@ class ExtraInformationState extends State<ExtraInformation> {
                     ),
                   ),
                   Text(
-                    ' - ${dateFormat.format(widget.date)}',
+                    ' - ${outputDateFormat.format(widget.date)}',
                     style: TextStyle(
                       color: _showBig ? Colors.white : null,
                       fontSize: _showBig ? 18 : null,
@@ -132,18 +134,20 @@ class ExtraInformationState extends State<ExtraInformation> {
           ),
         Container(
           height: _showBig ? MediaQuery.of(context).size.height - 104 : null,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey,
-                spreadRadius: 1,
-                blurRadius: 3,
-              ),
-            ],
-          ),
+          decoration: _showBig
+              ? BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey,
+                      spreadRadius: 1,
+                      blurRadius: 3,
+                    ),
+                  ],
+                )
+              : null,
           child: ListView(
-            padding: EdgeInsets.only(left: 10, right: 10, top: 10),
+            padding: EdgeInsets.all(_showBig ? 5 : 10),
             shrinkWrap: true,
             children: [
               ...events

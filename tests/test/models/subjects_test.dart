@@ -13,9 +13,15 @@ void main() {
       expect(Subjects.getSubject(' BI '), 'BI');
     });
 
-    test('Get unknown subject successfully', () {
-      expect(Subjects.getSubject(null), null);
-      expect(Subjects.getSubject('test'), 'TEST');
+    test('Cannot get unknown subject without error', () {
+      expect(() => Subjects.getSubject(null),
+          throwsA(TypeMatcher<NoSuchMethodError>()));
+      expect(
+          () => Subjects.getSubject('test'), throwsA(TypeMatcher<Exception>()));
+    });
+
+    test('Get subjects successfully', () {
+      expect(Subjects.subjects.isNotEmpty, true);
     });
   });
 }

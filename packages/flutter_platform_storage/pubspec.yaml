@@ -1,6 +1,6 @@
 name: flutter_platform_storage
 description: A plugin to access persistent storage on any platform. Mobile, Desktop, Web all included
-version: 1.0.2+3
+version: 1.0.3+4
 author: jld3103 <pub@2bad2c0.de>
 homepage: https://github.com/jld3103/ginko/tree/master/packages/flutter_platform_storage
 

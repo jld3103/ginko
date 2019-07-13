@@ -1,11 +1,9 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' show parse;
 import 'package:http/http.dart' as http;
 import 'package:models/models.dart';
-import 'package:models/unitplan.dart';
 import 'package:server/config.dart';
 
 // ignore: avoid_classes_with_only_static_members
@@ -23,7 +21,7 @@ class UnitPlanParser {
 
   /// Extract unit plans from html
   static List<UnitPlanForGrade> extract(Document document) {
-    final date = dateFormat.parse(document
+    final date = parseDate(document
         .querySelector('div')
         .text
         .split(' den ')[1]
@@ -54,6 +52,9 @@ class UnitPlanParser {
             }
             return text;
           }).toList();
+          if (table[items.indexOf(item)][rows.indexOf(row)][0].contains('*')) {
+            table[items.indexOf(item)][rows.indexOf(row)] = [' FR '];
+          }
         }
       }
       return UnitPlanForGrade(
@@ -118,9 +119,7 @@ class UnitPlanParser {
                                       return Subject(
                                         changes: <Change>[],
                                         course: null,
-                                        room: Rooms.getRoom(subject[2] == ''
-                                            ? null
-                                            : subject[2]),
+                                        room: Rooms.getRoom(subject[2]),
                                         subject: Subjects.getSubject(
                                             subject[0] == ''
                                                 ? null
@@ -132,16 +131,14 @@ class UnitPlanParser {
                                         unit: unit,
                                       );
                                     }
+                                    //print(subject);
                                     return Subject(
                                       changes: <Change>[],
                                       course: null,
-                                      room: Rooms.getRoom(
-                                          subject[2] == '' ? null : subject[2]),
-                                      subject: Subjects.getSubject(
-                                          subject[1] == '' ? null : subject[1]),
+                                      room: Rooms.getRoom(subject[2]),
+                                      subject: Subjects.getSubject(subject[1]),
                                       weeks: null,
-                                      teacher:
-                                          subject[0] == '' ? null : subject[0],
+                                      teacher: subject[0],
                                       unit: unit,
                                     );
                                   }).toList()
@@ -171,170 +168,5 @@ class UnitPlanParser {
         }).toList(),
       );
     }).toList();
-  }
-
-  /// Merge all unit plans for a and b weeks
-  static UnitPlan mergeUnitPlans(List<UnitPlan> unitPlans) {
-    final unitPlan = UnitPlan(
-      unitPlans: grades.map((grade) {
-        final days = List.generate(
-            5,
-            (i) => UnitPlanDay(
-                  weekday: i,
-                  lessons: List.generate(
-                      max(
-                        unitPlans[0]
-                            .unitPlans
-                            .where((i) => i.grade == grade)
-                            .toList()[0]
-                            .days[i]
-                            .lessons
-                            .length,
-                        unitPlans[1]
-                            .unitPlans
-                            .where((i) => i.grade == grade)
-                            .toList()[0]
-                            .days[i]
-                            .lessons
-                            .length,
-                      ),
-                      (j) => Lesson(
-                            subjects: <Subject>[],
-                            block: unitPlans[unitPlans[0]
-                                            .unitPlans
-                                            .where((i) => i.grade == grade)
-                                            .toList()[0]
-                                            .days[i]
-                                            .lessons[j]
-                                            .block !=
-                                        null
-                                    ? 0
-                                    : 1]
-                                .unitPlans
-                                .where((i) => i.grade == grade)
-                                .toList()[0]
-                                .days[i]
-                                .lessons[j]
-                                .block,
-                            unit: j,
-                          )),
-                  replacementPlan: UnitPlanDayReplacementPlan(
-                    applies: null,
-                    weekA: null,
-                    updated: null,
-                  ),
-                ));
-        for (var day = 0; day < 5; day++) {
-          final dayA = unitPlans[0]
-              .unitPlans
-              .where((i) => i.grade == grade)
-              .toList()[0]
-              .days[day];
-          final dayB = unitPlans[1]
-              .unitPlans
-              .where((i) => i.grade == grade)
-              .toList()[0]
-              .days[day];
-          for (var unit = 0; unit < 9; unit++) {
-            final addFreeLesson = [false, false];
-            Lesson lessonA;
-            Lesson lessonB;
-            if (dayA.lessons.length > unit) {
-              lessonA = dayA.lessons[unit];
-            }
-            if (dayB.lessons.length > unit) {
-              lessonB = dayB.lessons[unit];
-            }
-            if (lessonA == null && lessonB == null) {
-              continue;
-            }
-            if (lessonA == null && lessonB != null) {
-              days[day].lessons[unit] = lessonB;
-              for (final subject in days[day].lessons[unit].subjects) {
-                subject.weeks = 'B';
-              }
-              if (unit != 5) {
-                addFreeLesson[0] = true;
-              }
-            } else if (lessonA != null && lessonB == null) {
-              days[day].lessons[unit] = lessonA;
-              for (final subject in days[day].lessons[unit].subjects) {
-                subject.weeks = 'A';
-              }
-              if (unit != 5) {
-                addFreeLesson[1] = true;
-              }
-            } else {
-              days[day].lessons[unit].subjects = [];
-              final listShort =
-                  lessonA.subjects.length >= lessonB.subjects.length
-                      ? lessonB
-                      : lessonA;
-              final listLong =
-                  lessonA.subjects.length >= lessonB.subjects.length
-                      ? lessonA
-                      : lessonB;
-              for (var k = 0; k < listLong.subjects.length; k++) {
-                final subject1 = listLong.subjects[k];
-                var found = false;
-                for (var l = 0; l < listShort.subjects.length; l++) {
-                  final subject2 = listShort.subjects[l];
-                  if (subject1.subject == subject2.subject &&
-                      subject1.teacher == subject2.teacher &&
-                      subject1.room == subject2.room) {
-                    subject1.weeks = 'AB';
-                    days[day].lessons[unit].subjects.add(subject1);
-                    listShort.subjects.removeAt(l);
-                    found = true;
-                    break;
-                  }
-                }
-                if (!found) {
-                  subject1.weeks =
-                      lessonA.subjects.length >= lessonB.subjects.length
-                          ? 'A'
-                          : 'B';
-                  addFreeLesson[subject1.weeks == 'B' ? 0 : 1] = true;
-                  days[day].lessons[unit].subjects.add(subject1);
-                }
-              }
-              if (listShort.subjects.isNotEmpty) {
-                for (final subject in listShort.subjects) {
-                  subject.weeks =
-                      lessonA.subjects.length >= lessonB.subjects.length
-                          ? 'B'
-                          : 'A';
-                  addFreeLesson[subject.weeks == 'B' ? 0 : 1] = true;
-                  days[day].lessons[unit].subjects.add(subject);
-                }
-              }
-            }
-            for (var i = 0; i < addFreeLesson.length; i++) {
-              if (addFreeLesson[i]) {
-                days[day].lessons[unit].subjects.add(Subject(
-                      weeks: i == 0 ? 'A' : 'B',
-                      teacher: null,
-                      subject: 'FR',
-                      changes: <Change>[],
-                      course: null,
-                      room: null,
-                      unit: unit,
-                    ));
-              }
-            }
-          }
-        }
-        return UnitPlanForGrade(
-          date: unitPlans[0]
-              .unitPlans
-              .where((i) => i.grade == grade)
-              .toList()[0]
-              .date,
-          days: days,
-          grade: grade,
-        );
-      }).toList(),
-    );
-    return unitPlan;
   }
 }

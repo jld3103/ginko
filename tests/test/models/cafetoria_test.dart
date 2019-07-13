@@ -161,8 +161,8 @@ void main() {
       expect(cafetoria.saldo, 0);
       expect(cafetoria.days, [day]);
       expect(
-        cafetoria.days[0].date.millisecondsSinceEpoch ~/ 1000,
         cafetoria.timeStamp,
+        cafetoria.days[0].date.millisecondsSinceEpoch ~/ 1000,
       );
     });
 
@@ -178,8 +178,8 @@ void main() {
       expect(cafetoria.saldo, 0);
       expect(cafetoria.days.map((day) => day.toJSON()), [day.toJSON()]);
       expect(
-        cafetoria.days[0].date.millisecondsSinceEpoch ~/ 1000,
         cafetoria.timeStamp,
+        cafetoria.days[0].date.millisecondsSinceEpoch ~/ 1000,
       );
     });
 

@@ -1,3 +1,7 @@
+## [ 1.0.3+4] - 13th of July 2019
+
+* Add check if key is available
+
 ## [ 1.0.2+3] - 8th of July 2019
 
 * Add support for direct JSON

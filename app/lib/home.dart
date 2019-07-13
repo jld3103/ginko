@@ -1,11 +1,14 @@
 import 'package:app/utils/data.dart';
 import 'package:app/utils/localizations.dart';
+import 'package:app/utils/selection.dart';
 import 'package:app/utils/static.dart';
 import 'package:app/views/extra_information.dart';
+import 'package:app/views/replacementplan/row.dart';
 import 'package:app/views/unitplan/row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_platform/flutter_platform.dart';
+import 'package:models/models.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 /// Home class
@@ -38,7 +41,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
           milliseconds: now.millisecond,
           microseconds: now.microsecond,
         ))
-        .add(Duration(days: now.weekday > 5 ? 7 : 0));
+        .add(Duration(days: now.weekday > 5 ? 0 : 0));
   }
 
   @override
@@ -127,19 +130,89 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         controller: _tabController,
         children: List.generate(
           5,
-          (weekday) => ListView(
-            padding: EdgeInsets.all(10),
-            shrinkWrap: true,
-            children: Data.unitPlan.days[weekday].lessons
-                .map(
-                  (lesson) => UnitPlanRow(
-                    lesson: lesson,
-                    start: getMonday.add(Duration(days: weekday)),
-                  ),
-                )
-                .toList()
-                .cast<Widget>(),
-          ),
+          (weekday) {
+            final start = getMonday.add(Duration(days: weekday));
+            final weekA = isWeekA(start);
+            return ListView(
+              padding: EdgeInsets.all(5),
+              shrinkWrap: true,
+              children: Data.unitPlan.days[weekday].lessons
+                  .map(
+                    (lesson) {
+                      final subjects = lesson.subjects
+                          .where((subject) =>
+                              Selection.get(lesson.block, weekA) ==
+                              subject.identifier)
+                          .toList();
+                      final subject = subjects.isNotEmpty
+                          ? subjects[0]
+                          : Subject(
+                              subject: Keys.none,
+                              teacher: null,
+                              weeks: null,
+                              room: null,
+                              course: null,
+                              changes: <Change>[],
+                              unit: lesson.unit,
+                            );
+                      return GestureDetector(
+                        onTap: () {
+                          if (lesson.subjects.length > 1) {
+                            showDialog(
+                              context: context,
+                              builder: (context) => SimpleDialog(
+                                title: Text(AppLocalization.of(context)
+                                    .weekday(weekday)),
+                                contentPadding: EdgeInsets.all(10),
+                                children: lesson.subjects
+                                    .map((subject) => GestureDetector(
+                                          onTap: () {
+                                            Navigator.of(context).pop();
+                                            Selection.set(lesson.block, weekA,
+                                                subject.identifier);
+                                            Static.rebuildUnitPlan();
+                                          },
+                                          child: UnitPlanRow(
+                                            subject: subject,
+                                            showUnit: false,
+                                            addPadding: false,
+                                          ),
+                                        ))
+                                    .toList(),
+                              ),
+                            );
+                          }
+                        },
+                        child: Column(
+                          children: [
+                            UnitPlanRow(subject: subject),
+                            ...Data.replacementPlan.changes
+                                .where((change) =>
+                                    change.date ==
+                                        getMonday
+                                            .add(Duration(days: weekday)) &&
+                                    change.unit ==
+                                        Data.unitPlan.days[weekday].lessons
+                                            .indexOf(lesson))
+                                .map((change) => Container(
+                                      margin: EdgeInsets.only(left: 15),
+                                      child: ReplacementPlanRow(
+                                        change: change,
+                                        showUnit: false,
+                                        addPadding: false,
+                                      ),
+                                    ))
+                                .toList()
+                                .cast<Widget>(),
+                          ],
+                        ),
+                      );
+                    },
+                  )
+                  .toList()
+                  .cast<Widget>(),
+            );
+          },
         ).toList().cast<Widget>(),
       );
 

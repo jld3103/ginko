@@ -1,5 +1,5 @@
 import 'package:models/models.dart';
-import 'package:models/unitplan.dart';
+import 'package:server/extra/unitplan.dart';
 import 'package:server/parsers/unitplan.dart';
 
 // ignore: avoid_classes_with_only_static_members
@@ -22,6 +22,6 @@ class UnitPlanData extends UnitPlanParser {
         ),
       );
     }
-    unitPlan = UnitPlanParser.mergeUnitPlans(plans.cast<UnitPlan>());
+    unitPlan = UnitPlanExtra.mergeUnitPlans(plans.cast<UnitPlan>());
   }
 }

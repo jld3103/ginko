@@ -1,7 +1,6 @@
 library flutter_platform_storage;
 
 import 'dart:convert';
-// ignore: uri_does_not_exist
 import 'dart:html';
 
 import 'package:flutter_platform_storage/flutter_platform_storage_base.dart';
@@ -64,5 +63,10 @@ class Storage extends StorageBase {
   @override
   void setJSON(String key, Map<String, dynamic> value) {
     this.setString(key, json.encode(value));
+  }
+
+  @override
+  bool has(String key) {
+    return localStorage[key] != null;
   }
 }

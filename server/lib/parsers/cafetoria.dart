@@ -56,7 +56,7 @@ class CafetoriaParser {
         days: document
             .querySelectorAll('.MPDatum')
             .map((day) => CafetoriaDay(
-                  date: dateFormat.parse(day.querySelector('b').text),
+                  date: parseDate(day.querySelector('b').text),
                   menus: List.generate(4, (i) {
                     final index =
                         document.querySelectorAll('.MPDatum').indexOf(day) * 4 +

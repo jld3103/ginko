@@ -111,4 +111,13 @@ class Storage extends StorageBase {
       this.setString(key, json.encode(value));
     }
   }
+
+  @override
+  bool has(String key) {
+    if (_platform.isDesktop) {
+      return _data[key] != null;
+    } else {
+      return _sharedPreferences.containsKey(key);
+    }
+  }
 }

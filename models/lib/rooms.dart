@@ -6,6 +6,7 @@ class Rooms {
     'KLH': 'klH',
     'GRH': 'grH',
     'SB': 'schH',
+    'SCHH': 'schH',
     'PC1': 'PC1',
     'PC2': 'PC2',
     'KU1': 'Ku1',
@@ -14,6 +15,7 @@ class Rooms {
     'AUL': 'Aul',
     'SLZ': 'SLZ',
     'WR': 'WerkR',
+    'WERKR': 'WerkR',
     'TOI': 'Toi',
     '112': '112',
     '113': '113',
@@ -58,23 +60,26 @@ class Rooms {
     '532': '532',
     '533': '533',
     '537': '537',
-    '538': '538'
+    '538': '538',
+    'TOIL': 'WC',
+    'TOILK': 'WC',
+    'WC': 'WC',
   };
+
+  // ignore: public_member_api_docs
+  static Map<String, String> get rooms => _rooms;
 
   /// Gets a room by some variant of it's name
   static String getRoom(String name) {
-    if (name == null) {
-      return null;
+    if (name == '????' || name == '') {
+      return '';
     }
     name = name.trim().toUpperCase();
     if (RegExp('^([ABCDEF])\$').hasMatch(name)) {
       return name;
     }
     if (_rooms[name] == null) {
-      if (name != '') {
-        print('Unknown room $name');
-      }
-      return name;
+      throw Exception('Unknown room $name');
     }
     return _rooms[name];
   }

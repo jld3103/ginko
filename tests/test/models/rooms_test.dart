@@ -14,9 +14,14 @@ void main() {
       expect(Rooms.getRoom(' A '), 'A');
     });
 
-    test('Get unknown room successfully', () {
-      expect(Rooms.getRoom(null), null);
-      expect(Rooms.getRoom('test'), 'TEST');
+    test('Cannot get unknown room without error', () {
+      expect(
+          () => Rooms.getRoom(null), throwsA(TypeMatcher<NoSuchMethodError>()));
+      expect(() => Rooms.getRoom('test'), throwsA(TypeMatcher<Exception>()));
+    });
+
+    test('Get rooms successfully', () {
+      expect(Rooms.rooms.isNotEmpty, true);
     });
   });
 }

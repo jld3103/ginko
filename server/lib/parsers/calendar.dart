@@ -98,7 +98,7 @@ class CalendarParser {
           ? _format.parse(arr[2])
           : start.add(Duration(days: 1)).subtract(Duration(seconds: 1));
       events.add(CalendarEvent(
-        name: arr[0],
+        name: '${arr[0]}ferien',
         type: EventTypes.vacation,
         start: start,
         end: end,
@@ -121,9 +121,8 @@ class CalendarParser {
     events.add(CalendarEvent(
       name: 'Tag der Offenen Tür',
       type: EventTypes.openDoorDay,
-      start: dateFormat.parse(openDoorDay),
-      end: dateFormat
-          .parse(openDoorDay)
+      start: parseDate(openDoorDay),
+      end: parseDate(openDoorDay)
           .add(Duration(days: 1))
           .subtract(Duration(seconds: 1)),
     ));
@@ -352,8 +351,7 @@ class CalendarParser {
         final c =
             d.split('/')[0] + d.split('/')[1].split('.').sublist(1).join('.');
         d = d.split('/')[1];
-        final dates =
-            [a, b, c, d].map((date) => dateFormat.parse(date)).toList();
+        final dates = [a, b, c, d].map(parseDate).toList();
         for (final date in dates) {
           events.add(CalendarEvent(
             name: 'Beratungskonferenz',

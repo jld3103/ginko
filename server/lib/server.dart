@@ -6,6 +6,7 @@ import 'package:models/models.dart';
 import 'package:server/config.dart';
 import 'package:server/data/cafetoria.dart';
 import 'package:server/data/calendar.dart';
+import 'package:server/data/replacementplan.dart';
 import 'package:server/data/unitplan.dart';
 import 'package:server/users.dart';
 
@@ -62,6 +63,20 @@ Future main() async {
                 if (value < CafetoriaData.cafetoria.timeStamp) {
                   data[key] = CafetoriaData.cafetoria.toJSON();
                 }
+              } else if (key == Keys.replacementPlan) {
+                if (value <
+                    ReplacementPlanData.replacementPlan.replacementPlans
+                        .where((replacementPlan) =>
+                            replacementPlan.grade == queryParams[Keys.grade])
+                        .toList()[0]
+                        .timeStamp) {
+                  data[key] = ReplacementPlanData
+                      .replacementPlan.replacementPlans
+                      .where((replacementPlan) =>
+                          replacementPlan.grade == queryParams[Keys.grade])
+                      .toList()[0]
+                      .toJSON();
+                }
               } else {
                 print('$key: $value');
               }
@@ -88,6 +103,7 @@ Future main() async {
 
 /// Setup all data
 Future setup() async {
+  await setupDateFormats();
   Config.load();
   print('Config loaded');
   Users.load();
@@ -98,5 +114,10 @@ Future setup() async {
   print('Calendar loaded');
   await CafetoriaData.load();
   print('Cafetoria loaded');
-  Timer.periodic(Duration(minutes: 1), (a) {});
+  await ReplacementPlanData.load();
+  print('Replacement plan loaded');
+  Timer.periodic(Duration(minutes: 1), (a) async {
+    await ReplacementPlanData.load();
+    print('Replacement plan reloaded');
+  });
 }

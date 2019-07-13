@@ -1,4 +1,7 @@
 
+# 2019-07-13  
+ jld3103: Add replacement plan and remove unusable tests  
+
 # 2019-07-08  
  jld3103: Add git hooks to setup script  
  jld3103: Add better layout for extra information on non mobile  

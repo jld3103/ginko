@@ -6,6 +6,7 @@ doc/api/
 .pub-cache/
 .pub/
 build/
+doc/
 *.class
 *.log
 *.pyc

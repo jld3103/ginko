@@ -16,9 +16,28 @@ void main() {
       expect(weekdays.length, 5);
     });
 
-    test('Dateformat converts correctly', () {
-      expect(dateFormat.format(DateTime(2019, 7, 5)), '5.7.2019');
-      expect(dateFormat.parse('5.7.2019'), DateTime(2019, 7, 5));
+    test('Dateformat converts correctly', () async {
+      await setupDateFormats();
+      expect(outputDateFormat.format(DateTime(2019, 7, 5)), '5.7.2019');
+      expect(parseDate('5.7.2019'), DateTime(2019, 7, 5));
+      expect(parseDate('5.7.19'), DateTime(2019, 7, 5));
+      expect(parseDate('5. Juli 2019'), DateTime(2019, 7, 5));
+      expect(
+          () => parseDate('blabla'), throwsA(TypeMatcher<FormatException>()));
+    });
+
+    test('Get correct week a', () {
+      expect(isWeekA(DateTime(2019, 1, 1)), true);
+      expect(isWeekA(DateTime(2019, 1, 8)), false);
+    });
+
+    test('Get senior grades correct', () {
+      expect(isSeniorGrade('5a'), false);
+      expect(isSeniorGrade('7c'), false);
+      expect(isSeniorGrade('9b'), false);
+      expect(isSeniorGrade('EF'), true);
+      expect(isSeniorGrade('Q1'), true);
+      expect(isSeniorGrade('Q2'), true);
     });
   });
 }

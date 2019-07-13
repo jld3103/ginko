@@ -1,5 +1,5 @@
 import 'package:meta/meta.dart';
-import 'package:models/replacementplan.dart';
+import 'package:models/models.dart';
 
 /// UnitPlan class
 /// describes all unit plans for all grades

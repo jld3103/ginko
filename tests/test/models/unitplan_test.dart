@@ -349,8 +349,8 @@ void main() {
         [unitPlanDay.toJSON()],
       );
       expect(
-        unitPlanForGrade.date.millisecondsSinceEpoch ~/ 1000,
         unitPlanForGrade.timeStamp,
+        unitPlanForGrade.date.millisecondsSinceEpoch ~/ 1000,
       );
     });
 
@@ -380,8 +380,8 @@ void main() {
         [unitPlanDay.toJSON()],
       );
       expect(
-        unitPlanForGrade.date.millisecondsSinceEpoch ~/ 1000,
         unitPlanForGrade.timeStamp,
+        unitPlanForGrade.date.millisecondsSinceEpoch ~/ 1000,
       );
     });
 
