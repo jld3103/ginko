@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:models/models.dart';
 
+/// UnitPlanExtra class
+/// extras for unit plan parsing
 class UnitPlanExtra {
   /// Merge all unit plans for a and b weeks
   static UnitPlan mergeUnitPlans(List<UnitPlan> unitPlans) {

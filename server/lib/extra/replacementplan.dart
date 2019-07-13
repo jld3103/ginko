@@ -1,5 +1,7 @@
 import 'package:models/models.dart';
 
+/// ReplacementPlanExtra class
+/// extras for replacement plan parsing
 class ReplacementPlanExtra {
   /// Merge all replacement plans for two days
   static ReplacementPlan mergeReplacementPlans(
