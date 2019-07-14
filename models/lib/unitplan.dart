@@ -1,5 +1,4 @@
 import 'package:meta/meta.dart';
-import 'package:models/models.dart';
 
 /// UnitPlan class
 /// describes all unit plans for all grades
@@ -72,15 +71,12 @@ class UnitPlanDay {
   // ignore: public_member_api_docs
   UnitPlanDay({
     @required this.weekday,
-    @required this.replacementPlan,
     @required this.lessons,
   });
 
   /// Creates a UnitPlanDay object from json
   factory UnitPlanDay.fromJSON(json) => UnitPlanDay(
         weekday: json['weekday'],
-        replacementPlan:
-            UnitPlanDayReplacementPlan.fromJSON(json['replacementPlan']),
         lessons: json['lessons']
             .map((i) => Lesson.fromJSON(i))
             .toList()
@@ -90,7 +86,6 @@ class UnitPlanDay {
   /// Creates json from a UnitPlanDay object
   Map<String, dynamic> toJSON() => {
         'weekday': weekday,
-        'replacementPlan': replacementPlan.toJSON(),
         'lessons': lessons.map((i) => i.toJSON()).toList(),
       };
 
@@ -98,45 +93,7 @@ class UnitPlanDay {
   int weekday;
 
   // ignore: public_member_api_docs
-  UnitPlanDayReplacementPlan replacementPlan;
-
-  // ignore: public_member_api_docs
   List<Lesson> lessons;
-}
-
-/// UnitPlanDayReplacementPlan class
-/// describes the replacement plan for a day of a unit plan
-class UnitPlanDayReplacementPlan {
-  // ignore: public_member_api_docs
-  UnitPlanDayReplacementPlan({
-    @required this.applies,
-    @required this.updated,
-    @required this.weekA,
-  });
-
-  /// Creates a UnitPlanDayReplacementPlan object from json
-  factory UnitPlanDayReplacementPlan.fromJSON(json) =>
-      UnitPlanDayReplacementPlan(
-        applies: json['applies'] == '' ? null : DateTime.parse(json['applies']),
-        updated: json['updated'] == '' ? null : DateTime.parse(json['updated']),
-        weekA: json['weekA'],
-      );
-
-  /// Creates json from a UnitPlanDayReplacementPlan object
-  Map<String, dynamic> toJSON() => {
-        'applies': applies == null ? '' : applies.toIso8601String(),
-        'updated': updated == null ? '' : updated.toIso8601String(),
-        'weekA': weekA ?? true,
-      };
-
-  // ignore: public_member_api_docs
-  DateTime applies;
-
-  // ignore: public_member_api_docs
-  DateTime updated;
-
-  // ignore: public_member_api_docs
-  bool weekA;
 }
 
 /// Lesson class
@@ -184,10 +141,9 @@ class Subject {
     @required this.teacher,
     @required this.subject,
     @required this.room,
-    @required this.course,
-    @required this.changes,
     @required this.weeks,
     @required this.unit,
+    this.course,
   });
 
   /// Creates a Subject object from json
@@ -196,8 +152,6 @@ class Subject {
         subject: json['subject'],
         room: json['room'],
         course: json['course'],
-        changes:
-            json['changes'].map((i) => i.fromJSON()).toList().cast<Change>(),
         weeks: json['weeks'],
         unit: unit,
       );
@@ -208,7 +162,6 @@ class Subject {
         'subject': subject,
         'room': room,
         'course': course,
-        'changes': changes.map((i) => i.toJSON()).toList(),
         'weeks': weeks,
       };
 
@@ -226,9 +179,6 @@ class Subject {
 
   // ignore: public_member_api_docs
   String course;
-
-  // ignore: public_member_api_docs
-  List<Change> changes;
 
   // ignore: public_member_api_docs
   String weeks;

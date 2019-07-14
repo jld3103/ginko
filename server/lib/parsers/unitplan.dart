@@ -64,11 +64,6 @@ class UnitPlanParser {
           final day = table.indexOf(column);
           var lastUnit = 0;
           return UnitPlanDay(
-            replacementPlan: UnitPlanDayReplacementPlan(
-              weekA: null,
-              updated: null,
-              applies: null,
-            ),
             weekday: day,
             lessons: column.reversed
                 .map((lesson) {
@@ -95,8 +90,6 @@ class UnitPlanParser {
                         Subject(
                           weeks: null,
                           teacher: null,
-                          changes: <Change>[],
-                          course: null,
                           room: null,
                           subject: 'MIT',
                           unit: 5,
@@ -117,8 +110,6 @@ class UnitPlanParser {
                                     }
                                     if (block != null) {
                                       return Subject(
-                                        changes: <Change>[],
-                                        course: null,
                                         room: Rooms.getRoom(subject[2]),
                                         subject: Subjects.getSubject(
                                             subject[0] == ''
@@ -133,8 +124,6 @@ class UnitPlanParser {
                                     }
                                     //print(subject);
                                     return Subject(
-                                      changes: <Change>[],
-                                      course: null,
                                       room: Rooms.getRoom(subject[2]),
                                       subject: Subjects.getSubject(subject[1]),
                                       weeks: null,
@@ -149,8 +138,6 @@ class UnitPlanParser {
                                       weeks: null,
                                       teacher: null,
                                       subject: 'FR',
-                                      changes: <Change>[],
-                                      course: null,
                                       room: null,
                                       unit: unit,
                                     )

@@ -163,6 +163,113 @@ void main() {
       expect(Change.fromJSON(change.toJSON()).toJSON(), change.toJSON());
     });
 
+    test('Can apply filter', () {
+      final changes = [
+        Change(
+          date: DateTime(2019, 7, 8),
+          unit: 0,
+          subject: 'EK',
+          room: '525',
+          teacher: 'KRA',
+          changed: Changed(),
+          type: ChangeTypes.unknown,
+        ),
+        Change(
+          date: DateTime(2019, 7, 8),
+          unit: 0,
+          subject: 'EK',
+          room: '526',
+          teacher: 'STA',
+          changed: Changed(),
+          type: ChangeTypes.unknown,
+        ),
+        Change(
+          date: DateTime(2019, 7, 8),
+          unit: 0,
+          subject: 'PK',
+          room: '527',
+          teacher: 'KRA',
+          changed: Changed(),
+          type: ChangeTypes.unknown,
+        ),
+        Change(
+          date: DateTime(2019, 7, 8),
+          unit: 0,
+          subject: 'KR',
+          room: '527',
+          teacher: 'LIC',
+          changed: Changed(),
+          type: ChangeTypes.unknown,
+        ),
+        Change(
+          date: DateTime(2019, 7, 8),
+          unit: 0,
+          room: '527',
+          changed: Changed(),
+          type: ChangeTypes.unknown,
+        ),
+        Change(
+          date: DateTime(2019, 7, 8),
+          unit: 1,
+          room: '527',
+          changed: Changed(),
+          type: ChangeTypes.unknown,
+        ),
+      ];
+      final unitPlanForGrade = UnitPlanForGrade(
+        grade: 'EF',
+        date: DateTime(2019, 7, 7),
+        days: [
+          UnitPlanDay(
+            weekday: 0,
+            lessons: [
+              Lesson(
+                unit: 0,
+                block: 'EFa',
+                subjects: [
+                  Subject(
+                    subject: 'EK',
+                    room: '525',
+                    teacher: 'KRA',
+                    unit: 0,
+                    weeks: 'AB',
+                  ),
+                  Subject(
+                    subject: 'EK',
+                    room: '526',
+                    teacher: 'STA',
+                    unit: 0,
+                    weeks: 'AB',
+                  ),
+                  Subject(
+                    subject: 'PK',
+                    room: '527',
+                    teacher: 'KRA',
+                    unit: 0,
+                    weeks: 'AB',
+                  ),
+                  Subject(
+                    subject: 'KR',
+                    room: '527',
+                    teacher: 'LIC',
+                    unit: 0,
+                    weeks: 'AB',
+                  ),
+                ],
+              )
+            ],
+          ),
+        ],
+      );
+      expect(changes[0].getMatchingClasses(unitPlanForGrade).length, 1);
+      expect(changes[1].getMatchingClasses(unitPlanForGrade).length, 1);
+      expect(changes[2].getMatchingClasses(unitPlanForGrade).length, 1);
+      expect(changes[3].getMatchingClasses(unitPlanForGrade).length, 1);
+      expect(() => changes[4].getMatchingClasses(unitPlanForGrade),
+          throwsA(TypeMatcher<Exception>()));
+      expect(changes[5].getMatchingClasses(unitPlanForGrade).length, 0);
+    });
+
     test('Can create replacement plan day', () {
       final day = ReplacementPlanDay(
         date: DateTime(2019, 7, 12),

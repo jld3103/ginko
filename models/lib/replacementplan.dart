@@ -1,4 +1,5 @@
 import 'package:meta/meta.dart';
+import 'package:models/models.dart';
 
 /// Change class
 /// describes all replacement plans for all grades
@@ -110,7 +111,7 @@ class Change {
     this.room,
     this.teacher,
     this.changed,
-    this.type = ChangeTypes.unknown,
+    this.type,
   });
 
   /// Creates a Change object from json
@@ -134,8 +135,40 @@ class Change {
         'room': room,
         'teacher': teacher,
         'changed': changed?.toJSON(),
-        'type': type.index,
+        'type': type?.index,
       };
+
+  /// Get all subject indexes in a lesson that match the change
+  List<int> getMatchingClasses(UnitPlanForGrade unitPlanForGrade) {
+    try {
+      final lesson = unitPlanForGrade.days[date.weekday - 1].lessons[unit];
+      var subjects = lesson.subjects;
+      // TODO(jl3103): Add exam filter
+      if (type != ChangeTypes.exam && type != ChangeTypes.rewriteExam) {
+        if (subject != null &&
+            subjects.where((s) => s.subject == subject).toList().isNotEmpty) {
+          subjects = subjects.where((s) => s.subject == subject).toList();
+        }
+        if (teacher != null &&
+            subjects.where((s) => s.teacher == teacher).toList().isNotEmpty) {
+          subjects = subjects.where((s) => s.teacher == teacher).toList();
+        }
+        if (room != null &&
+            subjects.where((s) => s.room == room).toList().isNotEmpty) {
+          subjects = subjects.where((s) => s.room == room).toList();
+        }
+        if (subjects.length != 1) {
+          throw Exception();
+        }
+      }
+      return subjects
+          .map((subject) => lesson.subjects.indexOf(subject))
+          .toList();
+      // ignore: avoid_catching_errors
+    } on RangeError {
+      return [];
+    }
+  }
 
   // ignore: public_member_api_docs
   DateTime date;
@@ -227,6 +260,4 @@ enum ChangeTypes {
   classTeaching,
   // ignore: public_member_api_docs
   remainingLesson,
-  // ignore: public_member_api_docs
-  readyForReplacement, // Shouldn't be on the pupils replacement plan
 }

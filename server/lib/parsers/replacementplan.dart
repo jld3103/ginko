@@ -180,7 +180,7 @@ class ReplacementPlanParser {
           change.subject = Subjects.getSubject(change.subject);
           // ignore: avoid_catches_without_on_clauses
         } catch (e) {
-          if (change.exam != ChangeTypes.rewriteExam) {
+          if (change.type != ChangeTypes.rewriteExam) {
             print(change.toJSON());
             rethrow;
           }
@@ -199,7 +199,7 @@ class ReplacementPlanParser {
           change.room = Rooms.getRoom(change.room);
           // ignore: avoid_catches_without_on_clauses
         } catch (e) {
-          if (change.exam == ChangeTypes.unknown) {
+          if (change.type == null) {
             print(change.toJSON());
             rethrow;
           }
@@ -213,7 +213,8 @@ class ReplacementPlanParser {
             rethrow;
           }
         }
-        if (change.type == ChangeTypes.unknown) {
+        // ignore: invariant_booleans
+        if (change.type == null) {
           throw Exception('Change type not set: ${change.toJSON()}');
         }
       }
@@ -252,7 +253,7 @@ class ReplacementPlanParser {
         subject: normal.split(' ')[0],
         course: normal.split(' ')[1],
         room: normal.split(' ')[2],
-        type: ChangeTypes.readyForReplacement,
+        type: ChangeTypes.unknown,
       ));
     }
     if (normal.contains('nach')) {

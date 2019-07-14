@@ -5,7 +5,7 @@ import 'package:server/parsers/unitplan.dart';
 // ignore: avoid_classes_with_only_static_members
 /// UnitPlanData class
 /// handles all unit plan storing
-class UnitPlanData extends UnitPlanParser {
+class UnitPlanData {
   // ignore: public_member_api_docs
   static UnitPlan unitPlan;
 

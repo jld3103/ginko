@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:html/parser.dart';
 import 'package:models/models.dart';
 import 'package:server/config.dart';
+import 'package:server/data/unitplan.dart';
 import 'package:server/extra/replacementplan.dart';
 import 'package:server/parsers/replacementplan.dart';
 
@@ -27,13 +29,29 @@ class ReplacementPlanData {
         ),
       );
     }
+    final previous = replacementPlan;
     replacementPlan = ReplacementPlanExtra.mergeReplacementPlans(
         plans.cast<ReplacementPlan>());
+    if (previous != null &&
+        json.encode(previous.toJSON()) !=
+            json.encode(replacementPlan.toJSON())) {
+      print('Fire notifications!');
+    } else {
+      print('Nothing changed');
+    }
+    for (final replacementPlanForGrade in replacementPlan.replacementPlans) {
+      for (final change in replacementPlanForGrade.changes) {
+        change.getMatchingClasses(UnitPlanData
+            .unitPlan.unitPlans[grades.indexOf(replacementPlanForGrade.grade)]);
+      }
+    }
   }
 }
 
 Future main(List<String> arguments) async {
   await setupDateFormats();
+  Config.load();
+  await UnitPlanData.load();
   if (arguments.isNotEmpty) {
     var files = [];
     for (final arg in arguments) {
@@ -52,10 +70,16 @@ Future main(List<String> arguments) async {
         .where((file) => File(file).existsSync())
         .toList()) {
       //print(file);
-      ReplacementPlanParser.extract(parse(File(file).readAsStringSync()));
+      final replacementPlansForGrade =
+          ReplacementPlanParser.extract(parse(File(file).readAsStringSync()));
+      for (final replacementPlanForGrade in replacementPlansForGrade) {
+        for (final change in replacementPlanForGrade.changes) {
+          change.getMatchingClasses(UnitPlanData.unitPlan
+              .unitPlans[grades.indexOf(replacementPlanForGrade.grade)]);
+        }
+      }
     }
   } else {
-    Config.load();
     await ReplacementPlanData.load();
   }
 }

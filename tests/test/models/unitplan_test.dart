@@ -9,7 +9,6 @@ void main() {
         subject: 'EK',
         room: '525',
         course: 'GK1',
-        changes: [],
         weeks: 'AB',
         unit: 0,
       );
@@ -17,7 +16,6 @@ void main() {
       expect(subject.subject, 'EK');
       expect(subject.room, '525');
       expect(subject.course, 'GK1');
-      expect(subject.changes, []);
       expect(subject.weeks, 'AB');
       expect(subject.unit, 0);
       expect(subject.identifier, '${subject.teacher}-${subject.subject}');
@@ -36,7 +34,6 @@ void main() {
       expect(subject.subject, 'EK');
       expect(subject.room, '525');
       expect(subject.course, 'GK1');
-      expect(subject.changes, []);
       expect(subject.weeks, 'AB');
       expect(subject.unit, 0);
       expect(subject.identifier, '${subject.teacher}-${subject.subject}');
@@ -48,7 +45,6 @@ void main() {
         subject: 'EK',
         room: '525',
         course: 'GK1',
-        changes: [],
         weeks: 'AB',
         unit: 0,
       );
@@ -59,7 +55,6 @@ void main() {
           'subject': 'EK',
           'room': '525',
           'course': 'GK1',
-          'changes': [],
           'weeks': 'AB',
         },
       );
@@ -71,7 +66,6 @@ void main() {
         subject: 'EK',
         room: '525',
         course: 'GK1',
-        changes: [],
         weeks: 'AB',
         unit: 0,
       );
@@ -84,7 +78,6 @@ void main() {
         subject: 'EK',
         room: '525',
         course: 'GK1',
-        changes: [],
         weeks: 'AB',
         unit: 0,
       );
@@ -107,7 +100,6 @@ void main() {
         subject: 'EK',
         room: '525',
         course: 'GK1',
-        changes: [],
         weeks: 'AB',
         unit: 0,
       );
@@ -130,7 +122,6 @@ void main() {
         subject: 'EK',
         room: '525',
         course: 'GK1',
-        changes: [],
         weeks: 'AB',
         unit: 0,
       );
@@ -155,7 +146,6 @@ void main() {
         subject: 'EK',
         room: '525',
         course: 'GK1',
-        changes: [],
         weeks: 'AB',
         unit: 0,
       );
@@ -167,66 +157,7 @@ void main() {
       expect(Lesson.fromJSON(lesson.toJSON()).toJSON(), lesson.toJSON());
     });
 
-    test('Can create unit plan day replacement plan', () {
-      final unitPlanDayReplacementPlan = UnitPlanDayReplacementPlan(
-        applies: DateTime(2019, 6, 31),
-        updated: DateTime(2019, 6, 30),
-        weekA: true,
-      );
-      expect(unitPlanDayReplacementPlan.applies, DateTime(2019, 6, 31));
-      expect(unitPlanDayReplacementPlan.updated, DateTime(2019, 6, 30));
-      expect(unitPlanDayReplacementPlan.weekA, true);
-    });
-
-    test('Can create unit plan day replacement plan from JSON', () {
-      final unitPlanDayReplacementPlan = UnitPlanDayReplacementPlan.fromJSON({
-        'applies': DateTime(2019, 6, 31).toIso8601String(),
-        'updated': DateTime(2019, 6, 30).toIso8601String(),
-        'weekA': true,
-      });
-      expect(unitPlanDayReplacementPlan.applies, DateTime(2019, 6, 31));
-      expect(unitPlanDayReplacementPlan.updated, DateTime(2019, 6, 30));
-      expect(unitPlanDayReplacementPlan.weekA, true);
-    });
-
-    test('Can create JSON from unit plan day replacement plan', () {
-      final unitPlanDayReplacementPlan = UnitPlanDayReplacementPlan(
-        applies: DateTime(2019, 6, 31),
-        updated: DateTime(2019, 6, 30),
-        weekA: true,
-      );
-      expect(
-        unitPlanDayReplacementPlan.toJSON(),
-        {
-          'applies': DateTime(2019, 6, 31).toIso8601String(),
-          'updated': DateTime(2019, 6, 30).toIso8601String(),
-          'weekA': true,
-        },
-      );
-    });
-
-    test(
-        // ignore: prefer_adjacent_string_concatenation
-        'Can create unit plan day replacement plan from JSON' +
-            ' from unit plan day replacement plan', () {
-      final unitPlanDayReplacementPlan = UnitPlanDayReplacementPlan(
-        applies: DateTime(2019, 6, 31),
-        updated: DateTime(2019, 6, 30),
-        weekA: true,
-      );
-      expect(
-        UnitPlanDayReplacementPlan.fromJSON(unitPlanDayReplacementPlan.toJSON())
-            .toJSON(),
-        unitPlanDayReplacementPlan.toJSON(),
-      );
-    });
-
     test('Can create unit plan day', () {
-      final unitPlanDayReplacementPlan = UnitPlanDayReplacementPlan(
-        applies: DateTime(2019, 6, 31),
-        updated: DateTime(2019, 6, 30),
-        weekA: true,
-      );
       final lesson = Lesson(
         unit: 0,
         block: 'test',
@@ -234,14 +165,9 @@ void main() {
       );
       final unitPlanDay = UnitPlanDay(
         weekday: 0,
-        replacementPlan: unitPlanDayReplacementPlan,
         lessons: [lesson],
       );
       expect(unitPlanDay.weekday, 0);
-      expect(
-        unitPlanDay.replacementPlan.toJSON(),
-        unitPlanDayReplacementPlan.toJSON(),
-      );
       expect(
         unitPlanDay.lessons.map((lesson) => lesson.toJSON()).toList(),
         [lesson.toJSON()],
@@ -249,11 +175,6 @@ void main() {
     });
 
     test('Can create unit plan day from JSON', () {
-      final unitPlanDayReplacementPlan = UnitPlanDayReplacementPlan(
-        applies: DateTime(2019, 6, 31),
-        updated: DateTime(2019, 6, 30),
-        weekA: true,
-      );
       final lesson = Lesson(
         unit: 0,
         block: 'test',
@@ -261,14 +182,9 @@ void main() {
       );
       final unitPlanDay = UnitPlanDay.fromJSON({
         'weekday': 0,
-        'replacementPlan': unitPlanDayReplacementPlan.toJSON(),
         'lessons': [lesson.toJSON()],
       });
       expect(unitPlanDay.weekday, 0);
-      expect(
-        unitPlanDay.replacementPlan.toJSON(),
-        unitPlanDayReplacementPlan.toJSON(),
-      );
       expect(
         unitPlanDay.lessons.map((lesson) => lesson.toJSON()).toList(),
         [lesson.toJSON()],
@@ -276,11 +192,6 @@ void main() {
     });
 
     test('Can create JSON from unit plan day', () {
-      final unitPlanDayReplacementPlan = UnitPlanDayReplacementPlan(
-        applies: DateTime(2019, 6, 31),
-        updated: DateTime(2019, 6, 30),
-        weekA: true,
-      );
       final lesson = Lesson(
         unit: 0,
         block: 'test',
@@ -288,25 +199,18 @@ void main() {
       );
       final unitPlanDay = UnitPlanDay(
         weekday: 0,
-        replacementPlan: unitPlanDayReplacementPlan,
         lessons: [lesson],
       );
       expect(
         unitPlanDay.toJSON(),
         {
           'weekday': 0,
-          'replacementPlan': unitPlanDayReplacementPlan.toJSON(),
           'lessons': [lesson.toJSON()],
         },
       );
     });
 
     test('Can create unit plan day from JSON from unit plan day', () {
-      final unitPlanDayReplacementPlan = UnitPlanDayReplacementPlan(
-        applies: DateTime(2019, 6, 31),
-        updated: DateTime(2019, 6, 30),
-        weekA: true,
-      );
       final lesson = Lesson(
         unit: 0,
         block: 'test',
@@ -314,7 +218,6 @@ void main() {
       );
       final unitPlanDay = UnitPlanDay(
         weekday: 0,
-        replacementPlan: unitPlanDayReplacementPlan,
         lessons: [lesson],
       );
       expect(
@@ -324,14 +227,8 @@ void main() {
     });
 
     test('Can create unit plan for grade', () {
-      final unitPlanDayReplacementPlan = UnitPlanDayReplacementPlan(
-        applies: DateTime(2019, 6, 31),
-        updated: DateTime(2019, 6, 30),
-        weekA: true,
-      );
       final unitPlanDay = UnitPlanDay(
         weekday: 0,
-        replacementPlan: unitPlanDayReplacementPlan,
         lessons: [],
       );
       final unitPlanForGrade = UnitPlanForGrade(
@@ -355,14 +252,8 @@ void main() {
     });
 
     test('Can create unit plan for grade from JSON', () {
-      final unitPlanDayReplacementPlan = UnitPlanDayReplacementPlan(
-        applies: DateTime(2019, 6, 31),
-        updated: DateTime(2019, 6, 30),
-        weekA: true,
-      );
       final unitPlanDay = UnitPlanDay(
         weekday: 0,
-        replacementPlan: unitPlanDayReplacementPlan,
         lessons: [],
       );
       final unitPlanForGrade = UnitPlanForGrade.fromJSON({
@@ -386,14 +277,8 @@ void main() {
     });
 
     test('Can create JSON from unit plan for grade', () {
-      final unitPlanDayReplacementPlan = UnitPlanDayReplacementPlan(
-        applies: DateTime(2019, 6, 31),
-        updated: DateTime(2019, 6, 30),
-        weekA: true,
-      );
       final unitPlanDay = UnitPlanDay(
         weekday: 0,
-        replacementPlan: unitPlanDayReplacementPlan,
         lessons: [],
       );
       final unitPlanForGrade = UnitPlanForGrade(
@@ -415,14 +300,8 @@ void main() {
         // ignore: prefer_adjacent_string_concatenation
         'Can create unit plan for grade from JSON' +
             ' from unit plan for grade', () {
-      final unitPlanDayReplacementPlan = UnitPlanDayReplacementPlan(
-        applies: DateTime(2019, 6, 31),
-        updated: DateTime(2019, 6, 30),
-        weekA: true,
-      );
       final unitPlanDay = UnitPlanDay(
         weekday: 0,
-        replacementPlan: unitPlanDayReplacementPlan,
         lessons: [],
       );
       final unitPlanForGrade = UnitPlanForGrade(
@@ -437,14 +316,8 @@ void main() {
     });
 
     test('Can create unit plan', () {
-      final unitPlanDayReplacementPlan = UnitPlanDayReplacementPlan(
-        applies: DateTime(2019, 6, 31),
-        updated: DateTime(2019, 6, 30),
-        weekA: true,
-      );
       final unitPlanDay = UnitPlanDay(
         weekday: 0,
-        replacementPlan: unitPlanDayReplacementPlan,
         lessons: [],
       );
       final unitPlanForGrade = UnitPlanForGrade(
@@ -464,14 +337,8 @@ void main() {
     });
 
     test('Can create unit plan from JSON', () {
-      final unitPlanDayReplacementPlan = UnitPlanDayReplacementPlan(
-        applies: DateTime(2019, 6, 31),
-        updated: DateTime(2019, 6, 30),
-        weekA: true,
-      );
       final unitPlanDay = UnitPlanDay(
         weekday: 0,
-        replacementPlan: unitPlanDayReplacementPlan,
         lessons: [],
       );
       final unitPlanForGrade = UnitPlanForGrade(
@@ -491,14 +358,8 @@ void main() {
     });
 
     test('Can create JSON from unit plan', () {
-      final unitPlanDayReplacementPlan = UnitPlanDayReplacementPlan(
-        applies: DateTime(2019, 6, 31),
-        updated: DateTime(2019, 6, 30),
-        weekA: true,
-      );
       final unitPlanDay = UnitPlanDay(
         weekday: 0,
-        replacementPlan: unitPlanDayReplacementPlan,
         lessons: [],
       );
       final unitPlanForGrade = UnitPlanForGrade(
@@ -518,14 +379,8 @@ void main() {
     });
 
     test('Can create unit plan from JSON from unit plan', () {
-      final unitPlanDayReplacementPlan = UnitPlanDayReplacementPlan(
-        applies: DateTime(2019, 6, 31),
-        updated: DateTime(2019, 6, 30),
-        weekA: true,
-      );
       final unitPlanDay = UnitPlanDay(
         weekday: 0,
-        replacementPlan: unitPlanDayReplacementPlan,
         lessons: [],
       );
       final unitPlanForGrade = UnitPlanForGrade(

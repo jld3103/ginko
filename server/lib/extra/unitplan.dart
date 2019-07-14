@@ -50,11 +50,6 @@ class UnitPlanExtra {
                                 .block,
                             unit: j,
                           )),
-                  replacementPlan: UnitPlanDayReplacementPlan(
-                    applies: null,
-                    weekA: null,
-                    updated: null,
-                  ),
                 ));
         for (var day = 0; day < 5; day++) {
           final dayA = unitPlans[0]
@@ -147,8 +142,6 @@ class UnitPlanExtra {
                       weeks: i == 0 ? 'A' : 'B',
                       teacher: null,
                       subject: 'FR',
-                      changes: <Change>[],
-                      course: null,
                       room: null,
                       unit: unit,
                     ));

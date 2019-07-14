@@ -151,8 +151,6 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
                               teacher: null,
                               weeks: null,
                               room: null,
-                              course: null,
-                              changes: <Change>[],
                               unit: lesson.unit,
                             );
                       return GestureDetector(
