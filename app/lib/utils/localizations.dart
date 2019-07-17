@@ -24,6 +24,7 @@ class AppLocalization {
       'home': {
         'offline': 'Eventuell werden alte Daten angezeigt',
         'week': 'Woche',
+        'newReplacementPlan': 'Neuer Vertretungsplan!',
       },
       'login': {
         'username_required': 'Benutzername erforderlich',
@@ -103,6 +104,10 @@ class AppLocalization {
 
   // ignore: public_member_api_docs
   String get homeWeek => _localizedValues[_locale.languageCode]['home']['week'];
+
+  // ignore: public_member_api_docs
+  String get homeNewReplacementPlan =>
+      _localizedValues[_locale.languageCode]['home']['newReplacementPlan'];
 
   // ignore: public_member_api_docs
   String get loginUsernameRequired =>

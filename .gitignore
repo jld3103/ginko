@@ -78,3 +78,5 @@ server/js/node_modules
 
 config.json
 users.json
+
+google-services.json

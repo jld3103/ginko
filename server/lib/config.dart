@@ -20,6 +20,9 @@ class Config {
   static String cafetoriaPassword;
 
   // ignore: public_member_api_docs
+  static String fcmServerKey;
+
+  // ignore: public_member_api_docs
   static Map<String, String> headers;
 
   /// Load all config
@@ -35,6 +38,7 @@ class Config {
     password = data['password'];
     cafetoriaUsername = data['cafetoriaUsername'];
     cafetoriaPassword = data['cafetoriaPassword'];
+    fcmServerKey = data['fcmServerKey'];
     headers = {
       'authorization':
           // ignore: lines_longer_than_80_chars

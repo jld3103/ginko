@@ -28,7 +28,7 @@ class Cafetoria {
 
   /// Get the time stamp of this object
   int get timeStamp =>
-      days.isNotEmpty ? days[0].date.millisecondsSinceEpoch ~/ 1000 : 0;
+      days.isNotEmpty ? days[0].date.millisecondsSinceEpoch ~/ 1000 : 1;
 
   // ignore: public_member_api_docs
   final double saldo;

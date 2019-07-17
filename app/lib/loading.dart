@@ -1,8 +1,5 @@
-import 'dart:async';
-
 import 'package:app/utils/data.dart';
 import 'package:app/utils/localizations.dart';
-import 'package:app/utils/selection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_platform/flutter_platform.dart';
@@ -22,7 +19,7 @@ class LoadingState extends State<Loading> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((a) {
       if (Platform().isAndroid) {
-        MethodChannel('ginko').invokeMethod('applyTheme', {
+        MethodChannel('de.ginko.app').invokeMethod('applyTheme', {
           'color': Theme.of(context)
               .primaryColor
               .value
@@ -38,17 +35,8 @@ class LoadingState extends State<Loading> {
         Navigator.of(context).pushReplacementNamed('/login');
         return;
       }
-      var canceled = false;
-      Timer timer;
-      timer = Timer.periodic(Duration(milliseconds: 10), (a) {
-        if (Data.unitPlan != null && Data.calendar != null && !canceled) {
-          canceled = true;
-          timer.cancel();
-          Selection.load();
-          Navigator.of(context).pop();
-          Navigator.of(context).pushReplacementNamed('/home');
-        }
-      });
+      Navigator.of(context).pop();
+      Navigator.of(context).pushReplacementNamed('/home');
     });
     super.initState();
   }

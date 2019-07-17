@@ -7,6 +7,7 @@ import 'package:app/views/replacementplan/row.dart';
 import 'package:app/views/unitplan/row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_platform/flutter_platform.dart';
 import 'package:models/models.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -24,6 +25,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   PanelController _panelController;
   TabController _tabController;
   int _weekday;
+  static final _channel = MethodChannel('de.ginko.app');
 
   /// Get the date of the current selected tab
   DateTime get getDate => getMonday.add(Duration(days: _weekday));
@@ -63,8 +65,28 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
           content: Text(AppLocalization.of(context).homeOffline),
         ));
       }
+      if (Platform().isAndroid) {
+        Data.firebaseMessaging
+          ..requestNotificationPermissions()
+          ..configure(
+            onLaunch: (message) async {
+              print('onLaunch: $message');
+            },
+            onResume: (message) async {
+              print('onResume: $message');
+            },
+          );
+        _channel.setMethodCallHandler(_handleNotification);
+      }
     });
     super.initState();
+  }
+
+  Future _handleNotification(MethodCall call) async {
+    print(call);
+    Scaffold.of(context).showSnackBar(SnackBar(
+      content: Text(AppLocalization.of(context).homeNewReplacementPlan),
+    ));
   }
 
   @override
@@ -191,7 +213,11 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
                                             .add(Duration(days: weekday)) &&
                                     change.unit ==
                                         Data.unitPlan.days[weekday].lessons
-                                            .indexOf(lesson))
+                                            .indexOf(lesson) &&
+                                    change
+                                            .getMatchingClasses(Data.unitPlan)
+                                            .identifier ==
+                                        subject.identifier)
                                 .map((change) => Container(
                                       margin: EdgeInsets.only(left: 15),
                                       child: ReplacementPlanRow(

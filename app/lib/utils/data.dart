@@ -2,7 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:app/utils/static.dart';
-import 'package:crypto/crypto.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_platform/flutter_platform.dart';
 import 'package:http/http.dart';
 import 'package:models/models.dart';
 
@@ -28,6 +29,26 @@ class Data {
 
   // ignore: public_member_api_docs
   static ReplacementPlanForGrade replacementPlan;
+
+  static User _user;
+
+  // ignore: public_member_api_docs
+  static final FirebaseMessaging firebaseMessaging = FirebaseMessaging();
+
+  // ignore: public_member_api_docs, avoid_setters_without_getters
+  static set user(User user) {
+    _user = user;
+    Static.storage.setJSON(Keys.user, user.toJSON());
+  }
+
+  // ignore: public_member_api_docs
+  static String getSelection(String key) => _user.getSelection(key);
+
+  // ignore: public_member_api_docs
+  static void setSelection(String key, String value) {
+    _user.setSelection(key, value);
+    _updateUser();
+  }
 
   /// Setup the config of the server
   static void setup([int port, String host, String protocol]) {
@@ -59,6 +80,20 @@ class Data {
     return null;
   }
 
+  static Future _updateUser() async {
+    print('Updating user');
+    Static.storage.setJSON(Keys.user, _user.toJSON());
+    final parameters = {
+      Keys.user: json.encode(_user?.toEncryptedJSON()),
+    };
+    print(parameters);
+    try {
+      await Client().get(
+          '$baseUrl/?${parameters.keys.map((name) => '$name=${parameters[name]}').join('&')}');
+      // ignore: empty_catches
+    } on Exception {}
+  }
+
   /// Load all the data from the server
   static Future<int> load() async {
     if (Static.storage.has(Keys.unitPlan)) {
@@ -75,19 +110,21 @@ class Data {
       replacementPlan = ReplacementPlanForGrade.fromJSON(
           Static.storage.getJSON(Keys.replacementPlan));
     }
+    if (Static.storage.has(Keys.user)) {
+      _user = User.fromJSON(Static.storage.getJSON(Keys.user));
+      if (Platform().isAndroid) {
+        _user.tokens = (_user.tokens..add(await firebaseMessaging.getToken()))
+            .toSet()
+            .toList();
+      }
+    }
     final parameters = {
-      Keys.username: sha256
-          .convert(utf8.encode(Static.storage.getString(Keys.username) ?? ''))
-          .toString(),
-      Keys.password: sha256
-          .convert(utf8.encode(Static.storage.getString(Keys.password) ?? ''))
-          .toString(),
-      Keys.grade: Static.storage.getString(Keys.grade) ?? '',
       Keys.unitPlan: unitPlan == null ? 0 : unitPlan.timeStamp,
       Keys.calendar: calendar == null ? 0 : calendar.timeStamp,
       Keys.cafetoria: cafetoria == null ? 0 : cafetoria.timeStamp,
       Keys.replacementPlan:
           replacementPlan == null ? 0 : replacementPlan.timeStamp,
+      Keys.user: json.encode(_user?.toEncryptedJSON()),
     };
 
     try {
@@ -118,6 +155,34 @@ class Data {
             ReplacementPlanForGrade.fromJSON(data[Keys.replacementPlan]);
         Static.storage
             .setJSON(Keys.replacementPlan, data[Keys.replacementPlan]);
+      }
+      if (data[Keys.user] != null) {
+        user = User.fromJSON(data[Keys.user]);
+        Static.storage.setJSON(Keys.user, data[Keys.user]);
+      }
+
+      var updatedSelection = false;
+      if (unitPlan != null) {
+        for (final day in unitPlan.days) {
+          for (final lesson in day.lessons) {
+            if (lesson.subjects.length == 1 &&
+                _user.getSelection(Keys.selection(lesson.block, true)) ==
+                    null &&
+                _user.getSelection(Keys.selection(lesson.block, false)) ==
+                    null) {
+              _user
+                ..setSelection(Keys.selection(lesson.block, true),
+                    lesson.subjects[0].identifier)
+                ..setSelection(Keys.selection(lesson.block, false),
+                    lesson.subjects[0].identifier);
+              updatedSelection = true;
+            }
+          }
+        }
+      }
+      if (updatedSelection) {
+        // ignore: unawaited_futures
+        _updateUser();
       }
       online = true;
       return 0;

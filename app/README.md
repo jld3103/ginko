@@ -1,3 +1,3 @@
-# native
+# app
 
 The Ginko app

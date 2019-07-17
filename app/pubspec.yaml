@@ -16,6 +16,7 @@ dependencies:
   flutter_svg: ^0.13.0+1
   intl: ^0.15.8
   sliding_up_panel: ^0.3.4
+  firebase_messaging: ^5.1.0
   models:
     path: ../models
   flutter_platform:
@@ -61,8 +62,3 @@ flutter:
       fonts:
         - asset: fonts/Material-Icons/MaterialIcons-Regular.ttf
           weight: 400
-
-flutter_icons:
-  android: true
-  ios: true
-  image_path: "images/logo_green.png"

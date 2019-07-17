@@ -1,4 +1,7 @@
 
+# 2019-07-17  
+ jld3103: Add replacement plan notifications and apply filter  
+
 # 2019-07-14  
  jld3103: Add replacement plan filter  
 

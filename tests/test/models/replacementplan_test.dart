@@ -261,13 +261,13 @@ void main() {
           ),
         ],
       );
-      expect(changes[0].getMatchingClasses(unitPlanForGrade).length, 1);
-      expect(changes[1].getMatchingClasses(unitPlanForGrade).length, 1);
-      expect(changes[2].getMatchingClasses(unitPlanForGrade).length, 1);
-      expect(changes[3].getMatchingClasses(unitPlanForGrade).length, 1);
+      expect(changes[0].getMatchingClasses(unitPlanForGrade) != null, true);
+      expect(changes[1].getMatchingClasses(unitPlanForGrade) != null, true);
+      expect(changes[2].getMatchingClasses(unitPlanForGrade) != null, true);
+      expect(changes[3].getMatchingClasses(unitPlanForGrade) != null, true);
       expect(() => changes[4].getMatchingClasses(unitPlanForGrade),
           throwsA(TypeMatcher<Exception>()));
-      expect(changes[5].getMatchingClasses(unitPlanForGrade).length, 0);
+      expect(changes[5].getMatchingClasses(unitPlanForGrade) == null, true);
     });
 
     test('Can create replacement plan day', () {

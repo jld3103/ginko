@@ -11,6 +11,7 @@ export 'package:models/rooms.dart';
 export 'package:models/subjects.dart';
 export 'package:models/times.dart';
 export 'package:models/unitplan.dart';
+export 'package:models/user.dart';
 
 /// List of all grades
 List<String> grades = [

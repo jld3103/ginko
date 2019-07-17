@@ -28,6 +28,11 @@ if ! [[ -x "$(command -v yarn)" ]]; then
   exit 1
 fi
 
+if ! [[ -x "$(command -v lcov)" ]]; then
+  echo 'Error: lcov is not installed.' >&2
+  exit 1
+fi
+
 cd server/js
 yarn install
 cd ../..

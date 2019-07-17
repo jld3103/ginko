@@ -139,7 +139,7 @@ class Change {
       };
 
   /// Get all subject indexes in a lesson that match the change
-  List<int> getMatchingClasses(UnitPlanForGrade unitPlanForGrade) {
+  Subject getMatchingClasses(UnitPlanForGrade unitPlanForGrade) {
     try {
       final lesson = unitPlanForGrade.days[date.weekday - 1].lessons[unit];
       var subjects = lesson.subjects;
@@ -161,12 +161,10 @@ class Change {
           throw Exception();
         }
       }
-      return subjects
-          .map((subject) => lesson.subjects.indexOf(subject))
-          .toList();
+      return subjects.isNotEmpty ? subjects[0] : null;
       // ignore: avoid_catching_errors
     } on RangeError {
-      return [];
+      return null;
     }
   }
 

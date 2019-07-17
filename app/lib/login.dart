@@ -1,7 +1,5 @@
 import 'package:app/utils/data.dart';
 import 'package:app/utils/localizations.dart';
-import 'package:app/utils/selection.dart';
-import 'package:app/utils/static.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:models/models.dart';
@@ -20,6 +18,7 @@ class LoginState extends State<Login> {
   final _focus = FocusNode();
   bool _credentialsCorrect = true;
   String _grade = grades[0];
+  String _language;
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isCheckingForm = false;
@@ -31,9 +30,14 @@ class LoginState extends State<Login> {
       _validInputs = _formKey.currentState.validate();
     });
     if (_validInputs) {
-      Static.storage.setString(Keys.username, _usernameController.text);
-      Static.storage.setString(Keys.password, _passwordController.text);
-      Static.storage.setString(Keys.grade, _grade);
+      Data.user = User(
+        username: _usernameController.text,
+        password: _passwordController.text,
+        grade: _grade,
+        language: _language,
+        selection: {},
+        tokens: [],
+      );
       await Data.load().then((code) {
         setState(() {
           _credentialsCorrect = code != 2;
@@ -41,7 +45,6 @@ class LoginState extends State<Login> {
         });
         switch (code) {
           case 0:
-            Selection.load();
             Navigator.of(context).pop();
             Navigator.of(context).pushReplacementNamed('/home');
             break;
@@ -61,6 +64,14 @@ class LoginState extends State<Login> {
         _isCheckingForm = false;
       });
     }
+  }
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((a) {
+      _language = AppLocalization.of(context).getLocale.languageCode;
+    });
+    super.initState();
   }
 
   @override

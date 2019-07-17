@@ -14,7 +14,8 @@ class Keys {
   static const String unitPlan = 'unitPlan';
 
   // ignore: public_member_api_docs
-  static String selection(String block) => 'selection-$block';
+  static String selection(String block, bool weekA) =>
+      'selection-$block-${weekA ? 'a' : 'b'}';
 
   // ignore: public_member_api_docs
   static const String none = 'none';
@@ -27,4 +28,10 @@ class Keys {
 
   // ignore: public_member_api_docs
   static const String replacementPlan = 'replacementPlan';
+
+  // ignore: public_member_api_docs
+  static const String user = 'user';
+
+  // ignore: public_member_api_docs
+  static const String type = 'type';
 }

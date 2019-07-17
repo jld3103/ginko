@@ -24,34 +24,30 @@ Future main() async {
     request.response.headers.add('Access-Control-Allow-Methods', '*');
     if (request.uri.path == '/' && request.method == 'GET') {
       final queryParams = request.uri.queryParameters;
-      if (queryParams[Keys.username] == null ||
-          queryParams[Keys.password] == null ||
-          queryParams[Keys.grade] == null) {
+      if (queryParams[Keys.user] == 'null') {
         request.response.statusCode = 401;
         request.response.write('401 Unauthorized');
       } else {
-        if (Users.users.containsKey(queryParams[Keys.username]) &&
-            Users.users[queryParams[Keys.username]] ==
-                queryParams[Keys.password] &&
-            grades.contains(queryParams[Keys.grade])) {
+        final user = User.fromJSON(json.decode(queryParams[Keys.user]));
+        if (user.username != null &&
+            user.username.isNotEmpty &&
+            Users.encryptedUsernames.contains(user.username) &&
+            Users.getUser(user.username).encryptedPassword == user.password) {
+          Users.updateSelection(user.username, user.selection);
+          Users.updateTokens(user.username, user.tokens);
           // ignore: omit_local_variable_types
           final Map<String, dynamic> data = {'status': 'ok'};
-          for (final key in queryParams.keys.where((key) =>
-              key != Keys.username &&
-              key != Keys.password &&
-              key != Keys.grade)) {
+          for (final key in queryParams.keys.where((key) => key != Keys.user)) {
             try {
               final value = int.parse(queryParams[key]);
               if (key == Keys.unitPlan) {
                 if (value <
                     UnitPlanData.unitPlan.unitPlans
-                        .where((unitPlan) =>
-                            unitPlan.grade == queryParams[Keys.grade])
+                        .where((unitPlan) => unitPlan.grade == user.grade)
                         .toList()[0]
                         .timeStamp) {
                   data[key] = UnitPlanData.unitPlan.unitPlans
-                      .where((unitPlan) =>
-                          unitPlan.grade == queryParams[Keys.grade])
+                      .where((unitPlan) => unitPlan.grade == user.grade)
                       .toList()[0]
                       .toJSON();
                 }
@@ -67,13 +63,13 @@ Future main() async {
                 if (value <
                     ReplacementPlanData.replacementPlan.replacementPlans
                         .where((replacementPlan) =>
-                            replacementPlan.grade == queryParams[Keys.grade])
+                            replacementPlan.grade == user.grade)
                         .toList()[0]
                         .timeStamp) {
                   data[key] = ReplacementPlanData
                       .replacementPlan.replacementPlans
                       .where((replacementPlan) =>
-                          replacementPlan.grade == queryParams[Keys.grade])
+                          replacementPlan.grade == user.grade)
                       .toList()[0]
                       .toJSON();
                 }
