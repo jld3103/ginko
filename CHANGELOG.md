@@ -1,5 +1,6 @@
 
 # 2019-07-20  
+ jld3103: Fix io storage not saving on desktop  
  jld3103: Add change / subject autocompletion (#1)  
  jld3103: Fix icon generation script  
 

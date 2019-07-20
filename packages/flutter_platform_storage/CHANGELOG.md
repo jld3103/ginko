@@ -1,3 +1,7 @@
+## [ 1.0.4+3] - 20th of July 2019
+
+* Fix io storage not saving on desktop
+
 ## [ 1.0.3+4] - 13th of July 2019
 
 * Add check if key is available

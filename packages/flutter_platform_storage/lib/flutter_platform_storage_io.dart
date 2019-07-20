@@ -110,6 +110,7 @@ class Storage extends StorageBase {
     } else {
       this.setString(key, json.encode(value));
     }
+    _save();
   }
 
   @override
