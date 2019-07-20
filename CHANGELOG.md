@@ -1,4 +1,7 @@
 
+# 2019-07-20  
+ jld3103: Fix icon generation script  
+
 # 2019-07-17  
  jld3103: Add replacement plan notifications and apply filter  
 
