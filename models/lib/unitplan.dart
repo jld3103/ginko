@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:meta/meta.dart';
+import 'package:models/models.dart';
 
 /// UnitPlan class
 /// describes all unit plans for all grades
@@ -164,6 +167,25 @@ class Subject {
         'course': course,
         'weeks': weeks,
       };
+
+  /// Get the changes that match this subject
+  // ignore: lines_longer_than_80_chars
+  List<Change> getMatchingChanges(
+          ReplacementPlanForGrade replacementPlanForGrade,
+          UnitPlanForGrade unitPlanForGrade) =>
+      replacementPlanForGrade.changes
+          .where((change) =>
+              json.encode(
+                  change.getMatchingClasses(unitPlanForGrade).toJSON()) ==
+              json.encode(toJSON()))
+          .toList();
+
+  /// Complete the information of this subject using the replacement plan
+  void complete(Change c) {
+    if (course == null || course == '') {
+      course = c.course;
+    }
+  }
 
   // ignore: public_member_api_docs
   String get identifier => '$teacher-$subject';

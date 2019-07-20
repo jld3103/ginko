@@ -168,6 +168,19 @@ class Change {
     }
   }
 
+  /// Complete the information of this change using the unit plan
+  void complete(Subject s) {
+    if (subject == null || subject == '') {
+      subject = s.subject;
+    }
+    if (room == null || room == '') {
+      room = s.room;
+    }
+    if (teacher == null || teacher == '') {
+      teacher = s.teacher;
+    }
+  }
+
   // ignore: public_member_api_docs
   DateTime date;
 
