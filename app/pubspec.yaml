@@ -19,6 +19,8 @@ dependencies:
   firebase_messaging: ^5.1.0
   models:
     path: ../models
+  translations:
+    path: ../translations
   flutter_platform:
   flutter_platform_storage:
 

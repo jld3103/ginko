@@ -1,5 +1,4 @@
 import 'package:app/utils/data.dart';
-import 'package:app/utils/localizations.dart';
 import 'package:app/utils/selection.dart';
 import 'package:app/utils/static.dart';
 import 'package:app/views/extra_information.dart';
@@ -11,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_platform/flutter_platform.dart';
 import 'package:models/models.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:translations/translations_app.dart';
 
 /// Home class
 /// describes the home widget
@@ -43,7 +43,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
           milliseconds: now.millisecond,
           microseconds: now.microsecond,
         ))
-        .add(Duration(days: now.weekday > 5 ? 0 : 0));
+        .add(Duration(days: now.weekday > 5 ? 7 : 0));
   }
 
   @override
@@ -62,7 +62,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     WidgetsBinding.instance.addPostFrameCallback((a) {
       if (!Data.online) {
         Scaffold.of(context).showSnackBar(SnackBar(
-          content: Text(AppLocalization.of(context).homeOffline),
+          content: Text(AppTranslations.of(context).homeOffline),
         ));
       }
       if (Platform().isAndroid) {
@@ -85,7 +85,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   Future _handleNotification(MethodCall call) async {
     print(call);
     Scaffold.of(context).showSnackBar(SnackBar(
-      content: Text(AppLocalization.of(context).homeNewReplacementPlan),
+      content: Text(AppTranslations.of(context).homeNewReplacementPlan),
     ));
   }
 
@@ -96,56 +96,55 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   @override
-  Widget build(BuildContext context) =>
-      Platform().isMobile || MediaQuery.of(context).size.width < 600
-          ? getHeaderView(
-              SlidingUpPanel(
-                controller: _panelController,
-                parallaxEnabled: true,
-                parallaxOffset: .1,
-                maxHeight: MediaQuery.of(context).size.height * 0.75,
-                minHeight: 30,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(24),
-                  topRight: Radius.circular(24),
-                ),
-                panelSnapping: true,
-                backdropEnabled: true,
-                backdropTapClosesPanel: true,
-                panel: ExtraInformation(
+  Widget build(BuildContext context) => MediaQuery.of(context).size.width < 600
+      ? getHeaderView(
+          SlidingUpPanel(
+            controller: _panelController,
+            parallaxEnabled: true,
+            parallaxOffset: .1,
+            maxHeight: MediaQuery.of(context).size.height * 0.75,
+            minHeight: 30,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(24),
+              topRight: Radius.circular(24),
+            ),
+            panelSnapping: true,
+            backdropEnabled: true,
+            backdropTapClosesPanel: true,
+            panel: ExtraInformation(
+              date: getDate,
+              panelController: _panelController,
+            ),
+            body: getUnitPlanView,
+          ),
+        )
+      : Row(
+          children: [
+            AnimatedSize(
+              vsync: this,
+              duration: Duration(milliseconds: 500),
+              curve: Curves.bounceInOut,
+              child: Container(
+                height: double.infinity,
+                width: MediaQuery.of(context).size.width - 300,
+                child: getHeaderView(getUnitPlanView),
+              ),
+            ),
+            AnimatedSize(
+              vsync: this,
+              duration: Duration(milliseconds: 500),
+              curve: Curves.bounceInOut,
+              child: Container(
+                height: double.infinity,
+                width: 300,
+                child: ExtraInformation(
                   date: getDate,
                   panelController: _panelController,
                 ),
-                body: getUnitPlanView,
               ),
-            )
-          : Row(
-              children: [
-                AnimatedSize(
-                  vsync: this,
-                  duration: Duration(milliseconds: 500),
-                  curve: Curves.bounceInOut,
-                  child: Container(
-                    height: double.infinity,
-                    width: MediaQuery.of(context).size.width - 300,
-                    child: getHeaderView(getUnitPlanView),
-                  ),
-                ),
-                AnimatedSize(
-                  vsync: this,
-                  duration: Duration(milliseconds: 500),
-                  curve: Curves.bounceInOut,
-                  child: Container(
-                    height: double.infinity,
-                    width: 300,
-                    child: ExtraInformation(
-                      date: getDate,
-                      panelController: _panelController,
-                    ),
-                  ),
-                ),
-              ],
-            );
+            ),
+          ],
+        );
 
   /// Get the view of the unit plan
   Widget get getUnitPlanView => TabBarView(
@@ -181,8 +180,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
                             showDialog(
                               context: context,
                               builder: (context) => SimpleDialog(
-                                title: Text(AppLocalization.of(context)
-                                    .weekday(weekday)),
+                                title: Text(AppTranslations.of(context)
+                                    .weekdays[weekday]),
                                 contentPadding: EdgeInsets.all(10),
                                 children: lesson.subjects
                                     .map((subject) => GestureDetector(
@@ -245,15 +244,24 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         length: 5,
         child: Scaffold(
           appBar: AppBar(
-            title: Text(AppLocalization.of(context).appName),
+            title: Text(AppTranslations.of(context).appName),
             bottom: TabBar(
                 controller: _tabController,
-                tabs: AppLocalization.of(context)
+                tabs: AppTranslations.of(context)
                     .weekdays
                     .sublist(0, 5)
                     .map(
                       (weekday) => Tab(
-                        child: Text(weekday.substring(0, 2).toUpperCase()),
+                        child: Text(weekday
+                            .substring(
+                                0,
+                                AppTranslations.of(context)
+                                            .locale
+                                            .languageCode ==
+                                        'de'
+                                    ? 2
+                                    : 3)
+                            .toUpperCase()),
                       ),
                     )
                     .toList()),

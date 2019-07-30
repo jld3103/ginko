@@ -36,7 +36,7 @@ fi
 cd server/js
 yarn install
 cd ../..
-folders=("models" "server" "app" "tests")
+folders=("models" "server" "app" "tests" "translations")
 for d in ${folders[@]} ; do
     cd ${d}
     flutter packages get

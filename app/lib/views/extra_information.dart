@@ -1,11 +1,11 @@
 import 'package:app/utils/data.dart';
-import 'package:app/utils/localizations.dart';
 import 'package:app/views/cafetoria/row.dart';
 import 'package:app/views/calendar/row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform/flutter_platform.dart';
 import 'package:models/models.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:translations/translations_app.dart';
 
 /// ExtraInformation class
 /// shows a list of extra information
@@ -37,7 +37,7 @@ class ExtraInformationState extends State<ExtraInformation> {
     WidgetsBinding.instance.addPostFrameCallback((a) {
       setState(() {
         _showBig =
-            !Platform().isMobile && MediaQuery.of(context).size.width >= 600;
+             MediaQuery.of(context).size.width >= 600;
       });
     });
     super.initState();
@@ -101,8 +101,8 @@ class ExtraInformationState extends State<ExtraInformation> {
               child: Row(
                 children: [
                   Text(
-                    AppLocalization.of(context)
-                        .weekday(widget.date.weekday - 1),
+                    AppTranslations.of(context)
+                        .weekdays[widget.date.weekday - 1],
                     style: TextStyle(
                       fontWeight: !_showBig ? FontWeight.bold : null,
                       color: _showBig ? Colors.white : null,

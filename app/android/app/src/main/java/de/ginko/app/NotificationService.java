@@ -8,13 +8,10 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.Html;
 import android.text.SpannableString;
-
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.view.FlutterView;
 
@@ -45,24 +42,27 @@ public class NotificationService extends FirebaseMessagingService {
 
         String title = remoteMessage.getData().get("title");
         String body = remoteMessage.getData().get("body");
-        String bigBody = remoteMessage.getData().get("bigBody");
-        SpannableString formattedBigBody = new SpannableString(
-                Build.VERSION.SDK_INT < Build.VERSION_CODES.N ? Html.fromHtml(bigBody)
-                        : Html.fromHtml(bigBody, Html.FROM_HTML_MODE_LEGACY)
-        );
 
         NotificationCompat.Builder notification = new NotificationCompat.Builder(getApplicationContext(), String.valueOf(channelId))
                 .setContentTitle(title)
                 .setContentText(body)
                 .setSmallIcon(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ? R.mipmap.ic_launcher : R.mipmap.logo_white)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(formattedBigBody))
                 .setContentIntent(pendingIntent)
                 .setTicker(title + " " + body)
                 .setColor(Color.parseColor("#ff5bc638"))
                 .setGroup("group" + notificationId)
                 .setAutoCancel(true)
                 .setColorized(true);
+
+        if (remoteMessage.getData().get("bigBody") != null) {
+            String bigBody = remoteMessage.getData().get("bigBody");
+            SpannableString formattedBigBody = new SpannableString(
+                    Build.VERSION.SDK_INT < Build.VERSION_CODES.N ? Html.fromHtml(bigBody)
+                            : Html.fromHtml(bigBody, Html.FROM_HTML_MODE_LEGACY)
+            );
+            notification.setStyle(new NotificationCompat.BigTextStyle().bigText(formattedBigBody));
+        }
 
         NotificationManagerCompat manager = NotificationManagerCompat.from(getApplicationContext());
         manager.notify(notificationId, notification.build());

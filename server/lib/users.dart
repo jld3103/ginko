@@ -10,6 +10,13 @@ class Users {
   /// List of all users
   static List<User> _users = [];
 
+  /// Update the language of a user
+  static void updateLanguage(String encryptedUsername, String language) {
+    getUser(encryptedUsername).language = language;
+    File('../server/users.json').writeAsStringSync(
+        json.encode(_users.map((user) => user.toJSON()).toList()));
+  }
+
   /// Update the selection of a user
   static void updateSelection(
       String encryptedUsername, Map<String, String> selection) {

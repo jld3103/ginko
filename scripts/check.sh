@@ -9,7 +9,7 @@ if [[ -n "$parent" ]]; then
 fi
 
 bash scripts/setup.sh
-folders=("models" "server" "tests" "app")
+folders=("models" "server" "tests" "app" "translations")
 for d in ${folders[@]} ; do
     cd ${d}
 

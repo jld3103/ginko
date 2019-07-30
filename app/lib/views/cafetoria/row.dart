@@ -1,8 +1,8 @@
-import 'package:app/utils/localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:models/models.dart';
+import 'package:translations/translations_app.dart';
 
 /// CafetoriaRow class
 /// renders a day
@@ -27,7 +27,7 @@ class CafetoriaRowState extends State<CafetoriaRow> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((a) {
-      final languageCode = AppLocalization.of(context).getLocale.languageCode;
+      final languageCode = AppTranslations.of(context).locale.languageCode;
       initializeDateFormatting(languageCode, null).then((_) {
         setState(() {
           _timeFormat = DateFormat.Hm(languageCode);

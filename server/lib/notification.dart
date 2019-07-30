@@ -8,8 +8,13 @@ import 'package:server/config.dart';
 /// create notifications and send them to users
 class Notification {
   /// Create a simple notification
-  static Future send(String token, String title, String body, String bigBody,
-      {Map<String, dynamic> data}) async {
+  static Future send(
+    String token,
+    String title,
+    String body, {
+    String bigBody,
+    Map<String, dynamic> data,
+  }) async {
     data ??= {};
 
     if (data.isNotEmpty) {
@@ -20,7 +25,9 @@ class Notification {
     }
     data['data']['title'] = title;
     data['data']['body'] = body;
-    data['data']['bigBody'] = bigBody;
+    if (bigBody != null) {
+      data['data']['bigBody'] = bigBody;
+    }
     data['to'] = token;
     final dio = Dio();
     await dio.post(

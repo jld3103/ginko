@@ -1,6 +1,6 @@
-import 'package:app/utils/localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:models/models.dart';
+import 'package:translations/translations_app.dart';
 
 /// ReplacementPlanRow class
 /// renders a change
@@ -53,8 +53,8 @@ class ReplacementPlanRow extends StatelessWidget {
                         Expanded(
                           flex: 70,
                           child: Text(
-                            AppLocalization.of(context)
-                                    .subject(change.subject) ??
+                            AppTranslations.of(context)
+                                    .subjects[change.subject] ??
                                 '',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,

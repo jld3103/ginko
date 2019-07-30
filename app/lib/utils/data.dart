@@ -3,9 +3,11 @@ import 'dart:convert';
 
 import 'package:app/utils/static.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_platform/flutter_platform.dart';
 import 'package:http/http.dart';
 import 'package:models/models.dart';
+import 'package:translations/translations_app.dart';
 
 // ignore: avoid_classes_with_only_static_members
 /// Data class
@@ -40,6 +42,9 @@ class Data {
     _user = user;
     Static.storage.setJSON(Keys.user, user.toJSON());
   }
+
+  // ignore: public_member_api_docs
+  static String get locale => _user.language;
 
   // ignore: public_member_api_docs
   static String getSelection(String key) => _user.getSelection(key);
@@ -95,7 +100,7 @@ class Data {
   }
 
   /// Load all the data from the server
-  static Future<int> load() async {
+  static Future<int> load(BuildContext context) async {
     if (Static.storage.has(Keys.unitPlan)) {
       unitPlan =
           UnitPlanForGrade.fromJSON(Static.storage.getJSON(Keys.unitPlan));
@@ -183,6 +188,10 @@ class Data {
       if (updatedSelection) {
         // ignore: unawaited_futures
         _updateUser();
+      }
+      if (AppTranslations.of(context).locale.languageCode != _user.language) {
+        _user.language = AppTranslations.of(context).locale.languageCode;
+        await _updateUser();
       }
       online = true;
       return 0;

@@ -1,8 +1,8 @@
 import 'package:app/utils/data.dart';
-import 'package:app/utils/localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:models/models.dart';
+import 'package:translations/translations_app.dart';
 
 /// Login class
 /// describes the login widget
@@ -38,7 +38,7 @@ class LoginState extends State<Login> {
         selection: {},
         tokens: [],
       );
-      await Data.load().then((code) {
+      await Data.load(context).then((code) {
         setState(() {
           _credentialsCorrect = code != 2;
           _isCheckingForm = false;
@@ -50,7 +50,7 @@ class LoginState extends State<Login> {
             break;
           case 1:
             Scaffold.of(context).showSnackBar(SnackBar(
-              content: Text(AppLocalization.of(context).loginErrorOccurred),
+              content: Text(AppTranslations.of(context).loginErrorOccured),
             ));
             break;
           case 2:
@@ -69,7 +69,7 @@ class LoginState extends State<Login> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((a) {
-      _language = AppLocalization.of(context).getLocale.languageCode;
+      _language = AppTranslations.of(context).locale.languageCode;
     });
     super.initState();
   }
@@ -94,7 +94,7 @@ class LoginState extends State<Login> {
               ),
               Center(
                 child: Text(
-                  AppLocalization.of(context).appName,
+                  AppTranslations.of(context).appName,
                   style: TextStyle(fontSize: 25),
                 ),
               ),
@@ -126,12 +126,12 @@ class LoginState extends State<Login> {
                       // ignore: missing_return
                       validator: (value) {
                         if (value.isEmpty) {
-                          return AppLocalization.of(context)
-                              .loginUsernameRequired;
+                          return AppTranslations.of(context)
+                              .loginUserNameRequired;
                         }
                       },
                       decoration: InputDecoration(
-                          hintText: AppLocalization.of(context).loginUsername),
+                          hintText: AppTranslations.of(context).loginUsername),
                       onFieldSubmitted: (value) {
                         FocusScope.of(context).requestFocus(_focus);
                       },
@@ -142,12 +142,12 @@ class LoginState extends State<Login> {
                       // ignore: missing_return
                       validator: (value) {
                         if (value.isEmpty) {
-                          return AppLocalization.of(context)
+                          return AppTranslations.of(context)
                               .loginPasswordRequired;
                         }
                       },
                       decoration: InputDecoration(
-                          hintText: AppLocalization.of(context).loginPassword),
+                          hintText: AppTranslations.of(context).loginPassword),
                       onFieldSubmitted: _checkForm,
                       obscureText: true,
                       focusNode: _focus,
@@ -161,7 +161,7 @@ class LoginState extends State<Login> {
                           color: Theme.of(context).accentColor,
                           onPressed: _checkForm,
                           child: !_isCheckingForm
-                              ? Text(AppLocalization.of(context).loginSubmit)
+                              ? Text(AppTranslations.of(context).loginSubmit)
                               : SizedBox(
                                   height: 20,
                                   width: 20,
@@ -179,7 +179,7 @@ class LoginState extends State<Login> {
                         margin: EdgeInsets.only(top: 10),
                         width: double.infinity,
                         child: Text(
-                          AppLocalization.of(context).loginCredentialsWrong,
+                          AppTranslations.of(context).loginCredentialsWrong,
                           style: TextStyle(
                             color: Colors.red,
                             fontSize: 15,

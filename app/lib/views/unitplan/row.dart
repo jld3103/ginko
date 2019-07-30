@@ -1,6 +1,6 @@
-import 'package:app/utils/localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:models/models.dart';
+import 'package:translations/translations_app.dart';
 
 /// UnitPlanRow class
 /// renders a lesson/subject
@@ -57,8 +57,8 @@ class UnitPlanRow extends StatelessWidget {
                       Expanded(
                         flex: 85,
                         child: Text(
-                          AppLocalization.of(context)
-                                  .subject(subject.subject) ??
+                          AppTranslations.of(context)
+                                  .subjects[subject.subject] ??
                               '',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,

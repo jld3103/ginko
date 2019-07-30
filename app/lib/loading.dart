@@ -1,9 +1,9 @@
 import 'package:app/utils/data.dart';
-import 'package:app/utils/localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_platform/flutter_platform.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:translations/translations_app.dart';
 
 /// Loading class
 /// describes the loading widget
@@ -30,11 +30,12 @@ class LoadingState extends State<Loading> {
       }
     });
     Data.setup(8000, '192.168.1.46', 'http');
-    Data.load().then((code) {
+    Data.load(context).then((code) {
       if (code == 2) {
         Navigator.of(context).pushReplacementNamed('/login');
         return;
       }
+      while (!mounted) {}
       Navigator.of(context).pop();
       Navigator.of(context).pushReplacementNamed('/home');
     });
@@ -63,7 +64,7 @@ class LoadingState extends State<Loading> {
                 margin: EdgeInsets.only(top: 10),
                 child: Column(
                   children: [
-                    Text(AppLocalization.of(context).loadingTitle),
+                    Text(AppTranslations.of(context).loadingTitle),
                   ],
                 ),
               ),

@@ -12,6 +12,7 @@ import 'package:server/users.dart';
 
 Future main() async {
   await setup();
+  print('Running in ${Config.dev ? 'development' : 'production'} mode');
   final port = int.parse((Platform.environment['PORT'] == ''
           ? null
           : Platform.environment['PORT']) ??
@@ -33,6 +34,7 @@ Future main() async {
             user.username.isNotEmpty &&
             Users.encryptedUsernames.contains(user.username) &&
             Users.getUser(user.username).encryptedPassword == user.password) {
+          Users.updateLanguage(user.username, user.language);
           Users.updateSelection(user.username, user.selection);
           Users.updateTokens(user.username, user.tokens);
           // ignore: omit_local_variable_types

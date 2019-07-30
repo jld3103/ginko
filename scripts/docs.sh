@@ -3,7 +3,7 @@
 mkdir -p doc
 rm -rf doc/*
 
-folders=("models" "server" "app")
+folders=("models" "server" "app" "translations")
 for d in ${folders[@]} ; do
     mkdir -p doc/$d
     cd $d
