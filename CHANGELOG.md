@@ -1,4 +1,7 @@
 
+# 2019-07-31  
+ jld3103: Fix filter and coverage  
+
 # 2019-07-30  
  jld3103: Add localization for server (#2)  
 

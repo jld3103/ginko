@@ -17,10 +17,8 @@ class UnitPlanData {
         day.lessons = day.lessons.map((lesson) {
           lesson.subjects = lesson.subjects.map((subject) {
             subject
-                .getMatchingChanges(
-                    ReplacementPlanData.replacementPlan
-                        .replacementPlans[grades.indexOf(plan.grade)],
-                    UnitPlanData.unitPlan.unitPlans[grades.indexOf(plan.grade)])
+                .getMatchingChanges(ReplacementPlanData.replacementPlan
+                    .replacementPlans[grades.indexOf(plan.grade)])
                 .forEach(subject.complete);
             return subject;
           }).toList();

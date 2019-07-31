@@ -171,13 +171,18 @@ class Subject {
   /// Get the changes that match this subject
   // ignore: lines_longer_than_80_chars
   List<Change> getMatchingChanges(
-          ReplacementPlanForGrade replacementPlanForGrade,
-          UnitPlanForGrade unitPlanForGrade) =>
+          ReplacementPlanForGrade replacementPlanForGrade) =>
       replacementPlanForGrade.changes
-          .where((change) =>
-              json.encode(
-                  change.getMatchingClasses(unitPlanForGrade).toJSON()) ==
-              json.encode(toJSON()))
+          .where((change) => change
+              .getMatchingSubjectsByLesson(Lesson(
+                unit: unit,
+                block: null,
+                subjects: [this],
+              ))
+              .where((subject) =>
+                  json.encode(subject.toJSON()) == json.encode(toJSON()))
+              .toList()
+              .isNotEmpty)
           .toList();
 
   /// Complete the information of this subject using the replacement plan

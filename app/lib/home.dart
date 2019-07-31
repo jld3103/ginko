@@ -214,9 +214,11 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
                                         Data.unitPlan.days[weekday].lessons
                                             .indexOf(lesson) &&
                                     change
-                                            .getMatchingClasses(Data.unitPlan)
-                                            .identifier ==
-                                        subject.identifier)
+                                        .getMatchingSubjectsByUnitPlan(
+                                            Data.unitPlan)
+                                        .where((s) =>
+                                            s.identifier == subject.identifier)
+                                        .isNotEmpty)
                                 .map((change) => Container(
                                       margin: EdgeInsets.only(left: 15),
                                       child: ReplacementPlanRow(

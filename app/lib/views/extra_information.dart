@@ -2,7 +2,6 @@ import 'package:app/utils/data.dart';
 import 'package:app/views/cafetoria/row.dart';
 import 'package:app/views/calendar/row.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_platform/flutter_platform.dart';
 import 'package:models/models.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:translations/translations_app.dart';
@@ -36,8 +35,7 @@ class ExtraInformationState extends State<ExtraInformation> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((a) {
       setState(() {
-        _showBig =
-             MediaQuery.of(context).size.width >= 600;
+        _showBig = MediaQuery.of(context).size.width >= 600;
       });
     });
     super.initState();

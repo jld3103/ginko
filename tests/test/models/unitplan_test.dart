@@ -72,6 +72,120 @@ void main() {
       expect(Subject.fromJSON(subject.toJSON(), 0).toJSON(), subject.toJSON());
     });
 
+    test('Can apply filter', () {
+      final replacementPlanForGrade = ReplacementPlanForGrade(
+        grade: 'EF',
+        replacementPlanDays: [
+          ReplacementPlanDay(
+            date: DateTime(2019, 7, 8),
+            updated: DateTime(2019, 7, 8, 7, 55),
+          ),
+        ],
+        changes: [
+          Change(
+            date: DateTime(2019, 7, 8),
+            unit: 0,
+            subject: 'EK',
+            room: '525',
+            teacher: 'KRA',
+            changed: Changed(),
+            type: ChangeTypes.unknown,
+          ),
+          Change(
+            date: DateTime(2019, 7, 8),
+            unit: 0,
+            subject: 'EK',
+            changed: Changed(),
+            type: ChangeTypes.unknown,
+          ),
+          Change(
+            date: DateTime(2019, 7, 8),
+            unit: 0,
+            room: '525',
+            changed: Changed(),
+            type: ChangeTypes.unknown,
+          ),
+          Change(
+            date: DateTime(2019, 7, 8),
+            unit: 0,
+            teacher: 'KRA',
+            changed: Changed(),
+            type: ChangeTypes.unknown,
+          ),
+          Change(
+            date: DateTime(2019, 7, 8),
+            unit: 0,
+            subject: 'PK',
+            room: '525',
+            teacher: 'KRA',
+            changed: Changed(),
+            type: ChangeTypes.unknown,
+          ),
+          Change(
+            date: DateTime(2019, 7, 8),
+            unit: 0,
+            subject: 'EK',
+            room: '526',
+            teacher: 'KRA',
+            changed: Changed(),
+            type: ChangeTypes.unknown,
+          ),
+          Change(
+            date: DateTime(2019, 7, 8),
+            unit: 0,
+            subject: 'EK',
+            room: '525',
+            teacher: 'STA',
+            changed: Changed(),
+            type: ChangeTypes.unknown,
+          ),
+          Change(
+            date: DateTime(2019, 7, 8),
+            unit: 1,
+            subject: 'EK',
+            room: '525',
+            teacher: 'KRA',
+            changed: Changed(),
+            type: ChangeTypes.unknown,
+          ),
+        ],
+      );
+      final subject = Subject(
+        subject: 'EK',
+        room: '525',
+        teacher: 'KRA',
+        unit: 0,
+        weeks: 'AB',
+      );
+      expect(
+        subject
+            .getMatchingChanges(replacementPlanForGrade)
+            .map((change) => change.toJSON())
+            .toList()
+            .length,
+        4,
+      );
+    });
+
+    test('Can complete subject', () {
+      final subject = Subject(
+        unit: 0,
+        weeks: 'AB',
+        subject: 'EK',
+        room: '525',
+        teacher: 'KRA',
+      );
+      expect(subject.course, null);
+      subject.complete(Change(
+        date: DateTime(2019, 7, 11),
+        unit: 0,
+        course: 'GK1',
+        changed: Changed(),
+        type: ChangeTypes.exam,
+      ));
+      expect(subject.course, 'GK1');
+    });
+
     test('Can create lesson', () {
       final subject = Subject(
         teacher: 'KRA',

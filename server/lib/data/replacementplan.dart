@@ -26,11 +26,14 @@ class ReplacementPlanData {
   static void complete() {
     replacementPlan.replacementPlans =
         replacementPlan.replacementPlans.map((plan) {
-      plan.changes = plan.changes
-          .map((change) => change
-            ..complete(change.getMatchingClasses(
-                UnitPlanData.unitPlan.unitPlans[grades.indexOf(plan.grade)])))
-          .toList();
+      plan.changes = plan.changes.map((change) {
+        final matchingClasses = change.getMatchingSubjectsByUnitPlan(
+            UnitPlanData.unitPlan.unitPlans[grades.indexOf(plan.grade)]);
+        if (matchingClasses.length == 1) {
+          change.complete(matchingClasses[0]);
+        }
+        return change;
+      }).toList();
       return plan;
     }).toList();
   }
@@ -79,9 +82,12 @@ class ReplacementPlanData {
                 .block;
             final key = Keys.selection(block, isWeekA(day.date));
             final userSelected = user.selection[key];
-            final originalSubject = change.getMatchingClasses(
+            final originalSubjects = change.getMatchingSubjectsByUnitPlan(
                 UnitPlanData.unitPlan.unitPlans[grades.indexOf(user.grade)]);
-            return userSelected == originalSubject.identifier;
+            if (originalSubjects.length != 1) {
+              return true;
+            }
+            return userSelected == originalSubjects[0].identifier;
           }).toList();
           final title =
               // ignore: lines_longer_than_80_chars
@@ -145,16 +151,18 @@ class ReplacementPlanData {
     } else {
       print('Nothing changed');
     }
-    try {
-      for (final replacementPlanForGrade in replacementPlan.replacementPlans) {
-        for (final change in replacementPlanForGrade.changes) {
-          change.getMatchingClasses(UnitPlanData.unitPlan
-              .unitPlans[grades.indexOf(replacementPlanForGrade.grade)]);
+    for (final replacementPlanForGrade in replacementPlan.replacementPlans) {
+      for (final change in replacementPlanForGrade.changes) {
+        final subjects = change.getMatchingSubjectsByUnitPlan(UnitPlanData
+            .unitPlan.unitPlans[grades.indexOf(replacementPlanForGrade.grade)]);
+        if (subjects.length != 1) {
+          print(
+              // ignore: lines_longer_than_80_chars
+              "Filter wasn't able to figure out the original subject for this change:");
+          print(change.toJSON());
+          print(subjects.map((subject) => subject.toJSON()).toList());
         }
       }
-    } on Exception catch (e, stacktrace) {
-      print(e);
-      print(stacktrace);
     }
   }
 }
@@ -186,7 +194,7 @@ Future main(List<String> arguments) async {
           ReplacementPlanParser.extract(parse(File(file).readAsStringSync()));
       for (final replacementPlanForGrade in replacementPlansForGrade) {
         for (final change in replacementPlanForGrade.changes) {
-          change.getMatchingClasses(UnitPlanData.unitPlan
+          change.getMatchingSubjectsByUnitPlan(UnitPlanData.unitPlan
               .unitPlans[grades.indexOf(replacementPlanForGrade.grade)]);
         }
       }

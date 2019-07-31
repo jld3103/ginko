@@ -139,33 +139,36 @@ class Change {
       };
 
   /// Get all subject indexes in a lesson that match the change
-  Subject getMatchingClasses(UnitPlanForGrade unitPlanForGrade) {
+  List<Subject> getMatchingSubjectsByUnitPlan(
+      UnitPlanForGrade unitPlanForGrade) {
     try {
-      final lesson = unitPlanForGrade.days[date.weekday - 1].lessons[unit];
-      var subjects = lesson.subjects;
-      // TODO(jl3103): Add exam filter
-      if (type != ChangeTypes.exam && type != ChangeTypes.rewriteExam) {
-        if (subject != null &&
-            subjects.where((s) => s.subject == subject).toList().isNotEmpty) {
-          subjects = subjects.where((s) => s.subject == subject).toList();
-        }
-        if (teacher != null &&
-            subjects.where((s) => s.teacher == teacher).toList().isNotEmpty) {
-          subjects = subjects.where((s) => s.teacher == teacher).toList();
-        }
-        if (room != null &&
-            subjects.where((s) => s.room == room).toList().isNotEmpty) {
-          subjects = subjects.where((s) => s.room == room).toList();
-        }
-        if (subjects.length != 1) {
-          throw Exception();
-        }
-      }
-      return subjects.isNotEmpty ? subjects[0] : null;
+      return getMatchingSubjectsByLesson(
+          unitPlanForGrade.days[date.weekday - 1].lessons[unit]);
       // ignore: avoid_catching_errors
     } on RangeError {
-      return null;
+      return [];
     }
+  }
+
+  /// Get all subject indexes in a lesson that match the change
+  List<Subject> getMatchingSubjectsByLesson(Lesson lesson) {
+    if (unit != lesson.unit) {
+      return [];
+    }
+    var subjects = lesson.subjects;
+    // TODO(jl3103): Add exam filter
+    if (type != ChangeTypes.exam && type != ChangeTypes.rewriteExam) {
+      if (subject != null) {
+        subjects = subjects.where((s) => s.subject == subject).toList();
+      }
+      if (teacher != null) {
+        subjects = subjects.where((s) => s.teacher == teacher).toList();
+      }
+      if (room != null) {
+        subjects = subjects.where((s) => s.room == room).toList();
+      }
+    }
+    return subjects;
   }
 
   /// Complete the information of this change using the unit plan

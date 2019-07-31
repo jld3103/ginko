@@ -261,13 +261,88 @@ void main() {
           ),
         ],
       );
-      expect(changes[0].getMatchingClasses(unitPlanForGrade) != null, true);
-      expect(changes[1].getMatchingClasses(unitPlanForGrade) != null, true);
-      expect(changes[2].getMatchingClasses(unitPlanForGrade) != null, true);
-      expect(changes[3].getMatchingClasses(unitPlanForGrade) != null, true);
-      expect(() => changes[4].getMatchingClasses(unitPlanForGrade),
-          throwsA(TypeMatcher<Exception>()));
-      expect(changes[5].getMatchingClasses(unitPlanForGrade) == null, true);
+      expect(
+        changes[0].getMatchingSubjectsByUnitPlan(unitPlanForGrade) != null,
+        true,
+      );
+      expect(
+        changes[1].getMatchingSubjectsByUnitPlan(unitPlanForGrade) != null,
+        true,
+      );
+      expect(
+        changes[2].getMatchingSubjectsByUnitPlan(unitPlanForGrade) != null,
+        true,
+      );
+      expect(
+        changes[3].getMatchingSubjectsByUnitPlan(unitPlanForGrade) != null,
+        true,
+      );
+      expect(
+        changes[4].getMatchingSubjectsByUnitPlan(unitPlanForGrade).length,
+        2,
+      );
+      expect(
+        changes[5].getMatchingSubjectsByUnitPlan(unitPlanForGrade),
+        [],
+      );
+      expect(
+        changes[0].getMatchingSubjectsByLesson(
+                unitPlanForGrade.days[0].lessons[0]) !=
+            null,
+        true,
+      );
+      expect(
+        changes[1].getMatchingSubjectsByLesson(
+                unitPlanForGrade.days[0].lessons[0]) !=
+            null,
+        true,
+      );
+      expect(
+        changes[2].getMatchingSubjectsByLesson(
+                unitPlanForGrade.days[0].lessons[0]) !=
+            null,
+        true,
+      );
+      expect(
+        changes[3].getMatchingSubjectsByLesson(
+                unitPlanForGrade.days[0].lessons[0]) !=
+            null,
+        true,
+      );
+      expect(
+        changes[4]
+            .getMatchingSubjectsByLesson(unitPlanForGrade.days[0].lessons[0])
+            .length,
+        2,
+      );
+      expect(
+        changes[5]
+            .getMatchingSubjectsByLesson(unitPlanForGrade.days[0].lessons[0]),
+        [],
+      );
+    });
+
+    test('Can complete change', () {
+      final change = Change(
+        date: DateTime(2019, 7, 11),
+        unit: 0,
+        course: 'GK1',
+        changed: Changed(),
+        type: ChangeTypes.exam,
+      );
+      expect(change.subject, null);
+      expect(change.room, null);
+      expect(change.teacher, null);
+      change.complete(Subject(
+        unit: 0,
+        weeks: 'AB',
+        subject: 'EK',
+        room: '525',
+        teacher: 'KRA',
+      ));
+      expect(change.subject, 'EK');
+      expect(change.room, '525');
+      expect(change.teacher, 'KRA');
     });
 
     test('Can create replacement plan day', () {

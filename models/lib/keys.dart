@@ -2,36 +2,36 @@
 /// Keys class
 class Keys {
   // ignore: public_member_api_docs
-  static const String username = 'username';
+  static String get username => 'username';
 
   // ignore: public_member_api_docs
-  static const String password = 'password';
+  static String get password => 'password';
 
   // ignore: public_member_api_docs
-  static const String grade = 'grade';
+  static String get grade => 'grade';
 
   // ignore: public_member_api_docs
-  static const String unitPlan = 'unitPlan';
+  static String get unitPlan => 'unitPlan';
 
   // ignore: public_member_api_docs
   static String selection(String block, bool weekA) =>
       'selection-$block-${weekA ? 'a' : 'b'}';
 
   // ignore: public_member_api_docs
-  static const String none = 'none';
+  static String get none => 'none';
 
   // ignore: public_member_api_docs
-  static const String calendar = 'calendar';
+  static String get calendar => 'calendar';
 
   // ignore: public_member_api_docs
-  static const String cafetoria = 'cafetoria';
+  static String get cafetoria => 'cafetoria';
 
   // ignore: public_member_api_docs
-  static const String replacementPlan = 'replacementPlan';
+  static String get replacementPlan => 'replacementPlan';
 
   // ignore: public_member_api_docs
-  static const String user = 'user';
+  static String get user => 'user';
 
   // ignore: public_member_api_docs
-  static const String type = 'type';
+  static String get type => 'type';
 }
