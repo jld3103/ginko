@@ -97,8 +97,19 @@ class CalendarParser {
       final end = arr.length > 2
           ? _format.parse(arr[2])
           : start.add(Duration(days: 1)).subtract(Duration(seconds: 1));
+      print(arr[0]);
       events.add(CalendarEvent(
-        name: '${arr[0]}ferien',
+        name: arr[0] == 'Herbst'
+            ? 'Herbstferien'
+            : arr[0] == 'Weihnachten'
+                ? 'Weihnachtsferien'
+                : arr[0] == 'Ostern'
+                    ? 'Osterferien'
+                    : arr[0] == 'Pfingsten'
+                        ? 'Pfingstferien'
+                        : arr[0] == 'Sommer'
+                            ? 'Sommerferien'
+                            : '${arr[0]}ferien', // fallback
         type: EventTypes.vacation,
         start: start,
         end: end,
