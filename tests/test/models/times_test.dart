@@ -25,7 +25,10 @@ void main() {
           );
         }
       }
+      expect(Times.getUnitTimes(-1)[0].inMicroseconds, 0);
+      expect(Times.getUnitTimes(-1)[1].inMicroseconds, 0);
     });
+
     test('Short lesson times are correct', () {
       final times = List.generate(8, (i) => Times.getUnitTimes(i, true));
       for (var i = 0; i < times.length; i++) {
@@ -48,6 +51,8 @@ void main() {
           );
         }
       }
+      expect(Times.getUnitTimes(-1, true)[0].inMicroseconds, 0);
+      expect(Times.getUnitTimes(-1, true)[1].inMicroseconds, 0);
     });
   });
 }

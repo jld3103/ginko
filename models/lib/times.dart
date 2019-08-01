@@ -7,6 +7,10 @@ class Times {
     Duration end;
     if (short) {
       switch (unit) {
+        case -1:
+          start = Duration(); // 00:00
+          end = Duration(); // 00:00
+          break;
         case 0:
           start = Duration(hours: 08, minutes: 00); // 08:00
           end = Duration(hours: 08, minutes: 45); // 08:45
@@ -42,6 +46,10 @@ class Times {
       }
     } else {
       switch (unit) {
+        case -1:
+          start = Duration(); // 00:00
+          end = Duration(); // 00:00
+          break;
         case 0:
           start = Duration(hours: 08, minutes: 00); // 08:00
           end = Duration(hours: 09, minutes: 00); // 09:00

@@ -92,6 +92,30 @@ class UnitPlanDay {
         'lessons': lessons.map((i) => i.toJSON()).toList(),
       };
 
+  /// Get the count of lessons for a user for the day
+  int userLessonsCount(User user, bool weekA) {
+    for (var i = -1; i < lessons.length; i++) {
+      var somethingBetween = false;
+      for (var j = i + 1; j < lessons.length; j++) {
+        final lesson = lessons[j];
+        final selected = lesson.subjects
+            .where((subject) =>
+                subject.identifier ==
+                user.getSelection(Keys.selection(lesson.block, weekA)))
+            .toList();
+        if (selected.isNotEmpty &&
+            selected[0].subject != Subjects.subjects['FR'] &&
+            j != 5) {
+          somethingBetween = true;
+        }
+      }
+      if (!somethingBetween) {
+        return i + 1;
+      }
+    }
+    return 0;
+  }
+
   // ignore: public_member_api_docs
   int weekday;
 

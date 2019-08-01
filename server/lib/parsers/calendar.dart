@@ -97,7 +97,6 @@ class CalendarParser {
       final end = arr.length > 2
           ? _format.parse(arr[2])
           : start.add(Duration(days: 1)).subtract(Duration(seconds: 1));
-      print(arr[0]);
       events.add(CalendarEvent(
         name: arr[0] == 'Herbst'
             ? 'Herbstferien'

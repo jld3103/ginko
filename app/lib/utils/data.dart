@@ -43,6 +43,9 @@ class Data {
     Static.storage.setJSON(Keys.user, user.toJSON());
   }
 
+  // ignore: public_member_api_docs, avoid_setters_without_getters
+  static User get user => _user;
+
   // ignore: public_member_api_docs
   static String get locale => _user.language;
 

@@ -340,6 +340,280 @@ void main() {
       );
     });
 
+    test('Get correct lesson count', () {
+      // ignore: missing_required_param
+      final user = User(
+        selection: {
+          Keys.selection('a', true): 'KRA-EK',
+          Keys.selection('b', true): 'KRA-EK',
+          Keys.selection('c', true): 'KRA-EK',
+          Keys.selection('d', true): 'KRA-EK',
+          Keys.selection('e', true): 'KRA-EK',
+          Keys.selection('f', true): 'null-MIT',
+          Keys.selection('g', true): 'KRA-EK',
+          Keys.selection('h', true): 'KRA-EK',
+          Keys.selection('i', true): 'KRA-EK',
+          Keys.selection('j', true): 'KRA-EK',
+          Keys.selection('k', true): 'KRA-EK',
+          Keys.selection('l', true): 'KRA-EK',
+          Keys.selection('m', true): 'null-MIT',
+          Keys.selection('n', true): 'STA-EK',
+          Keys.selection('o', true): 'KRA-EK',
+          Keys.selection('p', true): 'null-FR',
+          Keys.selection('q', true): 'KRA-EK',
+        },
+      );
+      final days = [
+        UnitPlanDay(
+          weekday: 0,
+          lessons: [
+            Lesson(
+              unit: 0,
+              block: 'a',
+              subjects: [
+                // ignore: missing_required_param
+                Subject(
+                  subject: 'EK',
+                  teacher: 'KRA',
+                ),
+              ],
+            ),
+            Lesson(
+              unit: 1,
+              block: 'b',
+              subjects: [
+                // ignore: missing_required_param
+                Subject(
+                  subject: 'EK',
+                  teacher: 'KRA',
+                ),
+              ],
+            ),
+            Lesson(
+              unit: 2,
+              block: 'c',
+              subjects: [
+                // ignore: missing_required_param
+                Subject(
+                  subject: 'EK',
+                  teacher: 'KRA',
+                ),
+              ],
+            ),
+            Lesson(
+              unit: 3,
+              block: 'd',
+              subjects: [
+                // ignore: missing_required_param
+                Subject(
+                  subject: 'EK',
+                  teacher: 'KRA',
+                ),
+              ],
+            ),
+            Lesson(
+              unit: 4,
+              block: 'e',
+              subjects: [
+                // ignore: missing_required_param
+                Subject(
+                  subject: 'EK',
+                  teacher: 'KRA',
+                ),
+              ],
+            ),
+            Lesson(
+              unit: 5,
+              block: 'f',
+              subjects: [
+                // ignore: missing_required_param
+                Subject(
+                  subject: 'MIT',
+                ),
+              ],
+            ),
+            Lesson(
+              unit: 6,
+              block: 'g',
+              subjects: [
+                // ignore: missing_required_param
+                Subject(
+                  subject: 'EK',
+                  teacher: 'KRA',
+                ),
+              ],
+            ),
+          ],
+        ),
+        UnitPlanDay(
+          weekday: 1,
+          lessons: [
+            Lesson(
+              unit: 0,
+              block: 'h',
+              subjects: [
+                // ignore: missing_required_param
+                Subject(
+                  subject: 'EK',
+                  teacher: 'KRA',
+                ),
+              ],
+            ),
+            Lesson(
+              unit: 1,
+              block: 'i',
+              subjects: [
+                // ignore: missing_required_param
+                Subject(
+                  subject: 'EK',
+                  teacher: 'KRA',
+                ),
+              ],
+            ),
+            Lesson(
+              unit: 2,
+              block: 'j',
+              subjects: [
+                // ignore: missing_required_param
+                Subject(
+                  subject: 'EK',
+                  teacher: 'KRA',
+                ),
+              ],
+            ),
+            Lesson(
+              unit: 3,
+              block: 'k',
+              subjects: [
+                // ignore: missing_required_param
+                Subject(
+                  subject: 'EK',
+                  teacher: 'KRA',
+                ),
+              ],
+            ),
+            Lesson(
+              unit: 4,
+              block: 'l',
+              subjects: [
+                // ignore: missing_required_param
+                Subject(
+                  subject: 'EK',
+                  teacher: 'KRA',
+                ),
+              ],
+            ),
+            Lesson(
+              unit: 5,
+              block: 'm',
+              subjects: [
+                // ignore: missing_required_param
+                Subject(
+                  subject: 'MIT',
+                ),
+              ],
+            ),
+            Lesson(
+              unit: 6,
+              block: 'n',
+              subjects: [
+                // ignore: missing_required_param
+                Subject(
+                  subject: 'EK',
+                  teacher: 'KRA',
+                ),
+              ],
+            ),
+          ],
+        ),
+        UnitPlanDay(
+          weekday: 2,
+          lessons: [
+            Lesson(
+              unit: 0,
+              block: 'o',
+              subjects: [
+                // ignore: missing_required_param
+                Subject(
+                  subject: 'EK',
+                  teacher: 'KRA',
+                ),
+              ],
+            ),
+            Lesson(
+              unit: 1,
+              block: 'p',
+              subjects: [
+                // ignore: missing_required_param
+                Subject(
+                  subject: 'FR',
+                ),
+              ],
+            ),
+          ],
+        ),
+        UnitPlanDay(
+          weekday: 3,
+          lessons: [
+            Lesson(
+              unit: 0,
+              block: 'q',
+              subjects: [
+                // ignore: missing_required_param
+                Subject(
+                  subject: 'EK',
+                  teacher: 'KRA',
+                ),
+              ],
+            ),
+            Lesson(
+              unit: 1,
+              block: 'r',
+              subjects: [
+                // ignore: missing_required_param
+                Subject(
+                  subject: 'EK',
+                  teacher: 'KRA',
+                ),
+              ],
+            ),
+          ],
+        ),
+        UnitPlanDay(
+          weekday: 4,
+          lessons: [
+            Lesson(
+              unit: 0,
+              block: 's',
+              subjects: [
+                // ignore: missing_required_param
+                Subject(
+                  subject: 'EK',
+                  teacher: 'KRA',
+                ),
+              ],
+            ),
+            Lesson(
+              unit: 1,
+              block: 't',
+              subjects: [
+                // ignore: missing_required_param
+                Subject(
+                  subject: 'EK',
+                  teacher: 'KRA',
+                ),
+              ],
+            ),
+          ],
+        ),
+      ];
+      expect(days[0].userLessonsCount(user, true), 7);
+      expect(days[1].userLessonsCount(user, true), 5);
+      expect(days[2].userLessonsCount(user, true), 1);
+      expect(days[3].userLessonsCount(user, true), 1);
+      expect(days[4].userLessonsCount(user, true), 0);
+    });
+
     test('Can create unit plan for grade', () {
       final unitPlanDay = UnitPlanDay(
         weekday: 0,

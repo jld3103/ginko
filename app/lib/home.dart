@@ -28,11 +28,11 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   static final _channel = MethodChannel('de.ginko.app');
 
   /// Get the date of the current selected tab
-  DateTime get getDate => getMonday.add(Duration(days: _weekday));
+  DateTime get getDate => monday.add(Duration(days: _weekday));
 
   /// Get the Monday of the week
   /// Skips a week of weekend
-  DateTime get getMonday {
+  DateTime get monday {
     final now = DateTime.now();
     return now
         .subtract(Duration(
@@ -79,7 +79,29 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         _channel.setMethodCallHandler(_handleNotification);
       }
     });
+    setState(() {
+      _tabController.index = indexTab;
+      _weekday = _tabController.index;
+    });
     super.initState();
+  }
+
+  /// Get the index of the initial tab
+  int get indexTab {
+    var day = DateTime.now();
+    if (monday.isAfter(DateTime.now())) {
+      day = monday;
+    }
+    final lessonCount = Data.unitPlan.days[day.weekday - 1]
+        .userLessonsCount(Data.user, isWeekA(day));
+    if (DateTime.now().isAfter(DateTime(
+      DateTime.now().year,
+      DateTime.now().month,
+      DateTime.now().day,
+    ).add(Times.getUnitTimes(lessonCount - 1)[1]))) {
+      day = day.add(Duration(days: 1));
+    }
+    return day.weekday - 1;
   }
 
   Future _handleNotification(MethodCall call) async {
@@ -152,7 +174,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         children: List.generate(
           5,
           (weekday) {
-            final start = getMonday.add(Duration(days: weekday));
+            final start = monday.add(Duration(days: weekday));
             final weekA = isWeekA(start);
             return ListView(
               padding: EdgeInsets.all(5),
@@ -208,8 +230,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
                             ...Data.replacementPlan.changes
                                 .where((change) =>
                                     change.date ==
-                                        getMonday
-                                            .add(Duration(days: weekday)) &&
+                                        monday.add(Duration(days: weekday)) &&
                                     change.unit ==
                                         Data.unitPlan.days[weekday].lessons
                                             .indexOf(lesson) &&
