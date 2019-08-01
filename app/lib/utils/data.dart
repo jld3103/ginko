@@ -96,8 +96,10 @@ class Data {
     };
     print(parameters);
     try {
-      await Client().get(
-          '$baseUrl/?${parameters.keys.map((name) => '$name=${parameters[name]}').join('&')}');
+      await Client()
+          .get(
+              '$baseUrl/?${parameters.keys.map((name) => '$name=${parameters[name]}').join('&')}')
+          .timeout(Duration(seconds: 3));
       // ignore: empty_catches
     } on Exception {}
   }
@@ -136,8 +138,10 @@ class Data {
     };
 
     try {
-      final response = await Client().get(
-          '$baseUrl/?${parameters.keys.map((name) => '$name=${parameters[name]}').join('&')}');
+      final response = await Client()
+          .get(
+              '$baseUrl/?${parameters.keys.map((name) => '$name=${parameters[name]}').join('&')}')
+          .timeout(Duration(seconds: 3));
       if (response.statusCode != 200) {
         print(response.statusCode);
         return 2;
