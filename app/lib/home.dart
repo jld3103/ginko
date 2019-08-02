@@ -122,24 +122,32 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) => MediaQuery.of(context).size.width < 600
       ? getHeaderView(
-          SlidingUpPanel(
-            controller: _panelController,
-            parallaxEnabled: true,
-            parallaxOffset: .1,
-            maxHeight: MediaQuery.of(context).size.height * 0.75,
-            minHeight: 30,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(24),
-              topRight: Radius.circular(24),
-            ),
-            panelSnapping: true,
-            backdropEnabled: true,
-            backdropTapClosesPanel: true,
-            panel: ExtraInformation(
-              date: getDate,
-              panelController: _panelController,
-            ),
-            body: getUnitPlanView,
+          Stack(
+            children: [
+              Container(
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height - 100,
+                child: getUnitPlanView,
+              ),
+              SlidingUpPanel(
+                controller: _panelController,
+                parallaxEnabled: true,
+                parallaxOffset: .1,
+                maxHeight: MediaQuery.of(context).size.height * 0.75,
+                minHeight: 30,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(24),
+                  topRight: Radius.circular(24),
+                ),
+                panelSnapping: true,
+                backdropEnabled: true,
+                backdropTapClosesPanel: true,
+                panel: ExtraInformation(
+                  date: getDate,
+                  panelController: _panelController,
+                ),
+              ),
+            ],
           ),
         )
       : Row(
@@ -169,7 +177,14 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
             final start = monday.add(Duration(days: weekday));
             final weekA = isWeekA(start);
             return ListView(
-              padding: EdgeInsets.all(5),
+              padding: MediaQuery.of(context).size.width < 600
+                  ? EdgeInsets.only(
+                      top: 5,
+                      right: 5,
+                      bottom: 35,
+                      left: 5,
+                    )
+                  : EdgeInsets.all(5),
               shrinkWrap: true,
               children: Data.unitPlan.days[weekday].lessons
                   .map(

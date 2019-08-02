@@ -1,5 +1,6 @@
 
 # 2019-08-02  
+ jld3103: Fix extra information on small screens  
  jld3103: Fix initial tab  
  jld3103: Fix filter for sport rooms  
 

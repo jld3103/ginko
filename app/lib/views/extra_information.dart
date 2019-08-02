@@ -29,23 +29,10 @@ class ExtraInformation extends StatefulWidget {
 /// ExtraInformationState class
 /// describes the state of the list of extra information
 class ExtraInformationState extends State<ExtraInformation> {
-  bool _showBig;
-
-  @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((a) {
-      setState(() {
-        _showBig = MediaQuery.of(context).size.width >= 600;
-      });
-    });
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
-    if (_showBig == null) {
-      return Container();
-    }
+    final _showBig = MediaQuery.of(context).size.width >= 600;
+
     final start = widget.date;
     final end = start.add(Duration(days: 1)).subtract(Duration(seconds: 1));
     final events = Data.calendar.events.where((event) {
