@@ -1,4 +1,7 @@
 
+# 2019-08-02  
+ jld3103: Fix filter for sport rooms  
+
 # 2019-08-01  
  jld3103: Add loading timeout  
  jld3103: Add intial tab  

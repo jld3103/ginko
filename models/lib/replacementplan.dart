@@ -159,13 +159,49 @@ class Change {
     // TODO(jl3103): Add exam filter
     if (type != ChangeTypes.exam && type != ChangeTypes.rewriteExam) {
       if (subject != null) {
-        subjects = subjects.where((s) => s.subject == subject).toList();
+        subjects = subjects
+            .where((s) =>
+                Subjects.getSubject(s.subject) == Subjects.getSubject(subject))
+            .toList();
       }
       if (teacher != null) {
         subjects = subjects.where((s) => s.teacher == teacher).toList();
       }
       if (room != null) {
-        subjects = subjects.where((s) => s.room == room).toList();
+        if (Rooms.getRoom(room) == Rooms.rooms['KLH'] &&
+            subjects
+                .where((s) => Rooms.getRoom(s.room) == Rooms.rooms['KLH'])
+                .toList()
+                .isEmpty) {
+          if (subjects
+              .where((s) => Rooms.getRoom(s.room) == Rooms.rooms['GRH'])
+              .toList()
+              .isNotEmpty) {
+            subjects = subjects
+                .where((s) => Rooms.getRoom(s.room) == Rooms.rooms['GRH'])
+                .toList();
+          }
+        } else if (Rooms.getRoom(room) == Rooms.rooms['GRH'] &&
+            subjects
+                .where((s) => Rooms.getRoom(s.room) == Rooms.rooms['GRH'])
+                .toList()
+                .isEmpty) {
+          if (subjects
+              .where((s) => Rooms.getRoom(s.room) == Rooms.rooms['KLH'])
+              .toList()
+              .isNotEmpty) {
+            subjects = subjects
+                .where((s) => Rooms.getRoom(s.room) == Rooms.rooms['KLH'])
+                .toList();
+          }
+        } else if (subjects
+            .where((s) => Rooms.getRoom(s.room) == Rooms.getRoom(room))
+            .toList()
+            .isNotEmpty) {
+          subjects = subjects
+              .where((s) => Rooms.getRoom(s.room) == Rooms.getRoom(room))
+              .toList();
+        }
       }
     }
     return subjects;

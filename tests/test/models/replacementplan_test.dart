@@ -322,6 +322,53 @@ void main() {
       );
     });
 
+    test('Can apply filter with fix for sport rooms', () {
+      final changes = [
+        Change(
+          unit: 0,
+          date: DateTime(2019, 7, 11),
+          room: 'KLH',
+        ),
+        Change(
+          unit: 0,
+          date: DateTime(2019, 7, 11),
+          room: 'GRH',
+        ),
+      ];
+      final lessons = [
+        Lesson(
+          unit: 0,
+          block: 'a',
+          subjects: [
+            Subject(
+              unit: 0,
+              subject: 'SP',
+              room: 'GRH',
+              teacher: 'GÖB',
+              weeks: 'AB',
+            ),
+          ],
+        ),
+        Lesson(
+          unit: 0,
+          block: 'b',
+          subjects: [
+            Subject(
+              unit: 0,
+              subject: 'SP',
+              room: 'KLH',
+              teacher: 'GÖB',
+              weeks: 'AB',
+            ),
+          ],
+        ),
+      ];
+      expect(changes[0].getMatchingSubjectsByLesson(lessons[0])[0].room, 'GRH');
+      expect(changes[1].getMatchingSubjectsByLesson(lessons[0])[0].room, 'GRH');
+      expect(changes[0].getMatchingSubjectsByLesson(lessons[1])[0].room, 'KLH');
+      expect(changes[1].getMatchingSubjectsByLesson(lessons[1])[0].room, 'KLH');
+    });
+
     test('Can complete change', () {
       final change = Change(
         date: DateTime(2019, 7, 11),

@@ -160,7 +160,14 @@ class ReplacementPlanData {
               // ignore: lines_longer_than_80_chars
               "Filter wasn't able to figure out the original subject for this change:");
           print(change.toJSON());
-          print(subjects.map((subject) => subject.toJSON()).toList());
+          print(UnitPlanData
+              .unitPlan
+              .unitPlans[grades.indexOf(replacementPlanForGrade.grade)]
+              .days[change.date.weekday - 1]
+              .lessons[change.unit]
+              .subjects
+              .map((subject) => subject.toJSON())
+              .toList());
         }
       }
     }
