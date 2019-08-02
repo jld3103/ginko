@@ -78,10 +78,9 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
           );
         _channel.setMethodCallHandler(_handleNotification);
       }
-    });
-    setState(() {
-      _tabController.index = indexTab;
-      _weekday = _tabController.index;
+      setState(() {
+        _tabController.index = _weekday = indexTab;
+      });
     });
     super.initState();
   }
@@ -100,6 +99,9 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       DateTime.now().day,
     ).add(Times.getUnitTimes(lessonCount - 1)[1]))) {
       day = day.add(Duration(days: 1));
+    }
+    if (day.weekday > 5) {
+      day = day.add(Duration(days: 8 - day.weekday));
     }
     return day.weekday - 1;
   }
@@ -142,27 +144,17 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         )
       : Row(
           children: [
-            AnimatedSize(
-              vsync: this,
-              duration: Duration(milliseconds: 500),
-              curve: Curves.bounceInOut,
-              child: Container(
-                height: double.infinity,
-                width: MediaQuery.of(context).size.width - 300,
-                child: getHeaderView(getUnitPlanView),
-              ),
+            Container(
+              height: double.infinity,
+              width: MediaQuery.of(context).size.width - 300,
+              child: getHeaderView(getUnitPlanView),
             ),
-            AnimatedSize(
-              vsync: this,
-              duration: Duration(milliseconds: 500),
-              curve: Curves.bounceInOut,
-              child: Container(
-                height: double.infinity,
-                width: 300,
-                child: ExtraInformation(
-                  date: getDate,
-                  panelController: _panelController,
-                ),
+            Container(
+              height: double.infinity,
+              width: 300,
+              child: ExtraInformation(
+                date: getDate,
+                panelController: _panelController,
               ),
             ),
           ],
