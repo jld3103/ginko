@@ -139,6 +139,13 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
                   topLeft: Radius.circular(24),
                   topRight: Radius.circular(24),
                 ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey,
+                    blurRadius: 5,
+                    spreadRadius: 2,
+                  ),
+                ],
                 panelSnapping: true,
                 backdropEnabled: true,
                 backdropTapClosesPanel: true,

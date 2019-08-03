@@ -1,4 +1,7 @@
 
+# 2019-08-03  
+ jld3103: Improve visibility of extra information slider  
+
 # 2019-08-02  
  jld3103: Fix extra information on small screens  
  jld3103: Fix initial tab  
