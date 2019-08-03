@@ -50,14 +50,15 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   void initState() {
     _panelController = PanelController();
     _tabController = TabController(length: 5, vsync: this);
-    _weekday = 0;
-    _tabController.addListener(() {
-      if (_weekday != _tabController.index) {
-        setState(() {
-          _weekday = _tabController.index;
-        });
-      }
-    });
+    _tabController
+      ..index = _weekday = indexTab
+      ..addListener(() {
+        if (_weekday != _tabController.index) {
+          setState(() {
+            _weekday = _tabController.index;
+          });
+        }
+      });
     Static.rebuildUnitPlan = () => setState(() {});
     WidgetsBinding.instance.addPostFrameCallback((a) {
       if (!Data.online) {
@@ -78,9 +79,6 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
           );
         _channel.setMethodCallHandler(_handleNotification);
       }
-      setState(() {
-        _tabController.index = _weekday = indexTab;
-      });
     });
     super.initState();
   }
@@ -93,11 +91,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     }
     final lessonCount = Data.unitPlan.days[day.weekday - 1]
         .userLessonsCount(Data.user, isWeekA(day));
-    if (DateTime.now().isAfter(DateTime(
-      DateTime.now().year,
-      DateTime.now().month,
-      DateTime.now().day,
-    ).add(Times.getUnitTimes(lessonCount - 1)[1]))) {
+    if (DateTime.now()
+        .isAfter(day.add(Times.getUnitTimes(lessonCount - 1)[1]))) {
       day = day.add(Duration(days: 1));
     }
     if (day.weekday > 5) {

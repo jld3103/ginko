@@ -1,5 +1,6 @@
 
 # 2019-08-03  
+ jld3103: Fix initial tab  
  jld3103: Fix authentication  
  jld3103: Decrease app size  
  jld3103: Improve visibility of extra information slider  
