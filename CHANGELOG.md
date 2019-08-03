@@ -1,5 +1,6 @@
 
 # 2019-08-03  
+ jld3103: Decreased app size  
  jld3103: Improve visibility of extra information slider  
 
 # 2019-08-02  
