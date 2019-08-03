@@ -23,8 +23,7 @@ pubspec.lock
 
 app/images/*
 !app/images/logo_white.svg
-app/linux/flutter/
-app/linux/.generated_flutter_root
+app/desktop/assets/icon.png
 app/android/app/src/main/res/mipmap-*/
 app/android/app/src/main/res/drawable/*.png
 app/ios/Runner/Assets.xcassets/AppIcon.appiconset/*.png
