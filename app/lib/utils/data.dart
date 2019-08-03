@@ -105,7 +105,7 @@ class Data {
   }
 
   /// Load all the data from the server
-  static Future<int> load(BuildContext context) async {
+  static Future<ErrorCode> load(BuildContext context) async {
     if (Static.storage.has(Keys.unitPlan)) {
       unitPlan =
           UnitPlanForGrade.fromJSON(Static.storage.getJSON(Keys.unitPlan));
@@ -144,7 +144,7 @@ class Data {
           .timeout(Duration(seconds: 3));
       if (response.statusCode != 200) {
         print(response.statusCode);
-        return 2;
+        return ErrorCode.wrongCredentials;
       }
       final data = json.decode(response.body);
       for (final key in data.keys.where((key) => key != 'status')) {
@@ -198,13 +198,28 @@ class Data {
       }
       if (AppTranslations.of(context).locale.languageCode != _user.language) {
         _user.language = AppTranslations.of(context).locale.languageCode;
-        await _updateUser();
+        // ignore: unawaited_futures
+        _updateUser();
       }
       online = true;
-      return 0;
+      return ErrorCode.none;
     } on Exception catch (e) {
       print(e);
-      return 1;
+      if (user == null) {
+        return ErrorCode.wrongCredentials;
+      }
+      return ErrorCode.offline;
     }
   }
+}
+
+/// ErrorCode enum
+/// error codes for communicating data state internally
+enum ErrorCode {
+  // ignore: public_member_api_docs
+  none,
+  // ignore: public_member_api_docs
+  offline,
+  // ignore: public_member_api_docs
+  wrongCredentials,
 }

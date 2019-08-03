@@ -31,7 +31,7 @@ class LoadingState extends State<Loading> {
     });
     Data.setup(8000, '192.168.1.46', 'http');
     Data.load(context).then((code) {
-      if (code == 2) {
+      if (code != ErrorCode.none) {
         Navigator.of(context).pushReplacementNamed('/login');
         return;
       }

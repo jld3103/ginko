@@ -40,20 +40,20 @@ class LoginState extends State<Login> {
       );
       await Data.load(context).then((code) {
         setState(() {
-          _credentialsCorrect = code != 2;
+          _credentialsCorrect = code != ErrorCode.wrongCredentials;
           _isCheckingForm = false;
         });
         switch (code) {
-          case 0:
+          case ErrorCode.none:
             Navigator.of(context).pop();
             Navigator.of(context).pushReplacementNamed('/home');
             break;
-          case 1:
+          case ErrorCode.offline:
             Scaffold.of(context).showSnackBar(SnackBar(
-              content: Text(AppTranslations.of(context).loginErrorOccured),
+              content: Text(AppTranslations.of(context).loginFailed),
             ));
             break;
-          case 2:
+          case ErrorCode.wrongCredentials:
             _formKey.currentState.validate();
             _passwordController.clear();
             break;

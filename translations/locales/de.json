@@ -10,7 +10,6 @@
   "loginPassword": "Passwort",
   "loginCredentialsWrong": "Die Anmeldedaten sind falsch",
   "loginSubmit": "Anmelden",
-  "loginErrorOccured": "Ein Fehler ist aufgetreten",
   "notificationsNoChanges": "Keine Änderungen",
   "notificationsChanges": "Änderungen",
   "subjects": {

@@ -4,12 +4,11 @@
   "homeNewReplacementPlan": "New replacement plan!",
   "loginUserNameRequired": "Username required",
   "loginPasswordRequired": "Password required",
-  "loginFailed": "Your registration could not be verified",
+  "loginFailed": "Your login could not be verified",
   "loginUsername": "Username",
   "loginPassword": "Password",
   "loginCredentialsWrong": "The credentials are wrong",
   "loginSubmit": "Login",
-  "loginErrorOccured": "An error occurred",
   "notificationsNoChanges": "No changes",
   "notificationsChanges": "changes",
   "subjects": {
