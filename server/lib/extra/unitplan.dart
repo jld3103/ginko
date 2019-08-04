@@ -136,15 +136,25 @@ class UnitPlanExtra {
                 }
               }
             }
-            for (var i = 0; i < addFreeLesson.length; i++) {
-              if (addFreeLesson[i]) {
-                days[day].lessons[unit].subjects.add(Subject(
-                      weeks: i == 0 ? 'A' : 'B',
-                      teacher: null,
-                      subject: 'FR',
-                      room: null,
-                      unit: unit,
-                    ));
+            if (addFreeLesson[0] && addFreeLesson[1]) {
+              days[day].lessons[unit].subjects.add(Subject(
+                    weeks: 'AB',
+                    teacher: null,
+                    subject: 'FR',
+                    room: null,
+                    unit: unit,
+                  ));
+            } else {
+              for (var i = 0; i < addFreeLesson.length; i++) {
+                if (addFreeLesson[i]) {
+                  days[day].lessons[unit].subjects.add(Subject(
+                        weeks: i == 0 ? 'A' : 'B',
+                        teacher: null,
+                        subject: 'FR',
+                        room: null,
+                        unit: unit,
+                      ));
+                }
               }
             }
           }

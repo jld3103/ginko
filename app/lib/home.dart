@@ -4,6 +4,7 @@ import 'package:app/utils/static.dart';
 import 'package:app/views/extra_information.dart';
 import 'package:app/views/replacementplan/row.dart';
 import 'package:app/views/unitplan/row.dart';
+import 'package:app/views/unitplan/select_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
@@ -210,25 +211,9 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
                           if (lesson.subjects.length > 1) {
                             showDialog(
                               context: context,
-                              builder: (context) => SimpleDialog(
-                                title: Text(AppTranslations.of(context)
-                                    .weekdays[weekday]),
-                                contentPadding: EdgeInsets.all(10),
-                                children: lesson.subjects
-                                    .map((subject) => GestureDetector(
-                                          onTap: () {
-                                            Navigator.of(context).pop();
-                                            Selection.set(lesson.block, weekA,
-                                                subject.identifier);
-                                            Static.rebuildUnitPlan();
-                                          },
-                                          child: UnitPlanRow(
-                                            subject: subject,
-                                            showUnit: false,
-                                            addPadding: false,
-                                          ),
-                                        ))
-                                    .toList(),
+                              builder: (context) => UnitPlanSelectDialog(
+                                weekday: weekday,
+                                lesson: lesson,
                               ),
                             );
                           }
@@ -238,14 +223,10 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
                             UnitPlanRow(subject: subject),
                             ...Data.replacementPlan.changes
                                 .where((change) =>
-                                    change.date ==
-                                        monday.add(Duration(days: weekday)) &&
-                                    change.unit ==
-                                        Data.unitPlan.days[weekday].lessons
-                                            .indexOf(lesson) &&
+                                    change.date.weekday - 1 == weekday &&
+                                    change.unit == lesson.unit &&
                                     change
-                                        .getMatchingSubjectsByUnitPlan(
-                                            Data.unitPlan)
+                                        .getMatchingSubjectsByLesson(lesson)
                                         .where((s) =>
                                             s.identifier == subject.identifier)
                                         .isNotEmpty)

@@ -1,8 +1,8 @@
 {
   "loadingTitle": "Laden",
   "homeOffline": "Eventuell werden alte Daten angezeigt",
-  "homeWeek": "Woche",
   "homeNewReplacementPlan": "Neuer Vertretungsplan!",
+  "homeAAndBWeeksCombination": "A- und B-Wochen Kombination",
   "loginUserNameRequired": "Benutzername erforderlich",
   "loginPasswordRequired": "Passwort erforderlich",
   "loginFailed": "Deine Anmeldung konnte nicht überprüft werden",

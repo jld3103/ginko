@@ -1,4 +1,7 @@
 
+# 2019-08-04  
+ jld3103: Add a/b selection  
+
 # 2019-08-03  
  jld3103: Switch to go-flutter for desktop  
  jld3103: Fix initial tab  
