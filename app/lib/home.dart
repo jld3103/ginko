@@ -1,10 +1,7 @@
 import 'package:app/utils/data.dart';
-import 'package:app/utils/selection.dart';
 import 'package:app/utils/static.dart';
 import 'package:app/views/extra_information.dart';
-import 'package:app/views/replacementplan/row.dart';
-import 'package:app/views/unitplan/row.dart';
-import 'package:app/views/unitplan/select_dialog.dart';
+import 'package:app/views/unitplan/progress_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
@@ -178,73 +175,14 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
           5,
           (weekday) {
             final start = monday.add(Duration(days: weekday));
-            final weekA = isWeekA(start);
             return ListView(
-              padding: MediaQuery.of(context).size.width < 600
-                  ? EdgeInsets.only(
-                      top: 5,
-                      right: 5,
-                      bottom: 35,
-                      left: 5,
-                    )
-                  : EdgeInsets.all(5),
               shrinkWrap: true,
               children: Data.unitPlan.days[weekday].lessons
-                  .map(
-                    (lesson) {
-                      final subjects = lesson.subjects
-                          .where((subject) =>
-                              Selection.get(lesson.block, weekA) ==
-                              subject.identifier)
-                          .toList();
-                      final subject = subjects.isNotEmpty
-                          ? subjects[0]
-                          : Subject(
-                              subject: Keys.none,
-                              teacher: null,
-                              weeks: null,
-                              room: null,
-                              unit: lesson.unit,
-                            );
-                      return GestureDetector(
-                        onTap: () {
-                          if (lesson.subjects.length > 1) {
-                            showDialog(
-                              context: context,
-                              builder: (context) => UnitPlanSelectDialog(
-                                weekday: weekday,
-                                lesson: lesson,
-                              ),
-                            );
-                          }
-                        },
-                        child: Column(
-                          children: [
-                            UnitPlanRow(subject: subject),
-                            ...Data.replacementPlan.changes
-                                .where((change) =>
-                                    change.date.weekday - 1 == weekday &&
-                                    change.unit == lesson.unit &&
-                                    change
-                                        .getMatchingSubjectsByLesson(lesson)
-                                        .where((s) =>
-                                            s.identifier == subject.identifier)
-                                        .isNotEmpty)
-                                .map((change) => Container(
-                                      margin: EdgeInsets.only(left: 15),
-                                      child: ReplacementPlanRow(
-                                        change: change,
-                                        showUnit: false,
-                                        addPadding: false,
-                                      ),
-                                    ))
-                                .toList()
-                                .cast<Widget>(),
-                          ],
-                        ),
-                      );
-                    },
-                  )
+                  .map((lesson) => UnitPlanProgressRow(
+                        lesson: lesson,
+                        start: start,
+                        weekday: weekday,
+                      ))
                   .toList()
                   .cast<Widget>(),
             );
