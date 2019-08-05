@@ -36,7 +36,16 @@ class ExtraInformationState extends State<ExtraInformation> {
     final start = widget.date;
     final end = start.add(Duration(days: 1)).subtract(Duration(seconds: 1));
     final events = Data.calendar.events.where((event) {
-      if (event.start == start && event.end == end) {
+      if (event.start == start &&
+          (event.end == end ||
+              event.end.isAfter(end) ||
+              event.end.isBefore(end))) {
+        return true;
+      }
+      if (event.end == end &&
+          (event.start == start ||
+              event.start.isAfter(start) ||
+              event.start.isBefore(start))) {
         return true;
       }
       if (event.start.isBefore(start) && event.end.isAfter(end)) {

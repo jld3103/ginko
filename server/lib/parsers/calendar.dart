@@ -94,9 +94,9 @@ class CalendarParser {
         arr.insert(0, line.split(' ')[0]);
       }
       final start = _format.parse(arr[1]);
-      final end = arr.length > 2
-          ? _format.parse(arr[2])
-          : start.add(Duration(days: 1)).subtract(Duration(seconds: 1));
+      final end = (arr.length > 2 ? _format.parse(arr[2]) : start)
+          .add(Duration(days: 1))
+          .subtract(Duration(seconds: 1));
       events.add(CalendarEvent(
         name: arr[0] == 'Herbst'
             ? 'Herbstferien'
@@ -365,7 +365,7 @@ class CalendarParser {
         for (final date in dates) {
           events.add(CalendarEvent(
             name: 'Beratungskonferenz',
-            end: date..add(offset),
+            end: date.add(offset),
             type: EventTypes.teacherConsulting,
             start: date,
             shortUnits: true,
