@@ -110,6 +110,9 @@ class UnitPlanDay {
         }
       }
       if (!somethingBetween) {
+        if (i == -1) {
+          return lessons.length;
+        }
         return i + 1;
       }
     }

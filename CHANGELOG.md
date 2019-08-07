@@ -1,5 +1,6 @@
 
 # 2019-08-07  
+ jld3103: Fix lesson count  
  jld3103: Add proper user configuration synchronisation  
 
 # 2019-08-05  

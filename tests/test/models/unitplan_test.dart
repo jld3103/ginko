@@ -606,12 +606,39 @@ void main() {
             ),
           ],
         ),
+        UnitPlanDay(
+          weekday: 5,
+          lessons: [
+            Lesson(
+              unit: 0,
+              block: 'u',
+              subjects: [
+                // ignore: missing_required_param
+                Subject(
+                  subject: 'EK',
+                  teacher: 'KRA',
+                ),
+              ],
+            ),
+            Lesson(
+              unit: 1,
+              block: 'v',
+              subjects: [
+                // ignore: missing_required_param
+                Subject(
+                  subject: 'EK',
+                  teacher: 'KRA',
+                ),
+              ],
+            ),
+          ],
+        ),
       ];
       expect(days[0].userLessonsCount(user, true), 7);
       expect(days[1].userLessonsCount(user, true), 5);
       expect(days[2].userLessonsCount(user, true), 1);
       expect(days[3].userLessonsCount(user, true), 1);
-      expect(days[4].userLessonsCount(user, true), 0);
+      expect(days[4].userLessonsCount(user, true), 2);
     });
 
     test('Can create unit plan for grade', () {
