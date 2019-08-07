@@ -1,5 +1,6 @@
 
 # 2019-08-07  
+ jld3103: Remove minutely check for initial tab  
  jld3103: Fix initial tab  
  jld3103: Add automatic fcm token deletion  
  jld3103: Fix lesson count  

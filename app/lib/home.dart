@@ -26,7 +26,6 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   TabController _tabController;
   int _weekday;
   static final _channel = MethodChannel('de.ginko.app');
-  Timer _timer;
 
   /// Get the date of the current selected tab
   DateTime get getDate => monday.add(Duration(days: _weekday));
@@ -51,15 +50,15 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   void initState() {
     _panelController = PanelController();
     _tabController = TabController(length: 5, vsync: this);
-    _tabController.addListener(() {
-      if (_weekday != _tabController.index) {
-        setState(() {
-          _weekday = _tabController.index;
-        });
-      }
-    });
-    _updateTab();
-    _timer = Timer.periodic(Duration(minutes: 1), (a) => _updateTab());
+    _tabController
+      ..index = _weekday = indexTab
+      ..addListener(() {
+        if (_weekday != _tabController.index) {
+          setState(() {
+            _weekday = _tabController.index;
+          });
+        }
+      });
     Static.rebuildUnitPlan = () => setState(() {});
     WidgetsBinding.instance.addPostFrameCallback((a) {
       if (!Data.online) {
@@ -82,12 +81,6 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       }
     });
     super.initState();
-  }
-
-  void _updateTab() {
-    setState(() {
-      _tabController.index = _weekday = indexTab;
-    });
   }
 
   /// Get the index of the initial tab
@@ -122,7 +115,6 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   @override
   void dispose() {
     _tabController.dispose();
-    _timer.cancel();
     super.dispose();
   }
 
