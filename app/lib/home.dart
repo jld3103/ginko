@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app/utils/data.dart';
 import 'package:app/utils/static.dart';
 import 'package:app/views/extra_information.dart';
@@ -24,6 +26,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   TabController _tabController;
   int _weekday;
   static final _channel = MethodChannel('de.ginko.app');
+  Timer _timer;
 
   /// Get the date of the current selected tab
   DateTime get getDate => monday.add(Duration(days: _weekday));
@@ -48,15 +51,15 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   void initState() {
     _panelController = PanelController();
     _tabController = TabController(length: 5, vsync: this);
-    _tabController
-      ..index = _weekday = indexTab
-      ..addListener(() {
-        if (_weekday != _tabController.index) {
-          setState(() {
-            _weekday = _tabController.index;
-          });
-        }
-      });
+    _tabController.addListener(() {
+      if (_weekday != _tabController.index) {
+        setState(() {
+          _weekday = _tabController.index;
+        });
+      }
+    });
+    _updateTab();
+    _timer = Timer.periodic(Duration(minutes: 1), (a) => _updateTab());
     Static.rebuildUnitPlan = () => setState(() {});
     WidgetsBinding.instance.addPostFrameCallback((a) {
       if (!Data.online) {
@@ -81,9 +84,19 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     super.initState();
   }
 
+  void _updateTab() {
+    setState(() {
+      _tabController.index = _weekday = indexTab;
+    });
+  }
+
   /// Get the index of the initial tab
   int get indexTab {
-    var day = DateTime.now();
+    var day = DateTime(
+      DateTime.now().year,
+      DateTime.now().month,
+      DateTime.now().day,
+    );
     if (monday.isAfter(DateTime.now())) {
       day = monday;
     }
@@ -109,6 +122,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   @override
   void dispose() {
     _tabController.dispose();
+    _timer.cancel();
     super.dispose();
   }
 
