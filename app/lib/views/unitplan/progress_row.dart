@@ -103,15 +103,13 @@ class _UnitPlanProgressRowState extends State<UnitPlanProgressRow> {
             padding: EdgeInsets.only(
               left: 5,
               right: 5,
-              top: Data.unitPlan.days[widget.weekday].lessons
-                          .indexOf(widget.lesson) ==
-                      0
-                  ? 5
-                  : 0,
+              top: 0,
               bottom: Data.unitPlan.days[widget.weekday].lessons
-                          .indexOf(widget.lesson) ==
-                      Data.unitPlan.days[widget.weekday].lessons.length - 1
-                  ? MediaQuery.of(context).size.width < 600 ? 35 : 5
+                              .indexOf(widget.lesson) ==
+                          Data.unitPlan.days[widget.weekday].lessons.length -
+                              1 &&
+                      MediaQuery.of(context).size.width < 600
+                  ? 25
                   : 0,
             ),
             child: Column(

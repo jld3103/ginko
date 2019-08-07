@@ -1,4 +1,7 @@
 
+# 2019-08-08  
+ jld3103: Fix progress showing little space after first lesson  
+
 # 2019-08-07  
  jld3103: Remove minutely check for initial tab  
  jld3103: Fix initial tab  
