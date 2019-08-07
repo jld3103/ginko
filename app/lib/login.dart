@@ -33,12 +33,12 @@ class LoginState extends State<Login> {
       Data.user = User(
         username: _usernameController.text,
         password: _passwordController.text,
-        grade: _grade,
-        language: _language,
-        selection: {},
+        grade: UserValue('grade', _grade),
+        language: UserValue('language', _language),
+        selection: [],
         tokens: [],
       );
-      await Data.load(context).then((code) {
+      await Data.load().then((code) {
         setState(() {
           _credentialsCorrect = code != ErrorCode.wrongCredentials;
           _isCheckingForm = false;

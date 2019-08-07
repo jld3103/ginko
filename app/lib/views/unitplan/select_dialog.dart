@@ -1,3 +1,4 @@
+import 'package:app/utils/data.dart';
 import 'package:app/utils/selection.dart';
 import 'package:app/utils/static.dart';
 import 'package:app/views/unitplan/row.dart';
@@ -31,12 +32,7 @@ class UnitPlanSelectDialog extends StatelessWidget {
           ..._abSubjects
               .map(
                 (subject) => GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    Selection.set(lesson.block, true, subject.identifier);
-                    Selection.set(lesson.block, false, subject.identifier);
-                    Static.rebuildUnitPlan();
-                  },
+                  onTap: () => _setSelection(context, subject, subject),
                   child: UnitPlanRow(
                     subject: subject,
                     showUnit: false,
@@ -55,12 +51,7 @@ class UnitPlanSelectDialog extends StatelessWidget {
                           Rooms.getRoom(subject2.room ?? '') &&
                       subject1.teacher != subject2.teacher)
                     GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        Selection.set(lesson.block, true, subject1.identifier);
-                        Selection.set(lesson.block, false, subject2.identifier);
-                        Static.rebuildUnitPlan();
-                      },
+                      onTap: () => _setSelection(context, subject1, subject2),
                       child: Card(
                         child: Container(
                           padding: EdgeInsets.all(5),
@@ -111,4 +102,12 @@ class UnitPlanSelectDialog extends StatelessWidget {
 
   List<Subject> get _abSubjects =>
       lesson.subjects.where((subject) => subject.weeks == 'AB').toList();
+
+  void _setSelection(BuildContext context, Subject aSubject, Subject bSubject) {
+    Navigator.of(context).pop();
+    Selection.set(lesson.block, true, aSubject.identifier);
+    Selection.set(lesson.block, false, bSubject.identifier);
+    Data.updateUser();
+    Static.rebuildUnitPlan();
+  }
 }

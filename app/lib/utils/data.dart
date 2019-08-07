@@ -3,11 +3,9 @@ import 'dart:convert';
 
 import 'package:app/utils/static.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_platform/flutter_platform.dart';
 import 'package:http/http.dart';
 import 'package:models/models.dart';
-import 'package:translations/translations_app.dart';
 
 // ignore: avoid_classes_with_only_static_members
 /// Data class
@@ -47,7 +45,7 @@ class Data {
   static User get user => _user;
 
   // ignore: public_member_api_docs
-  static String get locale => _user.language;
+  static String get locale => _user.language.value;
 
   // ignore: public_member_api_docs
   static String getSelection(String key) => _user.getSelection(key);
@@ -55,7 +53,7 @@ class Data {
   // ignore: public_member_api_docs
   static void setSelection(String key, String value) {
     _user.setSelection(key, value);
-    _updateUser();
+    Static.storage.setJSON(Keys.user, _user.toJSON());
   }
 
   /// Setup the config of the server
@@ -88,24 +86,14 @@ class Data {
     return null;
   }
 
-  static Future _updateUser() async {
+  /// Update the data of the user on the server
+  static Future updateUser() async {
     print('Updating user');
-    Static.storage.setJSON(Keys.user, _user.toJSON());
-    final parameters = {
-      Keys.user: json.encode(_user?.toEncryptedJSON()),
-    };
-    print(parameters);
-    try {
-      await Client()
-          .get(
-              '$baseUrl/?${parameters.keys.map((name) => '$name=${parameters[name]}').join('&')}')
-          .timeout(Duration(seconds: 3));
-      // ignore: empty_catches
-    } on Exception {}
+    await load();
   }
 
   /// Load all the data from the server
-  static Future<ErrorCode> load(BuildContext context) async {
+  static Future<ErrorCode> load() async {
     if (Static.storage.has(Keys.unitPlan)) {
       unitPlan =
           UnitPlanForGrade.fromJSON(Static.storage.getJSON(Keys.unitPlan));
@@ -123,9 +111,7 @@ class Data {
     if (Static.storage.has(Keys.user)) {
       _user = User.fromJSON(Static.storage.getJSON(Keys.user));
       if (Platform().isAndroid) {
-        _user.tokens = (_user.tokens..add(await firebaseMessaging.getToken()))
-            .toSet()
-            .toList();
+        _user.tokens = [await firebaseMessaging.getToken()];
       }
     }
     final parameters = {
@@ -136,6 +122,7 @@ class Data {
           replacementPlan == null ? 0 : replacementPlan.timeStamp,
       Keys.user: json.encode(_user?.toEncryptedJSON()),
     };
+    print(parameters);
 
     try {
       final response = await Client()
@@ -169,11 +156,12 @@ class Data {
             .setJSON(Keys.replacementPlan, data[Keys.replacementPlan]);
       }
       if (data[Keys.user] != null) {
-        user = User.fromJSON(data[Keys.user]);
+        final username = user.username;
+        final password = user.password;
+        user = User.fromEncryptedJSON(data[Keys.user], username, password);
         Static.storage.setJSON(Keys.user, data[Keys.user]);
       }
 
-      var updatedSelection = false;
       if (unitPlan != null) {
         for (final day in unitPlan.days) {
           for (final lesson in day.lessons) {
@@ -187,19 +175,9 @@ class Data {
                     lesson.subjects[0].identifier)
                 ..setSelection(Keys.selection(lesson.block, false),
                     lesson.subjects[0].identifier);
-              updatedSelection = true;
             }
           }
         }
-      }
-      if (updatedSelection) {
-        // ignore: unawaited_futures
-        _updateUser();
-      }
-      if (AppTranslations.of(context).locale.languageCode != _user.language) {
-        _user.language = AppTranslations.of(context).locale.languageCode;
-        // ignore: unawaited_futures
-        _updateUser();
       }
       online = true;
       return ErrorCode.none;

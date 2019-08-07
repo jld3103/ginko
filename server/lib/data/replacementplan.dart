@@ -70,20 +70,22 @@ class ReplacementPlanData {
       for (final encryptedUsername in Users.encryptedUsernames) {
         final user = Users.getUser(encryptedUsername);
         for (final day in replacementPlan
-            .replacementPlans[grades.indexOf(user.grade)].replacementPlanDays) {
+            .replacementPlans[grades.indexOf(user.grade.value)]
+            .replacementPlanDays) {
           final changes = replacementPlan
-              .replacementPlans[grades.indexOf(user.grade)].changes
+              .replacementPlans[grades.indexOf(user.grade.value)].changes
               .where((change) {
             final block = UnitPlanData
                 .unitPlan
-                .unitPlans[grades.indexOf(user.grade)]
+                .unitPlans[grades.indexOf(user.grade.value)]
                 .days[day.date.weekday - 1]
                 .lessons[change.unit]
                 .block;
             final key = Keys.selection(block, isWeekA(day.date));
-            final userSelected = user.selection[key];
+            final userSelected = user.getSelection(key);
             final originalSubjects = change.getMatchingSubjectsByUnitPlan(
-                UnitPlanData.unitPlan.unitPlans[grades.indexOf(user.grade)]);
+                UnitPlanData
+                    .unitPlan.unitPlans[grades.indexOf(user.grade.value)]);
             if (originalSubjects.length != 1) {
               return true;
             }
@@ -91,7 +93,7 @@ class ReplacementPlanData {
           }).toList();
           final title =
               // ignore: lines_longer_than_80_chars
-              '${ServerTranslations.weekdays(user.language)[day.date.weekday - 1]} ${outputDateFormat.format(day.date)}';
+              '${ServerTranslations.weekdays(user.language.value)[day.date.weekday - 1]} ${outputDateFormat.format(day.date)}';
           final lines = [];
           var previousUnit = -1;
           for (final change in changes) {
@@ -125,14 +127,14 @@ class ReplacementPlanData {
             lines.add(buffer.toString());
           }
           final bigBody = lines.isEmpty
-              ? ServerTranslations.notificationsNoChanges(user.language)
+              ? ServerTranslations.notificationsNoChanges(user.language.value)
               : lines.join('<br/>');
           final body = changes.isEmpty
-              ? ServerTranslations.notificationsNoChanges(user.language)
+              ? ServerTranslations.notificationsNoChanges(user.language.value)
               : changes.length == 1
                   ? bigBody
                   // ignore: lines_longer_than_80_chars
-                  : '${changes.length} ${ServerTranslations.notificationsChanges(user.language)}';
+                  : '${changes.length} ${ServerTranslations.notificationsChanges(user.language.value)}';
           for (final token in user.tokens) {
             await Notification.send(
               token,

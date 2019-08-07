@@ -343,25 +343,25 @@ void main() {
     test('Get correct lesson count', () {
       // ignore: missing_required_param
       final user = User(
-        selection: {
-          Keys.selection('a', true): 'KRA-EK',
-          Keys.selection('b', true): 'KRA-EK',
-          Keys.selection('c', true): 'KRA-EK',
-          Keys.selection('d', true): 'KRA-EK',
-          Keys.selection('e', true): 'KRA-EK',
-          Keys.selection('f', true): 'null-MIT',
-          Keys.selection('g', true): 'KRA-EK',
-          Keys.selection('h', true): 'KRA-EK',
-          Keys.selection('i', true): 'KRA-EK',
-          Keys.selection('j', true): 'KRA-EK',
-          Keys.selection('k', true): 'KRA-EK',
-          Keys.selection('l', true): 'KRA-EK',
-          Keys.selection('m', true): 'null-MIT',
-          Keys.selection('n', true): 'STA-EK',
-          Keys.selection('o', true): 'KRA-EK',
-          Keys.selection('p', true): 'null-FR',
-          Keys.selection('q', true): 'KRA-EK',
-        },
+        selection: [
+          UserValue(Keys.selection('a', true), 'KRA-EK'),
+          UserValue(Keys.selection('b', true), 'KRA-EK'),
+          UserValue(Keys.selection('c', true), 'KRA-EK'),
+          UserValue(Keys.selection('d', true), 'KRA-EK'),
+          UserValue(Keys.selection('e', true), 'KRA-EK'),
+          UserValue(Keys.selection('f', true), 'null-MIT'),
+          UserValue(Keys.selection('g', true), 'KRA-EK'),
+          UserValue(Keys.selection('h', true), 'KRA-EK'),
+          UserValue(Keys.selection('i', true), 'KRA-EK'),
+          UserValue(Keys.selection('j', true), 'KRA-EK'),
+          UserValue(Keys.selection('k', true), 'KRA-EK'),
+          UserValue(Keys.selection('l', true), 'KRA-EK'),
+          UserValue(Keys.selection('m', true), 'null-MIT'),
+          UserValue(Keys.selection('n', true), 'STA-EK'),
+          UserValue(Keys.selection('o', true), 'KRA-EK'),
+          UserValue(Keys.selection('p', true), 'null-FR'),
+          UserValue(Keys.selection('q', true), 'KRA-EK'),
+        ],
       );
       final days = [
         UnitPlanDay(

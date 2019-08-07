@@ -30,26 +30,27 @@ Future main() async {
         request.response.write('401 Unauthorized');
       } else {
         final user = User.fromJSON(json.decode(queryParams[Keys.user]));
-        if (user.username != null &&
-            user.username.isNotEmpty &&
-            Users.encryptedUsernames.contains(user.username) &&
+        if (Users.encryptedUsernames.contains(user.username) &&
             Users.getUser(user.username).encryptedPassword == user.password) {
           Users.updateLanguage(user.username, user.language);
           Users.updateSelection(user.username, user.selection);
           Users.updateTokens(user.username, user.tokens);
           // ignore: omit_local_variable_types
-          final Map<String, dynamic> data = {'status': 'ok'};
+          final Map<String, dynamic> data = {
+            'status': 'ok',
+            Keys.user: Users.getUser(user.username).toJSON(),
+          };
           for (final key in queryParams.keys.where((key) => key != Keys.user)) {
             try {
               final value = int.parse(queryParams[key]);
               if (key == Keys.unitPlan) {
                 if (value <
                     UnitPlanData.unitPlan.unitPlans
-                        .where((unitPlan) => unitPlan.grade == user.grade)
+                        .where((unitPlan) => unitPlan.grade == user.grade.value)
                         .toList()[0]
                         .timeStamp) {
                   data[key] = UnitPlanData.unitPlan.unitPlans
-                      .where((unitPlan) => unitPlan.grade == user.grade)
+                      .where((unitPlan) => unitPlan.grade == user.grade.value)
                       .toList()[0]
                       .toJSON();
                 }
@@ -65,13 +66,13 @@ Future main() async {
                 if (value <
                     ReplacementPlanData.replacementPlan.replacementPlans
                         .where((replacementPlan) =>
-                            replacementPlan.grade == user.grade)
+                            replacementPlan.grade == user.grade.value)
                         .toList()[0]
                         .timeStamp) {
                   data[key] = ReplacementPlanData
                       .replacementPlan.replacementPlans
                       .where((replacementPlan) =>
-                          replacementPlan.grade == user.grade)
+                          replacementPlan.grade == user.grade.value)
                       .toList()[0]
                       .toJSON();
                 }
@@ -79,8 +80,9 @@ Future main() async {
                 print('$key: $value');
               }
               // ignore: unused_catch_clause, empty_catches
-            } on Exception catch (e) {
+            } on Exception catch (e, stacktrace) {
               print(e);
+              print(stacktrace.toString());
             }
           }
           request.response.headers.contentType =

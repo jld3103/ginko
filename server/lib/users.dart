@@ -11,16 +11,33 @@ class Users {
   static List<User> _users = [];
 
   /// Update the language of a user
-  static void updateLanguage(String encryptedUsername, String language) {
-    getUser(encryptedUsername).language = language;
-    File('../server/users.json').writeAsStringSync(
-        json.encode(_users.map((user) => user.toJSON()).toList()));
+  static void updateLanguage(String encryptedUsername, UserValue language) {
+    if (getUser(encryptedUsername)
+        .language
+        .modified
+        .isBefore(language.modified)) {
+      getUser(encryptedUsername).language.value = language.value;
+      File('../server/users.json').writeAsStringSync(
+          json.encode(_users.map((user) => user.toJSON()).toList()));
+    }
   }
 
   /// Update the selection of a user
   static void updateSelection(
-      String encryptedUsername, Map<String, String> selection) {
-    getUser(encryptedUsername).selection = selection;
+      String encryptedUsername, List<UserValue> selection) {
+    for (final value in selection) {
+      final values = getUser(encryptedUsername)
+          .selection
+          .where((i) => i.key == value.key)
+          .toList();
+      if (values.length != 1) {
+        getUser(encryptedUsername).selection.add(value);
+      } else {
+        if (values[0].modified.isBefore(value.modified)) {
+          values[0].value = value.value;
+        }
+      }
+    }
     File('../server/users.json').writeAsStringSync(
         json.encode(_users.map((user) => user.toJSON()).toList()));
   }
