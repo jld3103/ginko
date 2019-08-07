@@ -8,7 +8,7 @@ import 'package:server/config.dart';
 /// create notifications and send them to users
 class Notification {
   /// Create a simple notification
-  static Future send(
+  static Future<bool> send(
     String token,
     String title,
     String body, {
@@ -29,8 +29,7 @@ class Notification {
       data['data']['bigBody'] = bigBody;
     }
     data['to'] = token;
-    final dio = Dio();
-    await dio.post(
+    final response = json.decode((await Dio().post(
       'https://fcm.googleapis.com/fcm/send',
       data: data,
       options: Options(
@@ -39,6 +38,14 @@ class Notification {
           HttpHeaders.authorizationHeader: 'key=${Config.fcmServerKey}'
         },
       ),
-    );
+    ))
+        .toString());
+    if (response['results']
+        .where((a) => a['error'] != null)
+        .toList()
+        .isNotEmpty) {
+      return false;
+    }
+    return true;
   }
 }

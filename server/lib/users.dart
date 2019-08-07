@@ -50,6 +50,14 @@ class Users {
         json.encode(_users.map((user) => user.toJSON()).toList()));
   }
 
+  /// Remove a token of a user
+  static void removeToken(String encryptedUsername, String token) {
+    getUser(encryptedUsername).tokens = getUser(encryptedUsername).tokens
+      ..remove(token);
+    File('../server/users.json').writeAsStringSync(
+        json.encode(_users.map((user) => user.toJSON()).toList()));
+  }
+
   /// Get a user by their encrypted username
   static User getUser(String encryptedUsername) => _users
       .where((user) => user.encryptedUsername == encryptedUsername)

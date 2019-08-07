@@ -135,8 +135,9 @@ class ReplacementPlanData {
                   ? bigBody
                   // ignore: lines_longer_than_80_chars
                   : '${changes.length} ${ServerTranslations.notificationsChanges(user.language.value)}';
+          final unregisteredTokens = [];
           for (final token in user.tokens) {
-            await Notification.send(
+            final tokenRegistered = await Notification.send(
               token,
               title,
               body,
@@ -145,6 +146,12 @@ class ReplacementPlanData {
                 Keys.type: Keys.replacementPlan,
               },
             );
+            if (!tokenRegistered) {
+              unregisteredTokens.add(token);
+            }
+          }
+          for (final unregisteredToken in unregisteredTokens) {
+            Users.removeToken(user.encryptedUsername, unregisteredToken);
           }
         }
       }
