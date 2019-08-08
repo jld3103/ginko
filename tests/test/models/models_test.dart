@@ -39,5 +39,10 @@ void main() {
       expect(isSeniorGrade('Q1'), true);
       expect(isSeniorGrade('Q2'), true);
     });
+
+    test('Get correct mondays for dates', () {
+      expect(monday(DateTime(2019, 8, 8)), DateTime(2019, 8, 5));
+      expect(monday(DateTime(2019, 8, 10)), DateTime(2019, 8, 12));
+    });
   });
 }
