@@ -38,6 +38,7 @@ class _UnitPlanProgressRowState extends State<UnitPlanProgressRow> {
   Subject _subject;
 
   void _updateProgress() {
+    print('${widget.weekday} ${widget.lesson.unit}');
     setState(() {
       if (DateTime.now()
           .isAfter(widget.start.add(Times.getUnitTimes(_subject.unit)[1]))) {
@@ -51,6 +52,10 @@ class _UnitPlanProgressRowState extends State<UnitPlanProgressRow> {
                 .minute /
             60;
       }
+      if (_progress == 1 && _timer != null) {
+        _timer.cancel();
+        _timer = null;
+      }
     });
   }
 
@@ -58,14 +63,18 @@ class _UnitPlanProgressRowState extends State<UnitPlanProgressRow> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((a) {
       _updateProgress();
-      _timer = Timer.periodic(Duration(minutes: 1), (a) => _updateProgress());
+      if (_progress != 1) {
+        _timer = Timer.periodic(Duration(minutes: 1), (a) => _updateProgress());
+      }
     });
     super.initState();
   }
 
   @override
   void dispose() {
-    _timer.cancel();
+    if (_timer != null) {
+      _timer.cancel();
+    }
     super.dispose();
   }
 
@@ -117,7 +126,9 @@ class _UnitPlanProgressRowState extends State<UnitPlanProgressRow> {
                 UnitPlanRow(subject: _subject),
                 ...Data.replacementPlan.changes
                     .where((change) =>
-                        change.date.weekday - 1 == widget.weekday &&
+                        change.date ==
+                            monday(DateTime.now())
+                                .add(Duration(days: widget.weekday)) &&
                         change.unit == widget.lesson.unit &&
                         change
                             .getMatchingSubjectsByLesson(widget.lesson)

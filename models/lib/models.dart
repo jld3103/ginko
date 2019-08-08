@@ -90,3 +90,16 @@ int weekNumber(DateTime date) {
 
 /// Check if date is in week a
 bool isWeekA(DateTime date) => (weekNumber(date) + 1) % 2 == 0;
+
+/// Get the Monday of the week
+/// Skips a week of weekend
+DateTime monday(DateTime date) => date
+    .subtract(Duration(
+      days: date.weekday - 1,
+      hours: date.hour,
+      minutes: date.minute,
+      seconds: date.second,
+      milliseconds: date.millisecond,
+      microseconds: date.microsecond,
+    ))
+    .add(Duration(days: date.weekday > 5 ? 7 : 0));

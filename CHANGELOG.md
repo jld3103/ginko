@@ -1,5 +1,6 @@
 
 # 2019-08-08  
+ jld3103: Fix change assignment and improve progress performance  
  jld3103: Fix progress showing little space after first lesson  
 
 # 2019-08-07  

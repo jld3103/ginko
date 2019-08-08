@@ -28,23 +28,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   static final _channel = MethodChannel('de.ginko.app');
 
   /// Get the date of the current selected tab
-  DateTime get getDate => monday.add(Duration(days: _weekday));
-
-  /// Get the Monday of the week
-  /// Skips a week of weekend
-  DateTime get monday {
-    final now = DateTime.now();
-    return now
-        .subtract(Duration(
-          days: now.weekday - 1,
-          hours: now.hour,
-          minutes: now.minute,
-          seconds: now.second,
-          milliseconds: now.millisecond,
-          microseconds: now.microsecond,
-        ))
-        .add(Duration(days: now.weekday > 5 ? 7 : 0));
-  }
+  DateTime get getDate => monday(DateTime.now()).add(Duration(days: _weekday));
 
   @override
   void initState() {
@@ -90,8 +74,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       DateTime.now().month,
       DateTime.now().day,
     );
-    if (monday.isAfter(DateTime.now())) {
-      day = monday;
+    if (monday(DateTime.now()).isAfter(DateTime.now())) {
+      day = monday(DateTime.now());
     }
     final lessonCount = Data.unitPlan.days[day.weekday - 1]
         .userLessonsCount(Data.user, isWeekA(day));
@@ -180,7 +164,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         children: List.generate(
           5,
           (weekday) {
-            final start = monday.add(Duration(days: weekday));
+            final start = monday(DateTime.now()).add(Duration(days: weekday));
             return ListView(
               shrinkWrap: true,
               children: Data.unitPlan.days[weekday].lessons
