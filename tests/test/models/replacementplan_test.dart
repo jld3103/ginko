@@ -207,6 +207,8 @@ void main() {
           room: '527',
           changed: Changed(),
           type: ChangeTypes.unknown,
+          subject: null,
+          teacher: null,
         ),
         Change(
           date: DateTime(2019, 7, 8),
@@ -214,6 +216,8 @@ void main() {
           room: '527',
           changed: Changed(),
           type: ChangeTypes.unknown,
+          subject: null,
+          teacher: null,
         ),
       ];
       final unitPlanForGrade = UnitPlanForGrade(
@@ -328,11 +332,17 @@ void main() {
           unit: 0,
           date: DateTime(2019, 7, 11),
           room: 'KLH',
+          subject: null,
+          teacher: null,
+          changed: null,
         ),
         Change(
           unit: 0,
           date: DateTime(2019, 7, 11),
           room: 'GRH',
+          subject: null,
+          teacher: null,
+          changed: null,
         ),
       ];
       final lessons = [
@@ -376,6 +386,9 @@ void main() {
         course: 'GK1',
         changed: Changed(),
         type: ChangeTypes.exam,
+        subject: null,
+        teacher: null,
+        room: null,
       );
       expect(change.subject, null);
       expect(change.room, null);

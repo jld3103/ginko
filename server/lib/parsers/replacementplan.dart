@@ -243,6 +243,8 @@ class ReplacementPlanParser {
         unit: unit,
         subject: normal.split(' ')[0],
         room: normal.split(' ')[1],
+        teacher: null,
+        changed: null,
       ));
     }
     if (normal.split(' ').length == 3 &&
@@ -254,6 +256,8 @@ class ReplacementPlanParser {
         course: normal.split(' ')[1],
         room: normal.split(' ')[2],
         type: ChangeTypes.unknown,
+        teacher: null,
+        changed: null,
       ));
     }
     if (normal.contains('nach')) {
@@ -266,6 +270,7 @@ class ReplacementPlanParser {
           info: 'Verschoben nach ${normal.split(' ').sublist(3).join(' ')}',
         ),
         type: ChangeTypes.movedTo,
+        teacher: null,
       ));
     }
 
@@ -282,6 +287,7 @@ class ReplacementPlanParser {
             info: 'Freistunde',
           ),
           type: ChangeTypes.freeLesson,
+          teacher: null,
         ));
       }
     }
@@ -297,6 +303,9 @@ class ReplacementPlanParser {
             teacher: normal.split(':')[1].split(' ').reversed.toList()[0],
           ),
           type: ChangeTypes.rewriteExam,
+          room: null,
+          teacher: null,
+          subject: null,
         ));
       } else {
         final exams = normal.split(':')[1].trim().split(' ')..removeLast();
@@ -314,6 +323,7 @@ class ReplacementPlanParser {
               teacher: normal.split(':')[1].split(' ').reversed.toList()[0],
             ),
             type: ChangeTypes.exam,
+            room: null,
           ));
         }
       }
@@ -336,6 +346,7 @@ class ReplacementPlanParser {
                 .join(' '),
           ),
           type: ChangeTypes.remainingLesson,
+          teacher: null,
         ));
       }
     }
@@ -351,6 +362,7 @@ class ReplacementPlanParser {
         changed: Changed(
           info: 'Ersatzbereitschaft',
         ),
+        teacher: null,
       ));
     }
     return changes.cast<Change>();

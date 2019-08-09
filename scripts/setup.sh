@@ -33,27 +33,27 @@ if ! [[ -x "$(command -v lcov)" ]]; then
   exit 1
 fi
 
-cd server/js
+cd server/js || exit
 yarn install
 cd ../..
 folders=("models" "server" "app" "tests" "translations")
-for d in ${folders[@]} ; do
-    cd ${d}
-    flutter packages get
-    cd ..
+for d in "${folders[@]}"; do
+  cd "$d" || exit
+  flutter packages get
+  cd ..
 done
 packages=("flutter_platform" "flutter_platform_storage")
-for d in ${packages[@]} ; do
-    cd packages/${d}
-    flutter packages get
-    cd ../..
+for d in "${packages[@]}"; do
+  cd packages/"$d" || exit
+  flutter packages get
+  cd ../..
 done
 bash scripts/generate.sh
 
 echo "#!/bin/bash
-bash scripts/check.sh" > .git/hooks/pre-commit
+bash scripts/check.sh" >.git/hooks/pre-commit
 chmod a+x .git/hooks/pre-commit
 
 echo "#!/bin/bash
-bash scripts/changelog.sh" > .git/hooks/post-commit
+bash scripts/changelog.sh" >.git/hooks/post-commit
 chmod a+x .git/hooks/post-commit

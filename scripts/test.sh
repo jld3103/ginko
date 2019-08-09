@@ -3,7 +3,7 @@
 cd tests || exit
 ARGS=()
 for ARG in "$@"; do
-  ARGS+=("test/${ARG}")
+  ARGS+=("test/$ARG")
 done
 
 flutter test "${ARGS[@]}" || error=true

@@ -97,6 +97,8 @@ void main() {
             subject: 'EK',
             changed: Changed(),
             type: ChangeTypes.unknown,
+            room: null,
+            teacher: null,
           ),
           Change(
             date: DateTime(2019, 7, 8),
@@ -104,6 +106,8 @@ void main() {
             room: '525',
             changed: Changed(),
             type: ChangeTypes.unknown,
+            subject: null,
+            teacher: null,
           ),
           Change(
             date: DateTime(2019, 7, 8),
@@ -111,6 +115,8 @@ void main() {
             teacher: 'KRA',
             changed: Changed(),
             type: ChangeTypes.unknown,
+            subject: null,
+            room: null,
           ),
           Change(
             date: DateTime(2019, 7, 8),
@@ -182,6 +188,9 @@ void main() {
         course: 'GK1',
         changed: Changed(),
         type: ChangeTypes.exam,
+        subject: null,
+        room: null,
+        teacher: null,
       ));
       expect(subject.course, 'GK1');
     });

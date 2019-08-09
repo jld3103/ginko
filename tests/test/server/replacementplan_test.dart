@@ -21,6 +21,8 @@ void main() {
                       date: DateTime(2019, 7, 12),
                       subject: 'EK',
                       changed: Changed(),
+                      room: null,
+                      teacher: null,
                     ),
                   ],
                   replacementPlanDays: [
@@ -42,6 +44,8 @@ void main() {
                       date: DateTime(2019, 7, 12),
                       subject: 'D',
                       changed: Changed(),
+                      teacher: null,
+                      room: null,
                     ),
                   ],
                   replacementPlanDays: [
@@ -65,6 +69,8 @@ void main() {
                   date: DateTime(2019, 7, 12),
                   subject: 'D',
                   changed: Changed(),
+                  teacher: null,
+                  room: null,
                 ),
               ],
               replacementPlanDays: [
@@ -96,6 +102,8 @@ void main() {
                       date: DateTime(2019, 7, 12),
                       subject: 'EK',
                       changed: Changed(),
+                      room: null,
+                      teacher: null,
                     ),
                   ],
                   replacementPlanDays: [
@@ -117,6 +125,8 @@ void main() {
                       date: DateTime(2019, 7, 12),
                       subject: 'D',
                       changed: Changed(),
+                      teacher: null,
+                      room: null,
                     ),
                   ],
                   replacementPlanDays: [
@@ -140,6 +150,8 @@ void main() {
                   date: DateTime(2019, 7, 12),
                   subject: 'EK',
                   changed: Changed(),
+                  room: null,
+                  teacher: null,
                 ),
               ],
               replacementPlanDays: [
@@ -171,6 +183,8 @@ void main() {
                       date: DateTime(2019, 7, 11),
                       subject: 'EK',
                       changed: Changed(),
+                      teacher: null,
+                      room: null,
                     ),
                   ],
                   replacementPlanDays: [
@@ -192,6 +206,8 @@ void main() {
                       date: DateTime(2019, 7, 12),
                       subject: 'D',
                       changed: Changed(),
+                      teacher: null,
+                      room: null,
                     ),
                   ],
                   replacementPlanDays: [
@@ -215,12 +231,16 @@ void main() {
                   date: DateTime(2019, 7, 11),
                   subject: 'EK',
                   changed: Changed(),
+                  teacher: null,
+                  room: null,
                 ),
                 Change(
                   unit: 0,
                   date: DateTime(2019, 7, 12),
                   subject: 'D',
                   changed: Changed(),
+                  room: null,
+                  teacher: null,
                 ),
               ],
               replacementPlanDays: [
