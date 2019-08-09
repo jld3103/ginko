@@ -730,6 +730,82 @@ void main() {
       );
     });
 
+    test('Can get correct initial weekday', () {
+      final unitPlanForGrade = UnitPlanForGrade(
+        grade: 'EF',
+        date: DateTime(2019, 6, 30),
+        days: [
+          UnitPlanDay(
+            weekday: 0,
+            lessons: [
+              Lesson(
+                block: 'a',
+                unit: 0,
+                subjects: [
+                  // ignore: missing_required_param
+                  Subject(
+                    subject: 'EK',
+                    teacher: 'KRA',
+                  ),
+                ],
+              ),
+            ],
+          ),
+          UnitPlanDay(
+            weekday: 1,
+            lessons: [],
+          ),
+          UnitPlanDay(
+            weekday: 2,
+            lessons: [],
+          ),
+          UnitPlanDay(
+            weekday: 3,
+            lessons: [],
+          ),
+          UnitPlanDay(
+            weekday: 4,
+            lessons: [
+              Lesson(
+                block: 'b',
+                unit: 0,
+                subjects: [
+                  // ignore: missing_required_param
+                  Subject(
+                    subject: 'EK',
+                    teacher: 'KRA',
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      );
+      // ignore: missing_required_param
+      final user = User(
+        selection: [
+          UserValue(Keys.selection('a', true), 'KRA-EK'),
+          UserValue(Keys.selection('b', true), 'KRA-EK'),
+        ],
+      );
+      expect(
+        unitPlanForGrade.initialWeekday(user, DateTime(2019, 8, 10)),
+        0,
+      );
+      expect(
+        unitPlanForGrade.initialWeekday(user, DateTime(2019, 8, 12, 8, 59)),
+        0,
+      );
+      expect(
+        unitPlanForGrade.initialWeekday(user, DateTime(2019, 8, 12, 9, 1)),
+        1,
+      );
+      expect(
+        unitPlanForGrade.initialWeekday(user, DateTime(2019, 8, 16, 9, 1)),
+        0,
+      );
+    });
+
     test('Can create unit plan', () {
       final unitPlanDay = UnitPlanDay(
         weekday: 0,

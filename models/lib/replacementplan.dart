@@ -106,11 +106,11 @@ class Change {
   Change({
     @required this.date,
     @required this.unit,
-    this.subject,
+    @required this.changed,
+    @required this.subject,
+    @required this.room,
+    @required this.teacher,
     this.course,
-    this.room,
-    this.teacher,
-    this.changed,
     this.type,
   });
 

@@ -20,6 +20,7 @@ void main() {
                       unit: 0,
                       date: DateTime(2019, 7, 12),
                       subject: 'EK',
+                      changed: Changed(),
                     ),
                   ],
                   replacementPlanDays: [
@@ -40,6 +41,7 @@ void main() {
                       unit: 0,
                       date: DateTime(2019, 7, 12),
                       subject: 'D',
+                      changed: Changed(),
                     ),
                   ],
                   replacementPlanDays: [
@@ -62,6 +64,7 @@ void main() {
                   unit: 0,
                   date: DateTime(2019, 7, 12),
                   subject: 'D',
+                  changed: Changed(),
                 ),
               ],
               replacementPlanDays: [
@@ -92,6 +95,7 @@ void main() {
                       unit: 0,
                       date: DateTime(2019, 7, 12),
                       subject: 'EK',
+                      changed: Changed(),
                     ),
                   ],
                   replacementPlanDays: [
@@ -112,6 +116,7 @@ void main() {
                       unit: 0,
                       date: DateTime(2019, 7, 12),
                       subject: 'D',
+                      changed: Changed(),
                     ),
                   ],
                   replacementPlanDays: [
@@ -134,6 +139,7 @@ void main() {
                   unit: 0,
                   date: DateTime(2019, 7, 12),
                   subject: 'EK',
+                  changed: Changed(),
                 ),
               ],
               replacementPlanDays: [
@@ -164,6 +170,7 @@ void main() {
                       unit: 0,
                       date: DateTime(2019, 7, 11),
                       subject: 'EK',
+                      changed: Changed(),
                     ),
                   ],
                   replacementPlanDays: [
@@ -184,6 +191,7 @@ void main() {
                       unit: 0,
                       date: DateTime(2019, 7, 12),
                       subject: 'D',
+                      changed: Changed(),
                     ),
                   ],
                   replacementPlanDays: [
@@ -206,11 +214,13 @@ void main() {
                   unit: 0,
                   date: DateTime(2019, 7, 11),
                   subject: 'EK',
+                  changed: Changed(),
                 ),
                 Change(
                   unit: 0,
                   date: DateTime(2019, 7, 12),
                   subject: 'D',
+                  changed: Changed(),
                 ),
               ],
               replacementPlanDays: [

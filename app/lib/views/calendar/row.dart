@@ -45,9 +45,11 @@ class CalendarRowState extends State<CalendarRow> {
       return Container();
     }
     var dateStr = '';
-    if (widget.event.start
-            .add(Duration(days: 1))
-            .subtract(Duration(seconds: 1)) ==
+    if (DateTime(
+          widget.event.start.year,
+          widget.event.start.month,
+          widget.event.start.day,
+        ).add(Duration(days: 1)).subtract(Duration(seconds: 1)) ==
         widget.event.end) {
       if (widget.event.start.hour != 0 || widget.event.start.minute != 0) {
         dateStr = _dateTimeFormat.format(widget.event.start);
@@ -67,27 +69,24 @@ class CalendarRowState extends State<CalendarRow> {
         dateStr += _dateFormat.format(widget.event.end);
       }
     }
-    return GestureDetector(
-      onTap: () {},
-      child: Card(
-        child: ListTile(
-          leading: Icon(
-            Icons.calendar_today,
-            color: Theme.of(context).primaryColor,
-          ),
-          title: Container(
-            width: double.infinity,
-            padding: EdgeInsets.only(top: 10, bottom: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  widget.event.name,
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                Text(dateStr),
-              ],
-            ),
+    return Card(
+      child: ListTile(
+        leading: Icon(
+          Icons.calendar_today,
+          color: Theme.of(context).primaryColor,
+        ),
+        title: Container(
+          width: double.infinity,
+          padding: EdgeInsets.only(top: 10, bottom: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                widget.event.name,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Text(dateStr),
+            ],
           ),
         ),
       ),

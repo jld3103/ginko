@@ -84,7 +84,9 @@ class ReplacementPlanRow extends StatelessWidget {
                         Expanded(
                           flex: 70,
                           child: Text(
-                            (change.changed.subject ?? '') +
+                            (AppTranslations.of(context)
+                                        .subjects[change.changed.subject] ??
+                                    '') +
                                 (change.changed.info != null &&
                                         change.changed.subject != null
                                     ? ': '

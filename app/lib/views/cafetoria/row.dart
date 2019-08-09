@@ -42,45 +42,42 @@ class CafetoriaRowState extends State<CafetoriaRow> {
     if (_timeFormat == null) {
       return Container();
     }
-    return GestureDetector(
-      onTap: () {},
-      child: Card(
-        child: ListTile(
-          leading: Icon(
-            Icons.restaurant,
-            color: Theme.of(context).primaryColor,
-          ),
-          title: Container(
-            width: double.infinity,
-            padding: EdgeInsets.only(top: 10, bottom: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: widget.day.menus
-                  .map(
-                    (menu) => Container(
-                      margin: EdgeInsets.only(bottom: 10),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Flexible(
-                                child: Text(
-                                  menu.name,
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
+    return Card(
+      child: ListTile(
+        leading: Icon(
+          Icons.restaurant,
+          color: Theme.of(context).primaryColor,
+        ),
+        title: Container(
+          width: double.infinity,
+          padding: EdgeInsets.only(top: 10, bottom: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: widget.day.menus
+                .map(
+                  (menu) => Container(
+                    margin: EdgeInsets.only(bottom: 10),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Flexible(
+                              child: Text(
+                                menu.name,
+                                style: TextStyle(fontWeight: FontWeight.bold),
                               ),
-                              if (menu.price != 0)
-                                Text(' (${menu.price}€)')
-                              // TODO(jld3103): Add times
-                            ],
-                          )
-                        ],
-                      ),
+                            ),
+                            if (menu.price != 0)
+                              Text(' (${menu.price}€)')
+                            // TODO(jld3103): Add times
+                          ],
+                        )
+                      ],
                     ),
-                  )
-                  .toList(),
-            ),
+                  ),
+                )
+                .toList(),
           ),
         ),
       ),

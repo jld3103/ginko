@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:app/utils/data.dart';
+import 'package:app/utils/selection.dart';
 import 'package:app/utils/static.dart';
 import 'package:app/views/extra_information.dart';
 import 'package:app/views/unitplan/progress_row.dart';
+import 'package:app/views/unitplan/select_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
@@ -35,7 +37,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     _panelController = PanelController();
     _tabController = TabController(length: 5, vsync: this);
     _tabController
-      ..index = _weekday = indexTab
+      ..index =
+          _weekday = Data.unitPlan.initialWeekday(Data.user, DateTime.now())
       ..addListener(() {
         if (_weekday != _tabController.index) {
           setState(() {
@@ -65,28 +68,6 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       }
     });
     super.initState();
-  }
-
-  /// Get the index of the initial tab
-  int get indexTab {
-    var day = DateTime(
-      DateTime.now().year,
-      DateTime.now().month,
-      DateTime.now().day,
-    );
-    if (monday(DateTime.now()).isAfter(DateTime.now())) {
-      day = monday(DateTime.now());
-    }
-    final lessonCount = Data.unitPlan.days[day.weekday - 1]
-        .userLessonsCount(Data.user, isWeekA(day));
-    if (DateTime.now()
-        .isAfter(day.add(Times.getUnitTimes(lessonCount - 1)[1]))) {
-      day = day.add(Duration(days: 1));
-    }
-    if (day.weekday > 5) {
-      day = day.add(Duration(days: 8 - day.weekday));
-    }
-    return day.weekday - 1;
   }
 
   Future _handleNotification(MethodCall call) async {
@@ -134,6 +115,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
                 backdropTapClosesPanel: true,
                 panel: ExtraInformation(
                   date: getDate,
+                  calendar: Data.calendar,
+                  cafetoria: Data.cafetoria,
                   panelController: _panelController,
                 ),
               ),
@@ -152,7 +135,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
               width: 300,
               child: ExtraInformation(
                 date: getDate,
-                panelController: _panelController,
+                calendar: Data.calendar,
+                cafetoria: Data.cafetoria,
               ),
             ),
           ],
@@ -168,11 +152,54 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
             return ListView(
               shrinkWrap: true,
               children: Data.unitPlan.days[weekday].lessons
-                  .map((lesson) => UnitPlanProgressRow(
-                        lesson: lesson,
+                  .map((lesson) {
+                    final subjects = lesson.subjects
+                        .where((subject) =>
+                            Selection.get(lesson.block, isWeekA(start)) ==
+                            subject.identifier)
+                        .toList();
+                    return GestureDetector(
+                      onTap: () async {
+                        if (lesson.subjects.length > 1) {
+                          // ignore: omit_local_variable_types
+                          final List<Subject> selections = await showDialog(
+                            context: context,
+                            builder: (context) => UnitPlanSelectDialog(
+                              weekday: weekday,
+                              lesson: lesson,
+                            ),
+                          );
+                          if (selections == null) {
+                            return;
+                          }
+                          if (selections.length == 1) {
+                            selections.add(selections[0]);
+                          }
+                          Selection.set(
+                              lesson.block, true, selections[0].identifier);
+                          Selection.set(
+                              lesson.block, false, selections[1].identifier);
+                          // ignore: unawaited_futures
+                          Data.updateUser();
+                          Static.rebuildUnitPlan();
+                        }
+                      },
+                      child: UnitPlanProgressRow(
+                        subject: subjects.isNotEmpty
+                            ? subjects[0]
+                            : Subject(
+                                subject: Keys.none,
+                                teacher: null,
+                                weeks: null,
+                                room: null,
+                                unit: lesson.unit,
+                              ),
+                        unitPlanDay: Data.unitPlan.days[weekday],
+                        replacementPlan: Data.replacementPlan,
                         start: start,
-                        weekday: weekday,
-                      ))
+                      ),
+                    );
+                  })
                   .toList()
                   .cast<Widget>(),
             );

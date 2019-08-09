@@ -55,6 +55,27 @@ class UnitPlanForGrade {
         'days': days.map((i) => i.toJSON()).toList(),
       };
 
+  /// Get the index of the initial weekday
+  int initialWeekday(User user, DateTime date) {
+    var day = DateTime(
+      date.year,
+      date.month,
+      date.day,
+    );
+    if (monday(date).isAfter(date)) {
+      day = monday(date);
+    }
+    final lessonCount =
+        days[day.weekday - 1].userLessonsCount(user, isWeekA(day));
+    if (date.isAfter(day.add(Times.getUnitTimes(lessonCount - 1)[1]))) {
+      day = day.add(Duration(days: 1));
+    }
+    if (day.weekday > 5) {
+      day = day.add(Duration(days: 8 - day.weekday));
+    }
+    return day.weekday - 1;
+  }
+
   /// Get the time stamp of this object
   int get timeStamp => date.millisecondsSinceEpoch ~/ 1000;
 

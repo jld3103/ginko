@@ -2,6 +2,7 @@ import 'package:app/home.dart';
 import 'package:app/loading.dart';
 import 'package:app/login.dart';
 import 'package:app/utils/static.dart';
+import 'package:app/utils/theme.dart';
 import 'package:flutter/foundation.dart'
     show debugDefaultTargetPlatformOverride;
 import 'package:flutter/material.dart';
@@ -21,12 +22,7 @@ Future main() async {
 
   runApp(MaterialApp(
     title: 'Ginko',
-    theme: ThemeData(
-      brightness: Brightness.light,
-      primaryColor: Color(0xFF64A441),
-      accentColor: Color(0xFF5BC638),
-      fontFamily: 'Roboto',
-    ),
+    theme: theme,
     localizationsDelegates: [
       AppTranslationsDelegate(),
       GlobalMaterialLocalizations.delegate,

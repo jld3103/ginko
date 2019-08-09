@@ -1,4 +1,3 @@
-import 'package:app/utils/data.dart';
 import 'package:app/views/cafetoria/row.dart';
 import 'package:app/views/calendar/row.dart';
 import 'package:flutter/material.dart';
@@ -12,12 +11,20 @@ class ExtraInformation extends StatefulWidget {
   // ignore: public_member_api_docs
   const ExtraInformation({
     @required this.date,
-    @required this.panelController,
+    @required this.calendar,
+    @required this.cafetoria,
+    this.panelController,
     Key key,
   }) : super(key: key);
 
   // ignore: public_member_api_docs
   final DateTime date;
+
+  // ignore: public_member_api_docs
+  final Calendar calendar;
+
+  // ignore: public_member_api_docs
+  final Cafetoria cafetoria;
 
   // ignore: public_member_api_docs
   final PanelController panelController;
@@ -35,7 +42,7 @@ class ExtraInformationState extends State<ExtraInformation> {
 
     final start = widget.date;
     final end = start.add(Duration(days: 1)).subtract(Duration(seconds: 1));
-    final events = Data.calendar.events.where((event) {
+    final events = widget.calendar.events.where((event) {
       if (event.start == start &&
           (event.end == end ||
               event.end.isAfter(end) ||
@@ -63,19 +70,18 @@ class ExtraInformationState extends State<ExtraInformation> {
       return false;
     }).toList();
     final cafetoriaDays =
-        Data.cafetoria.days.where((day) => day.date == start).toList();
+        widget.cafetoria.days.where((day) => day.date == start).toList();
     return Column(
       children: [
         GestureDetector(
           onTap: () {
-            try {
+            if (widget.panelController != null) {
               if (widget.panelController.isPanelOpen()) {
                 widget.panelController.close();
               } else {
                 widget.panelController.open();
               }
-              // ignore: empty_catches, avoid_catching_errors
-            } on NoSuchMethodError {}
+            }
           },
           child: Container(
             padding: EdgeInsets.only(
