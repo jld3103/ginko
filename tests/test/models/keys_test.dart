@@ -19,6 +19,8 @@ void main() {
       expect(Keys.replacementPlan != null, true);
       expect(Keys.user != null, true);
       expect(Keys.type != null, true);
+      expect(Keys.askedForScan != null, true);
+      expect(Keys.teachers != null, true);
     });
   });
 }

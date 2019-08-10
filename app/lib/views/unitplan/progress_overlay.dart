@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 /// UnitPlanProgressRowOverlay class
+/// display a grey overlay of a UnitPlanRow
 class UnitPlanProgressRowOverlay extends StatelessWidget {
   // ignore: public_member_api_docs
   const UnitPlanProgressRowOverlay({

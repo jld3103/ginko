@@ -23,5 +23,11 @@ void main() {
     test('Get subjects successfully', () {
       expect(Subjects.subjects.isNotEmpty, true);
     });
+
+    test('Can match subjects with regex', () {
+      for (final subject in Subjects.subjects.keys.toList()) {
+        expect(RegExp(Subjects.regex).hasMatch(subject.toLowerCase()), true);
+      }
+    });
   });
 }

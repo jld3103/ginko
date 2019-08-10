@@ -70,4 +70,9 @@ class Subjects {
     }
     return _subjects[name];
   }
+
+  /// Get the regex to match all subjects
+  static String get regex =>
+      // ignore: lines_longer_than_80_chars
+      '(${_subjects.keys.toList().map((subject) => subject.toLowerCase()).join('|')})';
 }

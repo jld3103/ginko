@@ -5,6 +5,7 @@ import 'package:app/utils/selection.dart';
 import 'package:app/utils/static.dart';
 import 'package:app/views/extra_information.dart';
 import 'package:app/views/unitplan/progress_row.dart';
+import 'package:app/views/unitplan/scan.dart';
 import 'package:app/views/unitplan/select_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -62,6 +63,17 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
             },
           );
         _channel.setMethodCallHandler(_handleNotification);
+
+        // Ask for scan
+        if (isSeniorGrade(Data.user.grade.value) &&
+            Platform().isAndroid &&
+            !(Static.storage.getBool(Keys.askedForScan) ?? false)) {
+          Static.storage.setBool(Keys.askedForScan, true);
+          showDialog(
+            context: context,
+            builder: (context) => ScanDialog(),
+          );
+        }
       }
     });
     super.initState();

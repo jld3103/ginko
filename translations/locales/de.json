@@ -12,6 +12,12 @@
   "loginSubmit": "Anmelden",
   "notificationsNoChanges": "Keine Änderungen",
   "notificationsChanges": "Änderungen",
+  "scanTitle": "Stundenplanscan",
+  "scanDescription": "Hier kannst du deinen Stundenplan scannen lassen und ihn automatisch in der App ausfüllen lassen. Dazu musst du hier erst ein Foto deines Stundenplans machen:",
+  "scanSubmit": "Scan starten",
+  "scanScanning": "Scannen...",
+  "scanAllDetected": "Dein gesamter Stundenplan konnte erkannt werden",
+  "scanNotAllDetected": "Leider konnte nicht dein gesamter Stundenplan erkannt werden",
   "subjects": {
     "BI": "Bio",
     "CH": "Chemie",

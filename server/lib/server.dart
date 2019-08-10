@@ -7,6 +7,7 @@ import 'package:server/config.dart';
 import 'package:server/data/cafetoria.dart';
 import 'package:server/data/calendar.dart';
 import 'package:server/data/replacementplan.dart';
+import 'package:server/data/teachers.dart';
 import 'package:server/data/unitplan.dart';
 import 'package:server/users.dart';
 
@@ -76,6 +77,10 @@ Future main() async {
                       .toList()[0]
                       .toJSON();
                 }
+              } else if (key == Keys.teachers) {
+                if (value < TeachersData.teachers.timeStamp) {
+                  data[key] = TeachersData.teachers.toJSON();
+                }
               } else {
                 print('$key: $value');
               }
@@ -108,6 +113,8 @@ Future setup() async {
   print('Config loaded');
   Users.load();
   print('Users loaded');
+  await TeachersData.load();
+  print('Teachers loaded');
   await UnitPlanData.load();
   print('Unit plan loaded');
   await CalendarData.load();

@@ -34,4 +34,10 @@ class Keys {
 
   // ignore: public_member_api_docs
   static String get type => 'type';
+
+  // ignore: public_member_api_docs
+  static String get askedForScan => 'askedForScan';
+
+  // ignore: public_member_api_docs
+  static String get teachers => 'teachers';
 }

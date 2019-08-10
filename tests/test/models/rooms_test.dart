@@ -23,5 +23,11 @@ void main() {
     test('Get rooms successfully', () {
       expect(Rooms.rooms.isNotEmpty, true);
     });
+
+    test('Can match rooms with regex', () {
+      for (final room in Rooms.rooms.keys.toList()) {
+        expect(RegExp(Rooms.regex).hasMatch(room.toLowerCase()), true);
+      }
+    });
   });
 }

@@ -261,3 +261,19 @@ class Subject {
   // ignore: public_member_api_docs
   int unit;
 }
+
+/// MatchingSubject scan
+/// a subject that matches a scanned string
+class MatchingSubject {
+  // ignore: public_member_api_docs
+  MatchingSubject({
+    @required this.subject,
+    @required this.lesson,
+  }) : super();
+
+  // ignore: public_member_api_docs
+  final Subject subject;
+
+  // ignore: public_member_api_docs
+  final Lesson lesson;
+}

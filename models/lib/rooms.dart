@@ -83,4 +83,8 @@ class Rooms {
     }
     return _rooms[name];
   }
+
+  /// Get the regex to match all rooms
+  static String get regex =>
+      '(${_rooms.keys.toList().map((room) => room.toLowerCase()).join('|')})';
 }

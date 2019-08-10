@@ -12,6 +12,12 @@
   "loginSubmit": "Login",
   "notificationsNoChanges": "No changes",
   "notificationsChanges": "changes",
+  "scanTitle": "Unit plan scan",
+  "scanDescription": "Here you can have your unit plan scanned and automatically filled out in the app. You first have to take a photo of your unit plan:",
+  "scanSubmit": "Start scan",
+  "scanScanning": "Scanning...",
+  "scanAllDetected": "Your entire unit plan could be recognized",
+  "scanNotAllDetected": "Unfortunately not your entire unit plan could not be recognized",
   "subjects": {
     "BI": "Biology",
     "CH": "Chemistry",

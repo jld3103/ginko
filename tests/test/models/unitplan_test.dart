@@ -896,5 +896,27 @@ void main() {
         unitPlan.toJSON(),
       );
     });
+
+    test('Can create matching subject', () {
+      final subject = Subject(
+        teacher: 'KRA',
+        subject: 'EK',
+        room: '525',
+        course: 'GK1',
+        weeks: 'AB',
+        unit: 0,
+      );
+      final lesson = Lesson(
+        unit: 0,
+        block: 'a',
+        subjects: [subject],
+      );
+      final matchingSubject = MatchingSubject(
+        subject: subject,
+        lesson: lesson,
+      );
+      expect(matchingSubject.subject.toJSON(), subject.toJSON());
+      expect(matchingSubject.lesson.toJSON(), lesson.toJSON());
+    });
   });
 }

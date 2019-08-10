@@ -30,6 +30,9 @@ class Data {
   // ignore: public_member_api_docs
   static ReplacementPlanForGrade replacementPlan;
 
+  // ignore: public_member_api_docs
+  static Teachers teachers;
+
   static User _user;
 
   // ignore: public_member_api_docs
@@ -108,6 +111,9 @@ class Data {
       replacementPlan = ReplacementPlanForGrade.fromJSON(
           Static.storage.getJSON(Keys.replacementPlan));
     }
+    if (Static.storage.has(Keys.teachers)) {
+      teachers = Teachers.fromJSON(Static.storage.getJSON(Keys.teachers));
+    }
     if (Static.storage.has(Keys.user)) {
       _user = User.fromJSON(Static.storage.getJSON(Keys.user));
       if (Platform().isAndroid) {
@@ -120,6 +126,7 @@ class Data {
       Keys.cafetoria: cafetoria == null ? 0 : cafetoria.timeStamp,
       Keys.replacementPlan:
           replacementPlan == null ? 0 : replacementPlan.timeStamp,
+      Keys.teachers: teachers == null ? 0 : teachers.timeStamp,
       Keys.user: json.encode(_user?.toEncryptedJSON()),
     };
     print(parameters);
@@ -154,6 +161,10 @@ class Data {
             ReplacementPlanForGrade.fromJSON(data[Keys.replacementPlan]);
         Static.storage
             .setJSON(Keys.replacementPlan, data[Keys.replacementPlan]);
+      }
+      if (data[Keys.teachers] != null) {
+        teachers = Teachers.fromJSON(data[Keys.teachers]);
+        Static.storage.setJSON(Keys.teachers, data[Keys.teachers]);
       }
       if (data[Keys.user] != null) {
         final username = user.username;
