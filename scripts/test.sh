@@ -4,8 +4,10 @@ folders=("app" "models" "server")
 for d in "${folders[@]}"; do
   cd "$d" || exit
   if [[ "$d" == "app" ]]; then
+    flutter pub get 1>/dev/null
     flutter test || error=true
   else
+    pub get 1>/dev/null
     pub run test || error=true
   fi
 

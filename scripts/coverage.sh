@@ -8,8 +8,10 @@ for d in "${folders[@]}"; do
   cd "$d" || exit
 
   if [[ "$d" == "app" ]]; then
+    flutter pub get 1>/dev/null
     flutter test --coverage 1>/dev/null || error=true
   else
+    pub get 1>/dev/null
     test_coverage 1>/dev/null || error=true
     rm coverage_badge.svg
   fi
