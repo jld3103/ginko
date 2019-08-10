@@ -146,7 +146,7 @@ void main() {
             replacementPlanDays: [],
             changes: [],
           ),
-          date: DateTime(2019, 8, 5, 7, 59),
+          current: DateTime(2019, 8, 5, 7, 59),
         )));
         await tester.pumpAndSettle();
         expect(find.text('1'), findsOneWidget);
@@ -194,7 +194,7 @@ void main() {
             replacementPlanDays: [],
             changes: [],
           ),
-          date: DateTime(2019, 8, 5, 8, 30),
+          current: DateTime(2019, 8, 5, 8, 30),
         )));
         await tester.pumpAndSettle();
         expect(find.text('1'), findsOneWidget);
@@ -242,7 +242,7 @@ void main() {
             replacementPlanDays: [],
             changes: [],
           ),
-          date: DateTime(2019, 8, 5, 9, 1),
+          current: DateTime(2019, 8, 5, 9, 1),
         )));
         await tester.pumpAndSettle();
         expect(find.text('1'), findsOneWidget);
@@ -348,6 +348,7 @@ void main() {
         );
         await tester.pumpWidget(makeTestableWidget(UnitPlanProgressRow(
           start: DateTime(2019, 8, 5),
+          current: DateTime(2019, 8, 5),
           unitPlanDay: UnitPlanDay(
             weekday: 0,
             lessons: [
@@ -405,6 +406,7 @@ void main() {
         );
         await tester.pumpWidget(makeTestableWidget(UnitPlanProgressRow(
           start: DateTime(2019, 8, 5),
+          current: DateTime(2019, 8, 5),
           unitPlanDay: UnitPlanDay(
             weekday: 0,
             lessons: [
@@ -463,6 +465,7 @@ void main() {
         );
         await tester.pumpWidget(makeTestableWidget(UnitPlanProgressRow(
           start: DateTime(2019, 8, 5),
+          current: DateTime(2019, 8, 5),
           unitPlanDay: UnitPlanDay(
             weekday: 0,
             lessons: [

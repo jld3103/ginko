@@ -1,4 +1,7 @@
 
+# 2019-08-10  
+ jld3103: Fix progress and extra information dates  
+
 # 2019-08-09  
  jld3103: Fix tests  
  jld3103: Add UI tests  

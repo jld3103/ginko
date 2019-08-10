@@ -10,12 +10,13 @@ import 'package:models/models.dart';
 /// renders a lesson/subject with progress
 class UnitPlanProgressRow extends StatefulWidget {
   // ignore: public_member_api_docs
-  const UnitPlanProgressRow(
-      {@required this.subject,
-      @required this.unitPlanDay,
-      @required this.replacementPlan,
-      @required this.start,
-      this.date});
+  const UnitPlanProgressRow({
+    @required this.subject,
+    @required this.unitPlanDay,
+    @required this.replacementPlan,
+    @required this.start,
+    this.current,
+  });
 
   // ignore: public_member_api_docs
   final Subject subject;
@@ -30,7 +31,7 @@ class UnitPlanProgressRow extends StatefulWidget {
   final DateTime start;
 
   // ignore: public_member_api_docs
-  final DateTime date;
+  final DateTime current;
 
   @override
   _UnitPlanProgressRowState createState() => _UnitPlanProgressRowState();
@@ -43,14 +44,14 @@ class _UnitPlanProgressRowState extends State<UnitPlanProgressRow> {
 
   void _updateProgress() {
     setState(() {
-      if ((widget.date ?? DateTime.now()).isAfter(
+      if ((widget.current ?? DateTime.now()).isAfter(
           widget.start.add(Times.getUnitTimes(widget.subject.unit)[1]))) {
         _progress = 1;
-      } else if ((widget.date ?? DateTime.now()).isBefore(
+      } else if ((widget.current ?? DateTime.now()).isBefore(
           widget.start.add(Times.getUnitTimes(widget.subject.unit)[0]))) {
         _progress = 0;
       } else {
-        _progress = (widget.date ?? DateTime.now())
+        _progress = (widget.current ?? DateTime.now())
                 .subtract(Times.getUnitTimes(widget.subject.unit)[0])
                 .minute /
             60;
@@ -100,7 +101,7 @@ class _UnitPlanProgressRowState extends State<UnitPlanProgressRow> {
                 ...widget.replacementPlan.changes
                     .where((change) =>
                         change.date ==
-                            monday(widget.date ?? DateTime.now()).add(
+                            monday(widget.current ?? DateTime.now()).add(
                                 Duration(days: widget.unitPlanDay.weekday)) &&
                         change.unit ==
                             widget.unitPlanDay.lessons[widget.subject.unit]

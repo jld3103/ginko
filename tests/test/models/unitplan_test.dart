@@ -739,7 +739,7 @@ void main() {
       );
     });
 
-    test('Can get correct initial weekday', () {
+    test('Can get correct initial day', () {
       final unitPlanForGrade = UnitPlanForGrade(
         grade: 'EF',
         date: DateTime(2019, 6, 30),
@@ -798,20 +798,20 @@ void main() {
         ],
       );
       expect(
-        unitPlanForGrade.initialWeekday(user, DateTime(2019, 8, 10)),
-        0,
+        unitPlanForGrade.initialDay(user, DateTime(2019, 8, 10)),
+        DateTime(2019, 8, 12),
       );
       expect(
-        unitPlanForGrade.initialWeekday(user, DateTime(2019, 8, 12, 8, 59)),
-        0,
+        unitPlanForGrade.initialDay(user, DateTime(2019, 8, 12, 8, 59)),
+        DateTime(2019, 8, 12),
       );
       expect(
-        unitPlanForGrade.initialWeekday(user, DateTime(2019, 8, 12, 9, 1)),
-        1,
+        unitPlanForGrade.initialDay(user, DateTime(2019, 8, 12, 9, 1)),
+        DateTime(2019, 8, 13),
       );
       expect(
-        unitPlanForGrade.initialWeekday(user, DateTime(2019, 8, 16, 9, 1)),
-        0,
+        unitPlanForGrade.initialDay(user, DateTime(2019, 8, 16, 9, 1)),
+        DateTime(2019, 8, 19),
       );
     });
 

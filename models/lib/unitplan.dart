@@ -55,8 +55,8 @@ class UnitPlanForGrade {
         'days': days.map((i) => i.toJSON()).toList(),
       };
 
-  /// Get the index of the initial weekday
-  int initialWeekday(User user, DateTime date) {
+  /// Get the index of the initial day
+  DateTime initialDay(User user, DateTime date) {
     var day = DateTime(
       date.year,
       date.month,
@@ -71,9 +71,9 @@ class UnitPlanForGrade {
       day = day.add(Duration(days: 1));
     }
     if (day.weekday > 5) {
-      day = day.add(Duration(days: 8 - day.weekday));
+      day = monday(day);
     }
-    return day.weekday - 1;
+    return day;
   }
 
   /// Get the time stamp of this object

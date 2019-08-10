@@ -29,16 +29,13 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   int _weekday;
   static final _channel = MethodChannel('de.ginko.app');
 
-  /// Get the date of the current selected tab
-  DateTime get getDate => monday(DateTime.now()).add(Duration(days: _weekday));
-
   @override
   void initState() {
     _panelController = PanelController();
     _tabController = TabController(length: 5, vsync: this);
     _tabController
-      ..index =
-          _weekday = Data.unitPlan.initialWeekday(Data.user, DateTime.now())
+      ..index = _weekday =
+          Data.unitPlan.initialDay(Data.user, DateTime.now()).weekday - 1
       ..addListener(() {
         if (_weekday != _tabController.index) {
           setState(() {
@@ -114,7 +111,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
                 backdropEnabled: true,
                 backdropTapClosesPanel: true,
                 panel: ExtraInformation(
-                  date: getDate,
+                  date: Data.unitPlan.initialDay(Data.user, DateTime.now()),
                   calendar: Data.calendar,
                   cafetoria: Data.cafetoria,
                   panelController: _panelController,
@@ -134,7 +131,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
               height: double.infinity,
               width: 300,
               child: ExtraInformation(
-                date: getDate,
+                date: Data.unitPlan.initialDay(Data.user, DateTime.now()),
                 calendar: Data.calendar,
                 cafetoria: Data.cafetoria,
               ),
@@ -148,7 +145,9 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         children: List.generate(
           5,
           (weekday) {
-            final start = monday(DateTime.now()).add(Duration(days: weekday));
+            final start = Data.unitPlan
+                .initialDay(Data.user, DateTime.now())
+                .add(Duration(days: weekday));
             return ListView(
               shrinkWrap: true,
               children: Data.unitPlan.days[weekday].lessons
