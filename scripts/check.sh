@@ -10,16 +10,15 @@ if [[ -n "$parent" ]]; then
 fi
 
 bash scripts/setup.sh
-folders=("models" "server" "tests" "app" "translations")
+folders=("models" "server" "app" "translations")
 for d in "${folders[@]}"; do
   cd "$d" || exit
 
+  dartfmt -w --fix lib
+  output=$(dartanalyzer lib)
   if [[ -d "test" ]]; then
     dartfmt -w --fix test
     output=$(dartanalyzer test)
-  else
-    dartfmt -w --fix lib
-    output=$(dartanalyzer lib)
   fi
 
   status=$?

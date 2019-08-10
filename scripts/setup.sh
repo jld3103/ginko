@@ -33,19 +33,19 @@ if ! [[ -x "$(command -v lcov)" ]]; then
   exit 1
 fi
 
+pub global activate test_coverage
+
 cd server/js || exit
 yarn install
 cd ../..
-folders=("app" "tests")
+folders=("app" "models" "server" "translations")
 for d in "${folders[@]}"; do
   cd "$d" || exit
-  flutter pub get
-  cd ..
-done
-folders=("models" "server" "translations")
-for d in "${folders[@]}"; do
-  cd "$d" || exit
-  pub get
+  if [[ "$d" == "app" ]]; then
+    flutter pub get
+  else
+    pub get
+  fi
   cd ..
 done
 packages=("flutter_platform" "flutter_platform_storage")

@@ -33,6 +33,8 @@ translations/lib/translation_map.dart
 translations/lib/translations_app.dart
 translations/lib/translations_server.dart
 translations/lib/translation_locales_list.dart
+**.test_coverage.dart
+**coverage_badge.svg
 
 *.iml
 *.ipr

@@ -1,4 +1,7 @@
 
+# 2019-08-11  
+ jld3103: Separate and fix tests  
+
 # 2019-08-10  
  jld3103: Add new screen size for web  
  jld3103: Fix server parameters  

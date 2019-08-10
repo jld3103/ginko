@@ -16,3 +16,6 @@ dependencies:
     path: ../models
   translations:
     path: ../translations
+
+dev_dependencies:
+  test: ^1.6.5

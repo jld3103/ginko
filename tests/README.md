@@ -1,3 +1,0 @@
-# tests
-
-The Ginko tests
