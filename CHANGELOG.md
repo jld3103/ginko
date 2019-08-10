@@ -1,5 +1,6 @@
 
 # 2019-08-10  
+ jld3103: Fix server parameters  
  jld3103: Remove unused dependencies  
  jld3103: Add token check on server start  
  jld3103: Add unit plan scan  

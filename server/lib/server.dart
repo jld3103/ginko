@@ -27,7 +27,7 @@ Future main() async {
     request.response.headers.add('Access-Control-Allow-Methods', '*');
     if (request.uri.path == '/' && request.method == 'GET') {
       final queryParams = request.uri.queryParameters;
-      if (queryParams[Keys.user] == 'null') {
+      if (queryParams[Keys.user] == 'null' || queryParams[Keys.user] == null) {
         request.response.statusCode = 401;
         request.response.write('401 Unauthorized');
       } else {
