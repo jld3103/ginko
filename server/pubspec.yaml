@@ -16,8 +16,3 @@ dependencies:
     path: ../models
   translations:
     path: ../translations
-
-dev_dependencies:
-  test: ^1.6.3
-  flutter_test:
-    sdk: flutter

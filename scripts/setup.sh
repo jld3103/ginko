@@ -36,16 +36,22 @@ fi
 cd server/js || exit
 yarn install
 cd ../..
-folders=("models" "server" "app" "tests" "translations")
+folders=("app" "tests")
 for d in "${folders[@]}"; do
   cd "$d" || exit
-  flutter packages get
+  flutter pub get
+  cd ..
+done
+folders=("models" "server" "translations")
+for d in "${folders[@]}"; do
+  cd "$d" || exit
+  pub get
   cd ..
 done
 packages=("flutter_platform" "flutter_platform_storage")
 for d in "${packages[@]}"; do
   cd packages/"$d" || exit
-  flutter packages get
+  flutter pub get
   cd ../..
 done
 bash scripts/generate.sh

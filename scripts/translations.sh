@@ -1,5 +1,5 @@
 #!/bin/bash
 cd translations || exit
-flutter pub get
+pub get
 dart lib/builder.dart
 cd ..
