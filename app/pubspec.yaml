@@ -46,6 +46,7 @@ flutter:
   uses-material-design: true
   assets:
     - images/logo_green.svg
+    - images/logo_green.png
   fonts:
     - family: Roboto
       fonts:

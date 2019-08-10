@@ -201,7 +201,10 @@ void main() {
   );
   final formattedAppTranslations =
       DartFormatter().format('${appTranslations.accept(emitter)}');
-  File('lib/translations_app.dart').writeAsStringSync(formattedAppTranslations);
+  const rules =
+      '// ignore_for_file: lines_longer_than_80_chars, uri_does_not_exist, undefined_class, extends_non_class, undefined_identifier, override_on_non_overriding_method, public_member_api_docs';
+  File('lib/translations_app.dart')
+      .writeAsStringSync('$rules\n$formattedAppTranslations');
 
   final serverTranslations = Library(
     (b) => b

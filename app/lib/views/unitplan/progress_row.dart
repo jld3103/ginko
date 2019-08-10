@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/utils/screen_sizes.dart';
 import 'package:app/views/replacementplan/row.dart';
 import 'package:app/views/unitplan/progress_overlay.dart';
 import 'package:app/views/unitplan/row.dart';
@@ -91,38 +92,41 @@ class _UnitPlanProgressRowState extends State<UnitPlanProgressRow> {
               bottom: widget.unitPlanDay.lessons.indexOf(widget
                               .unitPlanDay.lessons[widget.subject.unit]) ==
                           widget.unitPlanDay.lessons.length - 1 &&
-                      MediaQuery.of(context).size.width < 600
+                      getScreenSize(MediaQuery.of(context).size.width) ==
+                          ScreenSize.small
                   ? 25
                   : 0,
             ),
-            child: Column(
-              children: [
-                UnitPlanRow(subject: widget.subject),
-                ...widget.replacementPlan.changes
-                    .where((change) =>
-                        change.date ==
-                            monday(widget.current ?? DateTime.now()).add(
-                                Duration(days: widget.unitPlanDay.weekday)) &&
-                        change.unit ==
-                            widget.unitPlanDay.lessons[widget.subject.unit]
-                                .unit &&
-                        change
-                            .getMatchingSubjectsByLesson(
-                                widget.unitPlanDay.lessons[widget.subject.unit])
-                            .where((s) =>
-                                s.identifier == widget.subject.identifier)
-                            .isNotEmpty)
-                    .map((change) => Container(
-                          margin: EdgeInsets.only(left: 15),
-                          child: ReplacementPlanRow(
-                            change: change,
-                            showUnit: false,
-                            addPadding: false,
-                          ),
-                        ))
-                    .toList()
-                    .cast<Widget>(),
-              ],
+            child: Center(
+              child: Column(
+                children: [
+                  UnitPlanRow(subject: widget.subject),
+                  ...widget.replacementPlan.changes
+                      .where((change) =>
+                          change.date ==
+                              monday(widget.current ?? DateTime.now()).add(
+                                  Duration(days: widget.unitPlanDay.weekday)) &&
+                          change.unit ==
+                              widget.unitPlanDay.lessons[widget.subject.unit]
+                                  .unit &&
+                          change
+                              .getMatchingSubjectsByLesson(widget
+                                  .unitPlanDay.lessons[widget.subject.unit])
+                              .where((s) =>
+                                  s.identifier == widget.subject.identifier)
+                              .isNotEmpty)
+                      .map((change) => Container(
+                            margin: EdgeInsets.only(left: 15),
+                            child: ReplacementPlanRow(
+                              change: change,
+                              showUnit: false,
+                              addPadding: false,
+                            ),
+                          ))
+                      .toList()
+                      .cast<Widget>(),
+                ],
+              ),
             ),
           ),
           Positioned.fill(

@@ -1,3 +1,4 @@
+import 'package:app/utils/screen_sizes.dart';
 import 'package:app/views/cafetoria/row.dart';
 import 'package:app/views/calendar/row.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,8 @@ class ExtraInformation extends StatefulWidget {
 class ExtraInformationState extends State<ExtraInformation> {
   @override
   Widget build(BuildContext context) {
-    final _showBig = MediaQuery.of(context).size.width >= 600;
+    final _showBig =
+        getScreenSize(MediaQuery.of(context).size.width) != ScreenSize.small;
 
     final start = widget.date;
     final end = start.add(Duration(days: 1)).subtract(Duration(seconds: 1));
@@ -85,18 +87,16 @@ class ExtraInformationState extends State<ExtraInformation> {
           },
           child: Container(
             padding: EdgeInsets.only(
-              top: _showBig ? 10 : 0,
-              bottom: _showBig ? 5 : 0,
               left: 15,
               right: _showBig ? 15 : 0,
             ),
             color:
                 _showBig ? Theme.of(context).primaryColor : Colors.transparent,
             width: double.infinity,
-            height: _showBig ? 104 : null,
+            height: null,
             alignment: _showBig ? Alignment.bottomLeft : null,
             child: Container(
-              height: _showBig ? 46 : 34,
+              height: _showBig ? 41 : 34,
               alignment: Alignment.center,
               child: Row(
                 children: [
@@ -133,7 +133,7 @@ class ExtraInformationState extends State<ExtraInformation> {
             ),
           ),
         Container(
-          height: _showBig ? MediaQuery.of(context).size.height - 104 : null,
+          height: _showBig ? MediaQuery.of(context).size.height - 97 : null,
           decoration: _showBig
               ? BoxDecoration(
                   color: Colors.white,
@@ -142,6 +142,7 @@ class ExtraInformationState extends State<ExtraInformation> {
                       color: Colors.grey,
                       spreadRadius: 1,
                       blurRadius: 3,
+                      offset: Offset(0, 1),
                     ),
                   ],
                 )

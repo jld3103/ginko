@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:app/utils/data.dart';
+import 'package:app/utils/screen_sizes.dart';
 import 'package:app/utils/selection.dart';
 import 'package:app/utils/static.dart';
 import 'package:app/views/extra_information.dart';
+import 'package:app/views/tab_proxy.dart';
 import 'package:app/views/unitplan/progress_row.dart';
 import 'package:app/views/unitplan/scan.dart';
 import 'package:app/views/unitplan/select_dialog.dart';
@@ -93,68 +95,73 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   @override
-  Widget build(BuildContext context) => MediaQuery.of(context).size.width < 600
-      ? getHeaderView(
-          Stack(
-            children: [
-              Container(
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height - 100,
-                child: getUnitPlanView,
-              ),
-              SlidingUpPanel(
-                controller: _panelController,
-                parallaxEnabled: true,
-                parallaxOffset: .1,
-                maxHeight: MediaQuery.of(context).size.height * 0.75,
-                minHeight: 30,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(24),
-                  topRight: Radius.circular(24),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey,
-                    blurRadius: 5,
-                    spreadRadius: 2,
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          title: Text(AppTranslations.of(context).appName),
+          elevation: 0,
+        ),
+        body: getScreenSize(MediaQuery.of(context).size.width) ==
+                ScreenSize.small
+            ? Stack(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    height: MediaQuery.of(context).size.height - 100,
+                    child: getContent,
+                  ),
+                  SlidingUpPanel(
+                    controller: _panelController,
+                    parallaxEnabled: true,
+                    parallaxOffset: .1,
+                    maxHeight: MediaQuery.of(context).size.height * 0.75,
+                    minHeight: 30,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(24),
+                      topRight: Radius.circular(24),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey,
+                        blurRadius: 5,
+                        spreadRadius: 2,
+                      ),
+                    ],
+                    panelSnapping: true,
+                    backdropEnabled: true,
+                    backdropTapClosesPanel: true,
+                    panel: ExtraInformation(
+                      date: Data.unitPlan.initialDay(Data.user, DateTime.now()),
+                      calendar: Data.calendar,
+                      cafetoria: Data.cafetoria,
+                      panelController: _panelController,
+                    ),
                   ),
                 ],
-                panelSnapping: true,
-                backdropEnabled: true,
-                backdropTapClosesPanel: true,
-                panel: ExtraInformation(
-                  date: Data.unitPlan.initialDay(Data.user, DateTime.now()),
-                  calendar: Data.calendar,
-                  cafetoria: Data.cafetoria,
-                  panelController: _panelController,
-                ),
+              )
+            : Row(
+                children: [
+                  Container(
+                    height: double.infinity,
+                    width: MediaQuery.of(context).size.width - 300,
+                    child: getContent,
+                  ),
+                  Container(
+                    height: double.infinity,
+                    width: 300,
+                    child: ExtraInformation(
+                      date: Data.unitPlan.initialDay(Data.user, DateTime.now()),
+                      calendar: Data.calendar,
+                      cafetoria: Data.cafetoria,
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        )
-      : Row(
-          children: [
-            Container(
-              height: double.infinity,
-              width: MediaQuery.of(context).size.width - 300,
-              child: getHeaderView(getUnitPlanView),
-            ),
-            Container(
-              height: double.infinity,
-              width: 300,
-              child: ExtraInformation(
-                date: Data.unitPlan.initialDay(Data.user, DateTime.now()),
-                calendar: Data.calendar,
-                cafetoria: Data.cafetoria,
-              ),
-            ),
-          ],
-        );
+      );
 
-  /// Get the view of the unit plan
-  Widget get getUnitPlanView => TabBarView(
+  /// Get the content of the tabs
+  Widget get getContent => TabProxy(
         controller: _tabController,
-        children: List.generate(
+        tabs: List.generate(
           5,
           (weekday) {
             final start = Data.unitPlan
@@ -216,36 +223,5 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
             );
           },
         ).toList().cast<Widget>(),
-      );
-
-  /// Get the app bar and tab bar header view
-  Widget getHeaderView(Widget body) => DefaultTabController(
-        length: 5,
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text(AppTranslations.of(context).appName),
-            bottom: TabBar(
-                controller: _tabController,
-                tabs: AppTranslations.of(context)
-                    .weekdays
-                    .sublist(0, 5)
-                    .map(
-                      (weekday) => Tab(
-                        child: Text(weekday
-                            .substring(
-                                0,
-                                AppTranslations.of(context)
-                                            .locale
-                                            .languageCode ==
-                                        'de'
-                                    ? 2
-                                    : 3)
-                            .toUpperCase()),
-                      ),
-                    )
-                    .toList()),
-          ),
-          body: body,
-        ),
       );
 }

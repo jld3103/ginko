@@ -29,7 +29,7 @@ class LoadingState extends State<Loading> {
         });
       }
     });
-    Data.setup(8000, '192.168.1.46', 'http');
+    Data.setup(443, 'api.app.viktoria.schule', 'https');
     Data.load().then((code) {
       if (code == ErrorCode.wrongCredentials) {
         Navigator.of(context).pushReplacementNamed('/login');
