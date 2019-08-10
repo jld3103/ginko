@@ -48,4 +48,30 @@ class Notification {
     }
     return true;
   }
+
+  /// Check if a token is still registered
+  static Future<bool> checkToken(String token) async {
+    final data = {
+      'registration_ids': [token],
+      'dry_run': true,
+    };
+    final response = json.decode((await Dio().post(
+      'https://fcm.googleapis.com/fcm/send',
+      data: data,
+      options: Options(
+        contentType: ContentType.json,
+        headers: {
+          HttpHeaders.authorizationHeader: 'key=${Config.fcmServerKey}'
+        },
+      ),
+    ))
+        .toString());
+    if (response['results']
+        .where((a) => a['error'] != null)
+        .toList()
+        .isNotEmpty) {
+      return false;
+    }
+    return true;
+  }
 }

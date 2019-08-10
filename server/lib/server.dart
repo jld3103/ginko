@@ -9,10 +9,11 @@ import 'package:server/data/calendar.dart';
 import 'package:server/data/replacementplan.dart';
 import 'package:server/data/teachers.dart';
 import 'package:server/data/unitplan.dart';
+import 'package:server/notification.dart';
 import 'package:server/users.dart';
 
 Future main() async {
-  await setup();
+  await _setup();
   print('Running in ${Config.dev ? 'development' : 'production'} mode');
   final port = int.parse((Platform.environment['PORT'] == ''
           ? null
@@ -106,13 +107,13 @@ Future main() async {
   }
 }
 
-/// Setup all data
-Future setup() async {
+Future _setup() async {
   await setupDateFormats();
   Config.load();
   print('Config loaded');
   Users.load();
   print('Users loaded');
+  await _deleteOldTokens();
   await TeachersData.load();
   print('Teachers loaded');
   await UnitPlanData.load();
@@ -127,4 +128,21 @@ Future setup() async {
     await ReplacementPlanData.load();
     print('Replacement plan reloaded');
   });
+}
+
+Future _deleteOldTokens() async {
+  for (final encryptedUsername in Users.encryptedUsernames) {
+    final user = Users.getUser(encryptedUsername);
+
+    final unregisteredTokens = [];
+    for (final token in user.tokens) {
+      final tokenRegistered = await Notification.checkToken(token);
+      if (!tokenRegistered) {
+        unregisteredTokens.add(token);
+      }
+    }
+    for (final unregisteredToken in unregisteredTokens) {
+      Users.removeToken(user.encryptedUsername, unregisteredToken);
+    }
+  }
 }

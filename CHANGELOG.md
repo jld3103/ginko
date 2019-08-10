@@ -1,5 +1,6 @@
 
 # 2019-08-10  
+ jld3103: Add token check on server start  
  jld3103: Add unit plan scan  
  jld3103: Fix progress and extra information dates  
 
