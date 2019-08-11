@@ -1,4 +1,4 @@
-import 'dart:async';
+import 'dart:convert';
 
 import 'package:app/utils/data.dart';
 import 'package:app/utils/screen_sizes.dart';
@@ -47,31 +47,37 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         }
       });
     Static.rebuildUnitPlan = () => setState(() {});
-    WidgetsBinding.instance.addPostFrameCallback((a) {
+    WidgetsBinding.instance.addPostFrameCallback((a) async {
       if (!Data.online) {
         Scaffold.of(context).showSnackBar(SnackBar(
           content: Text(AppTranslations.of(context).homeOffline),
         ));
       }
-      if (Platform().isAndroid) {
-        Data.firebaseMessaging
-          ..requestNotificationPermissions()
-          ..configure(
-            onLaunch: (message) async {
-              print('onLaunch: $message');
-            },
-            onResume: (message) async {
-              print('onResume: $message');
-            },
-          );
-        _channel.setMethodCallHandler(_handleNotification);
+      if (Platform().isAndroid || Platform().isWeb) {
+        final gotNullToken = await Data.firebaseMessaging.getToken() == 'null';
+        final hasPermissions =
+            await Data.firebaseMessaging.requestNotificationPermissions();
+        Data.firebaseMessaging.configure(
+          onLaunch: (data) async => _handleNotification(data),
+          onResume: (data) async => _handleNotification(data),
+          onMessage: (data) async => _handleNotification(data),
+        );
+        _channel.setMethodCallHandler((call) async {
+          _handleNotification(json.decode(json.encode(call.arguments)));
+        });
+
+        if (gotNullToken) {
+          print('Got a token after requesting permissions');
+          print('Updating tokens on server');
+          await Data.updateUser();
+        }
 
         // Ask for scan
         if (isSeniorGrade(Data.user.grade.value) &&
             Platform().isAndroid &&
             !(Static.storage.getBool(Keys.askedForScan) ?? false)) {
           Static.storage.setBool(Keys.askedForScan, true);
-          showDialog(
+          await showDialog(
             context: context,
             builder: (context) => ScanDialog(),
           );
@@ -81,8 +87,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     super.initState();
   }
 
-  Future _handleNotification(MethodCall call) async {
-    print(call);
+  void _handleNotification(Map<String, dynamic> data) {
+    print(data);
     Scaffold.of(context).showSnackBar(SnackBar(
       content: Text(AppTranslations.of(context).homeNewReplacementPlan),
     ));

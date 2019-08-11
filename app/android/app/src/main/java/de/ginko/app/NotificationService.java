@@ -28,6 +28,7 @@ public class NotificationService extends FirebaseMessagingService {
         if (flutterView != null) {
             System.out.println("Updating UI");
             new Handler(Looper.getMainLooper()).post(() -> new MethodChannel(flutterView, CHANNEL).invokeMethod("notification", remoteMessage.getData()));
+            return;
         }
         System.out.println("Showing notification");
 

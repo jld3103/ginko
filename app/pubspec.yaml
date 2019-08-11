@@ -47,6 +47,9 @@ flutter:
   assets:
     - images/logo_green.svg
     - images/logo_green.png
+    - web/manifest.json
+    - web/firebase-messaging.js
+    - web/firebase-messaging-sw.js
   fonts:
     - family: Roboto
       fonts:

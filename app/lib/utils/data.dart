@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:app/utils/firebase/firebase.dart';
 import 'package:app/utils/static.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_platform/flutter_platform.dart';
 import 'package:http/http.dart';
 import 'package:models/models.dart';
@@ -116,8 +116,10 @@ class Data {
     }
     if (Static.storage.has(Keys.user)) {
       _user = User.fromJSON(Static.storage.getJSON(Keys.user));
-      if (Platform().isAndroid) {
-        _user.tokens = [await firebaseMessaging.getToken()];
+      if (Platform().isAndroid || Platform().isWeb) {
+        _user.tokens = [await firebaseMessaging.getToken()]
+            .where((token) => token != 'null')
+            .toList();
       }
     }
     final parameters = {

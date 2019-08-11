@@ -4,6 +4,22 @@
 <head>
     <title>Ginko</title>
     <link rel="icon" type="image/png" href="assets/images/logo_green.png"/>
+    <link rel="manifest" href="assets/web/manifest.json"/>
+    <script src="https://www.gstatic.com/firebasejs/6.3.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.3.5/firebase-messaging.js"></script>
+    <script>
+        var firebaseConfig = {
+            apiKey: "AIzaSyBnMSYwjFbC3lRPzOfinBAu_78pybo7jPg",
+            authDomain: "ginko-project.firebaseapp.com",
+            databaseURL: "https://ginko-project.firebaseio.com",
+            projectId: "ginko-project",
+            storageBucket: "",
+            messagingSenderId: "324907216916",
+            appId: "1:324907216916:web:5a3512edd37931c6"
+        };
+        firebase.initializeApp(firebaseConfig);
+    </script>
+    <script src="assets/web/firebase-messaging.js"></script>
 </head>
 
 <body>
