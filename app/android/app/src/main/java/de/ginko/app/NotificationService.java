@@ -42,14 +42,18 @@ public class NotificationService extends FirebaseMessagingService {
 
         String title = remoteMessage.getData().get("title");
         String body = remoteMessage.getData().get("body");
+        SpannableString formattedBody = new SpannableString(
+                Build.VERSION.SDK_INT < Build.VERSION_CODES.N ? Html.fromHtml(body)
+                        : Html.fromHtml(body, Html.FROM_HTML_MODE_LEGACY)
+        );
 
         NotificationCompat.Builder notification = new NotificationCompat.Builder(getApplicationContext(), String.valueOf(channelId))
                 .setContentTitle(title)
-                .setContentText(body)
+                .setContentText(formattedBody)
                 .setSmallIcon(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ? R.mipmap.ic_launcher : R.mipmap.logo_white)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntent)
-                .setTicker(title + " " + body)
+                .setTicker(title + " " + formattedBody)
                 .setColor(Color.parseColor("#ff5bc638"))
                 .setGroup("group" + notificationId)
                 .setAutoCancel(true)
