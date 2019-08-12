@@ -1,6 +1,6 @@
 import 'package:app/utils/data.dart';
+import 'package:app/utils/svg/svg.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:models/models.dart';
 import 'package:translations/translations_app.dart';
 
