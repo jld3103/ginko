@@ -102,10 +102,14 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: Text(AppTranslations.of(context).appName),
-          elevation: 0,
-        ),
+        appBar: Platform().isWeb &&
+                getScreenSize(MediaQuery.of(context).size.width) ==
+                    ScreenSize.small
+            ? null
+            : AppBar(
+                title: Text(AppTranslations.of(context).appName),
+                elevation: 0,
+              ),
         body: getScreenSize(MediaQuery.of(context).size.width) ==
                 ScreenSize.small
             ? Stack(

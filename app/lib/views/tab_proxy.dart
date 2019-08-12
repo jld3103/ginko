@@ -28,6 +28,13 @@ class TabProxy extends StatelessWidget {
                 AppTranslations.of(context).locale.languageCode == 'de' ? 2 : 3)
             .toUpperCase())
         .toList();
+    var tabFontSize = 15.0;
+    final width = MediaQuery.of(context).size.width;
+    if (width <= 320) {
+      tabFontSize = 12.0;
+    } else if (width <= 330) {
+      tabFontSize = 13.0;
+    }
     if (getScreenSize(MediaQuery.of(context).size.width) == ScreenSize.big) {
       return Row(
         children: tabs
@@ -43,7 +50,7 @@ class TabProxy extends StatelessWidget {
                         child: Text(
                           weekdays[tabs.indexOf(tab)],
                           style: TextStyle(
-                            fontSize: 15,
+                            fontSize: tabFontSize,
                             color: Colors.white,
                           ),
                         ),
@@ -73,7 +80,7 @@ class TabProxy extends StatelessWidget {
                       child: Text(
                         day,
                         style: TextStyle(
-                          fontSize: 15,
+                          fontSize: tabFontSize,
                           color: Colors.white,
                         ),
                       ),
