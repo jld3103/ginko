@@ -1,5 +1,6 @@
 
 # 2019-08-12  
+ jld3103: Fix layout when app bar is disabled  
  jld3103: Fix web layout scaling  
  jld3103: Add svg rendering for web  
 

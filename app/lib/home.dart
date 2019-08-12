@@ -116,7 +116,13 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
                 children: [
                   Container(
                     width: double.infinity,
-                    height: MediaQuery.of(context).size.height - 100,
+                    height: MediaQuery.of(context).size.height -
+                        (Platform().isWeb &&
+                                getScreenSize(
+                                        MediaQuery.of(context).size.width) ==
+                                    ScreenSize.small
+                            ? 5
+                            : 100),
                     child: getContent,
                   ),
                   SlidingUpPanel(
