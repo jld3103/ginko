@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:app/utils/data.dart';
+import 'package:app/utils/platform/platform.dart';
 import 'package:app/utils/screen_sizes.dart';
 import 'package:app/utils/selection.dart';
 import 'package:app/utils/static.dart';
@@ -12,7 +13,6 @@ import 'package:app/views/unitplan/select_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_platform/flutter_platform.dart';
 import 'package:models/models.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:translations/translations_app.dart';

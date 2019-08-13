@@ -1,5 +1,6 @@
 
 # 2019-08-13  
+ jld3103: Merge plugins into app  
  jld3103: Add check if everything selected before asking to scan  
  jld3103: Fix date offset for unit plan  
 

@@ -1,4 +1,4 @@
-import 'package:flutter_platform/flutter_platform_base.dart';
+import 'package:app/utils/platform/platform_base.dart';
 
 /// Platform class
 /// handles platform on web devices

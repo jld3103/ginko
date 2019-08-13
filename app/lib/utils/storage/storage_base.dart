@@ -1,4 +1,4 @@
-library flutter_platform_storage;
+library storage;
 
 /// StorageBase class
 /// describes the abstract layer of storage

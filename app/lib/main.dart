@@ -1,14 +1,14 @@
 import 'package:app/home.dart';
 import 'package:app/loading.dart';
 import 'package:app/login.dart';
+import 'package:app/utils/platform/platform.dart';
 import 'package:app/utils/static.dart';
+import 'package:app/utils/storage/storage.dart';
 import 'package:app/utils/theme.dart';
 import 'package:flutter/foundation.dart'
     show debugDefaultTargetPlatformOverride;
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_platform/flutter_platform.dart';
-import 'package:flutter_platform_storage/flutter_platform_storage.dart';
 import 'package:translations/translation_locales_list.dart';
 import 'package:translations/translations_app.dart';
 

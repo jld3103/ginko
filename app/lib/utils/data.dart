@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:app/utils/firebase/firebase.dart';
+import 'package:app/utils/platform/platform.dart';
 import 'package:app/utils/static.dart';
-import 'package:flutter_platform/flutter_platform.dart';
 import 'package:http/http.dart';
 import 'package:models/models.dart';
 
