@@ -182,7 +182,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
           (weekday) {
             final start = Data.unitPlan
                 .initialDay(Data.user, DateTime.now())
-                .add(Duration(days: weekday));
+                .add(Duration(days: weekday - 1));
             return ListView(
               shrinkWrap: true,
               children: Data.unitPlan.days[weekday].lessons
