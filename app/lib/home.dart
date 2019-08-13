@@ -77,10 +77,29 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
             Platform().isAndroid &&
             !(Static.storage.getBool(Keys.askedForScan) ?? false)) {
           Static.storage.setBool(Keys.askedForScan, true);
-          await showDialog(
-            context: context,
-            builder: (context) => ScanDialog(),
-          );
+          var allDetected = true;
+          for (final day in Data.unitPlan.days) {
+            if (!allDetected) {
+              break;
+            }
+            for (final lesson in day.lessons) {
+              if (!allDetected) {
+                break;
+              }
+              for (final weekA in [true, false]) {
+                if (Selection.get(lesson.block, weekA) == null) {
+                  allDetected = false;
+                  break;
+                }
+              }
+            }
+          }
+          if (!allDetected) {
+            await showDialog(
+              context: context,
+              builder: (context) => ScanDialog(),
+            );
+          }
         }
       }
     });
