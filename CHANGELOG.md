@@ -1,4 +1,7 @@
 
+# 2019-08-19  
+ jld3103: Catch server parsing errors  
+
 # 2019-08-13  
  jld3103: Merge plugins into app  
  jld3103: Add check if everything selected before asking to scan  

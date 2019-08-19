@@ -114,19 +114,49 @@ Future _setup() async {
   Users.load();
   print('Users loaded');
   await _deleteOldTokens();
-  await TeachersData.load();
-  print('Teachers loaded');
-  await UnitPlanData.load();
-  print('Unit plan loaded');
-  await CalendarData.load();
-  print('Calendar loaded');
-  await CafetoriaData.load();
-  print('Cafetoria loaded');
-  await ReplacementPlanData.load();
-  print('Replacement plan loaded');
-  Timer.periodic(Duration(minutes: 1), (a) async {
+  try {
+    await TeachersData.load();
+    print('Teachers loaded');
+    // ignore: avoid_catches_without_on_clauses
+  } catch (e) {
+    print('Teachers could not be loaded');
+  }
+  try {
+    await UnitPlanData.load();
+    print('Unit plan loaded');
+    // ignore: avoid_catches_without_on_clauses
+  } catch (e) {
+    print('Unit plan could not be loaded');
+  }
+  try {
+    await CalendarData.load();
+    print('Calendar loaded');
+    // ignore: avoid_catches_without_on_clauses
+  } catch (e) {
+    print('Calendar could not be loaded');
+  }
+  try {
+    await CafetoriaData.load();
+    print('Cafetoria loaded');
+    // ignore: avoid_catches_without_on_clauses
+  } catch (e) {
+    print('Cafetoria could not be loaded');
+  }
+  try {
     await ReplacementPlanData.load();
-    print('Replacement plan reloaded');
+    print('Replacement plan loaded');
+    // ignore: avoid_catches_without_on_clauses
+  } catch (e) {
+    print('Replacement plan could not be loaded');
+  }
+  Timer.periodic(Duration(minutes: 1), (a) async {
+    try {
+      await ReplacementPlanData.load();
+      print('Replacement plan loaded');
+      // ignore: avoid_catches_without_on_clauses
+    } catch (e) {
+      print('Replacement plan could not be loaded');
+    }
   });
 }
 
