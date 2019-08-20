@@ -13,10 +13,12 @@ import 'package:server/config.dart';
 class ReplacementPlanParser {
   /// Download html replacement plan
   static Future<Document> download(bool dayOne) async {
-    final response = await http.get(
-      'https://viktoriaschule-aachen.de/sundvplan/vps/${dayOne ? 'left' : 'right'}.html',
-      headers: Config.headers,
-    );
+    final response = await http
+        .get(
+          'https://viktoriaschule-aachen.de/sundvplan/vps/${dayOne ? 'left' : 'right'}.html',
+          headers: Config.headers,
+        )
+        .timeout(Duration(seconds: 3));
     return parse(utf8.decode(response.bodyBytes));
   }
 

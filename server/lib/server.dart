@@ -85,8 +85,8 @@ Future main() async {
               } else {
                 print('$key: $value');
               }
-              // ignore: unused_catch_clause, empty_catches
-            } on Exception catch (e, stacktrace) {
+              // ignore: avoid_catches_without_on_clauses
+            } catch (e, stacktrace) {
               print(e);
               print(stacktrace.toString());
             }

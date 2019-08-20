@@ -21,29 +21,36 @@ class CafetoriaParser {
     final dio = Dio();
     dio.interceptors.add(CookieManager(cookieJar));
     // Get the php session id
-    await dio.get('https://www.opc-asp.de/vs-aachen/');
+    await dio
+        .get('https://www.opc-asp.de/vs-aachen/')
+        .timeout(Duration(seconds: 3));
 
     try {
       // This will fail in a redirect 302 error. That's correct
-      await dio.post(
-        'https://www.opc-asp.de/vs-aachen/?LogIn=true',
-        data: {
-          'sessiontest': cookieJar
-              .loadForRequest(Uri.parse('https://www.opc-asp.de/vs-aachen/'))
-              .where((cookie) => cookie.name == 'PHPSESSID')
-              .toList()[0]
-              .value,
-          'f_kartennr': username,
-          'f_pw': password,
-        },
-        options: Options(
-          contentType: ContentType.parse('application/x-www-form-urlencoded'),
-        ),
-      );
+      await dio
+          .post(
+            'https://www.opc-asp.de/vs-aachen/?LogIn=true',
+            data: {
+              'sessiontest': cookieJar
+                  .loadForRequest(
+                      Uri.parse('https://www.opc-asp.de/vs-aachen/'))
+                  .where((cookie) => cookie.name == 'PHPSESSID')
+                  .toList()[0]
+                  .value,
+              'f_kartennr': username,
+              'f_pw': password,
+            },
+            options: Options(
+              contentType:
+                  ContentType.parse('application/x-www-form-urlencoded'),
+            ),
+          )
+          .timeout(Duration(seconds: 3));
       // ignore: empty_catches, unused_catch_clause
     } on DioError catch (e) {}
     final response = await dio
-        .get('https://www.opc-asp.de/vs-aachen/menuplan.php?KID=$username');
+        .get('https://www.opc-asp.de/vs-aachen/menuplan.php?KID=$username')
+        .timeout(Duration(seconds: 3));
     return Document.html(response.toString());
   }
 

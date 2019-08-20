@@ -12,10 +12,12 @@ import 'package:server/config.dart';
 class UnitPlanParser {
   /// Download html unit plan
   static Future<Document> download(bool weekA) async {
-    final response = await http.get(
-      'https://viktoriaschule-aachen.de/sundvplan/sps/${weekA ? 'left' : 'right'}.html',
-      headers: Config.headers,
-    );
+    final response = await http
+        .get(
+          'https://viktoriaschule-aachen.de/sundvplan/sps/${weekA ? 'left' : 'right'}.html',
+          headers: Config.headers,
+        )
+        .timeout(Duration(seconds: 3));
     return parse(utf8.decode(response.bodyBytes));
   }
 

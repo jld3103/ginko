@@ -1,4 +1,7 @@
 
+# 2019-08-20  
+ jld3103: Add timeouts to parsers  
+
 # 2019-08-19  
  jld3103: Catch server parsing errors  
 

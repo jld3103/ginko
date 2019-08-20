@@ -10,7 +10,9 @@ class TeachersParser {
 
   /// Download pdf teachers list
   static Future<List<int>> download() async {
-    final response = await http.get(_url, headers: Config.headers);
+    final response = await http
+        .get(_url, headers: Config.headers)
+        .timeout(Duration(seconds: 3));
     return response.bodyBytes;
   }
 

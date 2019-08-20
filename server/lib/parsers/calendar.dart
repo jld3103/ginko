@@ -70,14 +70,17 @@ class CalendarParser {
 
   /// Download pdf calendar
   static Future<List<int>> download() async {
-    final response = await http.get(_url, headers: Config.headers);
+    final response = await http
+        .get(_url, headers: Config.headers)
+        .timeout(Duration(seconds: 3));
     return response.bodyBytes;
   }
 
   /// Download external json calendar
   static Future<Map<String, dynamic>> downloadExternal(int year) async {
-    final response =
-        await http.get('https://feiertage-api.de/api/?jahr=$year&nur_land=NW');
+    final response = await http
+        .get('https://feiertage-api.de/api/?jahr=$year&nur_land=NW')
+        .timeout(Duration(seconds: 3));
     return json.decode(utf8.decode(response.bodyBytes));
   }
 
