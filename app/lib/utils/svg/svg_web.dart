@@ -19,12 +19,13 @@ class SvgPictureRenderer extends SvgPictureRendererBase {
 
 class _SvgPictureRendererState extends State<SvgPictureRenderer> {
   @override
-  void initState() {
+  Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((a) {
       // ignore: undefined_identifier
       final items = document.querySelectorAll('draw-rect');
       for (final item in items) {
-        if (item.style.backgroundColor == 'rgb(18, 52, 86)') {
+        if (item.style.backgroundColor == 'rgb(18, 52, 86)' ||
+            item.style.backgroundColor == 'transparent') {
           // ignore: undefined_identifier
           final svgContainer = document.createElement('svg');
           svgContainer.style.cssText = item.style.cssText;
@@ -38,13 +39,10 @@ class _SvgPictureRendererState extends State<SvgPictureRenderer> {
         }
       }
     });
-    super.initState();
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      color: Color(0xFF123456),
+    );
   }
-
-  @override
-  Widget build(BuildContext context) => Container(
-        width: double.infinity,
-        height: double.infinity,
-        color: Color(0xFF123456),
-      );
 }

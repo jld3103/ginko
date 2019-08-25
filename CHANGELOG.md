@@ -1,5 +1,6 @@
 
 # 2019-08-25  
+ jld3103: Fix svg rendering blank after resize  
  jld3103: Add your day feature  
 
 # 2019-08-20  
