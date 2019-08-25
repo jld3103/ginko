@@ -95,8 +95,8 @@ class Data {
     await load();
   }
 
-  /// Load all the data from the server
-  static Future<ErrorCode> load() async {
+  /// Load all data from the offline storage
+  static Future loadOffline() async {
     if (Static.storage.has(Keys.unitPlan)) {
       unitPlan =
           UnitPlanForGrade.fromJSON(Static.storage.getJSON(Keys.unitPlan));
@@ -122,6 +122,11 @@ class Data {
             .toList();
       }
     }
+  }
+
+  /// Load all the data from the server
+  static Future<ErrorCode> load() async {
+    await loadOffline();
     final parameters = {
       Keys.unitPlan: unitPlan == null ? 0 : unitPlan.timeStamp,
       Keys.calendar: calendar == null ? 0 : calendar.timeStamp,

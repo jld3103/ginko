@@ -1,7 +1,6 @@
 import 'package:app/utils/data.dart';
 import 'package:app/utils/platform/platform.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:translations/translations_app.dart';
 
@@ -17,18 +16,6 @@ class Loading extends StatefulWidget {
 class LoadingState extends State<Loading> {
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((a) {
-      if (Platform().isAndroid) {
-        MethodChannel('de.ginko.app').invokeMethod('applyTheme', {
-          'color': Theme.of(context)
-              .primaryColor
-              .value
-              .toRadixString(16)
-              .substring(2)
-              .toUpperCase(),
-        });
-      }
-    });
     Data.setup(443, 'api.app.viktoria.schule', 'https');
     Data.load().then((code) {
       if (code == ErrorCode.wrongCredentials) {

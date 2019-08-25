@@ -11,8 +11,8 @@ class Notification {
   static Future<bool> send(
     String token,
     String title,
-    String body, {
-    String bigBody,
+    String body,
+    String bigBody, {
     Map<String, dynamic> data,
   }) async {
     data ??= {};

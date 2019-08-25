@@ -1,5 +1,6 @@
 package de.ginko.app;
 
+import android.app.ActivityManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.Color;
@@ -24,53 +25,58 @@ public class NotificationService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
-        System.out.println("Notification received: " + remoteMessage.getData());
-        if (flutterView != null) {
-            System.out.println("Updating UI");
-            new Handler(Looper.getMainLooper()).post(() -> new MethodChannel(flutterView, CHANNEL).invokeMethod("notification", remoteMessage.getData()));
-            return;
-        }
-        System.out.println("Showing notification");
+        if (remoteMessage.getData().get("type") != null && remoteMessage.getData().get("type").equals("replacementPlan")) {
+            System.out.println("Notification received: " + remoteMessage.getData());
+            if (flutterView != null && getCurrentClass().startsWith(getApplication().getPackageName())) {
+                System.out.println("Updating UI");
+                new Handler(Looper.getMainLooper()).post(() -> new MethodChannel(flutterView, CHANNEL).invokeMethod("notification", remoteMessage.getData()));
+                return;
+            }
+            System.out.println("Showing notification");
 
-        int channelId = 0;
-        int notificationId = 0;
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("channel", channelId);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        int uniqueInt = (int) (System.currentTimeMillis() & 0xfffffff);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, uniqueInt, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+            int channelId = 0;
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra("channel", channelId);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            int uniqueInt = (int) (System.currentTimeMillis() & 0xfffffff);
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, uniqueInt, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
 
-        String title = remoteMessage.getData().get("title");
-        String body = remoteMessage.getData().get("body");
-        SpannableString formattedBody = new SpannableString(
-                Build.VERSION.SDK_INT < Build.VERSION_CODES.N ? Html.fromHtml(body)
-                        : Html.fromHtml(body, Html.FROM_HTML_MODE_LEGACY)
-        );
-
-        NotificationCompat.Builder notification = new NotificationCompat.Builder(getApplicationContext(), String.valueOf(channelId))
-                .setContentTitle(title)
-                .setContentText(formattedBody)
-                .setSmallIcon(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ? R.mipmap.ic_launcher : R.mipmap.logo_white)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setContentIntent(pendingIntent)
-                .setTicker(title + " " + formattedBody)
-                .setColor(Color.parseColor("#ff5bc638"))
-                .setGroup("group" + notificationId)
-                .setAutoCancel(true)
-                .setColorized(true);
-
-        if (remoteMessage.getData().get("bigBody") != null) {
+            String title = remoteMessage.getData().get("title");
+            String body = remoteMessage.getData().get("body");
             String bigBody = remoteMessage.getData().get("bigBody");
+            int weekday = Integer.parseInt(remoteMessage.getData().get("weekday"));
+            SpannableString formattedBody = new SpannableString(
+                    Build.VERSION.SDK_INT < Build.VERSION_CODES.N ? Html.fromHtml(body)
+                            : Html.fromHtml(body, Html.FROM_HTML_MODE_LEGACY)
+            );
             SpannableString formattedBigBody = new SpannableString(
                     Build.VERSION.SDK_INT < Build.VERSION_CODES.N ? Html.fromHtml(bigBody)
                             : Html.fromHtml(bigBody, Html.FROM_HTML_MODE_LEGACY)
             );
-            notification.setStyle(new NotificationCompat.BigTextStyle().bigText(formattedBigBody));
-        }
 
-        NotificationManagerCompat manager = NotificationManagerCompat.from(getApplicationContext());
-        manager.notify(notificationId, notification.build());
+            NotificationCompat.Builder notification = new NotificationCompat.Builder(getApplicationContext(), String.valueOf(channelId))
+                    .setContentTitle(title)
+                    .setContentText(formattedBody)
+                    .setSmallIcon(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ? R.mipmap.ic_launcher : R.mipmap.logo_white)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText(formattedBigBody))
+                    .setContentIntent(pendingIntent)
+                    .setTicker(title + " " + formattedBody)
+                    .setColor(Color.parseColor("#ff5bc638"))
+                    .setGroup("group" + weekday)
+                    .setAutoCancel(true)
+                    .setColorized(true);
+
+            NotificationManagerCompat manager = NotificationManagerCompat.from(getApplicationContext());
+            manager.notify(weekday, notification.build());
+        } else {
+            System.out.println("Got unknown notification: \n" + remoteMessage.getData().get("title") + "\n" + remoteMessage.getData().get("body"));
+        }
+    }
+
+    String getCurrentClass() {
+        return ((ActivityManager) getSystemService(ACTIVITY_SERVICE)).getRunningTasks(1).get(0).topActivity.getClassName();
     }
 
 }

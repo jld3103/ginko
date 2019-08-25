@@ -1,4 +1,6 @@
+import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
+import 'package:models/models.dart';
 
 /// Calendar class
 /// describes a full calendar
@@ -26,6 +28,36 @@ class Calendar {
 
   /// Get the time stamp of this object
   int get timeStamp => years.reduce((a, b) => a * 10000 + b);
+
+  /// Get all events that overlap with a certain time span
+  List<CalendarEvent> getEventsForTimeSpan(DateTime start, DateTime end) =>
+      events.where((event) {
+        if (event.start == start &&
+            (event.end == end ||
+                event.end.isAfter(end) ||
+                event.end.isBefore(end))) {
+          return true;
+        }
+        if (event.end == end &&
+            (event.start == start ||
+                event.start.isAfter(start) ||
+                event.start.isBefore(start))) {
+          return true;
+        }
+        if (event.start.isBefore(start) && event.end.isAfter(end)) {
+          return true;
+        }
+        if (event.start.isAfter(start) && event.end.isBefore(end)) {
+          return true;
+        }
+        if (event.start.isAfter(start) && event.start.isBefore(end)) {
+          return true;
+        }
+        if (event.end.isAfter(start) && event.end.isBefore(end)) {
+          return true;
+        }
+        return false;
+      }).toList();
 
   // ignore: public_member_api_docs
   List<int> years;
@@ -66,6 +98,32 @@ class CalendarEvent {
         'shortUnits': shortUnits,
         'info': info,
       };
+
+  /// Get the date string of the event
+  String dateString(User user) {
+    final _dateFormat = DateFormat.yMMMMd(user.language.value);
+    final _dateTimeFormat = DateFormat.yMMMMd(user.language.value).add_Hm();
+    var dateStr = '';
+    if (start.hour != 0 || start.minute != 0) {
+      dateStr = _dateTimeFormat.format(start);
+    } else {
+      dateStr = _dateFormat.format(start);
+    }
+    if (DateTime(
+          start.year,
+          start.month,
+          start.day,
+        ).add(Duration(days: 1)).subtract(Duration(seconds: 1)) !=
+        end) {
+      dateStr += ' - ';
+      if (end.hour != 23 || end.minute != 59) {
+        dateStr += _dateTimeFormat.format(end);
+      } else {
+        dateStr += _dateFormat.format(end);
+      }
+    }
+    return dateStr;
+  }
 
   // ignore: public_member_api_docs
   String name;

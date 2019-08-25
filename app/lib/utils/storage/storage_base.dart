@@ -30,5 +30,6 @@ abstract class StorageBase {
   // ignore: public_member_api_docs
   Map<String, dynamic> getJSON(String key);
 
+  // ignore: public_member_api_docs
   bool has(String key);
 }

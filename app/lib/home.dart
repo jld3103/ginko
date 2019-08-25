@@ -5,6 +5,7 @@ import 'package:app/utils/platform/platform.dart';
 import 'package:app/utils/screen_sizes.dart';
 import 'package:app/utils/selection.dart';
 import 'package:app/utils/static.dart';
+import 'package:app/utils/your_day.dart';
 import 'package:app/views/extra_information.dart';
 import 'package:app/views/tab_proxy.dart';
 import 'package:app/views/unitplan/progress_row.dart';
@@ -103,6 +104,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         }
       }
     });
+    YourDay.init();
     super.initState();
   }
 

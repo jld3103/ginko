@@ -40,4 +40,7 @@ class Keys {
 
   // ignore: public_member_api_docs
   static String get teachers => 'teachers';
+
+  // ignore: public_member_api_docs
+  static String get weekday => 'weekday';
 }

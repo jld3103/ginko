@@ -104,25 +104,32 @@ class ReplacementPlanData {
 
             final buffer = StringBuffer();
             if (change.subject != null && change.subject.isNotEmpty) {
-              buffer.write(change.subject);
+              buffer.write(ServerTranslations.subjects(
+                  user.language.value)[change.subject]);
             }
             if (change.teacher != null && change.teacher.isNotEmpty) {
               buffer.write(' ${change.teacher}');
             }
             buffer.write(':');
             if (change.changed.subject != null &&
-                change.changed.subject.isNotEmpty) {
-              buffer.write(' ${change.changed.subject}');
+                change.changed.subject.isNotEmpty &&
+                change.subject != change.changed.subject) {
+              buffer.write(
+                  // ignore: lines_longer_than_80_chars
+                  ' ${ServerTranslations.subjects(user.language.value)[change.changed.subject]}');
             }
             if (change.changed.info != null && change.changed.info.isNotEmpty) {
               buffer.write(' ${change.changed.info}');
             }
-            if (change.changed.teacher != null &&
-                change.changed.teacher.isNotEmpty) {
-              buffer.write(' ${change.changed.teacher}');
-            }
-            if (change.changed.room != null && change.changed.room.isNotEmpty) {
+            if (change.changed.room != null &&
+                change.changed.room.isNotEmpty &&
+                change.room != change.changed.room) {
               buffer.write(' ${change.changed.room}');
+            }
+            if (change.changed.teacher != null &&
+                change.changed.teacher.isNotEmpty &&
+                change.teacher != change.changed.teacher) {
+              buffer.write(' ${change.changed.teacher}');
             }
             lines.add(buffer.toString());
           }
@@ -131,19 +138,18 @@ class ReplacementPlanData {
               : lines.join('<br/>');
           final body = changes.isEmpty
               ? ServerTranslations.notificationsNoChanges(user.language.value)
-              : changes.length == 1
-                  ? bigBody
-                  // ignore: lines_longer_than_80_chars
-                  : '${changes.length} ${ServerTranslations.notificationsChanges(user.language.value)}';
+              // ignore: lines_longer_than_80_chars
+              : '${changes.length} ${ServerTranslations.notificationsChanges(user.language.value)}';
           final unregisteredTokens = [];
           for (final token in user.tokens) {
             final tokenRegistered = await Notification.send(
               token,
               title,
               body,
-              bigBody: changes.length > 1 ? bigBody : null,
+              bigBody,
               data: {
                 Keys.type: Keys.replacementPlan,
+                Keys.weekday: day.date.weekday - 1,
               },
             );
             if (!tokenRegistered) {

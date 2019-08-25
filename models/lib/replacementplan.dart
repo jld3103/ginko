@@ -1,7 +1,7 @@
 import 'package:meta/meta.dart';
 import 'package:models/models.dart';
 
-/// Change class
+/// ReplacementPlan class
 /// describes all replacement plans for all grades
 class ReplacementPlan {
   // ignore: public_member_api_docs

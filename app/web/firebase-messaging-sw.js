@@ -22,7 +22,7 @@ messaging.setBackgroundMessageHandler(payload => {
     };
 
     const notificationOptions = {
-        body: payload.data.body.replace('<br/>', '\n').replace(/<[^>]*>?/gm, ''),
+        body: payload.data.bigBody.replace('<br/>', '\n').replace(/<[^>]*>?/gm, ''),
         icon: '/assets/images/logo_green.png',
         badge: '/assets/images/logo_green.png',
         data: data,

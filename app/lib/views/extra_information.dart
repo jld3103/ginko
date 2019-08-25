@@ -1,3 +1,4 @@
+import 'package:app/utils/data.dart';
 import 'package:app/utils/screen_sizes.dart';
 import 'package:app/views/cafetoria/row.dart';
 import 'package:app/views/calendar/row.dart';
@@ -44,35 +45,10 @@ class ExtraInformationState extends State<ExtraInformation> {
 
     final start = widget.date;
     final end = start.add(Duration(days: 1)).subtract(Duration(seconds: 1));
-    final events = widget.calendar.events.where((event) {
-      if (event.start == start &&
-          (event.end == end ||
-              event.end.isAfter(end) ||
-              event.end.isBefore(end))) {
-        return true;
-      }
-      if (event.end == end &&
-          (event.start == start ||
-              event.start.isAfter(start) ||
-              event.start.isBefore(start))) {
-        return true;
-      }
-      if (event.start.isBefore(start) && event.end.isAfter(end)) {
-        return true;
-      }
-      if (event.start.isAfter(start) && event.end.isBefore(end)) {
-        return true;
-      }
-      if (event.start.isAfter(start) && event.start.isBefore(end)) {
-        return true;
-      }
-      if (event.end.isAfter(start) && event.end.isBefore(end)) {
-        return true;
-      }
-      return false;
-    }).toList();
-    final cafetoriaDays =
-        widget.cafetoria.days.where((day) => day.date == start).toList();
+    final events = widget.calendar.getEventsForTimeSpan(start, end);
+    final cafetoriaDays = widget.cafetoria != null
+        ? widget.cafetoria.days.where((day) => day.date == start).toList()
+        : [];
     return Column(
       children: [
         GestureDetector(
@@ -154,6 +130,7 @@ class ExtraInformationState extends State<ExtraInformation> {
               ...events
                   .map((event) => CalendarRow(
                         event: event,
+                        user: Data.user,
                       ))
                   .toList(),
               if (cafetoriaDays.isNotEmpty)

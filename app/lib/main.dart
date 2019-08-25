@@ -17,6 +17,8 @@ Future main() async {
     debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
   }
 
+  WidgetsFlutterBinding.ensureInitialized();
+
   Static.storage = Storage();
   await Static.storage.init();
 

@@ -1,3 +1,4 @@
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:models/models.dart';
 import 'package:test/test.dart';
 
@@ -69,6 +70,59 @@ void main() {
         info: 'blabla',
       );
       expect(CalendarEvent.fromJSON(event.toJSON()).toJSON(), event.toJSON());
+    });
+
+    test('Can get correct date string for single day event', () async {
+      await initializeDateFormatting('en');
+      // ignore: missing_required_param
+      final event = CalendarEvent(
+        start: DateTime(2019, 8, 25),
+        end: DateTime(2019, 8, 25, 23, 59, 59),
+      );
+      // ignore: missing_required_param
+      final user = User(language: UserValue('language', 'en'));
+      expect(event.dateString(user), 'August 25, 2019');
+    });
+
+    test('Can get correct date string for single day event starting later',
+        () async {
+      await initializeDateFormatting('en');
+      // ignore: missing_required_param
+      final event = CalendarEvent(
+        start: DateTime(2019, 8, 25, 8),
+        end: DateTime(2019, 8, 25, 23, 59, 59),
+      );
+      // ignore: missing_required_param
+      final user = User(language: UserValue('language', 'en'));
+      expect(event.dateString(user), 'August 25, 2019 08:00');
+    });
+
+    test('Can get correct date string for multiple days event', () async {
+      await initializeDateFormatting('en');
+      // ignore: missing_required_param
+      final event = CalendarEvent(
+        start: DateTime(2019, 8, 25),
+        end: DateTime(2019, 8, 26, 23, 59, 59),
+      );
+      // ignore: missing_required_param
+      final user = User(language: UserValue('language', 'en'));
+      expect(event.dateString(user), 'August 25, 2019 - August 26, 2019');
+    });
+
+    test(
+        // ignore: lines_longer_than_80_chars
+        'Can get correct date string for multiple days event starting later and ending earlier',
+        () async {
+      await initializeDateFormatting('en');
+      // ignore: missing_required_param
+      final event = CalendarEvent(
+        start: DateTime(2019, 8, 25, 8),
+        end: DateTime(2019, 8, 26, 12),
+      );
+      // ignore: missing_required_param
+      final user = User(language: UserValue('language', 'en'));
+      expect(event.dateString(user),
+          'August 25, 2019 08:00 - August 26, 2019 12:00');
     });
 
     test('Can create calendar', () {
@@ -152,6 +206,96 @@ void main() {
         events: [event],
       );
       expect(Calendar.fromJSON(calendar.toJSON()).toJSON(), calendar.toJSON());
+    });
+
+    test('Can get correct events for timespan', () {
+      final calendar = Calendar(
+        events: [
+          // ignore: missing_required_param
+          CalendarEvent(
+            start: DateTime(2019, 8, 25),
+            end: DateTime(2019, 8, 25, 23, 59, 59),
+          ),
+        ],
+        years: [],
+      );
+      expect(
+        calendar
+            .getEventsForTimeSpan(
+                DateTime(2019, 8, 25), DateTime(2019, 8, 25, 23, 59, 59))
+            .length,
+        1,
+      );
+      expect(
+        calendar
+            .getEventsForTimeSpan(
+                DateTime(2019, 8, 25), DateTime(2019, 8, 26, 23, 59, 59))
+            .length,
+        1,
+      );
+      expect(
+        calendar
+            .getEventsForTimeSpan(
+                DateTime(2019, 8, 25), DateTime(2019, 8, 25, 8))
+            .length,
+        1,
+      );
+      expect(
+        calendar
+            .getEventsForTimeSpan(
+                DateTime(2019, 8, 25, 8), DateTime(2019, 8, 25, 23, 59, 59))
+            .length,
+        1,
+      );
+      expect(
+        calendar
+            .getEventsForTimeSpan(
+                DateTime(2019, 8, 24), DateTime(2019, 8, 25, 23, 59, 59))
+            .length,
+        1,
+      );
+      expect(
+        calendar
+            .getEventsForTimeSpan(
+                DateTime(2019, 8, 24), DateTime(2019, 8, 26, 23, 59, 59))
+            .length,
+        1,
+      );
+      expect(
+        calendar
+            .getEventsForTimeSpan(
+                DateTime(2019, 8, 25, 8), DateTime(2019, 8, 25, 9))
+            .length,
+        1,
+      );
+      expect(
+        calendar
+            .getEventsForTimeSpan(
+                DateTime(2019, 8, 25, 8), DateTime(2019, 8, 26, 23, 59, 59))
+            .length,
+        1,
+      );
+      expect(
+        calendar
+            .getEventsForTimeSpan(
+                DateTime(2019, 8, 24), DateTime(2019, 8, 26, 23, 59, 59))
+            .length,
+        1,
+      );
+      expect(
+        calendar
+            .getEventsForTimeSpan(
+                DateTime(2019, 8, 24), DateTime(2019, 8, 24, 23, 59, 59))
+            .length,
+        0,
+      );
+      expect(
+        calendar
+            .getEventsForTimeSpan(
+                DateTime(2019, 8, 26), DateTime(2019, 8, 26, 23, 59, 59))
+            .length,
+        0,
+      );
     });
   });
 }
