@@ -1,16 +1,16 @@
 import 'dart:convert';
 
-import 'package:app/utils/data.dart';
-import 'package:app/utils/platform/platform.dart';
-import 'package:app/utils/screen_sizes.dart';
-import 'package:app/utils/selection.dart';
-import 'package:app/utils/static.dart';
-import 'package:app/utils/your_day.dart';
-import 'package:app/views/extra_information.dart';
-import 'package:app/views/tab_proxy.dart';
-import 'package:app/views/unitplan/progress_row.dart';
-import 'package:app/views/unitplan/scan.dart';
-import 'package:app/views/unitplan/select_dialog.dart';
+import 'package:ginko/utils/data.dart';
+import 'package:ginko/utils/platform/platform.dart';
+import 'package:ginko/utils/screen_sizes.dart';
+import 'package:ginko/utils/selection.dart';
+import 'package:ginko/utils/static.dart';
+import 'package:ginko/utils/your_day.dart';
+import 'package:ginko/views/extra_information.dart';
+import 'package:ginko/views/tab_proxy.dart';
+import 'package:ginko/views/unitplan/progress_row.dart';
+import 'package:ginko/views/unitplan/scan.dart';
+import 'package:ginko/views/unitplan/select_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';

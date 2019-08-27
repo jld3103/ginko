@@ -1,6 +1,7 @@
-name: app
+name: ginko
 description: The Ginko app
 version: 1.0.0+1
+author: jld3103
 
 environment:
   sdk: ">=2.2.2 <3.0.0"

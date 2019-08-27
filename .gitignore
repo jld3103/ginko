@@ -24,6 +24,9 @@ pubspec.lock
 app/images/*
 !app/images/logo_white.svg
 app/desktop/assets/icon.png
+app/desktop/.gitignore
+app/desktop/**snap
+app/desktop/**deb
 app/android/app/src/main/res/mipmap-*/
 app/android/app/src/main/res/drawable/*.png
 app/ios/Runner/Assets.xcassets/AppIcon.appiconset/*.png

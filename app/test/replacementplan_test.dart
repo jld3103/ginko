@@ -1,5 +1,5 @@
-import 'package:app/utils/theme.dart';
-import 'package:app/views/replacementplan/row.dart';
+import 'package:ginko/utils/theme.dart';
+import 'package:ginko/views/replacementplan/row.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';

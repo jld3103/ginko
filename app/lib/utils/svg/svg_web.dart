@@ -4,7 +4,7 @@ library svg;
 import 'dart:html';
 import 'dart:svg';
 
-import 'package:app/utils/svg/svg_base.dart';
+import 'package:ginko/utils/svg/svg_base.dart';
 import 'package:flutter/material.dart';
 
 /// SvgPictureRenderer class

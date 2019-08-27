@@ -1,4 +1,4 @@
-import 'package:app/views/unitplan/row.dart';
+import 'package:ginko/views/unitplan/row.dart';
 import 'package:flutter/material.dart';
 import 'package:models/models.dart';
 import 'package:translations/translations_app.dart';

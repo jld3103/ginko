@@ -4,13 +4,13 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:app/utils/svg/svg.dart';
+import 'package:ginko/utils/svg/svg.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 
-export 'package:app/utils/svg/svg_io.dart'
-    if (dart.library.js) 'package:app/utils/svg/svg_web.dart';
+export 'package:ginko/utils/svg/svg_io.dart'
+    if (dart.library.js) 'package:ginko/utils/svg/svg_web.dart';
 
 /// SvgPicture class
 /// render a svg on all Android/iOS/desktop/web

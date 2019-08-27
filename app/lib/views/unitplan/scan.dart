@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:app/utils/data.dart';
-import 'package:app/utils/selection.dart';
-import 'package:app/utils/static.dart';
+import 'package:ginko/utils/data.dart';
+import 'package:ginko/utils/selection.dart';
+import 'package:ginko/utils/static.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';

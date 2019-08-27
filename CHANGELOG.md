@@ -1,4 +1,7 @@
 
+# 2019-08-27  
+ jld3103: Made app packaging ready  
+
 # 2019-08-25  
  jld3103: Fix svg rendering blank after resize  
  jld3103: Add your day feature  

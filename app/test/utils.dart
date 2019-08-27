@@ -1,4 +1,4 @@
-import 'package:app/utils/theme.dart';
+import 'package:ginko/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:translations/translations_app.dart';

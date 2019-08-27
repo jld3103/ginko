@@ -2,7 +2,7 @@ library storage;
 
 import 'dart:convert';
 
-import 'package:app/utils/storage/storage_base.dart';
+import 'package:ginko/utils/storage/storage_base.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Storage class

@@ -4,7 +4,7 @@ library storage;
 import 'dart:convert';
 import 'dart:html';
 
-import 'package:app/utils/storage/storage_base.dart';
+import 'package:ginko/utils/storage/storage_base.dart';
 
 // ignore: undefined_identifier
 final _localStorage = window.localStorage;

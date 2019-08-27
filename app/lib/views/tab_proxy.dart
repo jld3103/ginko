@@ -1,4 +1,4 @@
-import 'package:app/utils/screen_sizes.dart';
+import 'package:ginko/utils/screen_sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:translations/translations_app.dart';
 

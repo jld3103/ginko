@@ -1,4 +1,4 @@
-import 'package:app/views/cafetoria/row.dart';
+import 'package:ginko/views/cafetoria/row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:models/cafetoria.dart';

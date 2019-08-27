@@ -1,5 +1,5 @@
-import 'package:app/utils/data.dart';
-import 'package:app/utils/platform/platform.dart';
+import 'package:ginko/utils/data.dart';
+import 'package:ginko/utils/platform/platform.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:translations/translations_app.dart';

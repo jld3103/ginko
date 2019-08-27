@@ -1,6 +1,6 @@
 library firebase;
 
-import 'package:app/utils/firebase/firebase_base.dart';
+import 'package:ginko/utils/firebase/firebase_base.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_messaging/firebase_messaging.dart' as real;
 

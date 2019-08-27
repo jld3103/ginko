@@ -1,10 +1,10 @@
-import 'package:app/home.dart';
-import 'package:app/loading.dart';
-import 'package:app/login.dart';
-import 'package:app/utils/platform/platform.dart';
-import 'package:app/utils/static.dart';
-import 'package:app/utils/storage/storage.dart';
-import 'package:app/utils/theme.dart';
+import 'package:ginko/home.dart';
+import 'package:ginko/loading.dart';
+import 'package:ginko/login.dart';
+import 'package:ginko/utils/platform/platform.dart';
+import 'package:ginko/utils/static.dart';
+import 'package:ginko/utils/storage/storage.dart';
+import 'package:ginko/utils/theme.dart';
 import 'package:flutter/foundation.dart'
     show debugDefaultTargetPlatformOverride;
 import 'package:flutter/material.dart';

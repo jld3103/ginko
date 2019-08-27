@@ -1,10 +1,10 @@
 import 'package:android_alarm_manager/android_alarm_manager.dart';
-import 'package:app/utils/data.dart';
-import 'package:app/utils/platform/platform.dart';
-import 'package:app/utils/selection.dart';
-import 'package:app/utils/static.dart';
-import 'package:app/utils/storage/storage.dart';
-import 'package:app/utils/theme.dart';
+import 'package:ginko/utils/data.dart';
+import 'package:ginko/utils/platform/platform.dart';
+import 'package:ginko/utils/selection.dart';
+import 'package:ginko/utils/static.dart';
+import 'package:ginko/utils/storage/storage.dart';
+import 'package:ginko/utils/theme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/date_symbol_data_local.dart';

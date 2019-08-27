@@ -1,7 +1,7 @@
-import 'package:app/utils/data.dart';
-import 'package:app/utils/screen_sizes.dart';
-import 'package:app/views/cafetoria/row.dart';
-import 'package:app/views/calendar/row.dart';
+import 'package:ginko/utils/data.dart';
+import 'package:ginko/utils/screen_sizes.dart';
+import 'package:ginko/views/cafetoria/row.dart';
+import 'package:ginko/views/calendar/row.dart';
 import 'package:flutter/material.dart';
 import 'package:models/models.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';

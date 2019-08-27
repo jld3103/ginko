@@ -6,7 +6,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:html';
 
-import 'package:app/utils/firebase/firebase_base.dart';
+import 'package:ginko/utils/firebase/firebase_base.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 // ignore: avoid_annotating_with_dynamic

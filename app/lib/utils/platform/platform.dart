@@ -1,4 +1,4 @@
 library flutter_platform;
 
-export 'package:app/utils/platform/platform_io.dart'
-    if (dart.library.js) 'package:app/utils/platform/platform_web.dart';
+export 'package:ginko/utils/platform/platform_io.dart'
+    if (dart.library.js) 'package:ginko/utils/platform/platform_web.dart';
