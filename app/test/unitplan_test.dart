@@ -1,9 +1,9 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:ginko/views/unitplan/progress_overlay.dart';
 import 'package:ginko/views/unitplan/progress_row.dart';
 import 'package:ginko/views/unitplan/row.dart';
 import 'package:ginko/views/unitplan/select_dialog.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:models/models.dart';
 import 'package:translations/translations_server.dart';
 

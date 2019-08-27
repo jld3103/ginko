@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter/services.dart';
 import 'package:ginko/utils/data.dart';
 import 'package:ginko/utils/platform/platform.dart';
 import 'package:ginko/utils/screen_sizes.dart';
@@ -11,9 +14,6 @@ import 'package:ginko/views/tab_proxy.dart';
 import 'package:ginko/views/unitplan/progress_row.dart';
 import 'package:ginko/views/unitplan/scan.dart';
 import 'package:ginko/views/unitplan/select_dialog.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/services.dart';
 import 'package:models/models.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:translations/translations_app.dart';

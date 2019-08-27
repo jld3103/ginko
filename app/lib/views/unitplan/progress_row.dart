@@ -1,10 +1,10 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:ginko/utils/screen_sizes.dart';
 import 'package:ginko/views/replacementplan/row.dart';
 import 'package:ginko/views/unitplan/progress_overlay.dart';
 import 'package:ginko/views/unitplan/row.dart';
-import 'package:flutter/material.dart';
 import 'package:models/models.dart';
 
 /// UnitPlanProgressRow class

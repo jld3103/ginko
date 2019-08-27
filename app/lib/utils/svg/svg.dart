@@ -4,9 +4,9 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:ginko/utils/svg/svg.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:ginko/utils/svg/svg.dart';
 import 'package:http/http.dart' as http;
 
 export 'package:ginko/utils/svg/svg_io.dart'

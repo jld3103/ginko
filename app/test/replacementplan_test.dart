@@ -1,8 +1,8 @@
-import 'package:ginko/utils/theme.dart';
-import 'package:ginko/views/replacementplan/row.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:ginko/utils/theme.dart';
+import 'package:ginko/views/replacementplan/row.dart';
 import 'package:models/models.dart';
 import 'package:translations/translations_server.dart';
 

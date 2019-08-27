@@ -1,5 +1,5 @@
-import 'package:ginko/utils/screen_sizes.dart';
 import 'package:flutter/material.dart';
+import 'package:ginko/utils/screen_sizes.dart';
 import 'package:translations/translations_app.dart';
 
 /// TabProxy class

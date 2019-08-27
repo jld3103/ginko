@@ -1,10 +1,10 @@
 import 'dart:io';
 
+import 'package:firebase_ml_vision/firebase_ml_vision.dart';
+import 'package:flutter/material.dart';
 import 'package:ginko/utils/data.dart';
 import 'package:ginko/utils/selection.dart';
 import 'package:ginko/utils/static.dart';
-import 'package:firebase_ml_vision/firebase_ml_vision.dart';
-import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:models/models.dart';
 import 'package:translations/translations_app.dart';

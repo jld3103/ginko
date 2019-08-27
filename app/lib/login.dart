@@ -1,6 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:ginko/utils/data.dart';
 import 'package:ginko/utils/svg/svg.dart';
-import 'package:flutter/material.dart';
 import 'package:models/models.dart';
 import 'package:translations/translations_app.dart';
 

@@ -1,3 +1,7 @@
+import 'package:flutter/foundation.dart'
+    show debugDefaultTargetPlatformOverride;
+import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:ginko/home.dart';
 import 'package:ginko/loading.dart';
 import 'package:ginko/login.dart';
@@ -5,10 +9,6 @@ import 'package:ginko/utils/platform/platform.dart';
 import 'package:ginko/utils/static.dart';
 import 'package:ginko/utils/storage/storage.dart';
 import 'package:ginko/utils/theme.dart';
-import 'package:flutter/foundation.dart'
-    show debugDefaultTargetPlatformOverride;
-import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:translations/translation_locales_list.dart';
 import 'package:translations/translations_app.dart';
 

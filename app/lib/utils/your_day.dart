@@ -1,12 +1,12 @@
 import 'package:android_alarm_manager/android_alarm_manager.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:ginko/utils/data.dart';
 import 'package:ginko/utils/platform/platform.dart';
 import 'package:ginko/utils/selection.dart';
 import 'package:ginko/utils/static.dart';
 import 'package:ginko/utils/storage/storage.dart';
 import 'package:ginko/utils/theme.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:models/models.dart';
 import 'package:translations/translations_server.dart';
@@ -39,6 +39,7 @@ class YourDay {
           1,
           _cancelNotification,
           rescheduleOnReboot: true,
+          exact: true,
         );
       } else {
         debugPrint('Canceling notification because of wrong time');
@@ -64,6 +65,7 @@ class YourDay {
       0,
       _repeater,
       rescheduleOnReboot: true,
+      exact: true,
     );
   }
 
