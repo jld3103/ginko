@@ -9,6 +9,7 @@ import 'package:ginko/utils/screen_sizes.dart';
 import 'package:ginko/utils/selection.dart';
 import 'package:ginko/utils/static.dart';
 import 'package:ginko/views/extra_information.dart';
+import 'package:ginko/views/header.dart';
 import 'package:ginko/views/tab_proxy.dart';
 import 'package:ginko/views/unitplan/progress_row.dart';
 import 'package:ginko/views/unitplan/scan.dart';
@@ -120,20 +121,12 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: Platform().isWeb &&
-                getScreenSize(MediaQuery.of(context).size.width) ==
-                    ScreenSize.small
-            ? null
-            : AppBar(
-                title: Text(AppTranslations.of(context).appName),
-                elevation: 0,
-              ),
-        body: getScreenSize(MediaQuery.of(context).size.width) ==
-                ScreenSize.small
-            ? Stack(
-                children: [
-                  Container(
+  Widget build(BuildContext context) =>
+      getScreenSize(MediaQuery.of(context).size.width) == ScreenSize.small
+          ? Stack(
+              children: [
+                Header(
+                  child: Container(
                     width: double.infinity,
                     height: MediaQuery.of(context).size.height -
                         (Platform().isWeb &&
@@ -141,40 +134,41 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
                                         MediaQuery.of(context).size.width) ==
                                     ScreenSize.small
                             ? 5
-                            : 100),
+                            : 0),
                     child: getContent,
                   ),
-                  SlidingUpPanel(
-                    controller: _panelController,
-                    parallaxEnabled: true,
-                    parallaxOffset: .1,
-                    maxHeight: MediaQuery.of(context).size.height * 0.75,
-                    minHeight: 30,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(24),
-                      topRight: Radius.circular(24),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey,
-                        blurRadius: 5,
-                        spreadRadius: 2,
-                      ),
-                    ],
-                    panelSnapping: true,
-                    backdropEnabled: true,
-                    backdropTapClosesPanel: true,
-                    panel: ExtraInformation(
-                      date:
-                          monday(DateTime.now()).add(Duration(days: _weekday)),
-                      calendar: Data.calendar,
-                      cafetoria: Data.cafetoria,
-                      panelController: _panelController,
-                    ),
+                ),
+                SlidingUpPanel(
+                  controller: _panelController,
+                  parallaxEnabled: true,
+                  parallaxOffset: .1,
+                  maxHeight: MediaQuery.of(context).size.height * 0.75,
+                  minHeight: 30,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(24),
+                    topRight: Radius.circular(24),
                   ),
-                ],
-              )
-            : Row(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey,
+                      spreadRadius: 1,
+                      blurRadius: 3,
+                    ),
+                  ],
+                  panelSnapping: true,
+                  backdropEnabled: true,
+                  backdropTapClosesPanel: true,
+                  panel: ExtraInformation(
+                    date: monday(DateTime.now()).add(Duration(days: _weekday)),
+                    calendar: Data.calendar,
+                    cafetoria: Data.cafetoria,
+                    panelController: _panelController,
+                  ),
+                ),
+              ],
+            )
+          : Header(
+              child: Row(
                 children: [
                   Container(
                     height: double.infinity,
@@ -193,7 +187,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
                   ),
                 ],
               ),
-      );
+            );
 
   /// Get the content of the tabs
   Widget get getContent => TabProxy(
@@ -206,6 +200,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
                 .add(Duration(days: weekday - 1));
             return ListView(
               shrinkWrap: true,
+              padding: EdgeInsets.only(bottom: 5),
               children: Data.unitPlan.days[weekday].lessons
                   .map((lesson) {
                     final subjects = lesson.subjects
