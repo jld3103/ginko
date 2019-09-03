@@ -73,13 +73,35 @@ class CafetoriaParser {
                         .text
                         .replaceAll(',', '.')
                         .split(' ')[0];
+                    final items = document
+                        .querySelectorAll('.angebot_text')[index]
+                        .innerHtml
+                        .split('<br>');
+                    final name = (items.length > 1 &&
+                                items[0].toLowerCase().contains('uhr')
+                            ? items.sublist(1).join('\n')
+                            : items.join('\n'))
+                        .trim();
+                    final times = [];
+                    if (items.length > 1 &&
+                        items[0].toLowerCase().contains('uhr')) {
+                      final subItems = items[0]
+                          .toLowerCase()
+                          .replaceAll('uhr', '')
+                          .split('-')
+                          .map((i) => i.trim())
+                          .toList();
+                      for (final subItem in subItems) {
+                        final parts = subItem.split('.');
+                        times.add(Duration(
+                          hours: int.parse(parts[0]),
+                          minutes: parts.length > 1 ? int.parse(parts[1]) : 0,
+                        ));
+                      }
+                    }
                     return CafetoriaMenu(
-                      name: document
-                          .querySelectorAll('.angebot_text')[index]
-                          .innerHtml
-                          .replaceAll('<br>', ' ')
-                          .trim(),
-                      times: <Duration>[], // TODO(jld3103): Add times
+                      name: name,
+                      times: times.cast<Duration>(),
                       price: price == '' ? 0 : double.parse(price),
                     );
                   }).where((menu) => menu.name != '').toList(),

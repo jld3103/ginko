@@ -118,35 +118,45 @@ Future _setup() async {
     await TeachersData.load();
     print('Teachers loaded');
     // ignore: avoid_catches_without_on_clauses
-  } catch (e) {
+  } catch (e, stacktrace) {
+    print(e);
+    print(stacktrace);
     print('Teachers could not be loaded');
   }
   try {
     await UnitPlanData.load();
     print('Unit plan loaded');
     // ignore: avoid_catches_without_on_clauses
-  } catch (e) {
+  } catch (e, stacktrace) {
+    print(e);
+    print(stacktrace);
     print('Unit plan could not be loaded');
   }
   try {
     await CalendarData.load();
     print('Calendar loaded');
     // ignore: avoid_catches_without_on_clauses
-  } catch (e) {
+  } catch (e, stacktrace) {
+    print(e);
+    print(stacktrace);
     print('Calendar could not be loaded');
   }
   try {
     await CafetoriaData.load();
     print('Cafetoria loaded');
     // ignore: avoid_catches_without_on_clauses
-  } catch (e) {
+  } catch (e, stacktrace) {
+    print(e);
+    print(stacktrace);
     print('Cafetoria could not be loaded');
   }
   try {
     await ReplacementPlanData.load();
     print('Replacement plan loaded');
     // ignore: avoid_catches_without_on_clauses
-  } catch (e) {
+  } catch (e, stacktrace) {
+    print(e);
+    print(stacktrace);
     print('Replacement plan could not be loaded');
   }
   Timer.periodic(Duration(minutes: 1), (a) async {
@@ -154,7 +164,9 @@ Future _setup() async {
       await ReplacementPlanData.load();
       print('Replacement plan loaded');
       // ignore: avoid_catches_without_on_clauses
-    } catch (e) {
+    } catch (e, stacktrace) {
+      print(e);
+      print(stacktrace);
       print('Replacement plan could not be loaded');
     }
   });

@@ -16,7 +16,7 @@ class Loading extends StatefulWidget {
 class LoadingState extends State<Loading> {
   @override
   void initState() {
-    Data.setup(443, 'api.app.viktoria.schule', 'https');
+    Data.setup(8000, '192.168.1.46', 'http');
     Data.load().then((code) {
       if (code == ErrorCode.wrongCredentials) {
         Navigator.of(context).pushReplacementNamed('/login');

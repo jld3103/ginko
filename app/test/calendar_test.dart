@@ -16,10 +16,6 @@ void main() {
             start: DateTime(2019, 7, 15),
             end: DateTime(2019, 8, 27, 23, 59, 59),
           ),
-          // ignore: missing_required_param
-          user: User(
-            language: UserValue('language', 'en'),
-          ),
         )));
         await tester.pumpAndSettle();
         expect(find.text('Sommerferien'), findsOneWidget);
@@ -33,10 +29,6 @@ void main() {
             type: EventTypes.vacation,
             start: DateTime(2019, 7, 15, 8),
             end: DateTime(2019, 8, 27, 8),
-          ),
-          // ignore: missing_required_param
-          user: User(
-            language: UserValue('language', 'en'),
           ),
         )));
         await tester.pumpAndSettle();
@@ -55,10 +47,6 @@ void main() {
             start: DateTime(2018, 12, 8),
             end: DateTime(2018, 12, 8, 23, 59, 59),
           ),
-          // ignore: missing_required_param
-          user: User(
-            language: UserValue('language', 'en'),
-          ),
         )));
         await tester.pumpAndSettle();
         expect(find.text('Tag der offenen Tür'), findsOneWidget);
@@ -72,10 +60,6 @@ void main() {
             type: EventTypes.vacation,
             start: DateTime(2018, 12, 8, 8),
             end: DateTime(2018, 12, 8, 23, 59, 59),
-          ),
-          // ignore: missing_required_param
-          user: User(
-            language: UserValue('language', 'en'),
           ),
         )));
         await tester.pumpAndSettle();

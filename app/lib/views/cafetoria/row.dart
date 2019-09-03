@@ -58,21 +58,26 @@ class CafetoriaRowState extends State<CafetoriaRow> {
                   (menu) => Container(
                     margin: EdgeInsets.only(bottom: 10),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Flexible(
-                              child: Text(
-                                menu.name,
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            if (menu.price != 0)
-                              Text(' (${menu.price}€)')
-                            // TODO(jld3103): Add times
-                          ],
-                        )
+                        Text(
+                          menu.name,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        if (menu.price != 0)
+                          Text(
+                            '${menu.price}€',
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        if (menu.times.isNotEmpty)
+                          Text(
+                            menu.times
+                                .map((time) =>
+                                    _timeFormat.format(DateTime(0).add(time)))
+                                .toList()
+                                .join(' - '),
+                            style: TextStyle(color: Colors.grey),
+                          ),
                       ],
                     ),
                   ),

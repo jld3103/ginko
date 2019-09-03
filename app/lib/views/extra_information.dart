@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ginko/utils/data.dart';
 import 'package:ginko/utils/screen_sizes.dart';
 import 'package:ginko/views/cafetoria/row.dart';
 import 'package:ginko/views/calendar/row.dart';
@@ -130,7 +129,6 @@ class ExtraInformationState extends State<ExtraInformation> {
               ...events
                   .map((event) => CalendarRow(
                         event: event,
-                        user: Data.user,
                       ))
                   .toList(),
               if (cafetoriaDays.isNotEmpty)

@@ -15,7 +15,10 @@ void main() {
             menus: [
               CafetoriaMenu(
                 name: 'Nudeln',
-                times: [], // TODO(jld3103): Add times
+                times: [
+                  Duration(hours: 12, minutes: 40),
+                  Duration(hours: 13),
+                ],
                 price: 3.99,
               ),
             ],
@@ -23,7 +26,8 @@ void main() {
         )));
         await tester.pumpAndSettle();
         expect(find.text('Nudeln'), findsOneWidget);
-        expect(find.text(' (3.99€)'), findsOneWidget);
+        expect(find.text('3.99€'), findsOneWidget);
+        expect(find.text('12:40 - 13:00'), findsOneWidget);
       });
 
       testWidgets('Cafetoria row without price', (tester) async {
@@ -33,7 +37,48 @@ void main() {
             menus: [
               CafetoriaMenu(
                 name: 'Nudeln',
-                times: [], // TODO(jld3103): Add times
+                times: [
+                  Duration(hours: 12, minutes: 40),
+                  Duration(hours: 13),
+                ],
+                price: 0,
+              ),
+            ],
+          ),
+        )));
+        await tester.pumpAndSettle();
+        expect(find.text('Nudeln'), findsOneWidget);
+        expect(find.text('12:40 - 13:00'), findsOneWidget);
+        expect(find.byType(Text), findsNWidgets(2));
+      });
+
+      testWidgets('Cafetoria row without times', (tester) async {
+        await tester.pumpWidget(makeTestableWidget(CafetoriaRow(
+          day: CafetoriaDay(
+            date: DateTime(2019, 8, 9),
+            menus: [
+              CafetoriaMenu(
+                name: 'Nudeln',
+                times: [],
+                price: 3.99,
+              ),
+            ],
+          ),
+        )));
+        await tester.pumpAndSettle();
+        expect(find.text('Nudeln'), findsOneWidget);
+        expect(find.text('3.99€'), findsOneWidget);
+        expect(find.byType(Text), findsNWidgets(2));
+      });
+
+      testWidgets('Cafetoria row without times', (tester) async {
+        await tester.pumpWidget(makeTestableWidget(CafetoriaRow(
+          day: CafetoriaDay(
+            date: DateTime(2019, 8, 9),
+            menus: [
+              CafetoriaMenu(
+                name: 'Nudeln',
+                times: [],
                 price: 0,
               ),
             ],

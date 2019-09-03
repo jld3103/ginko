@@ -79,9 +79,7 @@ void main() {
         start: DateTime(2019, 8, 25),
         end: DateTime(2019, 8, 25, 23, 59, 59),
       );
-      // ignore: missing_required_param
-      final user = User(language: UserValue('language', 'en'));
-      expect(event.dateString(user), 'August 25, 2019');
+      expect(event.dateString('en'), 'August 25, 2019');
     });
 
     test('Can get correct date string for single day event starting later',
@@ -92,9 +90,7 @@ void main() {
         start: DateTime(2019, 8, 25, 8),
         end: DateTime(2019, 8, 25, 23, 59, 59),
       );
-      // ignore: missing_required_param
-      final user = User(language: UserValue('language', 'en'));
-      expect(event.dateString(user), 'August 25, 2019 08:00');
+      expect(event.dateString('en'), 'August 25, 2019 08:00');
     });
 
     test('Can get correct date string for multiple days event', () async {
@@ -104,9 +100,7 @@ void main() {
         start: DateTime(2019, 8, 25),
         end: DateTime(2019, 8, 26, 23, 59, 59),
       );
-      // ignore: missing_required_param
-      final user = User(language: UserValue('language', 'en'));
-      expect(event.dateString(user), 'August 25, 2019 - August 26, 2019');
+      expect(event.dateString('en'), 'August 25, 2019 - August 26, 2019');
     });
 
     test(
@@ -119,9 +113,7 @@ void main() {
         start: DateTime(2019, 8, 25, 8),
         end: DateTime(2019, 8, 26, 12),
       );
-      // ignore: missing_required_param
-      final user = User(language: UserValue('language', 'en'));
-      expect(event.dateString(user),
+      expect(event.dateString('en'),
           'August 25, 2019 08:00 - August 26, 2019 12:00');
     });
 

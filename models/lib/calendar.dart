@@ -1,6 +1,5 @@
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
-import 'package:models/models.dart';
 
 /// Calendar class
 /// describes a full calendar
@@ -100,9 +99,9 @@ class CalendarEvent {
       };
 
   /// Get the date string of the event
-  String dateString(User user) {
-    final _dateFormat = DateFormat.yMMMMd(user.language.value);
-    final _dateTimeFormat = DateFormat.yMMMMd(user.language.value).add_Hm();
+  String dateString(String languageCode) {
+    final _dateFormat = DateFormat.yMMMMd(languageCode);
+    final _dateTimeFormat = DateFormat.yMMMMd(languageCode).add_Hm();
     var dateStr = '';
     if (start.hour != 0 || start.minute != 0) {
       dateStr = _dateTimeFormat.format(start);
