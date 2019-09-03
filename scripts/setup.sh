@@ -48,12 +48,6 @@ for d in "${folders[@]}"; do
   fi
   cd ..
 done
-packages=("flutter_platform" "flutter_platform_storage")
-for d in "${packages[@]}"; do
-  cd packages/"$d" || exit
-  flutter pub get
-  cd ../..
-done
 bash scripts/generate.sh
 
 echo "#!/bin/bash

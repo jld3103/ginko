@@ -1,5 +1,6 @@
 
 # 2019-09-03  
+ jld3103: Fix setup script  
  jld3103: Fix layout  
  jld3103: Add times to cafetoria  
  jld3103: Fix extra information not changing weekday  
