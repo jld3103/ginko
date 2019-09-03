@@ -11,6 +11,6 @@ flutter pub get
 flutter pub run flutter_launcher_icons:main -f icons_white.yaml
 flutter pub run flutter_launcher_icons:main -f icons_green.yaml
 cp images/logo_white.png android/app/src/main/res/drawable/
-mkdir desktop/assets -p
-cp images/logo_green.png desktop/assets/icon.png
+mkdir go/assets -p
+cp images/logo_green.png go/assets/icon.png
 cd ..

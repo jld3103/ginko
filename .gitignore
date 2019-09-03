@@ -20,6 +20,7 @@ doc/
 .flutter-plugins
 .packages
 pubspec.lock
+.last_goflutter_check
 
 app/images/*
 !app/images/logo_white.svg

@@ -1,5 +1,6 @@
 
 # 2019-09-03  
+ jld3103: Update go-flutter and add packaging config  
  jld3103: Remove your day feature  
 
 # 2019-08-27  
