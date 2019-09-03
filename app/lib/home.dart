@@ -8,7 +8,6 @@ import 'package:ginko/utils/platform/platform.dart';
 import 'package:ginko/utils/screen_sizes.dart';
 import 'package:ginko/utils/selection.dart';
 import 'package:ginko/utils/static.dart';
-import 'package:ginko/utils/your_day.dart';
 import 'package:ginko/views/extra_information.dart';
 import 'package:ginko/views/tab_proxy.dart';
 import 'package:ginko/views/unitplan/progress_row.dart';
@@ -104,7 +103,6 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         }
       }
     });
-    YourDay.init();
     super.initState();
   }
 

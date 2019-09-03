@@ -1,4 +1,7 @@
 
+# 2019-09-03  
+ jld3103: Remove your day feature  
+
 # 2019-08-27  
  jld3103: Fix unaccurate alarm manager  
  jld3103: Made app packaging ready  
