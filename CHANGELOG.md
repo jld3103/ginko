@@ -1,5 +1,6 @@
 
 # 2019-09-03  
+ jld3103: Fix extra information not changing weekday  
  jld3103: Update go-flutter and add packaging config  
  jld3103: Remove your day feature  
 

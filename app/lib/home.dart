@@ -165,7 +165,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
                     backdropEnabled: true,
                     backdropTapClosesPanel: true,
                     panel: ExtraInformation(
-                      date: Data.unitPlan.initialDay(Data.user, DateTime.now()),
+                      date:
+                          monday(DateTime.now()).add(Duration(days: _weekday)),
                       calendar: Data.calendar,
                       cafetoria: Data.cafetoria,
                       panelController: _panelController,
@@ -184,7 +185,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
                     height: double.infinity,
                     width: 300,
                     child: ExtraInformation(
-                      date: Data.unitPlan.initialDay(Data.user, DateTime.now()),
+                      date:
+                          monday(DateTime.now()).add(Duration(days: _weekday)),
                       calendar: Data.calendar,
                       cafetoria: Data.cafetoria,
                     ),
