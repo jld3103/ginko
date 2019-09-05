@@ -1,5 +1,6 @@
 
 # 2019-09-05  
+ jld3103: Update PDF URLs and parsers  
  jld3103: Fix progress overlay  
 
 # 2019-09-04  

@@ -11,7 +11,7 @@ import 'package:server/config.dart';
 /// handles all calendar parsing
 class CalendarParser {
   static const String _url =
-      'https://viktoriaschule-aachen.de/dokumente/upload/9e15f_Terminplanung2018_19_SchuKo_Stand_20180906.pdf';
+      'https://viktoriaschule-aachen.de/dokumente/upload/61518_Terminplanung2019_20.pdf';
 
   static DateFormat _format;
 
@@ -189,7 +189,23 @@ class CalendarParser {
         .split('\n')
         .sublist(1);
     for (var line in lines2) {
-      if (line.startsWith(' ')) {
+      if (line.contains('Tag des 4. Abiturfachs')) {
+        var lines3 = lines2.sublist(lines2.indexOf(line));
+        lines3 = lines3.sublist(
+            0,
+            lines3.indexOf(lines3
+                .where((line) => line.startsWith('Einen vollständigen'))
+                .toList()[0]));
+        line = lines3.join('');
+        final date = _format.parse(line.split(': ')[1].split(', ')[1].trim());
+        events.add(CalendarEvent(
+          start: date,
+          end: date.add(Duration(days: 1)).subtract(Duration(seconds: 1)),
+          name: 'Tag des 4. Abiturfachs (vorraussichtlich)',
+          type: EventTypes.free,
+        ));
+        print(events[events.length - 1].toJSON());
+      } else if (line.startsWith(' ')) {
         line = line.substring(2);
         while (line.contains('  ')) {
           line = line.replaceAll('  ', ' ');
@@ -197,10 +213,6 @@ class CalendarParser {
         var name = line.split(': ')[0];
         if (RegExp('[0-9]\$').hasMatch(name)) {
           name = name.substring(0, name.length - 2);
-        }
-        if (line.contains('voraussichtlich')) {
-          name += ' (voraussichtlich)';
-          line = line.replaceAll(' voraussichtlich', '');
         }
         final date = _format.parse(line.split(': ')[1].split(', ')[1].trim());
         events.add(CalendarEvent(
@@ -240,12 +252,12 @@ class CalendarParser {
           final startTimeStr = parts[2].split('–')[0].trim();
           final endTimeStr = parts[2].split('–')[1].trim().split(' ')[0].trim();
           final startOffset = Duration(
-            hours: int.parse(startTimeStr.split('.')[0]),
-            minutes: int.parse(startTimeStr.split('.')[1]),
+            hours: int.parse(startTimeStr.replaceAll(':', '.').split('.')[0]),
+            minutes: int.parse(startTimeStr.replaceAll(':', '.').split('.')[1]),
           );
           final endOffset = Duration(
-            hours: int.parse(endTimeStr.split('.')[0]),
-            minutes: int.parse(endTimeStr.split('.')[1]),
+            hours: int.parse(endTimeStr.replaceAll(':', '.').split('.')[0]),
+            minutes: int.parse(endTimeStr.replaceAll(':', '.').split('.')[1]),
           );
           final end1 = start1.add(endOffset);
           final end2 = start2.add(endOffset);
@@ -275,12 +287,13 @@ class CalendarParser {
             final endTimeStr =
                 parts[1].split('–')[1].trim().split(' ')[0].trim();
             final startOffset = Duration(
-              hours: int.parse(startTimeStr.split('.')[0]),
-              minutes: int.parse(startTimeStr.split('.')[1]),
+              hours: int.parse(startTimeStr.replaceAll(':', '.').split('.')[0]),
+              minutes:
+                  int.parse(startTimeStr.replaceAll(':', '.').split('.')[1]),
             );
             final endOffset = Duration(
-              hours: int.parse(endTimeStr.split('.')[0]),
-              minutes: int.parse(endTimeStr.split('.')[1]),
+              hours: int.parse(endTimeStr.replaceAll(':', '.').split('.')[0]),
+              minutes: int.parse(endTimeStr.replaceAll(':', '.').split('.')[1]),
             );
             events.add(CalendarEvent(
               start: date.add(startOffset),
@@ -352,17 +365,27 @@ class CalendarParser {
             .group(0)
             .split(' ')[0];
         final offset = Duration(
-          hours: int.parse(timeStr.split('.')[0]),
-          minutes: int.parse(timeStr.split('.')[1]),
+          hours: int.parse(timeStr.replaceAll(':', '.').split('.')[0]),
+          minutes: int.parse(timeStr.replaceAll(':', '.').split('.')[1]),
         );
         line = line.split('. ')[0];
         var b = line.split(' und ')[0];
-        final a =
-            b.split('/')[0] + b.split('/')[1].split('.').sublist(1).join('.');
+        final a = b.split('/')[0] +
+            b
+                .split('/')[1]
+                .replaceAll(':', '.')
+                .split('.')
+                .sublist(1)
+                .join('.');
         b = b.split('/')[1];
         var d = line.split(' und ')[1];
-        final c =
-            d.split('/')[0] + d.split('/')[1].split('.').sublist(1).join('.');
+        final c = d.split('/')[0] +
+            d
+                .split('/')[1]
+                .replaceAll(':', '.')
+                .split('.')
+                .sublist(1)
+                .join('.');
         d = d.split('/')[1];
         final dates = [a, b, c, d].map(parseDate).toList();
         for (final date in dates) {

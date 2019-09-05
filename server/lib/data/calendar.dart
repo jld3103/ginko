@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:models/models.dart';
+import 'package:server/config.dart';
 import 'package:server/parsers/calendar.dart';
 
 // ignore: avoid_classes_with_only_static_members
@@ -25,4 +26,11 @@ class CalendarData {
     calendar = await CalendarParser.extract(
         json.decode(File('build/calendar.json').readAsStringSync()));
   }
+}
+
+Future main(List<String> arguments) async {
+  await setupDateFormats();
+  Config.load();
+  Config.dev = true;
+  await CalendarData.load();
 }
