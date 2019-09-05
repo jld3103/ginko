@@ -1,4 +1,7 @@
 
+# 2019-09-05  
+ jld3103: Fix progress overlay  
+
 # 2019-09-04  
  jld3103: Update go-flutter  
 

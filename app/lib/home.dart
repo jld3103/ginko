@@ -195,9 +195,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         tabs: List.generate(
           5,
           (weekday) {
-            final start = Data.unitPlan
-                .initialDay(Data.user, DateTime.now())
-                .add(Duration(days: weekday - 1));
+            final start = monday(DateTime.now()).add(Duration(days: weekday));
             return ListView(
               shrinkWrap: true,
               padding: EdgeInsets.only(bottom: 5),
