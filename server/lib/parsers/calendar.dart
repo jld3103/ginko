@@ -204,7 +204,6 @@ class CalendarParser {
           name: 'Tag des 4. Abiturfachs (vorraussichtlich)',
           type: EventTypes.free,
         ));
-        print(events[events.length - 1].toJSON());
       } else if (line.startsWith(' ')) {
         line = line.substring(2);
         while (line.contains('  ')) {

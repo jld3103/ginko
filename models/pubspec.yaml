@@ -7,7 +7,7 @@ environment:
 
 dependencies:
   meta: ^1.1.7
-  intl: ^0.15.8
+  intl: ^0.16.0
   crypto: ^2.1.1+1
 
 dev_dependencies:
