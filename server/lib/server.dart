@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:models/models.dart';
 import 'package:server/config.dart';
+import 'package:server/data/aixformation.dart';
 import 'package:server/data/cafetoria.dart';
 import 'package:server/data/calendar.dart';
 import 'package:server/data/replacementplan.dart';
@@ -40,8 +41,12 @@ Future main() async {
           // ignore: omit_local_variable_types
           final Map<String, dynamic> data = {
             'status': 'ok',
-            Keys.user: Users.getUser(user.username).toJSON(),
           };
+          if (json.encode((Users.getUser(user.username)..tokens = [])
+                  .toEncryptedJSON()) !=
+              json.encode((user..tokens = []).toJSON())) {
+            data[Keys.user] = Users.getUser(user.username).toJSON();
+          }
           for (final key in queryParams.keys.where((key) => key != Keys.user)) {
             try {
               final value = int.parse(queryParams[key]);
@@ -81,6 +86,10 @@ Future main() async {
               } else if (key == Keys.teachers) {
                 if (value < TeachersData.teachers.timeStamp) {
                   data[key] = TeachersData.teachers.toJSON();
+                }
+              } else if (key == Keys.aiXformation) {
+                if (value < AiXformationData.posts.timeStamp) {
+                  data[key] = AiXformationData.posts.toJSON();
                 }
               } else {
                 print('$key: $value');
@@ -159,6 +168,15 @@ Future _setup() async {
     print(stacktrace);
     print('Replacement plan could not be loaded');
   }
+  try {
+    await AiXformationData.load();
+    print('AiXformation loaded');
+    // ignore: avoid_catches_without_on_clauses
+  } catch (e, stacktrace) {
+    print(e);
+    print(stacktrace);
+    print('AiXformation could not be loaded');
+  }
   Timer.periodic(Duration(minutes: 1), (a) async {
     try {
       await ReplacementPlanData.load();
@@ -168,6 +186,17 @@ Future _setup() async {
       print(e);
       print(stacktrace);
       print('Replacement plan could not be loaded');
+    }
+  });
+  Timer.periodic(Duration(hours: 1), (a) async {
+    try {
+      await AiXformationData.load();
+      print('AiXformation loaded');
+      // ignore: avoid_catches_without_on_clauses
+    } catch (e, stacktrace) {
+      print(e);
+      print(stacktrace);
+      print('AiXformation could not be loaded');
     }
   });
 }

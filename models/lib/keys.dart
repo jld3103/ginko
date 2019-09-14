@@ -43,4 +43,7 @@ class Keys {
 
   // ignore: public_member_api_docs
   static String get weekday => 'weekday';
+
+  // ignore: public_member_api_docs
+  static String get aiXformation => 'aiXformation';
 }

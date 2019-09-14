@@ -18,6 +18,8 @@
   "scanScanning": "Scanning...",
   "scanAllDetected": "Your entire unit plan could be recognized",
   "scanNotAllDetected": "Unfortunately not your entire unit plan could not be recognized",
+  "pageStart": "Home",
+  "pageAiXformation": "AiXformation",
   "subjects": {
     "BI": "Biology",
     "CH": "Chemistry",

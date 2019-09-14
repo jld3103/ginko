@@ -33,6 +33,9 @@ class Data {
   // ignore: public_member_api_docs
   static Teachers teachers;
 
+  // ignore: public_member_api_docs
+  static Posts posts;
+
   static User _user;
 
   // ignore: public_member_api_docs
@@ -114,6 +117,9 @@ class Data {
     if (Static.storage.has(Keys.teachers)) {
       teachers = Teachers.fromJSON(Static.storage.getJSON(Keys.teachers));
     }
+    if (Static.storage.has(Keys.aiXformation)) {
+      posts = Posts.fromJSON(Static.storage.getJSON(Keys.aiXformation));
+    }
     if (Static.storage.has(Keys.user)) {
       _user = User.fromJSON(Static.storage.getJSON(Keys.user));
       if (Platform().isAndroid || Platform().isWeb) {
@@ -134,9 +140,9 @@ class Data {
       Keys.replacementPlan:
           replacementPlan == null ? 0 : replacementPlan.timeStamp,
       Keys.teachers: teachers == null ? 0 : teachers.timeStamp,
+      Keys.aiXformation: posts == null ? 0 : posts.timeStamp,
       Keys.user: json.encode(_user?.toEncryptedJSON()),
     };
-    print(parameters);
 
     try {
       final response = await Client()
@@ -172,6 +178,10 @@ class Data {
       if (data[Keys.teachers] != null) {
         teachers = Teachers.fromJSON(data[Keys.teachers]);
         Static.storage.setJSON(Keys.teachers, data[Keys.teachers]);
+      }
+      if (data[Keys.aiXformation] != null) {
+        posts = Posts.fromJSON(data[Keys.aiXformation]);
+        Static.storage.setJSON(Keys.aiXformation, data[Keys.aiXformation]);
       }
       if (data[Keys.user] != null) {
         final username = user.username;

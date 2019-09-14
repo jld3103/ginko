@@ -3,6 +3,7 @@ library models;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
+export 'package:models/aixformation.dart';
 export 'package:models/cafetoria.dart';
 export 'package:models/calendar.dart';
 export 'package:models/keys.dart';

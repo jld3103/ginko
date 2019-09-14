@@ -18,6 +18,8 @@
   "scanScanning": "Scannen...",
   "scanAllDetected": "Dein gesamter Stundenplan konnte erkannt werden",
   "scanNotAllDetected": "Leider konnte nicht dein gesamter Stundenplan erkannt werden",
+  "pageStart": "Startseite",
+  "pageAiXformation": "AiXformation",
   "subjects": {
     "BI": "Bio",
     "CH": "Chemie",
