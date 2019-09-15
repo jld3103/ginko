@@ -4,6 +4,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:models/models.dart';
 
+/// AiXformationPost class
+/// describes the AiXformation post widget
 class AiXformationPost extends StatefulWidget {
   // ignore: public_member_api_docs
   const AiXformationPost({

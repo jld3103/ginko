@@ -4,6 +4,8 @@ import 'package:html_unescape/html_unescape.dart';
 import 'package:http/http.dart' as http;
 import 'package:models/models.dart';
 
+/// AiXformationParser class
+/// handles all AiXformation parsing
 class AiXformationParser {
   static const String _url = 'https://aixformation.de/wp-json/wp/v2';
 
@@ -61,7 +63,6 @@ class AiXformationParser {
         fullUrl: media[post['featured_media']]['full'],
         author: users[post['author']],
         tags: post['tags'].map((tagId) => tags[tagId]).toList().cast<String>(),
-        link: post['link'],
       ));
     }
     return posts;

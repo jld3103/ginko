@@ -16,12 +16,10 @@ class CafetoriaRow extends StatefulWidget {
   final CafetoriaDay day;
 
   @override
-  State<StatefulWidget> createState() => CafetoriaRowState();
+  State<StatefulWidget> createState() => _CafetoriaRowState();
 }
 
-/// CafetoriaRowState class
-/// state of a day widget
-class CafetoriaRowState extends State<CafetoriaRow> {
+class _CafetoriaRowState extends State<CafetoriaRow> {
   DateFormat _timeFormat;
 
   @override

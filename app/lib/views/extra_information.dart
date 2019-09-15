@@ -31,12 +31,10 @@ class ExtraInformation extends StatefulWidget {
   final PanelController panelController;
 
   @override
-  State<StatefulWidget> createState() => ExtraInformationState();
+  State<StatefulWidget> createState() => _ExtraInformationState();
 }
 
-/// ExtraInformationState class
-/// describes the state of the list of extra information
-class ExtraInformationState extends State<ExtraInformation> {
+class _ExtraInformationState extends State<ExtraInformation> {
   @override
   Widget build(BuildContext context) {
     final _showBig =

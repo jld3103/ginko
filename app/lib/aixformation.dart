@@ -9,6 +9,8 @@ import 'package:share/share.dart';
 import 'package:translations/translations_app.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+/// AiXformation class
+/// describes the AiXformation widget
 class AiXformation extends StatefulWidget {
   @override
   _AiXformationState createState() => _AiXformationState();
@@ -33,7 +35,7 @@ class _AiXformationState extends State<AiXformation> {
                               IconButton(
                                 icon: Icon(Icons.open_in_new),
                                 onPressed: () async {
-                                  final url = post.link;
+                                  final url = post.url;
                                   if (await canLaunch(url)) {
                                     await launch(url);
                                   } else {
@@ -45,7 +47,7 @@ class _AiXformationState extends State<AiXformation> {
                                 IconButton(
                                   icon: Icon(Icons.share),
                                   onPressed: () {
-                                    Share.share(post.link);
+                                    Share.share(post.url);
                                   },
                                 ),
                             ],

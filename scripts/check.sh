@@ -14,12 +14,8 @@ folders=("models" "server" "app" "translations")
 for d in "${folders[@]}"; do
   cd "$d" || exit
 
-  dartfmt -w --fix lib
-  output=$(dartanalyzer lib)
-  if [[ -d "test" ]]; then
-    dartfmt -w --fix test
-    output=$(dartanalyzer test)
-  fi
+  dartfmt -w --fix lib test
+  output=$(dartanalyzer lib test)
 
   status=$?
   echo "$output"

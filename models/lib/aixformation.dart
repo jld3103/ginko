@@ -46,7 +46,6 @@ class Post {
     @required this.fullUrl,
     @required this.author,
     @required this.tags,
-    @required this.link,
   });
 
   /// Creates a Post object from json
@@ -61,7 +60,6 @@ class Post {
         fullUrl: json['fullUrl'],
         author: json['author'],
         tags: json['tags'].cast<String>(),
-        link: json['link'],
       );
 
   /// Creates json from a Post object
@@ -76,7 +74,6 @@ class Post {
         'fullUrl': fullUrl,
         'author': author,
         'tags': tags,
-        'link': link,
       };
 
   // ignore: public_member_api_docs
@@ -108,7 +105,4 @@ class Post {
 
   // ignore: public_member_api_docs
   final List<String> tags;
-
-  // ignore: public_member_api_docs
-  final String link;
 }

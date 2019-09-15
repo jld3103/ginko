@@ -22,6 +22,7 @@ void main() {
       expect(Keys.askedForScan != null, true);
       expect(Keys.teachers != null, true);
       expect(Keys.weekday != null, true);
+      expect(Keys.aiXformation != null, true);
     });
   });
 }
