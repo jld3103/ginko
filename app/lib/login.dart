@@ -4,16 +4,16 @@ import 'package:ginko/utils/svg/svg.dart';
 import 'package:models/models.dart';
 import 'package:translations/translations_app.dart';
 
-/// Login class
+/// LoginPage class
 /// describes the login widget
-class Login extends StatefulWidget {
+class LoginPage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => LoginState();
+  State<StatefulWidget> createState() => LoginPageState();
 }
 
-/// LoginState class
+/// LoginPageState class
 /// describes the state of the login widget
-class LoginState extends State<Login> {
+class LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _focus = FocusNode();
   bool _credentialsCorrect = true;

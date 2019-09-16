@@ -12,16 +12,16 @@ import 'package:ginko/views/unitplan/select_dialog.dart';
 import 'package:models/models.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-/// Home class
+/// HomePage class
 /// describes the home widget
-class Home extends StatefulWidget {
+class HomePage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => HomeState();
+  State<StatefulWidget> createState() => HomePageState();
 }
 
-/// HomeState class
+/// HomePageState class
 /// describes the state of the home widget
-class HomeState extends State<Home> with TickerProviderStateMixin {
+class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   PanelController _panelController;
   TabController _tabController;
   int _weekday;

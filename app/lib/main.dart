@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:ginko/aixformation.dart';
+import 'package:ginko/cafetoria.dart';
 import 'package:ginko/home.dart';
 import 'package:ginko/loading.dart';
 import 'package:ginko/login.dart';
@@ -45,8 +46,8 @@ Future main() async {
     initialRoute: '/loading',
     routes: <String, WidgetBuilder>{
       '/': (context) => Container(),
-      '/loading': (context) => Scaffold(body: Loading()),
-      '/login': (context) => Scaffold(body: Login()),
+      '/loading': (context) => Scaffold(body: LoadingPage()),
+      '/login': (context) => Scaffold(body: LoginPage()),
       '/home': (context) => Scaffold(body: App()),
     },
   ));
@@ -76,12 +77,17 @@ class AppState extends State<App> with TickerProviderStateMixin {
             Page(
               name: AppTranslations.of(context).pageStart,
               icon: Icons.home,
-              child: Home(),
+              child: HomePage(),
+            ),
+            Page(
+              name: AppTranslations.of(context).pageCafetoria,
+              icon: Icons.restaurant,
+              child: CafetoriaPage(),
             ),
             Page(
               name: AppTranslations.of(context).pageAiXformation,
               icon: MdiIcons.newspaper,
-              child: AiXformation(),
+              child: AiXformationPage(),
             ),
           ],
         );

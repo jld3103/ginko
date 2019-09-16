@@ -4,16 +4,16 @@ import 'package:ginko/utils/data.dart';
 import 'package:ginko/utils/platform/platform.dart';
 import 'package:translations/translations_app.dart';
 
-/// Loading class
+/// LoadingPage class
 /// describes the loading widget
-class Loading extends StatefulWidget {
+class LoadingPage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => LoadingState();
+  State<StatefulWidget> createState() => LoadingPageState();
 }
 
-/// LoadingState class
+/// LoadingPageState class
 /// describes the state of the loading widget
-class LoadingState extends State<Loading> {
+class LoadingPageState extends State<LoadingPage> {
   @override
   void initState() {
     Data.setup(443, 'api.app.viktoria.schule', 'https');

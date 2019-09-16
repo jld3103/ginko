@@ -9,14 +9,9 @@ import 'package:share/share.dart';
 import 'package:translations/translations_app.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-/// AiXformation class
+/// AiXformationPage class
 /// describes the AiXformation widget
-class AiXformation extends StatefulWidget {
-  @override
-  _AiXformationState createState() => _AiXformationState();
-}
-
-class _AiXformationState extends State<AiXformation> {
+class AiXformationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ListView(
         shrinkWrap: true,
