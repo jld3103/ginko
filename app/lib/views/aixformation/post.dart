@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:models/models.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 /// AiXformationPost class
 /// describes the AiXformation post widget
@@ -91,6 +92,39 @@ class _AiXformationPostState extends State<AiXformationPost> {
           ),
           Html(
             data: widget.post.content,
+            onLinkTap: (url) async {
+              if (await canLaunch(url)) {
+                await launch(url);
+              } else {
+                throw Exception('Could not launch $url');
+              }
+            },
+            onImageTap: (src) {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => Scaffold(
+                  appBar: AppBar(),
+                  body: Center(
+                    child: CachedNetworkImage(
+                      imageUrl: src,
+                      placeholder: (context, url) => Container(
+                        height: 56,
+                        width: 56,
+                        child: Center(
+                          child: SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 3,
+                            ),
+                          ),
+                        ),
+                      ),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
+                    ),
+                  ),
+                ),
+              ));
+            },
           ),
         ],
       );
