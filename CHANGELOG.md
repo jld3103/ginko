@@ -1,5 +1,6 @@
 
 # 2019-09-16  
+ jld3103: Fix cafetoria test  
  jld3103: Add cafetoria page  
 
 # 2019-09-15  

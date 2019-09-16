@@ -25,9 +25,9 @@ void main() {
           ),
         )));
         await tester.pumpAndSettle();
-        expect(find.text('Nudeln'), findsOneWidget);
-        expect(find.text('3.99€'), findsOneWidget);
+        expect(find.text('Nudeln (3.99€)'), findsOneWidget);
         expect(find.text('12:40 - 13:00'), findsOneWidget);
+        expect(find.byType(Text), findsNWidgets(2));
       });
 
       testWidgets('Cafetoria row without price', (tester) async {
@@ -66,9 +66,8 @@ void main() {
           ),
         )));
         await tester.pumpAndSettle();
-        expect(find.text('Nudeln'), findsOneWidget);
-        expect(find.text('3.99€'), findsOneWidget);
-        expect(find.byType(Text), findsNWidgets(2));
+        expect(find.text('Nudeln (3.99€)'), findsOneWidget);
+        expect(find.byType(Text), findsOneWidget);
       });
 
       testWidgets('Cafetoria row without times', (tester) async {
