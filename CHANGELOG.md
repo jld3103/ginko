@@ -1,4 +1,7 @@
 
+# 2019-09-22  
+ jld3103: Add missing cafetoria test  
+
 # 2019-09-16  
  jld3103: Add click listeners in AiXformation posts  
  jld3103: Fix cafetoria test  

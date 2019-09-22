@@ -87,6 +87,30 @@ void main() {
         expect(find.text('Nudeln'), findsOneWidget);
         expect(find.byType(Text), findsOneWidget);
       });
+
+      testWidgets('Cafetoria row with date', (tester) async {
+        await tester.pumpWidget(makeTestableWidget(CafetoriaRow(
+          showDate: true,
+          day: CafetoriaDay(
+            date: DateTime(2019, 8, 9),
+            menus: [
+              CafetoriaMenu(
+                name: 'Nudeln',
+                times: [
+                  Duration(hours: 12, minutes: 40),
+                  Duration(hours: 13),
+                ],
+                price: 3.99,
+              ),
+            ],
+          ),
+        )));
+        await tester.pumpAndSettle();
+        expect(find.text('Nudeln (3.99€)'), findsOneWidget);
+        expect(find.text('12:40 - 13:00'), findsOneWidget);
+        expect(find.text('Friday 9.8.2019'), findsOneWidget);
+        expect(find.byType(Text), findsNWidgets(3));
+      });
     });
   });
 }
