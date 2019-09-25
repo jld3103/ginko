@@ -3,7 +3,7 @@ module github.com/jld3103/ginko/desktop
 go 1.12
 
 require (
-	github.com/go-flutter-desktop/go-flutter v0.29.2
+	github.com/go-flutter-desktop/go-flutter v0.30.0
 	github.com/go-flutter-desktop/plugins/path_provider v0.3.1
 	github.com/go-flutter-desktop/plugins/shared_preferences v0.4.0
 	github.com/go-flutter-desktop/plugins/url_launcher v0.1.1

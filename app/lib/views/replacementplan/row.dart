@@ -91,7 +91,28 @@ class ReplacementPlanRow extends StatelessWidget {
                                         change.changed.subject != null
                                     ? ': '
                                     : '') +
-                                (change.changed.info ?? ''),
+                                ((change.type == ChangeTypes.freeLesson
+                                        ? AppTranslations.of(context)
+                                            .replacementPlanFreeLesson
+                                        : change.type == ChangeTypes.replaced
+                                            ? AppTranslations.of(context)
+                                                .replacementPlanReplaced
+                                            : change.type ==
+                                                    ChangeTypes.roomChanged
+                                                ? AppTranslations.of(context)
+                                                    .replacementPlanRoomChanged
+                                                : change.type ==
+                                                        ChangeTypes.withTasks
+                                                    ? AppTranslations
+                                                            .of(context)
+                                                        // ignore: lines_longer_than_80_chars
+                                                        .replacementPlanWithTasks
+                                                    : '') +
+                                    (change.changed.info != null &&
+                                            change.type != ChangeTypes.unknown
+                                        ? ' '
+                                        : '') +
+                                    (change.changed.info ?? '')),
                           ),
                         ),
                         Expanded(

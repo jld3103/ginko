@@ -35,6 +35,7 @@ Future main() async {
         final user = User.fromJSON(json.decode(queryParams[Keys.user]));
         if (Users.encryptedUsernames.contains(user.username) &&
             Users.getUser(user.username).encryptedPassword == user.password) {
+          Users.updateGrade(user.username, user.grade);
           Users.updateLanguage(user.username, user.language);
           Users.updateSelection(user.username, user.selection);
           Users.updateTokens(user.username, user.tokens);

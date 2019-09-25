@@ -11,12 +11,14 @@ import 'package:server/config.dart';
 /// ReplacementPlanParser class
 /// handles all replacement plan parsing
 class ReplacementPlanParser {
+  static const _arrow = '→';
+
   /// Download html replacement plan
   static Future<Document> download(bool dayOne) async {
     final response = await http
         .get(
-          'https://viktoriaschule-aachen.de/sundvplan/vps/${dayOne ? 'left' : 'right'}.html',
-          headers: Config.headers,
+          'https://viktoriaschule-aachen.de/sundvplan/vps/f${dayOne ? '1' : '2'}/subst_001.htm',
+          headers: Config.replacementPlanHeaders,
         )
         .timeout(Duration(seconds: 3));
     return parse(utf8.decode(response.bodyBytes));
@@ -25,155 +27,100 @@ class ReplacementPlanParser {
   /// Extract replacement plans from html
   static List<ReplacementPlanForGrade> extract(Document document) {
     final date =
-        parseDate(document.querySelectorAll('div')[0].text.split(', ')[1]);
-    final updatedStr =
-        document.querySelectorAll('div')[1].text.split(' den ')[1];
-    final updateDateParts =
-        updatedStr.split(' um ')[0].split('.').map(int.parse).toList();
-    final updated = DateTime(
-            updateDateParts[2] + 2000, updateDateParts[1], updateDateParts[0])
-        .add(Duration(
-      hours: int.parse(updatedStr.split(' um ')[1].split(':')[0]),
-      minutes: int.parse(updatedStr.split(' um ')[1].split(':')[1]),
+        parseDate(document.querySelector('.mon_title').text.split(' ')[0]);
+    final updatedStr = document
+        .querySelector('html')
+        .children[1]
+        .text
+        .split('\n')[0]
+        .split(': ')[1];
+    final updated = parseDate(updatedStr.split(' ')[0]).add(Duration(
+      hours: int.parse(updatedStr.split(' ')[1].split(':')[0]),
+      minutes: int.parse(updatedStr.split(' ')[1].split(':')[1]),
     ));
     final changes = {};
     var previousGrade = '';
-    for (final row in document.querySelectorAll('tr').sublist(1)) {
-      final fields = row
-          .querySelectorAll('td')
-          .map((field) => field.children.map((a) => a.text).toList().join(' '))
-          .toList();
-      if (fields.length < 3) {
+    for (final row in document
+        .querySelector('.mon_list')
+        .querySelectorAll('tr')
+        .sublist(1)) {
+      final fields =
+          row.querySelectorAll('td').map((field) => field.text).toList();
+      final color = row.querySelector('td').attributes['style'] != null
+          ? row.querySelector('td').attributes['style'].split('#')[1]
+          : null;
+      if (fields.length < 3 && fields.length != 1) {
         continue;
       }
-      var grade =
-          fields[0].replaceAll('·', '').replaceAll('.', '').split(' ')[0];
+      var grade = fields[0];
+      if (grade.contains('  ')) {
+        grade = grade.split('  ')[0];
+      } else {
+        grade = '';
+      }
       if (grade == '') {
         grade = previousGrade;
       } else {
         previousGrade = grade;
         changes[grade] = [];
+        continue;
       }
       if (!grades.contains(grade)) {
         continue;
       }
-      final unit = int.parse(
-              fields[0].replaceAll('·', '').replaceAll('.', '').split(' ')[1]) -
-          1;
-      var normal = fields[1].replaceAll(RegExp(r'(\(|\)|\*)'), '').trim();
-      normal = normal.replaceAll(RegExp('-{2,}'), '');
-      while (normal.contains('  ')) {
-        normal = normal.replaceAll('  ', ' ');
+      var unit = int.parse(fields[0]) - 1;
+      if (unit > 4) {
+        unit++;
       }
-      if ((isSeniorGrade(grade) || normal.split(' ').length == 4) &&
-          !normal.contains('Klausur')) {
-        normal = normal.split(' ').sublist(1).join(' ');
+      final subjectChanged = fields[2].split(_arrow).length > 1;
+      final roomChanged = fields[3].split(_arrow).length > 1;
+      final teacherChanged = fields[1].split(_arrow).length > 1;
+      var type = ChangeTypes.unknown;
+      if (color == '00FF00') {
+        type = ChangeTypes.freeLesson;
       }
-      var changed = fields[2].trim();
-      while (changed.contains('  ')) {
-        changed = changed.replaceAll('  ', ' ');
+      if (color == 'FFFF80') {
+        type = ChangeTypes.replaced;
       }
-      var parses = 0;
-      // Parse what has changed
-      if ((changed == '' &&
-              !normal.contains('Klausur') &&
-              !normal.contains('Reststunde') &&
-              !normal.contains('Ersatzbereitschaft')) ||
-          changed == 'Studienzeit' ||
-          changed == 'U-frei' ||
-          changed == 'abgehängt' ||
-          changed == 'abwesend') {
-        for (final change in getNormals(date, unit, normal, changed)) {
-          change
-            ..changed = Changed(
-              info: 'Freistunde',
-            )
-            ..type = ChangeTypes.freeLesson;
-          changes[grade].add(change);
-          parses++;
-        }
+      if (!subjectChanged && roomChanged && !teacherChanged) {
+        type = ChangeTypes.roomChanged;
       }
-      if (changed.contains('m.Aufg.')) {
-        for (final change in getNormals(date, unit, normal, changed)) {
-          change
-            ..changed = Changed(
-              info: 'Mit Aufgaben',
-              teacher: changed.split(' ')[0],
-            )
-            ..type = ChangeTypes.withTasks;
-          changes[grade].add(change);
-          parses++;
-        }
+      if (!subjectChanged && !roomChanged && teacherChanged) {
+        type = ChangeTypes.withTasks;
       }
-      if (changed == 'Referendar(in)') {
-        for (final change in getNormals(date, unit, normal, changed)) {
-          change
-            ..changed = Changed(
-              info: 'Referendar*in',
-            )
-            ..type = ChangeTypes.trainee;
-          changes[grade].add(change);
-          parses++;
-        }
-      }
-      if (changed.contains(' v. ')) {
-        for (final change in getNormals(date, unit, normal, changed)) {
-          change
-            ..changed = Changed(
-              info:
-                  // ignore: lines_longer_than_80_chars
-                  'Verschoben von ${changed.split(' ')[2]} ${changed.split(' ')[3]}',
-              subject: changed
-                  .split(' ')
-                  .sublist(changed.split(' ').indexOf('mit'))[2],
-              teacher: changed.split(' ')[0],
-              room: changed
-                          .split(' ')
-                          .sublist(changed.split(' ').indexOf('mit'))
-                          .length ==
-                      4
-                  ? changed
-                      .split(' ')
-                      .sublist(changed.split(' ').indexOf('mit'))[3]
-                  : null,
-            )
-            ..type = ChangeTypes.movedFrom;
-          changes[grade].add(change);
-          parses++;
-        }
-      }
-      if (changed.contains('R-Ändg.')) {
-        for (final change in getNormals(date, unit, normal, changed)) {
-          change
-            ..changed = Changed(
-              info: 'Raumänderung',
-              room: changed
-                  .split(' ')
-                  .sublist(changed.split(' ').indexOf('R-Ändg.'))[1],
-            )
-            ..type = ChangeTypes.roomChanged;
-          changes[grade].add(change);
-          parses++;
-        }
-      }
-      if (changed.contains('Kl-Unt.')) {
-        for (final change in getNormals(date, unit, normal, changed)) {
-          change
-            ..changed = Changed(
-              info: 'Klassenunterricht',
-              room: changed.split(' ')[changed.split(' ').length - 1],
-              teacher: changed.split(' ')[changed.split(' ').length - 2],
-              subject: changed.split(' ')[changed.split(' ').length - 3],
-            )
-            ..type = ChangeTypes.classTeaching;
-          changes[grade].add(change);
-          parses++;
-        }
-      }
-      if (parses == 0) {
-        changes[grade] = changes[grade]
-          ..addAll(getNormals(date, unit, normal, changed));
-      }
+      final change = Change(
+        date: date,
+        unit: unit,
+        subject: fields[2].split(_arrow)[0].split(' ')[0],
+        course: fields[2].split(_arrow)[0].split(' ').length > 1
+            ? fields[2]
+                .split(_arrow)[0]
+                .split(' ')[1]
+                .replaceAll('G', 'GK')
+                .replaceAll('L', 'LK')
+                .replaceAll('Z', 'ZK')
+            : null,
+        room: fields[3] != '---' ? fields[3].split(_arrow)[0] : null,
+        teacher: fields[1].split(_arrow)[0],
+        changed: Changed(
+          subject: fields[2].split(_arrow).length > 1
+              ? fields[2].split(_arrow)[1]
+              : null,
+          teacher: fields[1].split(_arrow).length > 1
+              ? fields[1].split(_arrow)[1]
+              : null,
+          room: fields[3] != '---'
+              ? fields[3].split(_arrow).length > 1
+                  ? fields[3].split(_arrow)[1]
+                  : null
+              : null,
+          info: fields[4].trim() != '' ? fields[4].trim() : null,
+        ),
+        type: type,
+      );
+      changes[grade].add(change);
+    }
+    for (final grade in changes.keys) {
       for (final change in changes[grade]) {
         if (change.changed == null) {
           throw Exception('Changed not filled: ${change.toJSON()}');
@@ -233,140 +180,5 @@ class ReplacementPlanParser {
               changes: (changes[grade] ?? []).cast<Change>(),
             ))
         .toList();
-  }
-
-  /// Parse what normally should have happened in the lesson
-  static List<Change> getNormals(
-      DateTime date, int unit, String normal, String changed) {
-    final changes = [];
-    if (normal.split(' ').length == 2) {
-      changes.add(Change(
-        date: date,
-        unit: unit,
-        subject: normal.split(' ')[0],
-        room: normal.split(' ')[1],
-        teacher: null,
-        changed: null,
-      ));
-    }
-    if (normal.split(' ').length == 3 &&
-        !normal.contains('Ersatzbereitschaft')) {
-      changes.add(Change(
-        date: date,
-        unit: unit,
-        subject: normal.split(' ')[0],
-        course: normal.split(' ')[1],
-        room: normal.split(' ')[2],
-        type: ChangeTypes.unknown,
-        teacher: null,
-        changed: null,
-      ));
-    }
-    if (normal.contains('nach')) {
-      changes.add(Change(
-        date: date,
-        unit: unit,
-        subject: normal.split(' ')[0],
-        room: normal.split(' ')[1],
-        changed: Changed(
-          info: 'Verschoben nach ${normal.split(' ').sublist(3).join(' ')}',
-        ),
-        type: ChangeTypes.movedTo,
-        teacher: null,
-      ));
-    }
-
-    if (normal.contains('U.entf.')) {
-      final courses = normal.split(' ').sublist(2);
-      for (var i = 0; i < courses.length / 4; i++) {
-        changes.add(Change(
-          date: date,
-          unit: unit,
-          subject: courses[i * 4],
-          course: courses[i * 4 + 1],
-          room: courses[i * 4 + 2],
-          changed: Changed(
-            info: 'Freistunde',
-          ),
-          type: ChangeTypes.freeLesson,
-          teacher: null,
-        ));
-      }
-    }
-
-    if (normal.contains('Klausur')) {
-      if (normal.contains('Nachschreiber')) {
-        changes.add(Change(
-          date: date,
-          unit: unit,
-          changed: Changed(
-            info: 'Nachschreiberklausur',
-            room: normal.split(' ').reversed.toList()[0],
-            teacher: normal.split(':')[1].split(' ').reversed.toList()[0],
-          ),
-          type: ChangeTypes.rewriteExam,
-          room: null,
-          teacher: null,
-          subject: null,
-        ));
-      } else {
-        final exams = normal.split(':')[1].trim().split(' ')..removeLast();
-        final m = exams.length % 4 == 0 ? 4 : 3;
-        for (var i = 0; i < exams.length / m; i++) {
-          changes.add(Change(
-            date: date,
-            unit: unit,
-            subject: exams[i * m + 2],
-            teacher: exams[i * m + 1],
-            course: m == 4 ? exams[i * m + 3] : null,
-            changed: Changed(
-              info: 'Klausur',
-              room: normal.split(' ').reversed.toList()[0],
-              teacher: normal.split(':')[1].split(' ').reversed.toList()[0],
-            ),
-            type: ChangeTypes.exam,
-            room: null,
-          ));
-        }
-      }
-    }
-    if (normal.contains('Reststunde')) {
-      var a =
-          normal.split(' ').sublist(0, normal.split(' ').indexOf('Reststunde'));
-      if (a.length == 4) {
-        a = a.sublist(1, 4);
-        changes.add(Change(
-          date: date,
-          unit: unit,
-          subject: a[0],
-          course: a[1],
-          room: a[2],
-          changed: Changed(
-            info: normal
-                .split(' ')
-                .sublist(normal.split(' ').indexOf('Reststunde'))
-                .join(' '),
-          ),
-          type: ChangeTypes.remainingLesson,
-          teacher: null,
-        ));
-      }
-    }
-    if (normal.contains('Ersatzbereitschaft')) {
-      changes.add(Change(
-        date: date,
-        unit: unit,
-        subject: normal.split(' ')[0],
-        course: normal.split(' ').length == 4 ? normal.split(' ')[1] : null,
-        room: normal.split(' ').length == 4
-            ? normal.split(' ')[2]
-            : normal.split(' ')[1],
-        changed: Changed(
-          info: 'Ersatzbereitschaft',
-        ),
-        teacher: null,
-      ));
-    }
-    return changes.cast<Change>();
   }
 }

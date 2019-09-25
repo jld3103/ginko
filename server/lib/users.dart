@@ -10,6 +10,15 @@ class Users {
   /// List of all users
   static List<User> _users = [];
 
+  /// Update the grade of a user
+  static void updateGrade(String encryptedUsername, UserValue grade) {
+    if (getUser(encryptedUsername).grade.modified.isBefore(grade.modified)) {
+      getUser(encryptedUsername).grade.value = grade.value;
+      File('../server/users.json').writeAsStringSync(
+          json.encode(_users.map((user) => user.toJSON()).toList()));
+    }
+  }
+
   /// Update the language of a user
   static void updateLanguage(String encryptedUsername, UserValue language) {
     if (getUser(encryptedUsername)

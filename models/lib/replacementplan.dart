@@ -204,6 +204,9 @@ class Change {
         }
       }
     }
+    if (subjects.isEmpty) {
+      return lesson.subjects;
+    }
     return subjects;
   }
 
@@ -310,4 +313,6 @@ enum ChangeTypes {
   classTeaching,
   // ignore: public_member_api_docs
   remainingLesson,
+  // ignore: public_member_api_docs
+  replaced,
 }

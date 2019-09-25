@@ -14,6 +14,9 @@ class Config {
   static String password;
 
   // ignore: public_member_api_docs
+  static String replacementPlanPassword;
+
+  // ignore: public_member_api_docs
   static String cafetoriaUsername;
 
   // ignore: public_member_api_docs
@@ -28,6 +31,9 @@ class Config {
   // ignore: public_member_api_docs
   static Map<String, String> headers;
 
+  // ignore: public_member_api_docs
+  static Map<String, String> replacementPlanHeaders;
+
   /// Load all config
   static void load([bool environment = false]) {
     if (File('${Path.getBasePath}server/config.json').existsSync()) {
@@ -39,6 +45,7 @@ class Config {
             File('${Path.getBasePath}server/config.json').readAsStringSync());
     username = data['username'];
     password = data['password'];
+    replacementPlanPassword = data['replacementPlanPassword'];
     cafetoriaUsername = data['cafetoriaUsername'];
     cafetoriaPassword = data['cafetoriaPassword'];
     fcmServerKey = data['fcmServerKey'];
@@ -47,6 +54,11 @@ class Config {
       'authorization':
           // ignore: lines_longer_than_80_chars
           'Basic ${base64Encode(utf8.encode('${Config.username}:${Config.password}'))}',
+    };
+    replacementPlanHeaders = {
+      'authorization':
+          // ignore: lines_longer_than_80_chars
+          'Basic ${base64Encode(utf8.encode('${Config.username}:${Config.replacementPlanPassword}'))}',
     };
   }
 }

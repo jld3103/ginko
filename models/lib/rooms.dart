@@ -4,7 +4,9 @@
 class Rooms {
   static final Map<String, String> _rooms = {
     'KLH': 'klH',
+    'KL SPH': 'klH',
     'GRH': 'grH',
+    'GR SPH': 'grH',
     'SB': 'schH',
     'SCHH': 'schH',
     'PC1': 'PC1',

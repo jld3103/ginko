@@ -21,6 +21,10 @@
   "pageStart": "Home",
   "pageAiXformation": "AiXformation",
   "pageCafetoria": "Cafétoria",
+  "replacementPlanFreeLesson": "Free lesson",
+  "replacementPlanReplaced": "Replacement",
+  "replacementPlanRoomChanged": "r. change",
+  "replacementPlanWithTasks": "w/ tasks",
   "subjects": {
     "BI": "Biology",
     "CH": "Chemistry",

@@ -118,16 +118,34 @@ class ReplacementPlanData {
                   // ignore: lines_longer_than_80_chars
                   ' ${ServerTranslations.subjects(user.language.value)[change.changed.subject]}');
             }
-            if (change.changed.info != null && change.changed.info.isNotEmpty) {
+            if (change.type == ChangeTypes.freeLesson) {
+              buffer.write(
+                  // ignore: lines_longer_than_80_chars
+                  ' ${ServerTranslations.replacementPlanFreeLesson(user.language.value)}');
+            }
+            if (change.type == ChangeTypes.replaced) {
+              buffer.write(
+                  // ignore: lines_longer_than_80_chars
+                  ' ${ServerTranslations.replacementPlanReplaced(user.language.value)}');
+            }
+            if (change.type == ChangeTypes.roomChanged) {
+              buffer.write(
+                  // ignore: lines_longer_than_80_chars
+                  ' ${ServerTranslations.replacementPlanRoomChanged(user.language.value)}');
+            }
+            if (change.type == ChangeTypes.withTasks) {
+              buffer.write(
+                  // ignore: lines_longer_than_80_chars
+                  ' ${ServerTranslations.replacementPlanWithTasks(user.language.value)}');
+            }
+            if (change.changed.info != null) {
               buffer.write(' ${change.changed.info}');
             }
             if (change.changed.room != null &&
-                change.changed.room.isNotEmpty &&
                 change.room != change.changed.room) {
               buffer.write(' ${change.changed.room}');
             }
             if (change.changed.teacher != null &&
-                change.changed.teacher.isNotEmpty &&
                 change.teacher != change.changed.teacher) {
               buffer.write(' ${change.changed.teacher}');
             }
@@ -171,6 +189,8 @@ class ReplacementPlanData {
         final subjects = change.getMatchingSubjectsByUnitPlan(UnitPlanData
             .unitPlan.unitPlans[grades.indexOf(replacementPlanForGrade.grade)]);
         if (subjects.length != 1) {
+          // TODO(jld3103): Uncomment when new unit plan is available
+          /*
           print(
               // ignore: lines_longer_than_80_chars
               "Filter wasn't able to figure out the original subject for this change:");
@@ -183,6 +203,7 @@ class ReplacementPlanData {
               .subjects
               .map((subject) => subject.toJSON())
               .toList());
+           */
         }
       }
     }

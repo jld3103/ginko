@@ -1,4 +1,7 @@
 
+# 2019-09-26  
+ jld3103: Update replacement plan parser for new format  
+
 # 2019-09-22  
  jld3103: Add missing cafetoria test  
 

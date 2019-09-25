@@ -15,7 +15,7 @@ class UnitPlanParser {
     final response = await http
         .get(
           'https://viktoriaschule-aachen.de/sundvplan/sps/${weekA ? 'left' : 'right'}.html',
-          headers: Config.headers,
+          headers: Config.replacementPlanHeaders,
         )
         .timeout(Duration(seconds: 3));
     return parse(utf8.decode(response.bodyBytes));

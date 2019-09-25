@@ -18,6 +18,8 @@ github.com/go-flutter-desktop/go-flutter v0.29.0 h1:PONS1I6HN64tsBViWSnI/DMUCs2O
 github.com/go-flutter-desktop/go-flutter v0.29.0/go.mod h1:jOq/jZc4gZCibc661M7R5nDVc9/mv2dDMpWsyNaVuGY=
 github.com/go-flutter-desktop/go-flutter v0.29.2 h1:kzxZRkFb5Q0WOD+aAWVdKTWfM7iSbu7P9JTnOn6wccA=
 github.com/go-flutter-desktop/go-flutter v0.29.2/go.mod h1:NCryd/AqiRbYSd8pMzQldYkgH1tZIFGt2ToUghZcWGA=
+github.com/go-flutter-desktop/go-flutter v0.30.0 h1:tKQSB7rUOR0o9Bq5P7VpTm0KAOHxvRwC1xDlJGlWNY4=
+github.com/go-flutter-desktop/go-flutter v0.30.0/go.mod h1:NCryd/AqiRbYSd8pMzQldYkgH1tZIFGt2ToUghZcWGA=
 github.com/go-flutter-desktop/plugins/path_provider v0.3.1 h1:hrT+0sH3l6ZIlopHVPUqZc9SzU8o995InMvRbWMZu5Q=
 github.com/go-flutter-desktop/plugins/path_provider v0.3.1/go.mod h1:l+dbhUqhiwKxyUaS1wpE19SYbRg1NptnqBiNp9SM+24=
 github.com/go-flutter-desktop/plugins/shared_preferences v0.4.0 h1:Gf5ZDHNguav8qK0bW0vgtwky6TlbutTBwEPc1l07glA=
