@@ -119,6 +119,105 @@ void main() {
         );
       });
 
+      testWidgets('Normal replacement plan row with replaced type',
+          (tester) async {
+        await tester.pumpWidget(makeTestableWidget(ReplacementPlanRow(
+          change: Change(
+            unit: 0,
+            date: DateTime(2019, 8, 9),
+            changed: Changed(
+              subject: 'EK',
+              room: '525',
+              teacher: 'KRA',
+            ),
+            subject: 'EK',
+            room: '525',
+            teacher: 'KRA',
+            type: ChangeTypes.replaced,
+          ),
+        )));
+        await tester.pumpAndSettle();
+        expect(find.text('1'), findsOneWidget);
+        expect(
+          find.text(ServerTranslations.subjects('en')['EK']),
+          findsOneWidget,
+        );
+        expect(find.text('KRA'), findsNWidgets(2));
+        expect(find.text('525'), findsNWidgets(2));
+        expect(
+          find.text(
+              // ignore: lines_longer_than_80_chars
+              '${ServerTranslations.subjects('en')['EK']}: ${ServerTranslations.replacementPlanReplaced('en')}'),
+          findsOneWidget,
+        );
+      });
+
+      testWidgets('Normal replacement plan row with room changed type',
+          (tester) async {
+        await tester.pumpWidget(makeTestableWidget(ReplacementPlanRow(
+          change: Change(
+            unit: 0,
+            date: DateTime(2019, 8, 9),
+            changed: Changed(
+              subject: 'EK',
+              room: '525',
+              teacher: 'KRA',
+            ),
+            subject: 'EK',
+            room: '525',
+            teacher: 'KRA',
+            type: ChangeTypes.roomChanged,
+          ),
+        )));
+        await tester.pumpAndSettle();
+        expect(find.text('1'), findsOneWidget);
+        expect(
+          find.text(ServerTranslations.subjects('en')['EK']),
+          findsOneWidget,
+        );
+        expect(find.text('KRA'), findsNWidgets(2));
+        expect(find.text('525'), findsNWidgets(2));
+        expect(
+          find.text(
+              // ignore: lines_longer_than_80_chars
+              '${ServerTranslations.subjects('en')['EK']}: ${ServerTranslations.replacementPlanRoomChanged('en')}'),
+          findsOneWidget,
+        );
+      });
+
+      testWidgets('Normal replacement plan row with with tasks type',
+          (tester) async {
+        await tester.pumpWidget(makeTestableWidget(ReplacementPlanRow(
+          change: Change(
+            unit: 0,
+            date: DateTime(2019, 8, 9),
+            changed: Changed(
+              subject: 'EK',
+              room: '525',
+              teacher: 'KRA',
+            ),
+            subject: 'EK',
+            room: '525',
+            teacher: 'KRA',
+            type: ChangeTypes.withTasks,
+          ),
+        )));
+        await tester.pumpAndSettle();
+        expect(find.text('1'), findsOneWidget);
+        expect(
+          find.text(ServerTranslations.subjects('en')['EK']),
+          findsOneWidget,
+        );
+        expect(find.text('KRA'), findsNWidgets(2));
+        expect(find.text('525'), findsNWidgets(2));
+        expect(
+          find.text(
+              // ignore: lines_longer_than_80_chars
+              '${ServerTranslations.subjects('en')['EK']}: ${ServerTranslations.replacementPlanWithTasks('en')}'),
+          findsOneWidget,
+        );
+      });
+
       testWidgets('Normal replacement plan row with orange color',
           (tester) async {
         await tester.pumpWidget(makeTestableWidget(ReplacementPlanRow(
