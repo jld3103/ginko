@@ -20,7 +20,7 @@ class Subjects {
     'FF': 'FF',
     'F': 'F',
     'GE': 'GE',
-    'IV': 'IV', // TODO(jld3103): What subject is this?
+    'IV': 'MU',
     'IF': 'IF',
     'KW': 'KU',
     'KU': 'KU',

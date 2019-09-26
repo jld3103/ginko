@@ -74,6 +74,7 @@ class ReplacementPlanData {
             .replacementPlanDays) {
           final changes = replacementPlan
               .replacementPlans[grades.indexOf(user.grade.value)].changes
+              .where((change) => change.date == day.date)
               .where((change) {
             final block = UnitPlanData
                 .unitPlan
@@ -214,6 +215,7 @@ Future main(List<String> arguments) async {
   await setupDateFormats();
   Config.load();
   Config.dev = true;
+  Users.load();
   await UnitPlanData.load();
   if (arguments.isNotEmpty) {
     var files = [];
