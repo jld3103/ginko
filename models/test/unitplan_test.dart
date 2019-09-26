@@ -169,7 +169,7 @@ void main() {
             .map((change) => change.toJSON())
             .toList()
             .length,
-        5,
+        7,
       );
     });
 

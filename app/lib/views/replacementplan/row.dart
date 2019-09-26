@@ -87,7 +87,9 @@ class ReplacementPlanRow extends StatelessWidget {
                             (AppTranslations.of(context)
                                         .subjects[change.changed.subject] ??
                                     '') +
-                                (change.changed.info != null &&
+                                ((change.changed.info != null ||
+                                            change.type !=
+                                                ChangeTypes.unknown) &&
                                         change.changed.subject != null
                                     ? ': '
                                     : '') +
@@ -103,8 +105,8 @@ class ReplacementPlanRow extends StatelessWidget {
                                                     .replacementPlanRoomChanged
                                                 : change.type ==
                                                         ChangeTypes.withTasks
-                                                    ? AppTranslations
-                                                            .of(context)
+                                                    ? AppTranslations.of(
+                                                            context)
                                                         // ignore: lines_longer_than_80_chars
                                                         .replacementPlanWithTasks
                                                     : '') +

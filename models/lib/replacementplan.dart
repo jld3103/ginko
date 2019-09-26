@@ -111,7 +111,7 @@ class Change {
     @required this.room,
     @required this.teacher,
     this.course,
-    this.type,
+    this.type = ChangeTypes.unknown,
   });
 
   /// Creates a Change object from json

@@ -178,7 +178,14 @@ void main() {
         expect(find.text('1'), findsOneWidget);
         expect(
           find.text(ServerTranslations.subjects('en')['EK']),
-          findsNWidgets(2),
+          findsOneWidget,
+        );
+        expect(
+          // ignore: prefer_interpolation_to_compose_strings
+          find.text(ServerTranslations.subjects('en')['EK'] +
+              ': ' +
+              ServerTranslations.replacementPlanFreeLesson('en')),
+          findsOneWidget,
         );
         expect(find.text('KRA'), findsNWidgets(2));
         expect(find.text('525'), findsNWidgets(2));
@@ -216,7 +223,12 @@ void main() {
         expect(find.text('1'), findsOneWidget);
         expect(
           find.text(ServerTranslations.subjects('en')['EK']),
-          findsNWidgets(2),
+          findsOneWidget,
+        );
+        expect(
+          // ignore: prefer_interpolation_to_compose_strings
+          find.text(ServerTranslations.subjects('en')['EK'] + ': '),
+          findsOneWidget,
         );
         expect(find.text('KRA'), findsNWidgets(2));
         expect(find.text('525'), findsNWidgets(2));
