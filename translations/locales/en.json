@@ -23,8 +23,8 @@
   "pageCafetoria": "Cafétoria",
   "replacementPlanFreeLesson": "Free lesson",
   "replacementPlanReplaced": "Replacement",
-  "replacementPlanRoomChanged": "r. change",
-  "replacementPlanWithTasks": "w/ tasks",
+  "replacementPlanExam": "Exam",
+  "replacementPlanUnknown": "Unknown",
   "subjects": {
     "BI": "Biology",
     "CH": "Chemistry",

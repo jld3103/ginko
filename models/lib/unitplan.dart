@@ -235,8 +235,10 @@ class Subject {
 
   /// Complete the information of this subject using the replacement plan
   void complete(Change c) {
-    if (course == null || course == '') {
-      course = c.course;
+    if (c.type != ChangeTypes.exam) {
+      if (course == null || course == '') {
+        course = c.course;
+      }
     }
   }
 

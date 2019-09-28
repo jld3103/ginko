@@ -1,4 +1,7 @@
 
+# 2019-09-28  
+ jld3103: Add new replacement plan parser changes  
+
 # 2019-09-26  
  jld3103: Add missing tests for replacement plan  
  jld3103: Fix replacement plan notifications  

@@ -22,9 +22,9 @@
   "pageAiXformation": "AiXformation",
   "pageCafetoria": "Cafétoria",
   "replacementPlanFreeLesson": "Freistunde",
-  "replacementPlanReplaced": "Ersatz",
-  "replacementPlanRoomChanged": "R. Ändg.",
-  "replacementPlanWithTasks": "m. Aufg.",
+  "replacementPlanReplaced": "Vertretung",
+  "replacementPlanExam": "Klausur",
+  "replacementPlanUnknown": "Unbekannt",
   "subjects": {
     "BI": "Bio",
     "CH": "Chemie",

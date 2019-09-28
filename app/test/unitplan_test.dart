@@ -388,7 +388,14 @@ void main() {
         expect(find.text('1'), findsOneWidget);
         expect(
           find.text(ServerTranslations.subjects('en')['EK']),
-          findsNWidgets(3),
+          findsNWidgets(2),
+        );
+        expect(
+          // ignore: prefer_interpolation_to_compose_strings
+          find.text(ServerTranslations.subjects('en')['EK'] +
+              ': ' +
+              ServerTranslations.replacementPlanUnknown('en')),
+          findsOneWidget,
         );
         expect(find.text('08:00 - 09:00'), findsOneWidget);
         expect(find.text('KRA'), findsNWidgets(3));
@@ -448,10 +455,14 @@ void main() {
           find.text(ServerTranslations.subjects('en')['EK']),
           findsNWidgets(2),
         );
+        expect(
+          // ignore: prefer_interpolation_to_compose_strings
+          find.text(ServerTranslations.replacementPlanUnknown('en') + ' LOL'),
+          findsOneWidget,
+        );
         expect(find.text('08:00 - 09:00'), findsOneWidget);
         expect(find.text('KRA'), findsNWidgets(3));
         expect(find.text('525'), findsNWidgets(3));
-        expect(find.text('LOL'), findsOneWidget);
       });
 
       testWidgets('Unit plan progress row with changes with info and subject',
@@ -512,7 +523,11 @@ void main() {
         expect(find.text('KRA'), findsNWidgets(3));
         expect(find.text('525'), findsNWidgets(3));
         expect(
-          find.text('${ServerTranslations.subjects('en')['EK']}: LOL'),
+          // ignore: prefer_interpolation_to_compose_strings
+          find.text(ServerTranslations.subjects('en')['EK'] +
+              ': ' +
+              ServerTranslations.replacementPlanUnknown('en') +
+              ' LOL'),
           findsOneWidget,
         );
       });

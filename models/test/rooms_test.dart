@@ -15,8 +15,7 @@ void main() {
     });
 
     test('Cannot get unknown room without error', () {
-      expect(
-          () => Rooms.getRoom(null), throwsA(TypeMatcher<NoSuchMethodError>()));
+      expect(Rooms.getRoom(null), '');
       expect(() => Rooms.getRoom('test'), throwsA(TypeMatcher<Exception>()));
     });
 

@@ -39,86 +39,70 @@ class ReplacementPlanParser {
       minutes: int.parse(updatedStr.split(' ')[1].split(':')[1]),
     ));
     final changes = {};
-    var previousGrade = '';
     for (final row in document
         .querySelector('.mon_list')
         .querySelectorAll('tr')
         .sublist(1)) {
       final fields =
           row.querySelectorAll('td').map((field) => field.text).toList();
-      final color = row.querySelector('td').attributes['style'] != null
-          ? row.querySelector('td').attributes['style'].split('#')[1]
-          : null;
-      if (fields.length < 3 && fields.length != 1) {
-        continue;
-      }
-      var grade = fields[0];
-      if (grade.contains('  ')) {
-        grade = grade.split('  ')[0];
-      } else {
-        grade = '';
-      }
-      if (grade == '') {
-        grade = previousGrade;
-      } else {
-        previousGrade = grade;
-        changes[grade] = [];
-        continue;
-      }
+      final grade = fields[0];
       if (!grades.contains(grade)) {
         continue;
       }
-      var unit = int.parse(fields[0]) - 1;
-      if (unit > 4) {
-        unit++;
+      if (changes[grade] == null) {
+        changes[grade] = [];
       }
-      final subjectChanged = fields[2].split(_arrow).length > 1;
-      final roomChanged = fields[3].split(_arrow).length > 1;
-      final teacherChanged = fields[1].split(_arrow).length > 1;
-      var type = ChangeTypes.unknown;
-      if (color == '00FF00') {
-        type = ChangeTypes.freeLesson;
-      }
-      if (color == 'FFFF80') {
-        type = ChangeTypes.replaced;
-      }
-      if (!subjectChanged && roomChanged && !teacherChanged) {
-        type = ChangeTypes.roomChanged;
-      }
-      if (!subjectChanged && !roomChanged && teacherChanged) {
-        type = ChangeTypes.withTasks;
-      }
-      final change = Change(
-        date: date,
-        unit: unit,
-        subject: fields[2].split(_arrow)[0].split(' ')[0],
-        course: fields[2].split(_arrow)[0].split(' ').length > 1
-            ? fields[2]
-                .split(_arrow)[0]
-                .split(' ')[1]
-                .replaceAll('G', 'GK')
-                .replaceAll('L', 'LK')
-                .replaceAll('Z', 'ZK')
-            : null,
-        room: fields[3] != '---' ? fields[3].split(_arrow)[0] : null,
-        teacher: fields[1].split(_arrow)[0],
-        changed: Changed(
-          subject: fields[2].split(_arrow).length > 1
-              ? fields[2].split(_arrow)[1]
+      final units = fields[1].split('-').map((u) {
+        var unit = int.parse(u.trim()) - 1;
+        if (unit > 4) {
+          unit++;
+        }
+        return unit;
+      });
+      for (final unit in units) {
+        var type = ChangeTypes.unknown;
+        if (fields[3] == 'Entfall') {
+          type = ChangeTypes.freeLesson;
+        } else if (fields[3] == 'Klausur') {
+          type = ChangeTypes.exam;
+        } else {
+          type = ChangeTypes.replaced;
+        }
+        while (fields[2].contains('  ')) {
+          fields[2] = fields[2].replaceAll('  ', ' ');
+        }
+        final change = Change(
+          date: date,
+          unit: unit,
+          subject: fields[2].split(_arrow)[0].split(' ')[0],
+          course: fields[2].split(_arrow)[0].split(' ').length > 1
+              ? fields[2]
+                  .split(_arrow)[0]
+                  .split(' ')[1]
+                  .replaceAll('G', 'GK')
+                  .replaceAll('L', 'LK')
+                  .replaceAll('Z', 'ZK')
               : null,
-          teacher: fields[1].split(_arrow).length > 1
-              ? fields[1].split(_arrow)[1]
-              : null,
-          room: fields[3] != '---'
-              ? fields[3].split(_arrow).length > 1
-                  ? fields[3].split(_arrow)[1]
-                  : null
-              : null,
-          info: fields[4].trim() != '' ? fields[4].trim() : null,
-        ),
-        type: type,
-      );
-      changes[grade].add(change);
+          room: fields[5] != '---' ? fields[5].split(_arrow)[0] : null,
+          teacher: fields[4].split(_arrow)[0],
+          changed: Changed(
+            subject: fields[2].split(_arrow).length > 1
+                ? fields[2].split(_arrow)[1]
+                : null,
+            teacher: fields[4].split(_arrow).length > 1
+                ? fields[4].split(_arrow)[1]
+                : null,
+            room: fields[5] != '---'
+                ? fields[5].split(_arrow).length > 1
+                    ? fields[5].split(_arrow)[1]
+                    : null
+                : null,
+            info: fields[6].trim() != '' ? fields[6].trim() : null,
+          ),
+          type: type,
+        );
+        changes[grade].add(change);
+      }
     }
     for (final grade in changes.keys) {
       for (final change in changes[grade]) {
@@ -129,10 +113,8 @@ class ReplacementPlanParser {
           change.subject = Subjects.getSubject(change.subject);
           // ignore: avoid_catches_without_on_clauses
         } catch (e) {
-          if (change.type != ChangeTypes.rewriteExam) {
-            print(change.toJSON());
-            rethrow;
-          }
+          print(change.toJSON());
+          rethrow;
         }
         if (change.changed.subject != null) {
           try {
@@ -148,10 +130,8 @@ class ReplacementPlanParser {
           change.room = Rooms.getRoom(change.room);
           // ignore: avoid_catches_without_on_clauses
         } catch (e) {
-          if (change.type == null) {
-            print(change.toJSON());
-            rethrow;
-          }
+          print(change.toJSON());
+          rethrow;
         }
         if (change.changed.room != null) {
           try {
@@ -161,10 +141,6 @@ class ReplacementPlanParser {
             print(change.toJSON());
             rethrow;
           }
-        }
-        // ignore: invariant_booleans
-        if (change.type == null) {
-          throw Exception('Change type not set: ${change.toJSON()}');
         }
       }
     }

@@ -157,7 +157,7 @@ class Change {
     }
     var subjects = lesson.subjects;
     // TODO(jl3103): Add exam filter
-    if (type != ChangeTypes.exam && type != ChangeTypes.rewriteExam) {
+    if (type != ChangeTypes.exam) {
       if (subject != null) {
         subjects = subjects
             .where((s) =>
@@ -212,14 +212,16 @@ class Change {
 
   /// Complete the information of this change using the unit plan
   void complete(Subject s) {
-    if (subject == null || subject == '') {
-      subject = s.subject;
-    }
-    if (room == null || room == '') {
-      room = s.room;
-    }
-    if (teacher == null || teacher == '') {
-      teacher = s.teacher;
+    if (type != ChangeTypes.exam) {
+      if (subject == null || subject == '') {
+        subject = s.subject;
+      }
+      if (room == null || room == '') {
+        room = s.room;
+      }
+      if (teacher == null || teacher == '') {
+        teacher = s.teacher;
+      }
     }
   }
 
@@ -296,23 +298,7 @@ enum ChangeTypes {
   // ignore: public_member_api_docs
   exam,
   // ignore: public_member_api_docs
-  rewriteExam,
-  // ignore: public_member_api_docs
   freeLesson,
-  // ignore: public_member_api_docs
-  withTasks,
-  // ignore: public_member_api_docs
-  trainee,
-  // ignore: public_member_api_docs
-  movedFrom,
-  // ignore: public_member_api_docs
-  movedTo,
-  // ignore: public_member_api_docs
-  roomChanged,
-  // ignore: public_member_api_docs
-  classTeaching,
-  // ignore: public_member_api_docs
-  remainingLesson,
   // ignore: public_member_api_docs
   replaced,
 }

@@ -124,20 +124,10 @@ class ReplacementPlanData {
                   // ignore: lines_longer_than_80_chars
                   ' ${ServerTranslations.replacementPlanFreeLesson(user.language.value)}');
             }
-            if (change.type == ChangeTypes.replaced) {
+            if (change.type == ChangeTypes.exam) {
               buffer.write(
                   // ignore: lines_longer_than_80_chars
-                  ' ${ServerTranslations.replacementPlanReplaced(user.language.value)}');
-            }
-            if (change.type == ChangeTypes.roomChanged) {
-              buffer.write(
-                  // ignore: lines_longer_than_80_chars
-                  ' ${ServerTranslations.replacementPlanRoomChanged(user.language.value)}');
-            }
-            if (change.type == ChangeTypes.withTasks) {
-              buffer.write(
-                  // ignore: lines_longer_than_80_chars
-                  ' ${ServerTranslations.replacementPlanWithTasks(user.language.value)}');
+                  ' ${ServerTranslations.replacementPlanExam(user.language.value)}');
             }
             if (change.changed.info != null) {
               buffer.write(' ${change.changed.info}');

@@ -187,7 +187,7 @@ void main() {
         unit: 0,
         course: 'GK1',
         changed: Changed(),
-        type: ChangeTypes.exam,
+        type: ChangeTypes.replaced,
         subject: null,
         room: null,
         teacher: null,
