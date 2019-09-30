@@ -69,7 +69,6 @@ class AppState extends State<App> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    Static.rebuildUnitPlan = () => setState(() {});
     WidgetsBinding.instance.addPostFrameCallback((a) async {
       setState(() {
         _pages.addAll(

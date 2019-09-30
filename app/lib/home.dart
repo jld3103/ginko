@@ -40,6 +40,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
           });
         }
       });
+    Static.rebuildUnitPlan = () => setState(() {});
     super.initState();
   }
 
