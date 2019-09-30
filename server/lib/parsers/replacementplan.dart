@@ -45,63 +45,62 @@ class ReplacementPlanParser {
         .sublist(1)) {
       final fields =
           row.querySelectorAll('td').map((field) => field.text).toList();
-      final grade = fields[0];
-      if (!grades.contains(grade)) {
-        continue;
-      }
-      if (changes[grade] == null) {
-        changes[grade] = [];
-      }
-      final units = fields[1].split('-').map((u) {
-        var unit = int.parse(u.trim()) - 1;
-        if (unit > 4) {
-          unit++;
+      for (final grade in fields[0].split(_arrow)[0].split(', ')) {
+        if (!grades.contains(grade)) {
+          continue;
         }
-        return unit;
-      });
-      for (final unit in units) {
-        var type = ChangeTypes.unknown;
-        if (fields[3] == 'Entfall') {
-          type = ChangeTypes.freeLesson;
-        } else if (fields[3] == 'Klausur') {
-          type = ChangeTypes.exam;
-        } else {
-          type = ChangeTypes.replaced;
+        if (changes[grade] == null) {
+          changes[grade] = [];
         }
-        while (fields[2].contains('  ')) {
-          fields[2] = fields[2].replaceAll('  ', ' ');
+        final units = fields[1].split('-').map((u) {
+          var unit = int.parse(u.trim()) - 1;
+          if (unit > 4) {
+            unit++;
+          }
+          return unit;
+        });
+        for (final unit in units) {
+          var type = ChangeTypes.unknown;
+          if (fields[3] == 'Entfall') {
+            type = ChangeTypes.freeLesson;
+          } else if (fields[3] == 'Klausur') {
+            type = ChangeTypes.exam;
+          } else {
+            type = ChangeTypes.replaced;
+          }
+          while (fields[2].contains('  ')) {
+            fields[2] = fields[2].replaceAll('  ', ' ');
+          }
+          final change = Change(
+            date: date,
+            unit: unit,
+            subject: fields[2].split(_arrow)[0].split(' ')[0],
+            course: fields[2].split(_arrow)[0].split(' ').length > 1
+                ? fields[2]
+                    .split(_arrow)[0]
+                    .split(' ')[1]
+                    .replaceAll('G', 'GK')
+                    .replaceAll('L', 'LK')
+                    .replaceAll('Z', 'ZK')
+                : null,
+            room: fields[5] != '---' ? fields[5].split(_arrow)[0].trim() : null,
+            teacher: fields[4].split(_arrow)[0],
+            changed: Changed(
+              subject: fields[2].split(_arrow).length > 1
+                  ? fields[2].split(_arrow)[1]
+                  : null,
+              teacher: fields[4].split(_arrow).length > 1
+                  ? fields[4].split(_arrow)[1]
+                  : null,
+              room: fields[5].split(_arrow).length > 1 && fields[5] != '---'
+                  ? fields[5].split(_arrow)[1].trim()
+                  : null,
+              info: fields[6].trim() != '' ? fields[6].trim() : null,
+            ),
+            type: type,
+          );
+          changes[grade].add(change);
         }
-        final change = Change(
-          date: date,
-          unit: unit,
-          subject: fields[2].split(_arrow)[0].split(' ')[0],
-          course: fields[2].split(_arrow)[0].split(' ').length > 1
-              ? fields[2]
-                  .split(_arrow)[0]
-                  .split(' ')[1]
-                  .replaceAll('G', 'GK')
-                  .replaceAll('L', 'LK')
-                  .replaceAll('Z', 'ZK')
-              : null,
-          room: fields[5] != '---' ? fields[5].split(_arrow)[0] : null,
-          teacher: fields[4].split(_arrow)[0],
-          changed: Changed(
-            subject: fields[2].split(_arrow).length > 1
-                ? fields[2].split(_arrow)[1]
-                : null,
-            teacher: fields[4].split(_arrow).length > 1
-                ? fields[4].split(_arrow)[1]
-                : null,
-            room: fields[5] != '---'
-                ? fields[5].split(_arrow).length > 1
-                    ? fields[5].split(_arrow)[1]
-                    : null
-                : null,
-            info: fields[6].trim() != '' ? fields[6].trim() : null,
-          ),
-          type: type,
-        );
-        changes[grade].add(change);
       }
     }
     for (final grade in changes.keys) {

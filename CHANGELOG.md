@@ -1,4 +1,7 @@
 
+# 2019-09-30  
+ jld3103: Fix replacement plan parser  
+
 # 2019-09-28  
  jld3103: Add new replacement plan parser changes  
 
