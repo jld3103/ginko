@@ -1,2 +1,2 @@
 #!/bin/sh
-/usr/bin/ginkofiles/ginko
+/usr/lib/ginko/ginko

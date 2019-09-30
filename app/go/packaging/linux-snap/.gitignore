@@ -1,7 +1,0 @@
-assets
-build
-parts
-prime
-snap/.snapcraft
-stage
-*.snap

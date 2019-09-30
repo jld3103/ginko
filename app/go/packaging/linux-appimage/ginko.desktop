@@ -2,7 +2,6 @@
 Version=1.0
 Type=Application
 Terminal=false
-Name=Ginko
-Icon=/usr/lib/ginko/assets/icon.png
+Name=ginko
+Icon=/build/assets/icon
 Categories=
-Exec=/usr/bin/ginko
