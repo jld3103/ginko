@@ -1,5 +1,6 @@
 
 # 2019-09-30  
+ jld3103: Fix loading when server is offline  
  jld3103: Update packaging config  
  jld3103: Fix replacement plan parser  
 

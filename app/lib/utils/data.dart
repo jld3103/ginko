@@ -149,8 +149,7 @@ class Data {
           .get(
               '$baseUrl/?${parameters.keys.map((name) => '$name=${parameters[name]}').join('&')}')
           .timeout(Duration(seconds: 3));
-      if (response.statusCode != 200) {
-        print(response.statusCode);
+      if (response.statusCode == 401) {
         return ErrorCode.wrongCredentials;
       }
       final data = json.decode(response.body);
