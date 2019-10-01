@@ -14,8 +14,7 @@ void main() {
     });
 
     test('Cannot get unknown subject without error', () {
-      expect(() => Subjects.getSubject(null),
-          throwsA(TypeMatcher<NoSuchMethodError>()));
+      expect(Subjects.getSubject(null), '');
       expect(
           () => Subjects.getSubject('test'), throwsA(TypeMatcher<Exception>()));
     });

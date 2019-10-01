@@ -1,4 +1,7 @@
 
+# 2019-10-01  
+ jld3103: Fix replacement plan parser  
+
 # 2019-09-30  
  jld3103: Fix selecting unit plan doesn't update view  
  jld3103: Fix loading when server is offline  

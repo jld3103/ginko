@@ -69,30 +69,36 @@ class ReplacementPlanParser {
             type = ChangeTypes.replaced;
           }
           while (fields[2].contains('  ')) {
-            fields[2] = fields[2].replaceAll('  ', ' ');
+            fields[2] = fields[2].replaceAll('  ', ' ').trim();
           }
           final change = Change(
             date: date,
             unit: unit,
-            subject: fields[2].split(_arrow)[0].split(' ')[0],
-            course: fields[2].split(_arrow)[0].split(' ').length > 1
-                ? fields[2]
-                    .split(_arrow)[0]
-                    .split(' ')[1]
-                    .replaceAll('G', 'GK')
-                    .replaceAll('L', 'LK')
-                    .replaceAll('Z', 'ZK')
+            subject: fields[2].split(_arrow)[0] != '---' &&
+                    fields[2].split(_arrow)[0].split(' ').length > 1
+                ? fields[2].split(_arrow)[0].split(' ')[0].trim()
                 : null,
-            room: fields[5] != '---' ? fields[5].split(_arrow)[0].trim() : null,
-            teacher: fields[4].split(_arrow)[0],
+            course: fields[2].split(_arrow)[0] != '---' &&
+                    fields[2].split(_arrow)[0].split(' ').length > 1
+                ? fields[2].split(_arrow)[0].split(' ')[1].trim()
+                : null,
+            room: fields[5].split(_arrow)[0] != '---'
+                ? fields[5].split(_arrow)[0].trim()
+                : null,
+            teacher: fields[4].split(_arrow)[0] != '---'
+                ? fields[4].split(_arrow)[0].trim()
+                : null,
             changed: Changed(
-              subject: fields[2].split(_arrow).length > 1
-                  ? fields[2].split(_arrow)[1]
+              subject: fields[2].split(_arrow).length > 1 &&
+                      fields[2].split(_arrow)[1] != '---'
+                  ? fields[2].split(_arrow)[1].trim()
                   : null,
-              teacher: fields[4].split(_arrow).length > 1
-                  ? fields[4].split(_arrow)[1]
+              teacher: fields[4].split(_arrow).length > 1 &&
+                      fields[4].split(_arrow)[1] != '---'
+                  ? fields[4].split(_arrow)[1].trim()
                   : null,
-              room: fields[5].split(_arrow).length > 1 && fields[5] != '---'
+              room: fields[5].split(_arrow).length > 1 &&
+                      fields[5].split(_arrow)[1] != '---'
                   ? fields[5].split(_arrow)[1].trim()
                   : null,
               info: fields[6].trim() != '' ? fields[6].trim() : null,

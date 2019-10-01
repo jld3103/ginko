@@ -64,6 +64,9 @@ class Subjects {
 
   /// Gets a subject by some variant of it's name
   static String getSubject(String name) {
+    if (name == '' || name == null) {
+      return '';
+    }
     name = name.trim().toUpperCase().replaceAll(RegExp('[ÖÄÜ0-9]'), '');
     if (_subjects[name] == null) {
       throw Exception('Unknown subject $name');
