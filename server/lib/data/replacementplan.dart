@@ -56,14 +56,10 @@ class ReplacementPlanData {
     UnitPlanData.complete();
     ReplacementPlanData.complete();
     previous ??= replacementPlan;
-    if (previous.replacementPlans.isNotEmpty &&
-            replacementPlan.replacementPlans.isNotEmpty &&
-            previous.replacementPlans[0].replacementPlanDays.isNotEmpty &&
-            replacementPlan
-                .replacementPlans[0].replacementPlanDays.isNotEmpty &&
-            previous.replacementPlans[0].replacementPlanDays[0].date !=
-                replacementPlan
-                    .replacementPlans[0].replacementPlanDays[0].date ||
+    if (previous.replacementPlans[0].replacementPlanDays[0].date !=
+            replacementPlan.replacementPlans[0].replacementPlanDays[0].date ||
+        previous.replacementPlans[0].replacementPlanDays[1].date !=
+            replacementPlan.replacementPlans[0].replacementPlanDays[1].date ||
         Config.dev) {
       print('Fire notifications!');
 
