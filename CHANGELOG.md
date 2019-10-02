@@ -1,4 +1,7 @@
 
+# 2019-10-02  
+ jld3103: Add better error handling in replacement plan parser  
+
 # 2019-10-01  
  jld3103: Fix replacement plan comparison  
  jld3103: Fix replacement plan parser  

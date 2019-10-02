@@ -46,106 +46,94 @@ class ReplacementPlanParser {
       final fields =
           row.querySelectorAll('td').map((field) => field.text).toList();
       for (final grade in fields[0].split(_arrow)[0].split(', ')) {
-        if (!grades.contains(grade)) {
-          continue;
-        }
-        if (changes[grade] == null) {
-          changes[grade] = [];
-        }
-        final units = fields[1].split('-').map((u) {
-          var unit = int.parse(u.trim()) - 1;
-          if (unit > 4) {
-            unit++;
+        try {
+          if (!grades.contains(grade)) {
+            continue;
           }
-          return unit;
-        });
-        for (final unit in units) {
-          var type = ChangeTypes.unknown;
-          if (fields[3] == 'Entfall') {
-            type = ChangeTypes.freeLesson;
-          } else if (fields[3] == 'Klausur') {
-            type = ChangeTypes.exam;
-          } else {
-            type = ChangeTypes.replaced;
+          if (changes[grade] == null) {
+            changes[grade] = [];
           }
-          while (fields[2].contains('  ')) {
-            fields[2] = fields[2].replaceAll('  ', ' ').trim();
+          final units = fields[1].split('-').map((u) {
+            var unit = int.parse(u.trim()) - 1;
+            if (unit > 4) {
+              unit++;
+            }
+            return unit;
+          });
+          for (final unit in units) {
+            try {
+              var type = ChangeTypes.unknown;
+              if (fields[3] == 'Entfall') {
+                type = ChangeTypes.freeLesson;
+              } else if (fields[3] == 'Klausur') {
+                type = ChangeTypes.exam;
+              } else {
+                type = ChangeTypes.replaced;
+              }
+              while (fields[2].contains('  ')) {
+                fields[2] = fields[2].replaceAll('  ', ' ').trim();
+              }
+              final change = Change(
+                date: date,
+                unit: unit,
+                subject: fields[2].split(_arrow)[0] != '---' &&
+                        fields[2].split(_arrow)[0].split(' ').length > 1
+                    ? fields[2].split(_arrow)[0].split(' ')[0].trim()
+                    : null,
+                course: fields[2].split(_arrow)[0] != '---' &&
+                        fields[2].split(_arrow)[0].split(' ').length > 1
+                    ? fields[2].split(_arrow)[0].split(' ')[1].trim()
+                    : null,
+                room: fields[5].split(_arrow)[0] != '---'
+                    ? fields[5].split(_arrow)[0].trim()
+                    : null,
+                teacher: fields[4].split(_arrow)[0] != '---'
+                    ? fields[4].split(_arrow)[0].trim()
+                    : null,
+                changed: Changed(
+                  subject: fields[2].split(_arrow).length > 1 &&
+                          fields[2].split(_arrow)[1] != '---'
+                      ? fields[2].split(_arrow)[1].trim()
+                      : null,
+                  teacher: fields[4].split(_arrow).length > 1 &&
+                          fields[4].split(_arrow)[1] != '---'
+                      ? fields[4].split(_arrow)[1].trim()
+                      : null,
+                  room: fields[5].split(_arrow).length > 1 &&
+                          fields[5].split(_arrow)[1] != '---'
+                      ? fields[5].split(_arrow)[1].trim()
+                      : null,
+                  info: fields[6].trim() != '' ? fields[6].trim() : null,
+                ),
+                type: type,
+              );
+              changes[grade].add(change);
+              // ignore: avoid_catches_without_on_clauses
+            } catch (e) {
+              print(e);
+            }
           }
-          final change = Change(
-            date: date,
-            unit: unit,
-            subject: fields[2].split(_arrow)[0] != '---' &&
-                    fields[2].split(_arrow)[0].split(' ').length > 1
-                ? fields[2].split(_arrow)[0].split(' ')[0].trim()
-                : null,
-            course: fields[2].split(_arrow)[0] != '---' &&
-                    fields[2].split(_arrow)[0].split(' ').length > 1
-                ? fields[2].split(_arrow)[0].split(' ')[1].trim()
-                : null,
-            room: fields[5].split(_arrow)[0] != '---'
-                ? fields[5].split(_arrow)[0].trim()
-                : null,
-            teacher: fields[4].split(_arrow)[0] != '---'
-                ? fields[4].split(_arrow)[0].trim()
-                : null,
-            changed: Changed(
-              subject: fields[2].split(_arrow).length > 1 &&
-                      fields[2].split(_arrow)[1] != '---'
-                  ? fields[2].split(_arrow)[1].trim()
-                  : null,
-              teacher: fields[4].split(_arrow).length > 1 &&
-                      fields[4].split(_arrow)[1] != '---'
-                  ? fields[4].split(_arrow)[1].trim()
-                  : null,
-              room: fields[5].split(_arrow).length > 1 &&
-                      fields[5].split(_arrow)[1] != '---'
-                  ? fields[5].split(_arrow)[1].trim()
-                  : null,
-              info: fields[6].trim() != '' ? fields[6].trim() : null,
-            ),
-            type: type,
-          );
-          changes[grade].add(change);
+          // ignore: avoid_catches_without_on_clauses
+        } catch (e) {
+          print(e);
         }
       }
     }
     for (final grade in changes.keys) {
       for (final change in changes[grade]) {
-        if (change.changed == null) {
-          throw Exception('Changed not filled: ${change.toJSON()}');
-        }
         try {
           change.subject = Subjects.getSubject(change.subject);
-          // ignore: avoid_catches_without_on_clauses
-        } catch (e) {
-          print(change.toJSON());
-          rethrow;
-        }
-        if (change.changed.subject != null) {
-          try {
+          if (change.changed.subject != null) {
             change.changed.subject =
                 Subjects.getSubject(change.changed.subject);
-            // ignore: avoid_catches_without_on_clauses
-          } catch (e) {
-            print(change.toJSON());
-            rethrow;
           }
-        }
-        try {
           change.room = Rooms.getRoom(change.room);
+          if (change.changed.room != null) {
+            change.changed.room = Rooms.getRoom(change.changed.room);
+          }
           // ignore: avoid_catches_without_on_clauses
         } catch (e) {
           print(change.toJSON());
-          rethrow;
-        }
-        if (change.changed.room != null) {
-          try {
-            change.changed.room = Rooms.getRoom(change.changed.room);
-            // ignore: avoid_catches_without_on_clauses
-          } catch (e) {
-            print(change.toJSON());
-            rethrow;
-          }
         }
       }
     }

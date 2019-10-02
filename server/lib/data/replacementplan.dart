@@ -68,101 +68,106 @@ class ReplacementPlanData {
         for (final day in replacementPlan
             .replacementPlans[grades.indexOf(user.grade.value)]
             .replacementPlanDays) {
-          final changes = replacementPlan
-              .replacementPlans[grades.indexOf(user.grade.value)].changes
-              .where((change) => change.date == day.date)
-              .where((change) {
-            final block = UnitPlanData
-                .unitPlan
-                .unitPlans[grades.indexOf(user.grade.value)]
-                .days[day.date.weekday - 1]
-                .lessons[change.unit]
-                .block;
-            final key = Keys.selection(block, isWeekA(day.date));
-            final userSelected = user.getSelection(key);
-            final originalSubjects = change.getMatchingSubjectsByUnitPlan(
-                UnitPlanData
-                    .unitPlan.unitPlans[grades.indexOf(user.grade.value)]);
-            if (originalSubjects.length != 1) {
-              return true;
-            }
-            return userSelected == originalSubjects[0].identifier;
-          }).toList();
-          final title =
-              // ignore: lines_longer_than_80_chars
-              '${ServerTranslations.weekdays(user.language.value)[day.date.weekday - 1]} ${outputDateFormat.format(day.date)}';
-          final lines = [];
-          var previousUnit = -1;
-          for (final change in changes) {
-            if (change.unit != previousUnit) {
-              lines.add('<b>${change.unit + 1}. Stunde:</b>');
-              previousUnit = change.unit;
-            }
+          try {
+            final changes = replacementPlan
+                .replacementPlans[grades.indexOf(user.grade.value)].changes
+                .where((change) => change.date == day.date)
+                .where((change) {
+              final block = UnitPlanData
+                  .unitPlan
+                  .unitPlans[grades.indexOf(user.grade.value)]
+                  .days[day.date.weekday - 1]
+                  .lessons[change.unit]
+                  .block;
+              final key = Keys.selection(block, isWeekA(day.date));
+              final userSelected = user.getSelection(key);
+              final originalSubjects = change.getMatchingSubjectsByUnitPlan(
+                  UnitPlanData
+                      .unitPlan.unitPlans[grades.indexOf(user.grade.value)]);
+              if (originalSubjects.length != 1) {
+                return true;
+              }
+              return userSelected == originalSubjects[0].identifier;
+            }).toList();
+            final title =
+                // ignore: lines_longer_than_80_chars
+                '${ServerTranslations.weekdays(user.language.value)[day.date.weekday - 1]} ${outputDateFormat.format(day.date)}';
+            final lines = [];
+            var previousUnit = -1;
+            for (final change in changes) {
+              if (change.unit != previousUnit) {
+                lines.add('<b>${change.unit + 1}. Stunde:</b>');
+                previousUnit = change.unit;
+              }
 
-            final buffer = StringBuffer();
-            if (change.subject != null && change.subject.isNotEmpty) {
-              buffer.write(ServerTranslations.subjects(
-                  user.language.value)[change.subject]);
+              final buffer = StringBuffer();
+              if (change.subject != null && change.subject.isNotEmpty) {
+                buffer.write(ServerTranslations.subjects(
+                    user.language.value)[change.subject]);
+              }
+              if (change.teacher != null && change.teacher.isNotEmpty) {
+                buffer.write(' ${change.teacher}');
+              }
+              buffer.write(':');
+              if (change.changed.subject != null &&
+                  change.changed.subject.isNotEmpty &&
+                  change.subject != change.changed.subject) {
+                buffer.write(
+                    // ignore: lines_longer_than_80_chars
+                    ' ${ServerTranslations.subjects(user.language.value)[change.changed.subject]}');
+              }
+              if (change.type == ChangeTypes.freeLesson) {
+                buffer.write(
+                    // ignore: lines_longer_than_80_chars
+                    ' ${ServerTranslations.replacementPlanFreeLesson(user.language.value)}');
+              }
+              if (change.type == ChangeTypes.exam) {
+                buffer.write(
+                    // ignore: lines_longer_than_80_chars
+                    ' ${ServerTranslations.replacementPlanExam(user.language.value)}');
+              }
+              if (change.changed.info != null) {
+                buffer.write(' ${change.changed.info}');
+              }
+              if (change.changed.room != null &&
+                  change.room != change.changed.room) {
+                buffer.write(' ${change.changed.room}');
+              }
+              if (change.changed.teacher != null &&
+                  change.teacher != change.changed.teacher) {
+                buffer.write(' ${change.changed.teacher}');
+              }
+              lines.add(buffer.toString());
             }
-            if (change.teacher != null && change.teacher.isNotEmpty) {
-              buffer.write(' ${change.teacher}');
+            final bigBody = lines.isEmpty
+                ? ServerTranslations.notificationsNoChanges(user.language.value)
+                : lines.join('<br/>');
+            final body = changes.isEmpty
+                ? ServerTranslations.notificationsNoChanges(user.language.value)
+                // ignore: lines_longer_than_80_chars
+                : '${changes.length} ${ServerTranslations.notificationsChanges(user.language.value)}';
+            final unregisteredTokens = [];
+            for (final token in user.tokens) {
+              final tokenRegistered = await Notification.send(
+                token,
+                title,
+                body,
+                bigBody,
+                data: {
+                  Keys.type: Keys.replacementPlan,
+                  Keys.weekday: day.date.weekday - 1,
+                },
+              );
+              if (!tokenRegistered) {
+                unregisteredTokens.add(token);
+              }
             }
-            buffer.write(':');
-            if (change.changed.subject != null &&
-                change.changed.subject.isNotEmpty &&
-                change.subject != change.changed.subject) {
-              buffer.write(
-                  // ignore: lines_longer_than_80_chars
-                  ' ${ServerTranslations.subjects(user.language.value)[change.changed.subject]}');
+            for (final unregisteredToken in unregisteredTokens) {
+              Users.removeToken(user.encryptedUsername, unregisteredToken);
             }
-            if (change.type == ChangeTypes.freeLesson) {
-              buffer.write(
-                  // ignore: lines_longer_than_80_chars
-                  ' ${ServerTranslations.replacementPlanFreeLesson(user.language.value)}');
-            }
-            if (change.type == ChangeTypes.exam) {
-              buffer.write(
-                  // ignore: lines_longer_than_80_chars
-                  ' ${ServerTranslations.replacementPlanExam(user.language.value)}');
-            }
-            if (change.changed.info != null) {
-              buffer.write(' ${change.changed.info}');
-            }
-            if (change.changed.room != null &&
-                change.room != change.changed.room) {
-              buffer.write(' ${change.changed.room}');
-            }
-            if (change.changed.teacher != null &&
-                change.teacher != change.changed.teacher) {
-              buffer.write(' ${change.changed.teacher}');
-            }
-            lines.add(buffer.toString());
-          }
-          final bigBody = lines.isEmpty
-              ? ServerTranslations.notificationsNoChanges(user.language.value)
-              : lines.join('<br/>');
-          final body = changes.isEmpty
-              ? ServerTranslations.notificationsNoChanges(user.language.value)
-              // ignore: lines_longer_than_80_chars
-              : '${changes.length} ${ServerTranslations.notificationsChanges(user.language.value)}';
-          final unregisteredTokens = [];
-          for (final token in user.tokens) {
-            final tokenRegistered = await Notification.send(
-              token,
-              title,
-              body,
-              bigBody,
-              data: {
-                Keys.type: Keys.replacementPlan,
-                Keys.weekday: day.date.weekday - 1,
-              },
-            );
-            if (!tokenRegistered) {
-              unregisteredTokens.add(token);
-            }
-          }
-          for (final unregisteredToken in unregisteredTokens) {
-            Users.removeToken(user.encryptedUsername, unregisteredToken);
+            // ignore: avoid_catches_without_on_clauses
+          } catch (e) {
+            print(e);
           }
         }
       }
