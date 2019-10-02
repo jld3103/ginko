@@ -26,8 +26,9 @@ Future main() async {
   await for (final request in server) {
     request.response.headers.add('Access-Control-Allow-Origin', '*');
     request.response.headers.add('Access-Control-Allow-Methods', '*');
-    if (request.uri.path == '/' && request.method == 'GET') {
-      final queryParams = request.uri.queryParameters;
+    if (request.uri.path == '/' && request.method == 'POST') {
+      final content = await utf8.decoder.bind(request).join();
+      final queryParams = Uri(query: content).queryParameters;
       if (queryParams[Keys.user] == 'null' || queryParams[Keys.user] == null) {
         request.response.statusCode = 401;
         request.response.write('401 Unauthorized');
