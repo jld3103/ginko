@@ -211,7 +211,9 @@ class Data {
       online = true;
       return ErrorCode.none;
     } on Exception catch (e) {
-      print(e);
+      if (!(e is FormatException)) {
+        print(e);
+      }
       if (user == null) {
         return ErrorCode.wrongCredentials;
       }

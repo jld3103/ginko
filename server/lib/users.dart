@@ -45,11 +45,9 @@ class Users {
         }
       }
     }
-    print(user.selection.map((value) => value.key).toList());
     user.selection = user.selection
         .where((value) => value.key.startsWith('selection-${user.grade.value}'))
         .toList();
-    print(user.selection.map((value) => value.key).toList());
     File('../server/users.json').writeAsStringSync(
         json.encode(_users.map((user) => user.toJSON()).toList()));
   }
