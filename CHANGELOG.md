@@ -1,4 +1,7 @@
 
+# 2019-10-03  
+ jld3103: Fix selection after grade changed  
+
 # 2019-10-02  
  jld3103: Switch data communication to POST requests  
  jld3103: Add better error handling in replacement plan parser  

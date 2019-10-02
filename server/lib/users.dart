@@ -34,19 +34,22 @@ class Users {
   /// Update the selection of a user
   static void updateSelection(
       String encryptedUsername, List<UserValue> selection) {
+    final user = getUser(encryptedUsername);
     for (final value in selection) {
-      final values = getUser(encryptedUsername)
-          .selection
-          .where((i) => i.key == value.key)
-          .toList();
+      final values = user.selection.where((i) => i.key == value.key).toList();
       if (values.length != 1) {
-        getUser(encryptedUsername).selection.add(value);
+        user.selection.add(value);
       } else {
         if (values[0].modified.isBefore(value.modified)) {
           values[0].value = value.value;
         }
       }
     }
+    print(user.selection.map((value) => value.key).toList());
+    user.selection = user.selection
+        .where((value) => value.key.startsWith('selection-${user.grade.value}'))
+        .toList();
+    print(user.selection.map((value) => value.key).toList());
     File('../server/users.json').writeAsStringSync(
         json.encode(_users.map((user) => user.toJSON()).toList()));
   }
