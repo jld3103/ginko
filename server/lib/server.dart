@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:models/models.dart';
 import 'package:server/config.dart';
 import 'package:server/data/aixformation.dart';
@@ -23,6 +24,8 @@ Future main() async {
   final server = await HttpServer.bind(InternetAddress.anyIPv4, port);
   print('Listening on *:$port');
 
+  final dio = Dio();
+
   await for (final request in server) {
     request.response.headers.add('Access-Control-Allow-Origin', '*');
     request.response.headers.add('Access-Control-Allow-Methods', '*');
@@ -34,8 +37,39 @@ Future main() async {
         request.response.write('401 Unauthorized');
       } else {
         final user = User.fromJSON(json.decode(queryParams[Keys.user]));
-        if (Users.encryptedUsernames.contains(user.username) &&
-            Users.getUser(user.username).encryptedPassword == user.password) {
+        var correctPassword = false;
+        if (Users.usernames.contains(user.username) &&
+            user.toSafeJSON()['password'] ==
+                Users.getUser(user.username).password) {
+          correctPassword = true;
+        } else {
+          try {
+            await dio
+                .get(
+                  'https://nextcloud.aachen-vsa.logoip.de/index.php/apps/files/',
+                  options: Options(
+                    headers: {
+                      'OCS-APIRequest': 'true',
+                      'Authorization':
+                          // ignore: lines_longer_than_80_chars
+                          'Basic ${base64Encode(utf8.encode('${user.username}:${user.password}'))}',
+                    },
+                  ),
+                )
+                .timeout(Duration(seconds: 3));
+            correctPassword = true;
+            if (Users.usernames.contains(user.username)) {
+              Users.getUser(user.username).password =
+                  user.toSafeJSON()['password'];
+            }
+            // ignore: avoid_catches_without_on_clauses, empty_catches
+          } catch (e) {}
+        }
+
+        if (correctPassword) {
+          if (!Users.usernames.contains(user.username)) {
+            Users.addUser(user);
+          }
           Users.updateGrade(user.username, user.grade);
           Users.updateLanguage(user.username, user.language);
           Users.updateSelection(user.username, user.selection);
@@ -44,54 +78,67 @@ Future main() async {
           final Map<String, dynamic> data = {
             'status': 'ok',
           };
-          if (json.encode((Users.getUser(user.username)..tokens = [])
-                  .toEncryptedJSON()) !=
-              json.encode((user..tokens = []).toJSON())) {
+          if (json.encode(
+                  (Users.getUser(user.username)..tokens = []).toSafeJSON()) !=
+              json.encode((user..tokens = []).toSafeJSON())) {
             data[Keys.user] = Users.getUser(user.username).toJSON();
           }
           for (final key in queryParams.keys.where((key) => key != Keys.user)) {
             try {
               final value = int.parse(queryParams[key]);
               if (key == Keys.unitPlan) {
-                if (value <
-                    UnitPlanData.unitPlan.unitPlans
+                if (UnitPlanData.unitPlan != null) {
+                  if (value <
+                      UnitPlanData.unitPlan.unitPlans
+                          .where(
+                              (unitPlan) => unitPlan.grade == user.grade.value)
+                          .toList()[0]
+                          .timeStamp) {
+                    data[key] = UnitPlanData.unitPlan.unitPlans
                         .where((unitPlan) => unitPlan.grade == user.grade.value)
                         .toList()[0]
-                        .timeStamp) {
-                  data[key] = UnitPlanData.unitPlan.unitPlans
-                      .where((unitPlan) => unitPlan.grade == user.grade.value)
-                      .toList()[0]
-                      .toJSON();
+                        .toJSON();
+                  }
                 }
               } else if (key == Keys.calendar) {
-                if (value < CalendarData.calendar.timeStamp) {
-                  data[key] = CalendarData.calendar.toJSON();
+                if (CalendarData.calendar != null) {
+                  if (value < CalendarData.calendar.timeStamp) {
+                    data[key] = CalendarData.calendar.toJSON();
+                  }
                 }
               } else if (key == Keys.cafetoria) {
-                if (value < CafetoriaData.cafetoria.timeStamp) {
-                  data[key] = CafetoriaData.cafetoria.toJSON();
+                if (CafetoriaData.cafetoria != null) {
+                  if (value < CafetoriaData.cafetoria.timeStamp) {
+                    data[key] = CafetoriaData.cafetoria.toJSON();
+                  }
                 }
               } else if (key == Keys.replacementPlan) {
-                if (value <
-                    ReplacementPlanData.replacementPlan.replacementPlans
+                if (ReplacementPlanData.replacementPlan != null) {
+                  if (value <
+                      ReplacementPlanData.replacementPlan.replacementPlans
+                          .where((replacementPlan) =>
+                              replacementPlan.grade == user.grade.value)
+                          .toList()[0]
+                          .timeStamp) {
+                    data[key] = ReplacementPlanData
+                        .replacementPlan.replacementPlans
                         .where((replacementPlan) =>
                             replacementPlan.grade == user.grade.value)
                         .toList()[0]
-                        .timeStamp) {
-                  data[key] = ReplacementPlanData
-                      .replacementPlan.replacementPlans
-                      .where((replacementPlan) =>
-                          replacementPlan.grade == user.grade.value)
-                      .toList()[0]
-                      .toJSON();
+                        .toJSON();
+                  }
                 }
               } else if (key == Keys.teachers) {
-                if (value < TeachersData.teachers.timeStamp) {
-                  data[key] = TeachersData.teachers.toJSON();
+                if (TeachersData.teachers != null) {
+                  if (value < TeachersData.teachers.timeStamp) {
+                    data[key] = TeachersData.teachers.toJSON();
+                  }
                 }
               } else if (key == Keys.aiXformation) {
-                if (value < AiXformationData.posts.timeStamp) {
-                  data[key] = AiXformationData.posts.toJSON();
+                if (AiXformationData.posts != null) {
+                  if (value < AiXformationData.posts.timeStamp) {
+                    data[key] = AiXformationData.posts.toJSON();
+                  }
                 }
               } else {
                 print('$key: $value');
@@ -124,6 +171,7 @@ Future _setup() async {
   print('Config loaded');
   Users.load();
   print('Users loaded');
+  _invalidatePasswordCaches();
   await _deleteOldTokens();
   try {
     await TeachersData.load();
@@ -204,8 +252,8 @@ Future _setup() async {
 }
 
 Future _deleteOldTokens() async {
-  for (final encryptedUsername in Users.encryptedUsernames) {
-    final user = Users.getUser(encryptedUsername);
+  for (final username in Users.usernames) {
+    final user = Users.getUser(username);
 
     final unregisteredTokens = [];
     for (final token in user.tokens) {
@@ -215,7 +263,14 @@ Future _deleteOldTokens() async {
       }
     }
     for (final unregisteredToken in unregisteredTokens) {
-      Users.removeToken(user.encryptedUsername, unregisteredToken);
+      Users.removeToken(username, unregisteredToken);
     }
+  }
+}
+
+void _invalidatePasswordCaches() {
+  for (final username in Users.usernames) {
+    Users.getUser(username).password = 'InvalidPasswordCache';
+    Users.save();
   }
 }

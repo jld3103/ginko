@@ -63,8 +63,8 @@ class ReplacementPlanData {
         Config.dev) {
       print('Fire notifications!');
 
-      for (final encryptedUsername in Users.encryptedUsernames) {
-        final user = Users.getUser(encryptedUsername);
+      for (final username in Users.usernames) {
+        final user = Users.getUser(username);
         for (final day in replacementPlan
             .replacementPlans[grades.indexOf(user.grade.value)]
             .replacementPlanDays) {
@@ -163,7 +163,7 @@ class ReplacementPlanData {
               }
             }
             for (final unregisteredToken in unregisteredTokens) {
-              Users.removeToken(user.encryptedUsername, unregisteredToken);
+              Users.removeToken(username, unregisteredToken);
             }
             // ignore: avoid_catches_without_on_clauses
           } catch (e) {

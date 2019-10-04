@@ -1,4 +1,7 @@
 
+# 2019-10-05  
+ jld3103: Add authentication with real system  
+
 # 2019-10-04  
  jld3103: Fix dependecies  
  jld3103: Update everything and add new packaging formats  

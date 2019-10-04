@@ -16,15 +16,7 @@ void main() {
         tokens: ['c'],
       );
       expect(user.username, 'jandoe');
-      expect(
-        user.encryptedUsername,
-        sha256.convert(utf8.encode('jandoe')).toString(),
-      );
       expect(user.password, 'abc');
-      expect(
-        user.encryptedPassword,
-        sha256.convert(utf8.encode('abc')).toString(),
-      );
       expect(
         user.grade.toJSON(),
         {
@@ -64,15 +56,7 @@ void main() {
         tokens: null,
       );
       expect(user.username, 'jandoe');
-      expect(
-        user.encryptedUsername,
-        sha256.convert(utf8.encode('jandoe')).toString(),
-      );
       expect(user.password, 'abc');
-      expect(
-        user.encryptedPassword,
-        sha256.convert(utf8.encode('abc')).toString(),
-      );
       expect(
         user.grade.toJSON(),
         {
@@ -109,15 +93,7 @@ void main() {
         },
       });
       expect(user.username, 'jandoe');
-      expect(
-        user.encryptedUsername,
-        sha256.convert(utf8.encode('jandoe')).toString(),
-      );
       expect(user.password, 'abc');
-      expect(
-        user.encryptedPassword,
-        sha256.convert(utf8.encode('abc')).toString(),
-      );
       expect(
         user.grade.toJSON(),
         {
@@ -162,127 +138,7 @@ void main() {
         'tokens': ['c'],
       });
       expect(user.username, 'jandoe');
-      expect(
-        user.encryptedUsername,
-        sha256.convert(utf8.encode('jandoe')).toString(),
-      );
       expect(user.password, 'abc');
-      expect(
-        user.encryptedPassword,
-        sha256.convert(utf8.encode('abc')).toString(),
-      );
-      expect(
-        user.grade.toJSON(),
-        {
-          'key': 'grade',
-          'value': 'EF',
-          'modified': DateTime(2019, 8, 6, 22, 6, 11).toIso8601String(),
-        },
-      );
-      expect(
-        user.language.toJSON(),
-        {
-          'key': 'language',
-          'value': 'de',
-          'modified': DateTime(2019, 8, 6, 22, 6, 11).toIso8601String(),
-        },
-      );
-      expect(
-        user.selection.map((i) => i.toJSON()).toList(),
-        [
-          {
-            'key': 'a',
-            'value': 'b',
-            'modified': DateTime(2019, 8, 6, 22, 6, 11).toIso8601String(),
-          }
-        ],
-      );
-      expect(user.tokens, ['c']);
-    });
-
-    test('Can create user from encrypted JSON without selection and tokens',
-        () {
-      final user = User.fromEncryptedJSON(
-        {
-          'grade': {
-            'key': 'grade',
-            'value': 'EF',
-            'modified': DateTime(2019, 8, 6, 22, 6, 11).toIso8601String(),
-          },
-          'language': {
-            'key': 'language',
-            'value': 'de',
-            'modified': DateTime(2019, 8, 6, 22, 6, 11).toIso8601String(),
-          },
-        },
-        'jandoe',
-        'abc',
-      );
-      expect(user.username, 'jandoe');
-      expect(
-        user.encryptedUsername,
-        sha256.convert(utf8.encode('jandoe')).toString(),
-      );
-      expect(user.password, 'abc');
-      expect(
-        user.encryptedPassword,
-        sha256.convert(utf8.encode('abc')).toString(),
-      );
-      expect(
-        user.grade.toJSON(),
-        {
-          'key': 'grade',
-          'value': 'EF',
-          'modified': DateTime(2019, 8, 6, 22, 6, 11).toIso8601String(),
-        },
-      );
-      expect(
-        user.language.toJSON(),
-        {
-          'key': 'language',
-          'value': 'de',
-          'modified': DateTime(2019, 8, 6, 22, 6, 11).toIso8601String(),
-        },
-      );
-      expect(user.selection.map((i) => i.toJSON()).toList(), []);
-      expect(user.tokens, []);
-    });
-
-    test('Can create user from encrypted JSON', () {
-      final user = User.fromEncryptedJSON(
-        {
-          'grade': {
-            'key': 'grade',
-            'value': 'EF',
-            'modified': DateTime(2019, 8, 6, 22, 6, 11).toIso8601String(),
-          },
-          'language': {
-            'key': 'language',
-            'value': 'de',
-            'modified': DateTime(2019, 8, 6, 22, 6, 11).toIso8601String(),
-          },
-          'selection': [
-            {
-              'key': 'a',
-              'value': 'b',
-              'modified': DateTime(2019, 8, 6, 22, 6, 11).toIso8601String(),
-            }
-          ],
-          'tokens': ['c'],
-        },
-        'jandoe',
-        'abc',
-      );
-      expect(user.username, 'jandoe');
-      expect(
-        user.encryptedUsername,
-        sha256.convert(utf8.encode('jandoe')).toString(),
-      );
-      expect(user.password, 'abc');
-      expect(
-        user.encryptedPassword,
-        sha256.convert(utf8.encode('abc')).toString(),
-      );
       expect(
         user.grade.toJSON(),
         {
@@ -348,7 +204,7 @@ void main() {
       );
     });
 
-    test('Can create encrypted JSON from user', () {
+    test('Can create safe JSON from user', () {
       final user = User(
         username: 'jandoe',
         password: 'abc',
@@ -358,9 +214,9 @@ void main() {
         tokens: ['c'],
       );
       expect(
-        user.toEncryptedJSON(),
+        user.toSafeJSON(),
         {
-          'username': sha256.convert(utf8.encode('jandoe')).toString(),
+          'username': 'jandoe',
           'password': sha256.convert(utf8.encode('abc')).toString(),
           'grade': {
             'key': 'grade',

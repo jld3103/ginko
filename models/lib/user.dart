@@ -11,14 +11,13 @@ class User {
   // ignore: public_member_api_docs
   User({
     @required String username,
-    @required String password,
+    @required this.password,
     @required this.grade,
     @required this.language,
     @required List<UserValue> selection,
     @required List<String> tokens,
   }) {
     _username = username;
-    _password = password;
     this.selection = selection ?? [];
     this.tokens = tokens ?? [];
   }
@@ -39,26 +38,9 @@ class User {
       );
 
   // ignore: public_member_api_docs
-  factory User.fromEncryptedJSON(Map<String, dynamic> json,
-          String originalUsername, String originalPassword) =>
-      User(
-        username: originalUsername,
-        password: originalPassword,
-        grade: UserValue.fromJSON(json['grade']),
-        language: UserValue.fromJSON(json['language']),
-        selection: json['selection'] == null
-            ? []
-            : json['selection']
-                .map((i) => UserValue.fromJSON(i))
-                .toList()
-                .cast<UserValue>(),
-        tokens: json['tokens'] == null ? [] : json['tokens'].cast<String>(),
-      );
-
-  // ignore: public_member_api_docs
   Map<String, dynamic> toJSON() => {
         'username': _username,
-        'password': _password,
+        'password': password,
         'grade': grade.toJSON(),
         'language': language.toJSON(),
         'selection': selection.map((i) => i.toJSON()).toList(),
@@ -66,9 +48,9 @@ class User {
       };
 
   // ignore: public_member_api_docs
-  Map<String, dynamic> toEncryptedJSON() => {
-        'username': encryptedUsername,
-        'password': encryptedPassword,
+  Map<String, dynamic> toSafeJSON() => {
+        'username': username,
+        'password': sha256.convert(utf8.encode(password)).toString(),
         'grade': grade.toJSON(),
         'language': language.toJSON(),
         'selection': selection.map((i) => i.toJSON()).toList(),
@@ -76,7 +58,9 @@ class User {
       };
 
   String _username;
-  String _password;
+
+  // ignore: public_member_api_docs
+  String password;
 
   // ignore: public_member_api_docs
   UserValue grade;
@@ -92,17 +76,6 @@ class User {
 
   // ignore: public_member_api_docs
   String get username => _username;
-
-  // ignore: public_member_api_docs
-  String get password => _password;
-
-  // ignore: public_member_api_docs
-  String get encryptedUsername =>
-      sha256.convert(utf8.encode(_username)).toString();
-
-  // ignore: public_member_api_docs
-  String get encryptedPassword =>
-      sha256.convert(utf8.encode(_password)).toString();
 
   // ignore: public_member_api_docs
   String getSelection(String key) {

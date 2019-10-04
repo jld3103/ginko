@@ -10,31 +10,33 @@ class Users {
   /// List of all users
   static List<User> _users = [];
 
+  /// Add a user to the database
+  static void addUser(User user) {
+    _users.add(User.fromJSON(user.toSafeJSON()));
+    save();
+  }
+
   /// Update the grade of a user
-  static void updateGrade(String encryptedUsername, UserValue grade) {
-    if (getUser(encryptedUsername).grade.modified.isBefore(grade.modified)) {
-      getUser(encryptedUsername).grade.value = grade.value;
-      File('../server/users.json').writeAsStringSync(
-          json.encode(_users.map((user) => user.toJSON()).toList()));
+  static void updateGrade(String username, UserValue grade) {
+    final user = getUser(username);
+    if (user.grade.modified.isBefore(grade.modified)) {
+      user.grade.value = grade.value;
+      save();
     }
   }
 
   /// Update the language of a user
-  static void updateLanguage(String encryptedUsername, UserValue language) {
-    if (getUser(encryptedUsername)
-        .language
-        .modified
-        .isBefore(language.modified)) {
-      getUser(encryptedUsername).language.value = language.value;
-      File('../server/users.json').writeAsStringSync(
-          json.encode(_users.map((user) => user.toJSON()).toList()));
+  static void updateLanguage(String username, UserValue language) {
+    final user = getUser(username);
+    if (user.language.modified.isBefore(language.modified)) {
+      user.language.value = language.value;
+      save();
     }
   }
 
   /// Update the selection of a user
-  static void updateSelection(
-      String encryptedUsername, List<UserValue> selection) {
-    final user = getUser(encryptedUsername);
+  static void updateSelection(String username, List<UserValue> selection) {
+    final user = getUser(username);
     for (final value in selection) {
       final values = user.selection.where((i) => i.key == value.key).toList();
       if (values.length != 1) {
@@ -48,34 +50,30 @@ class Users {
     user.selection = user.selection
         .where((value) => value.key.startsWith('selection-${user.grade.value}'))
         .toList();
-    File('../server/users.json').writeAsStringSync(
-        json.encode(_users.map((user) => user.toJSON()).toList()));
+    save();
   }
 
   /// Update the tokens of a user
-  static void updateTokens(String encryptedUsername, List<String> tokens) {
-    getUser(encryptedUsername).tokens =
-        (getUser(encryptedUsername).tokens..addAll(tokens)).toSet().toList();
-    File('../server/users.json').writeAsStringSync(
-        json.encode(_users.map((user) => user.toJSON()).toList()));
+  static void updateTokens(String username, List<String> tokens) {
+    final user = getUser(username);
+    user.tokens = (user.tokens..addAll(tokens)).toSet().toList();
+    save();
   }
 
   /// Remove a token of a user
-  static void removeToken(String encryptedUsername, String token) {
-    getUser(encryptedUsername).tokens = getUser(encryptedUsername).tokens
-      ..remove(token);
-    File('../server/users.json').writeAsStringSync(
-        json.encode(_users.map((user) => user.toJSON()).toList()));
+  static void removeToken(String username, String token) {
+    final user = getUser(username);
+    user.tokens = user.tokens..remove(token);
+    save();
   }
 
-  /// Get a user by their encrypted username
-  static User getUser(String encryptedUsername) => _users
-      .where((user) => user.encryptedUsername == encryptedUsername)
-      .toList()[0];
+  /// Get a user by their username
+  static User getUser(String username) =>
+      _users.where((user) => user.username == username).toList()[0];
 
-  /// Get a list of all encrypted usernames
-  static List<String> get encryptedUsernames =>
-      _users.map((user) => user.encryptedUsername).toList();
+  /// Get a list of all usernames
+  static List<String> get usernames =>
+      _users.map((user) => user.username).toList();
 
   /// Loads all users
   static void load() {
@@ -84,5 +82,11 @@ class Users {
         .map((i) => User.fromJSON(i))
         .toList()
         .cast<User>();
+  }
+
+  /// Save all users
+  static void save() {
+    File('../server/users.json').writeAsStringSync(
+        json.encode(_users.map((user) => user.toJSON()).toList()));
   }
 }

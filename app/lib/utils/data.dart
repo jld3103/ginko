@@ -141,7 +141,7 @@ class Data {
           (replacementPlan == null ? 0 : replacementPlan.timeStamp).toString(),
       Keys.teachers: (teachers == null ? 0 : teachers.timeStamp).toString(),
       Keys.aiXformation: (posts == null ? 0 : posts.timeStamp).toString(),
-      Keys.user: json.encode(_user?.toEncryptedJSON()),
+      Keys.user: json.encode(_user?.toJSON()),
     };
 
     try {
@@ -185,10 +185,9 @@ class Data {
         Static.storage.setJSON(Keys.aiXformation, data[Keys.aiXformation]);
       }
       if (data[Keys.user] != null) {
-        final username = user.username;
         final password = user.password;
-        user = User.fromEncryptedJSON(data[Keys.user], username, password);
-        Static.storage.setJSON(Keys.user, data[Keys.user]);
+        user = User.fromJSON(data[Keys.user])..password = password;
+        Static.storage.setJSON(Keys.user, user.toJSON());
       }
 
       if (unitPlan != null) {
