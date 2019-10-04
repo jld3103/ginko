@@ -55,8 +55,8 @@ class Users {
 
   /// Update the tokens of a user
   static void updateTokens(String username, List<String> tokens) {
-    final user = getUser(username);
-    user.tokens = (user.tokens..addAll(tokens)).toSet().toList();
+    getUser(username).tokens =
+        (getUser(username).tokens..addAll(tokens)).toSet().toList();
     save();
   }
 
