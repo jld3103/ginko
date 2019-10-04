@@ -38,69 +38,82 @@ class UnitPlanRow extends StatelessWidget {
             (times[1].inMinutes % 60).toString();
     final timeStr = '$startHour:$startMinute - $endHour:$endMinute';
 
-    return Card(
-      child: Container(
-        width: double.infinity,
-        padding: EdgeInsets.all(10),
-        child: Row(
-          children: [
-            Container(
-              alignment: Alignment.centerLeft,
-              width: addPadding ? 20 : null,
-              child: showUnit ? Text('${subject.unit + 1}') : null,
-            ),
-            Expanded(
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        flex: 85,
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.only(top: 5, right: 9, bottom: 5, left: 6.5),
+      child: Row(
+        children: [
+          Container(
+            width: addPadding ? 17.5 : null,
+            child: showUnit
+                ? Text(
+                    '${subject.unit + 1}',
+                    style: TextStyle(
+                      color: Colors.black87,
+                    ),
+                  )
+                : null,
+          ),
+          Expanded(
+            child: Column(
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      flex: 85,
+                      child: Text(
+                        AppTranslations.of(context).subjects[subject.subject] ??
+                            '',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 15,
+                      child: Container(
+                        alignment: Alignment.centerLeft,
                         child: Text(
-                          AppTranslations.of(context)
-                                  .subjects[subject.subject] ??
-                              '',
+                          subject.room ?? '',
                           style: TextStyle(
-                            fontWeight: FontWeight.bold,
                             color: Theme.of(context).primaryColor,
                           ),
                         ),
                       ),
-                      Expanded(
-                        flex: 15,
-                        child: Container(
-                          alignment: Alignment.centerLeft,
-                          child: Text(subject.room ?? ''),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Expanded(
+                      flex: 85,
+                      child: Text(
+                        timeStr,
+                        style: TextStyle(
+                          color: Colors.grey,
                         ),
                       ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Expanded(
-                        flex: 85,
+                    ),
+                    Expanded(
+                      flex: 15,
+                      child: Container(
+                        alignment: Alignment.centerLeft,
                         child: Text(
-                          timeStr,
+                          subject.teacher ?? '',
                           style: TextStyle(
-                            color: Colors.grey,
+                            color: Theme.of(context).primaryColor,
                           ),
                         ),
                       ),
-                      Expanded(
-                        flex: 15,
-                        child: Container(
-                          alignment: Alignment.centerLeft,
-                          child: Text(subject.teacher ?? ''),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

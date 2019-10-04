@@ -25,6 +25,7 @@
   "replacementPlanReplaced": "Vertretung",
   "replacementPlanExam": "Klausur",
   "replacementPlanUnknown": "Unbekannt",
+  "cafetoriaNoMenus": "Keine Cafétoriamenüs vorhanden",
   "subjects": {
     "BI": "Bio",
     "CH": "Chemie",

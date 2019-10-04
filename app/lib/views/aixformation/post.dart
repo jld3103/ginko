@@ -27,85 +27,52 @@ class _AiXformationPostState extends State<AiXformationPost> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Center(
-            child: Column(
-              children: [
-                Text(
-                  widget.post.title,
-                  style: TextStyle(
-                    fontSize: 30,
+            child: Container(
+              constraints: BoxConstraints(maxWidth: 800),
+              child: Column(
+                children: [
+                  Text(
+                    widget.post.title,
+                    style: TextStyle(
+                      fontSize: 30,
+                    ),
                   ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.person,
-                      color: Colors.grey,
-                      size: 12,
-                    ),
-                    Text(
-                      widget.post.author,
-                      style: TextStyle(
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.person,
                         color: Colors.grey,
+                        size: 12,
                       ),
-                    ),
-                    Container(
-                      width: 10,
-                      height: 1,
-                      color: Colors.transparent,
-                    ),
-                    Icon(
-                      Icons.access_time,
-                      color: Colors.grey,
-                      size: 12,
-                    ),
-                    Text(
-                      outputDateFormat.format(widget.post.date),
-                      style: TextStyle(
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ],
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 10, bottom: 10),
-                  child: CachedNetworkImage(
-                    imageUrl: widget.post.fullUrl,
-                    placeholder: (context, url) => Container(
-                      height: 56,
-                      width: 56,
-                      child: Center(
-                        child: SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 3,
-                          ),
+                      Text(
+                        widget.post.author,
+                        style: TextStyle(
+                          color: Colors.grey,
                         ),
                       ),
-                    ),
-                    errorWidget: (context, url, error) => Icon(Icons.error),
+                      Container(
+                        width: 10,
+                        height: 1,
+                        color: Colors.transparent,
+                      ),
+                      Icon(
+                        Icons.access_time,
+                        color: Colors.grey,
+                        size: 12,
+                      ),
+                      Text(
+                        outputDateFormat.format(widget.post.date),
+                        style: TextStyle(
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
-          ),
-          Html(
-            data: widget.post.content,
-            onLinkTap: (url) async {
-              if (await canLaunch(url)) {
-                await launch(url);
-              } else {
-                throw Exception('Could not launch $url');
-              }
-            },
-            onImageTap: (src) {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => Scaffold(
-                  appBar: AppBar(),
-                  body: Center(
+                  Container(
+                    margin: EdgeInsets.only(top: 10, bottom: 10),
                     child: CachedNetworkImage(
-                      imageUrl: src,
+                      imageUrl: widget.post.fullUrl,
                       placeholder: (context, url) => Container(
                         height: 56,
                         width: 56,
@@ -122,9 +89,51 @@ class _AiXformationPostState extends State<AiXformationPost> {
                       errorWidget: (context, url, error) => Icon(Icons.error),
                     ),
                   ),
-                ),
-              ));
-            },
+                ],
+              ),
+            ),
+          ),
+          Center(
+            child: Container(
+              constraints: BoxConstraints(maxWidth: 800),
+              child: Html(
+                data: widget.post.content,
+                onLinkTap: (url) async {
+                  if (await canLaunch(url)) {
+                    await launch(url);
+                  } else {
+                    throw Exception('Could not launch $url');
+                  }
+                },
+                onImageTap: (src) {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => Scaffold(
+                      appBar: AppBar(),
+                      body: Center(
+                        child: CachedNetworkImage(
+                          imageUrl: src,
+                          placeholder: (context, url) => Container(
+                            height: 56,
+                            width: 56,
+                            child: Center(
+                              child: SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 3,
+                                ),
+                              ),
+                            ),
+                          ),
+                          errorWidget: (context, url, error) =>
+                              Icon(Icons.error),
+                        ),
+                      ),
+                    ),
+                  ));
+                },
+              ),
+            ),
           ),
         ],
       );

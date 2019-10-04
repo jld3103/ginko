@@ -162,16 +162,10 @@ void main() {
         expect(find.text('1'), findsOneWidget);
         expect(
           find.text(ServerTranslations.subjects('en')['EK']),
-          findsOneWidget,
+          findsNWidgets(2),
         );
         expect(find.text('KRA'), findsNWidgets(2));
         expect(find.text('525'), findsNWidgets(2));
-        expect(
-          find.text(
-              // ignore: lines_longer_than_80_chars
-              '${ServerTranslations.subjects('en')['EK']}: ${ServerTranslations.replacementPlanReplaced('en')}'),
-          findsOneWidget,
-        );
       });
 
       testWidgets('Normal replacement plan row with exam type', (tester) async {

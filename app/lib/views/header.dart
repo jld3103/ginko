@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ginko/utils/data.dart';
 import 'package:ginko/utils/platform/platform.dart';
 import 'package:ginko/utils/screen_sizes.dart';
 import 'package:ginko/utils/svg/svg.dart';
@@ -47,9 +48,17 @@ class _HeaderState extends State<Header> {
                     child: Column(
                       children: [
                         Container(
-                          height: 116,
+                          height: 113,
                           margin: EdgeInsets.only(bottom: 5),
                           child: SvgPicture.asset('images/logo_white.svg'),
+                        ),
+                        Text(
+                          Data.user.grade.value,
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ],
                     ),

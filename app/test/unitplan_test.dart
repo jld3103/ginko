@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ginko/views/unitplan/progress_overlay.dart';
-import 'package:ginko/views/unitplan/progress_row.dart';
+import 'package:ginko/views/unitplan/all_row.dart';
 import 'package:ginko/views/unitplan/row.dart';
 import 'package:ginko/views/unitplan/select_dialog.dart';
 import 'package:models/models.dart';
@@ -119,8 +118,8 @@ void main() {
       });
     });
 
-    group('Unit plan progress row', () {
-      testWidgets('Unit plan progress row before unit', (tester) async {
+    group('Unit plan all row', () {
+      testWidgets('Unit plan all row without changes ', (tester) async {
         final subject = Subject(
           unit: 0,
           subject: 'EK',
@@ -128,151 +127,7 @@ void main() {
           room: '525',
           weeks: null,
         );
-        await tester.pumpWidget(makeTestableWidget(UnitPlanProgressRow(
-          start: DateTime(2019, 8, 5),
-          unitPlanDay: UnitPlanDay(
-            weekday: 0,
-            lessons: [
-              Lesson(
-                unit: 0,
-                block: 'a',
-                subjects: [subject],
-              ),
-            ],
-          ),
-          subject: subject,
-          replacementPlan: ReplacementPlanForGrade(
-            grade: 'EF',
-            replacementPlanDays: [],
-            changes: [],
-          ),
-          current: DateTime(2019, 8, 5, 7, 59),
-        )));
-        await tester.pumpAndSettle();
-        expect(find.text('1'), findsOneWidget);
-        expect(
-          find.text(ServerTranslations.subjects('en')['EK']),
-          findsOneWidget,
-        );
-        expect(find.text('08:00 - 09:00'), findsOneWidget);
-        expect(find.text('KRA'), findsOneWidget);
-        expect(find.text('STA'), findsNothing);
-        expect(find.text('525'), findsOneWidget);
-        final Padding padding = find
-            .descendant(
-                of: find.byType(UnitPlanProgressRowOverlay),
-                matching: find.byType(Padding))
-            .evaluate()
-            .single
-            .widget;
-        expect(padding.padding, EdgeInsets.only(bottom: 600));
-      });
-
-      testWidgets('Unit plan progress row during unit', (tester) async {
-        final subject = Subject(
-          unit: 0,
-          subject: 'EK',
-          teacher: 'KRA',
-          room: '525',
-          weeks: null,
-        );
-        await tester.pumpWidget(makeTestableWidget(UnitPlanProgressRow(
-          start: DateTime(2019, 8, 5),
-          unitPlanDay: UnitPlanDay(
-            weekday: 0,
-            lessons: [
-              Lesson(
-                unit: 0,
-                block: 'a',
-                subjects: [subject],
-              ),
-            ],
-          ),
-          subject: subject,
-          replacementPlan: ReplacementPlanForGrade(
-            grade: 'EF',
-            replacementPlanDays: [],
-            changes: [],
-          ),
-          current: DateTime(2019, 8, 5, 8, 30),
-        )));
-        await tester.pumpAndSettle();
-        expect(find.text('1'), findsOneWidget);
-        expect(
-          find.text(ServerTranslations.subjects('en')['EK']),
-          findsOneWidget,
-        );
-        expect(find.text('08:00 - 09:00'), findsOneWidget);
-        expect(find.text('KRA'), findsOneWidget);
-        expect(find.text('STA'), findsNothing);
-        expect(find.text('525'), findsOneWidget);
-        final Padding padding = find
-            .descendant(
-                of: find.byType(UnitPlanProgressRowOverlay),
-                matching: find.byType(Padding))
-            .evaluate()
-            .single
-            .widget;
-        expect(padding.padding, EdgeInsets.only(bottom: 300));
-      });
-
-      testWidgets('Unit plan progress row after unit', (tester) async {
-        final subject = Subject(
-          unit: 0,
-          subject: 'EK',
-          teacher: 'KRA',
-          room: '525',
-          weeks: null,
-        );
-        await tester.pumpWidget(makeTestableWidget(UnitPlanProgressRow(
-          start: DateTime(2019, 8, 5),
-          unitPlanDay: UnitPlanDay(
-            weekday: 0,
-            lessons: [
-              Lesson(
-                unit: 0,
-                block: 'a',
-                subjects: [subject],
-              ),
-            ],
-          ),
-          subject: subject,
-          replacementPlan: ReplacementPlanForGrade(
-            grade: 'EF',
-            replacementPlanDays: [],
-            changes: [],
-          ),
-          current: DateTime(2019, 8, 5, 9, 1),
-        )));
-        await tester.pumpAndSettle();
-        expect(find.text('1'), findsOneWidget);
-        expect(
-          find.text(ServerTranslations.subjects('en')['EK']),
-          findsOneWidget,
-        );
-        expect(find.text('08:00 - 09:00'), findsOneWidget);
-        expect(find.text('KRA'), findsOneWidget);
-        expect(find.text('STA'), findsNothing);
-        expect(find.text('525'), findsOneWidget);
-        final Padding padding = find
-            .descendant(
-                of: find.byType(UnitPlanProgressRowOverlay),
-                matching: find.byType(Padding))
-            .evaluate()
-            .single
-            .widget;
-        expect(padding.padding, EdgeInsets.zero);
-      });
-
-      testWidgets('Unit plan progress row without changes ', (tester) async {
-        final subject = Subject(
-          unit: 0,
-          subject: 'EK',
-          teacher: 'KRA',
-          room: '525',
-          weeks: null,
-        );
-        await tester.pumpWidget(makeTestableWidget(UnitPlanProgressRow(
+        await tester.pumpWidget(makeTestableWidget(UnitPlanAllRow(
           start: DateTime(2019, 8, 5),
           unitPlanDay: UnitPlanDay(
             weekday: 0,
@@ -337,7 +192,7 @@ void main() {
         expect(find.text('525'), findsOneWidget);
       });
 
-      testWidgets('Unit plan progress row with changes with subject',
+      testWidgets('Unit plan all row with changes with subject',
           (tester) async {
         final subject = Subject(
           unit: 0,
@@ -346,7 +201,7 @@ void main() {
           room: '525',
           weeks: null,
         );
-        await tester.pumpWidget(makeTestableWidget(UnitPlanProgressRow(
+        await tester.pumpWidget(makeTestableWidget(UnitPlanAllRow(
           start: DateTime(2019, 8, 5),
           current: DateTime(2019, 8, 5),
           unitPlanDay: UnitPlanDay(
@@ -402,8 +257,7 @@ void main() {
         expect(find.text('525'), findsNWidgets(3));
       });
 
-      testWidgets('Unit plan progress row with changes with info',
-          (tester) async {
+      testWidgets('Unit plan all row with changes with info', (tester) async {
         final subject = Subject(
           unit: 0,
           subject: 'EK',
@@ -411,7 +265,7 @@ void main() {
           room: '525',
           weeks: null,
         );
-        await tester.pumpWidget(makeTestableWidget(UnitPlanProgressRow(
+        await tester.pumpWidget(makeTestableWidget(UnitPlanAllRow(
           start: DateTime(2019, 8, 5),
           current: DateTime(2019, 8, 5),
           unitPlanDay: UnitPlanDay(
@@ -465,7 +319,7 @@ void main() {
         expect(find.text('525'), findsNWidgets(3));
       });
 
-      testWidgets('Unit plan progress row with changes with info and subject',
+      testWidgets('Unit plan all row with changes with info and subject',
           (tester) async {
         final subject = Subject(
           unit: 0,
@@ -474,7 +328,7 @@ void main() {
           room: '525',
           weeks: null,
         );
-        await tester.pumpWidget(makeTestableWidget(UnitPlanProgressRow(
+        await tester.pumpWidget(makeTestableWidget(UnitPlanAllRow(
           start: DateTime(2019, 8, 5),
           current: DateTime(2019, 8, 5),
           unitPlanDay: UnitPlanDay(
@@ -530,55 +384,6 @@ void main() {
               ' LOL'),
           findsOneWidget,
         );
-      });
-    });
-
-    group('Unit plan progress row overlay', () {
-      testWidgets('Unit plan progress row overlay before unit', (tester) async {
-        await tester.pumpWidget(makeTestableWidget(UnitPlanProgressRowOverlay(
-          height: 100,
-          progress: 0,
-        )));
-        await tester.pumpAndSettle();
-        final Padding padding = find
-            .descendant(
-                of: find.byType(UnitPlanProgressRowOverlay),
-                matching: find.byType(Padding))
-            .evaluate()
-            .single
-            .widget;
-        expect(padding.padding, EdgeInsets.only(bottom: 100));
-      });
-      testWidgets('Unit plan progress row overlay during unit', (tester) async {
-        await tester.pumpWidget(makeTestableWidget(UnitPlanProgressRowOverlay(
-          height: 100,
-          progress: 0.5,
-        )));
-        await tester.pumpAndSettle();
-        final Padding padding = find
-            .descendant(
-                of: find.byType(UnitPlanProgressRowOverlay),
-                matching: find.byType(Padding))
-            .evaluate()
-            .single
-            .widget;
-        expect(padding.padding, EdgeInsets.only(bottom: 50));
-      });
-
-      testWidgets('Unit plan progress row overlay after unit', (tester) async {
-        await tester.pumpWidget(makeTestableWidget(UnitPlanProgressRowOverlay(
-          height: 100,
-          progress: 1,
-        )));
-        await tester.pumpAndSettle();
-        final Padding padding = find
-            .descendant(
-                of: find.byType(UnitPlanProgressRowOverlay),
-                matching: find.byType(Padding))
-            .evaluate()
-            .single
-            .widget;
-        expect(padding.padding, EdgeInsets.zero);
       });
     });
 
@@ -645,7 +450,6 @@ void main() {
         );
         expect(find.text(''), findsNWidgets(2));
         expect(find.text('08:00 - 09:00'), findsNWidgets(3));
-        expect(find.byType(Card), findsNWidgets(3));
 
         await tester.tap(find.byType(GestureDetector).at(1));
         await tester.pump();
@@ -714,7 +518,6 @@ void main() {
         );
         expect(find.text(''), findsNWidgets(6));
         expect(find.text('08:00 - 09:00'), findsNWidgets(7));
-        expect(find.byType(Card), findsNWidgets(10));
 
         await tester.tap(find.byType(GestureDetector).at(1));
         await tester.pump();

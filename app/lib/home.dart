@@ -7,7 +7,7 @@ import 'package:ginko/utils/selection.dart';
 import 'package:ginko/utils/static.dart';
 import 'package:ginko/views/extra_information.dart';
 import 'package:ginko/views/tab_proxy.dart';
-import 'package:ginko/views/unitplan/progress_row.dart';
+import 'package:ginko/views/unitplan/all_row.dart';
 import 'package:ginko/views/unitplan/select_dialog.dart';
 import 'package:models/models.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -123,7 +123,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
             final start = monday(DateTime.now()).add(Duration(days: weekday));
             return ListView(
               shrinkWrap: true,
-              padding: EdgeInsets.only(bottom: 5),
+              padding: EdgeInsets.only(top: 5, bottom: 5),
               children: Data.unitPlan.days[weekday].lessons
                   .map((lesson) {
                     final subjects = lesson.subjects
@@ -157,7 +157,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           Static.rebuildUnitPlan();
                         }
                       },
-                      child: UnitPlanProgressRow(
+                      child: UnitPlanAllRow(
                         subject: subjects.isNotEmpty
                             ? subjects[0]
                             : Subject(

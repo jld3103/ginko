@@ -25,8 +25,11 @@ class ReplacementPlanRow extends StatelessWidget {
   Widget build(BuildContext context) {
     var infoText = '';
     if (change.changed.subject != null) {
-      infoText +=
-          '${AppTranslations.of(context).subjects[change.changed.subject]}: ';
+      infoText += AppTranslations.of(context).subjects[change.changed.subject];
+    }
+    if (change.changed.subject != null &&
+        (change.type != ChangeTypes.replaced || change.changed.info != null)) {
+      infoText += ': ';
     }
     switch (change.type) {
       case ChangeTypes.unknown:
@@ -39,25 +42,37 @@ class ReplacementPlanRow extends StatelessWidget {
         infoText += AppTranslations.of(context).replacementPlanFreeLesson;
         break;
       case ChangeTypes.replaced:
-        infoText += AppTranslations.of(context).replacementPlanReplaced;
         break;
     }
+    if (change.changed.info != null &&
+        (change.type != ChangeTypes.replaced ||
+            change.changed.subject != null)) {
+      infoText += ' ';
+    }
     if (change.changed.info != null) {
-      infoText += ' ${change.changed.info}';
+      infoText += change.changed.info;
     }
     return Card(
+      margin: EdgeInsets.all(2.5),
       child: Container(
         width: double.infinity,
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.only(top: 5, right: 5, bottom: 5, left: 7.5),
         child: Row(
           children: [
             Container(
               alignment: Alignment.centerLeft,
-              width: addPadding ? 15 : null,
-              child: showUnit ? Text('${change.unit + 1}') : null,
+              width: addPadding ? 20 : null,
+              child: showUnit
+                  ? Text(
+                      '${change.unit + 1}',
+                      style: TextStyle(
+                        color: Colors.black87,
+                      ),
+                    )
+                  : null,
             ),
             Container(
-              margin: EdgeInsets.only(right: 3),
+              margin: EdgeInsets.only(right: 12.5),
               alignment: Alignment.center,
               height: 32,
               width: 2,
@@ -95,7 +110,12 @@ class ReplacementPlanRow extends StatelessWidget {
                         flex: 15,
                         child: Container(
                           alignment: Alignment.centerLeft,
-                          child: Text(change.room ?? ''),
+                          child: Text(
+                            change.room ?? '',
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ),
                         ),
                       ),
                     ],
@@ -105,7 +125,12 @@ class ReplacementPlanRow extends StatelessWidget {
                     children: <Widget>[
                       Expanded(
                         flex: 70,
-                        child: Text(infoText),
+                        child: Text(
+                          infoText,
+                          style: TextStyle(
+                            color: Colors.grey,
+                          ),
+                        ),
                       ),
                       Expanded(
                         flex: 15,
@@ -118,7 +143,12 @@ class ReplacementPlanRow extends StatelessWidget {
                         flex: 15,
                         child: Container(
                           alignment: Alignment.centerLeft,
-                          child: Text(change.teacher ?? ''),
+                          child: Text(
+                            change.teacher ?? '',
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ),
                         ),
                       ),
                     ],
