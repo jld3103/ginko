@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-    <Product Id="*" UpgradeCode="*" Version="1.0.0+1" Language="1033" Name="ginko" Manufacturer="jld3103">
+    <Product Id="*" UpgradeCode="*" Version="1.0.0+1" Language="1033" Name="Ginko" Manufacturer="jld3103">
         <Package InstallerVersion="300" Compressed="yes"/>
         <Media Id="1" Cabinet="ginko.cab" EmbedCab="yes" />
         <Directory Id="TARGETDIR" Name="SourceDir">
@@ -37,11 +37,11 @@
         <DirectoryRef Id="ApplicationProgramsFolder">
             <Component Id="ApplicationShortcut" Guid="*">
                 <Shortcut Id="ApplicationStartMenuShortcut"
-                        Name="ginko"
-                        Description="The Ginko app"
-                        Target="[#ginko.exe]"
-                        WorkingDirectory="APPLICATIONROOTDIRECTORY"
-                        Icon="ShortcutIcon"/>
+                          Name="Ginko"
+                          Description="The Ginko app"
+                          Target="[#ginko.exe]"
+                          WorkingDirectory="APPLICATIONROOTDIRECTORY"
+                          Icon="ShortcutIcon"/>
                 <RemoveFolder Id="CleanUpShortCut" On="uninstall"/>
                 <RegistryValue Root="HKCU" Key="Software\jld3103\ginko" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
             </Component>

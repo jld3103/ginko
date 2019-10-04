@@ -2,7 +2,7 @@
 Version=1.0
 Type=Application
 Terminal=false
+Categories=
 Name=Ginko
 Icon=/icon.png
-Categories=
 Exec=/ginko
