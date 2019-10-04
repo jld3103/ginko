@@ -1,8 +1,8 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:html/dom.dart';
 import 'package:models/models.dart';
 import 'package:server/config.dart';
@@ -18,8 +18,11 @@ class CafetoriaParser {
       password = Config.cafetoriaPassword;
     }
     final cookieJar = CookieJar();
-    final dio = Dio();
-    dio.interceptors.add(CookieManager(cookieJar));
+    final dio = Dio()
+      ..options = BaseOptions(
+        contentType: 'application/x-www-form-urlencoded',
+      )
+      ..interceptors.add(CookieManager(cookieJar));
     // Get the php session id
     await dio
         .get('https://www.opc-asp.de/vs-aachen/')
@@ -27,25 +30,18 @@ class CafetoriaParser {
 
     try {
       // This will fail in a redirect 302 error. That's correct
-      await dio
-          .post(
-            'https://www.opc-asp.de/vs-aachen/?LogIn=true',
-            data: {
-              'sessiontest': cookieJar
-                  .loadForRequest(
-                      Uri.parse('https://www.opc-asp.de/vs-aachen/'))
-                  .where((cookie) => cookie.name == 'PHPSESSID')
-                  .toList()[0]
-                  .value,
-              'f_kartennr': username,
-              'f_pw': password,
-            },
-            options: Options(
-              contentType:
-                  ContentType.parse('application/x-www-form-urlencoded'),
-            ),
-          )
-          .timeout(Duration(seconds: 3));
+      await dio.post(
+        'https://www.opc-asp.de/vs-aachen/?LogIn=true',
+        data: {
+          'sessiontest': cookieJar
+              .loadForRequest(Uri.parse('https://www.opc-asp.de/vs-aachen/'))
+              .where((cookie) => cookie.name == 'PHPSESSID')
+              .toList()[0]
+              .value,
+          'f_kartennr': username,
+          'f_pw': password,
+        },
+      ).timeout(Duration(seconds: 3));
       // ignore: empty_catches, unused_catch_clause
     } on DioError catch (e) {}
     final response = await dio

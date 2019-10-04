@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:code_builder/code_builder.dart';
-import 'package:dart_style/dart_style.dart';
 
 void main() {
   final locales = {};
@@ -36,10 +35,8 @@ void main() {
         ));
     },
   );
-  final formattedLocalesList =
-      DartFormatter().format('${localesList.accept(emitter)}');
   File('lib/translation_locales_list.dart')
-      .writeAsStringSync(formattedLocalesList);
+      .writeAsStringSync('${localesList.accept(emitter)}');
 
   final translationMap = Class(
     (b) {
@@ -62,9 +59,8 @@ void main() {
         ));
     },
   );
-  final formattedTranslationMap =
-      DartFormatter().format('${translationMap.accept(emitter)}');
-  File('lib/translation_map.dart').writeAsStringSync(formattedTranslationMap);
+  File('lib/translation_map.dart')
+      .writeAsStringSync('${translationMap.accept(emitter)}');
 
   final appTranslations = Library(
     (b) => b
@@ -199,12 +195,10 @@ void main() {
         Directive.import('package:translations/translation_map.dart'),
       ]),
   );
-  final formattedAppTranslations =
-      DartFormatter().format('${appTranslations.accept(emitter)}');
   const rules =
       '// ignore_for_file: lines_longer_than_80_chars, uri_does_not_exist, undefined_class, extends_non_class, undefined_identifier, override_on_non_overriding_method, public_member_api_docs';
   File('lib/translations_app.dart')
-      .writeAsStringSync('$rules\n$formattedAppTranslations');
+      .writeAsStringSync('$rules\n${appTranslations.accept(emitter)}');
 
   final serverTranslations = Library(
     (b) => b
@@ -267,8 +261,6 @@ void main() {
         Directive.import('package:translations/translation_map.dart'),
       ]),
   );
-  final formattedServerTranslations =
-      DartFormatter().format('${serverTranslations.accept(emitter)}');
   File('lib/translations_server.dart')
-      .writeAsStringSync(formattedServerTranslations);
+      .writeAsStringSync('${serverTranslations.accept(emitter)}');
 }

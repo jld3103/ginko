@@ -29,11 +29,14 @@ class Notification {
       data['data']['bigBody'] = bigBody;
     }
     data['to'] = token;
-    final response = json.decode((await Dio().post(
+    final dio = Dio()
+      ..options = BaseOptions(
+        contentType: 'application/json',
+      );
+    final response = json.decode((await dio.post(
       'https://fcm.googleapis.com/fcm/send',
       data: data,
       options: Options(
-        contentType: ContentType.json,
         headers: {
           HttpHeaders.authorizationHeader: 'key=${Config.fcmServerKey}'
         },
@@ -55,11 +58,14 @@ class Notification {
       'registration_ids': [token],
       'dry_run': true,
     };
-    final response = json.decode((await Dio().post(
+    final dio = Dio()
+      ..options = BaseOptions(
+        contentType: 'application/json',
+      );
+    final response = json.decode((await dio.post(
       'https://fcm.googleapis.com/fcm/send',
       data: data,
       options: Options(
-        contentType: ContentType.json,
         headers: {
           HttpHeaders.authorizationHeader: 'key=${Config.fcmServerKey}'
         },
