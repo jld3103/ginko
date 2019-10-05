@@ -78,9 +78,7 @@ class _CafetoriaRowState extends State<CafetoriaRow> {
                           Text(
                             // ignore: lines_longer_than_80_chars
                             '${menu.name}${menu.price != 0 ? ' (${menu.price}€)' : ''}',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: TextStyle(),
                           ),
                           if (menu.times.isNotEmpty)
                             Text(
@@ -89,9 +87,7 @@ class _CafetoriaRowState extends State<CafetoriaRow> {
                                       _timeFormat.format(DateTime(0).add(time)))
                                   .toList()
                                   .join(' - '),
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: TextStyle(),
                             ),
                         ],
                       ),

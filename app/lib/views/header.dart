@@ -48,7 +48,7 @@ class _HeaderState extends State<Header> {
                     child: Column(
                       children: [
                         Container(
-                          height: 113,
+                          height: 109,
                           margin: EdgeInsets.only(bottom: 5),
                           child: SvgPicture.asset('images/logo_white.svg'),
                         ),

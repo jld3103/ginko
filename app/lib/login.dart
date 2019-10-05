@@ -16,7 +16,6 @@ class LoginPage extends StatefulWidget {
 class LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _focus = FocusNode();
-  bool _credentialsCorrect = true;
   String _grade = grades[0];
   String _language;
   final _usernameController = TextEditingController();
@@ -40,24 +39,34 @@ class LoginPageState extends State<LoginPage> {
       );
       await Data.load().then((code) {
         setState(() {
-          _credentialsCorrect = code != ErrorCode.wrongCredentials;
           _isCheckingForm = false;
         });
         switch (code) {
           case ErrorCode.none:
             Navigator.of(context).pop();
             Navigator.of(context).pushReplacementNamed('/home');
-            break;
+            return;
           case ErrorCode.offline:
             Scaffold.of(context).showSnackBar(SnackBar(
               content: Text(AppTranslations.of(context).loginFailed),
             ));
             break;
           case ErrorCode.wrongCredentials:
-            _formKey.currentState.validate();
+            Scaffold.of(context).showSnackBar(SnackBar(
+              content: Text(AppTranslations.of(context).loginCredentialsWrong),
+            ));
             _passwordController.clear();
+            FocusScope.of(context).requestFocus(_focus);
             break;
         }
+        Data.user = User(
+          username: '',
+          password: '',
+          grade: UserValue('grade', _grade),
+          language: UserValue('language', _language),
+          selection: [],
+          tokens: [],
+        );
       });
     } else {
       setState(() {
@@ -174,18 +183,6 @@ class LoginPageState extends State<LoginPage> {
                         ),
                       ),
                     ),
-                    if (!_credentialsCorrect && _validInputs)
-                      Container(
-                        margin: EdgeInsets.only(top: 10),
-                        width: double.infinity,
-                        child: Text(
-                          AppTranslations.of(context).loginCredentialsWrong,
-                          style: TextStyle(
-                            color: Colors.red,
-                            fontSize: 15,
-                          ),
-                        ),
-                      ),
                   ],
                 ),
               ),

@@ -133,6 +133,9 @@ class Data {
   /// Load all the data from the server
   static Future<ErrorCode> load() async {
     await loadOffline();
+    if (_user == null || _user.username == '' || _user.password == '') {
+      return ErrorCode.wrongCredentials;
+    }
     final parameters = {
       Keys.unitPlan: (unitPlan == null ? 0 : unitPlan.timeStamp).toString(),
       Keys.calendar: (calendar == null ? 0 : calendar.timeStamp).toString(),
@@ -141,7 +144,7 @@ class Data {
           (replacementPlan == null ? 0 : replacementPlan.timeStamp).toString(),
       Keys.teachers: (teachers == null ? 0 : teachers.timeStamp).toString(),
       Keys.aiXformation: (posts == null ? 0 : posts.timeStamp).toString(),
-      Keys.user: json.encode(_user?.toJSON()),
+      Keys.user: json.encode(_user.toJSON()),
     };
 
     try {

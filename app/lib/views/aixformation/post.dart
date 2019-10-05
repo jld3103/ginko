@@ -24,73 +24,71 @@ class AiXformationPost extends StatefulWidget {
 class _AiXformationPostState extends State<AiXformationPost> {
   @override
   Widget build(BuildContext context) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Center(
-            child: Container(
-              constraints: BoxConstraints(maxWidth: 800),
-              child: Column(
-                children: [
-                  Text(
-                    widget.post.title,
-                    style: TextStyle(
-                      fontSize: 30,
+          Container(
+            constraints: BoxConstraints(maxWidth: 800),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.post.title,
+                  style: TextStyle(
+                    fontSize: 30,
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.person,
+                      color: Colors.grey,
+                      size: 12,
                     ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.person,
+                    Text(
+                      widget.post.author,
+                      style: TextStyle(
                         color: Colors.grey,
-                        size: 12,
                       ),
-                      Text(
-                        widget.post.author,
-                        style: TextStyle(
-                          color: Colors.grey,
-                        ),
-                      ),
-                      Container(
-                        width: 10,
-                        height: 1,
-                        color: Colors.transparent,
-                      ),
-                      Icon(
-                        Icons.access_time,
+                    ),
+                    Container(
+                      width: 10,
+                      height: 1,
+                      color: Colors.transparent,
+                    ),
+                    Icon(
+                      Icons.access_time,
+                      color: Colors.grey,
+                      size: 12,
+                    ),
+                    Text(
+                      outputDateFormat.format(widget.post.date),
+                      style: TextStyle(
                         color: Colors.grey,
-                        size: 12,
                       ),
-                      Text(
-                        outputDateFormat.format(widget.post.date),
-                        style: TextStyle(
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 10, bottom: 10),
-                    child: CachedNetworkImage(
-                      imageUrl: widget.post.fullUrl,
-                      placeholder: (context, url) => Container(
-                        height: 56,
-                        width: 56,
-                        child: Center(
-                          child: SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 3,
-                            ),
+                    ),
+                  ],
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 10, bottom: 10),
+                  child: CachedNetworkImage(
+                    imageUrl: widget.post.fullUrl,
+                    placeholder: (context, url) => Container(
+                      height: 56,
+                      width: 56,
+                      child: Center(
+                        child: SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 3,
                           ),
                         ),
                       ),
-                      errorWidget: (context, url, error) => Icon(Icons.error),
                     ),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
           Center(
