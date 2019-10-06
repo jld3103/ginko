@@ -1,4 +1,7 @@
 
+# 2019-10-06  
+ jld3103: Fix replacement plan updated check  
+
 # 2019-10-05  
  jld3103: Fix minor visual issues  
  jld3103: Fix token updates again  
