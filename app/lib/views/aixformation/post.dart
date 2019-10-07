@@ -7,21 +7,20 @@ import 'package:url_launcher/url_launcher.dart';
 
 /// AiXformationPost class
 /// describes the AiXformation post widget
-class AiXformationPost extends StatefulWidget {
+class AiXformationPost extends StatelessWidget {
   // ignore: public_member_api_docs
   const AiXformationPost({
     @required this.post,
+    @required this.user,
     Key key,
   }) : super(key: key);
 
   // ignore: public_member_api_docs
   final Post post;
 
-  @override
-  _AiXformationPostState createState() => _AiXformationPostState();
-}
+  // ignore: public_member_api_docs
+  final User user;
 
-class _AiXformationPostState extends State<AiXformationPost> {
   @override
   Widget build(BuildContext context) => Column(
         children: [
@@ -31,7 +30,7 @@ class _AiXformationPostState extends State<AiXformationPost> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.post.title,
+                  post.title,
                   style: TextStyle(
                     fontSize: 30,
                   ),
@@ -45,7 +44,7 @@ class _AiXformationPostState extends State<AiXformationPost> {
                       size: 12,
                     ),
                     Text(
-                      widget.post.author,
+                      post.author,
                       style: TextStyle(
                         color: Colors.grey,
                       ),
@@ -61,7 +60,7 @@ class _AiXformationPostState extends State<AiXformationPost> {
                       size: 12,
                     ),
                     Text(
-                      outputDateFormat.format(widget.post.date),
+                      outputDateFormat(user.language.value).format(post.date),
                       style: TextStyle(
                         color: Colors.grey,
                       ),
@@ -71,7 +70,7 @@ class _AiXformationPostState extends State<AiXformationPost> {
                 Container(
                   margin: EdgeInsets.only(top: 10, bottom: 10),
                   child: CachedNetworkImage(
-                    imageUrl: widget.post.fullUrl,
+                    imageUrl: post.fullUrl,
                     placeholder: (context, url) => Container(
                       height: 56,
                       width: 56,
@@ -95,7 +94,7 @@ class _AiXformationPostState extends State<AiXformationPost> {
             child: Container(
               constraints: BoxConstraints(maxWidth: 800),
               child: Html(
-                data: widget.post.content,
+                data: post.content,
                 onLinkTap: (url) async {
                   if (await canLaunch(url)) {
                     await launch(url);

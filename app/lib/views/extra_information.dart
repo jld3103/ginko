@@ -14,6 +14,7 @@ class ExtraInformation extends StatefulWidget {
     @required this.date,
     @required this.calendar,
     @required this.cafetoria,
+    @required this.user,
     this.panelController,
     Key key,
   }) : super(key: key);
@@ -26,6 +27,9 @@ class ExtraInformation extends StatefulWidget {
 
   // ignore: public_member_api_docs
   final Cafetoria cafetoria;
+
+  // ignore: public_member_api_docs
+  final User user;
 
   // ignore: public_member_api_docs
   final PanelController panelController;
@@ -83,7 +87,8 @@ class _ExtraInformationState extends State<ExtraInformation> {
                     ),
                   ),
                   Text(
-                    ' - ${outputDateFormat.format(widget.date)}',
+                    // ignore: lines_longer_than_80_chars
+                    ' - ${outputDateFormat(widget.user.language.value).format(widget.date)}',
                     style: TextStyle(
                       color: _showBig ? Colors.white : null,
                       fontSize: _showBig ? 18 : null,
@@ -132,6 +137,7 @@ class _ExtraInformationState extends State<ExtraInformation> {
               if (cafetoriaDays.isNotEmpty)
                 CafetoriaRow(
                   day: cafetoriaDays[0],
+                  user: widget.user,
                 )
             ],
           ),

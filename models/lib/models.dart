@@ -2,6 +2,7 @@ library models;
 
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:translations/translations_server.dart';
 
 export 'package:models/aixformation.dart';
 export 'package:models/cafetoria.dart';
@@ -51,7 +52,8 @@ List<int> weekdays = [
 ];
 
 /// The date format to display all dates in
-DateFormat outputDateFormat = DateFormat('d.M.y');
+DateFormat outputDateFormat(String language) =>
+    DateFormat(ServerTranslations.outputDateFormat(language));
 
 var _dateFormats = [];
 
@@ -60,7 +62,7 @@ Future setupDateFormats() async {
   await initializeDateFormatting('de', null);
   _dateFormats = [
     DateFormat.yMMMMd('de'),
-    outputDateFormat,
+    outputDateFormat('de'),
   ];
 }
 

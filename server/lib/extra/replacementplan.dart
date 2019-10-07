@@ -86,7 +86,7 @@ class ReplacementPlanExtra {
     }).toList();
     final title =
         // ignore: lines_longer_than_80_chars
-        '${ServerTranslations.weekdays(user.language.value)[day.date.weekday - 1]} ${outputDateFormat.format(day.date)}';
+        '${ServerTranslations.weekdays(user.language.value)[day.date.weekday - 1]} ${outputDateFormat(user.language.value).format(day.date)}';
     final lines = [];
     var previousUnit = -1;
     for (final change in changes) {

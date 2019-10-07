@@ -372,7 +372,7 @@ void main() {
         formatting: false,
       );
       final lines = notification.bigBody.split('\n');
-      expect(notification.title, 'Monday 7.10.2019');
+      expect(notification.title, 'Monday 10/7/2019');
       expect(notification.body, '3 changes');
       expect(lines.length, 5);
       expect(lines[0], '1. unit:');
@@ -411,7 +411,7 @@ void main() {
         formatting: false,
       );
       final lines = notification.bigBody.split('\n');
-      expect(notification.title, 'Monday 7.10.2019');
+      expect(notification.title, 'Monday 10/7/2019');
       expect(notification.body, 'No changes');
       expect(lines.length, 1);
       expect(lines[0], 'No changes');

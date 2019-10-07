@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ginko/utils/data.dart';
 import 'package:ginko/utils/platform/platform.dart';
 import 'package:ginko/utils/screen_sizes.dart';
 import 'package:ginko/utils/svg/svg.dart';
+import 'package:models/models.dart';
 
 /// Header class
 /// renders the app bar
@@ -10,11 +10,15 @@ class Header extends StatefulWidget {
   // ignore: public_member_api_docs
   const Header({
     @required this.pages,
+    @required this.user,
     Key key,
   }) : super(key: key);
 
   // ignore: public_member_api_docs
   final List<Page> pages;
+
+  // ignore: public_member_api_docs
+  final User user;
 
   @override
   _HeaderState createState() => _HeaderState();
@@ -53,7 +57,7 @@ class _HeaderState extends State<Header> {
                           child: SvgPicture.asset('images/logo_white.svg'),
                         ),
                         Text(
-                          Data.user.grade.value,
+                          widget.user.grade.value,
                           style: TextStyle(
                             fontSize: 20,
                             color: Colors.white,

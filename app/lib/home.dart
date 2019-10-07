@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import 'package:ginko/utils/data.dart';
 import 'package:ginko/utils/platform/platform.dart';
 import 'package:ginko/utils/screen_sizes.dart';
 import 'package:ginko/utils/selection.dart';
@@ -15,6 +14,35 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 /// HomePage class
 /// describes the home widget
 class HomePage extends StatefulWidget {
+  // ignore: public_member_api_docs
+  const HomePage({
+    @required this.user,
+    @required this.unitPlan,
+    @required this.calendar,
+    @required this.cafetoria,
+    @required this.replacementPlan,
+    @required this.updateUser,
+    Key key,
+  }) : super(key: key);
+
+  // ignore: public_member_api_docs
+  final User user;
+
+  // ignore: public_member_api_docs
+  final UnitPlanForGrade unitPlan;
+
+  // ignore: public_member_api_docs
+  final Calendar calendar;
+
+  // ignore: public_member_api_docs
+  final Cafetoria cafetoria;
+
+  // ignore: public_member_api_docs
+  final ReplacementPlanForGrade replacementPlan;
+
+  // ignore: public_member_api_docs
+  final VoidCallback updateUser;
+
   @override
   State<StatefulWidget> createState() => HomePageState();
 }
@@ -32,7 +60,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
     _tabController = TabController(length: 5, vsync: this);
     _tabController
       ..index = _weekday =
-          Data.unitPlan.initialDay(Data.user, DateTime.now()).weekday - 1
+          widget.unitPlan.initialDay(widget.user, DateTime.now()).weekday - 1
       ..addListener(() {
         if (_weekday != _tabController.index) {
           setState(() {
@@ -88,9 +116,10 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   backdropTapClosesPanel: true,
                   panel: ExtraInformation(
                     date: monday(DateTime.now()).add(Duration(days: _weekday)),
-                    calendar: Data.calendar,
-                    cafetoria: Data.cafetoria,
+                    calendar: widget.calendar,
+                    cafetoria: widget.cafetoria,
                     panelController: _panelController,
+                    user: widget.user,
                   ),
                 ),
               ],
@@ -107,8 +136,9 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   width: 300,
                   child: ExtraInformation(
                     date: monday(DateTime.now()).add(Duration(days: _weekday)),
-                    calendar: Data.calendar,
-                    cafetoria: Data.cafetoria,
+                    calendar: widget.calendar,
+                    cafetoria: widget.cafetoria,
+                    user: widget.user,
                   ),
                 ),
               ],
@@ -124,7 +154,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
             return ListView(
               shrinkWrap: true,
               padding: EdgeInsets.only(top: 5, bottom: 5),
-              children: Data.unitPlan.days[weekday].lessons
+              children: widget.unitPlan.days[weekday].lessons
                   .map((lesson) {
                     final subjects = lesson.subjects
                         .where((subject) =>
@@ -153,7 +183,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           Selection.set(
                               lesson.block, false, selections[1].identifier);
                           // ignore: unawaited_futures
-                          Data.updateUser();
+                          widget.updateUser();
                           Static.rebuildUnitPlan();
                         }
                       },
@@ -167,8 +197,8 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                 room: null,
                                 unit: lesson.unit,
                               ),
-                        unitPlanDay: Data.unitPlan.days[weekday],
-                        replacementPlan: Data.replacementPlan,
+                        unitPlanDay: widget.unitPlan.days[weekday],
+                        replacementPlan: widget.replacementPlan,
                         start: start,
                       ),
                     );

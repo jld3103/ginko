@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ginko/views/cafetoria/row.dart';
 import 'package:models/cafetoria.dart';
+import 'package:models/models.dart';
 
 import 'utils.dart';
 
@@ -9,7 +10,13 @@ void main() {
   group('Cafetoria', () {
     group('Cafetoria row', () {
       testWidgets('Normal cafetoria row', (tester) async {
+        // ignore: missing_required_param
+        final user = User(
+          language:
+              UserValue('language', 'de', DateTime(2019, 8, 6, 22, 6, 11)),
+        );
         await tester.pumpWidget(makeTestableWidget(CafetoriaRow(
+          user: user,
           day: CafetoriaDay(
             date: DateTime(2019, 8, 9),
             menus: [
@@ -31,7 +38,13 @@ void main() {
       });
 
       testWidgets('Cafetoria row without price', (tester) async {
+        // ignore: missing_required_param
+        final user = User(
+          language:
+              UserValue('language', 'de', DateTime(2019, 8, 6, 22, 6, 11)),
+        );
         await tester.pumpWidget(makeTestableWidget(CafetoriaRow(
+          user: user,
           day: CafetoriaDay(
             date: DateTime(2019, 8, 9),
             menus: [
@@ -53,7 +66,13 @@ void main() {
       });
 
       testWidgets('Cafetoria row without times', (tester) async {
+        // ignore: missing_required_param
+        final user = User(
+          language:
+              UserValue('language', 'de', DateTime(2019, 8, 6, 22, 6, 11)),
+        );
         await tester.pumpWidget(makeTestableWidget(CafetoriaRow(
+          user: user,
           day: CafetoriaDay(
             date: DateTime(2019, 8, 9),
             menus: [
@@ -71,7 +90,13 @@ void main() {
       });
 
       testWidgets('Cafetoria row without times', (tester) async {
+        // ignore: missing_required_param
+        final user = User(
+          language:
+              UserValue('language', 'de', DateTime(2019, 8, 6, 22, 6, 11)),
+        );
         await tester.pumpWidget(makeTestableWidget(CafetoriaRow(
+          user: user,
           day: CafetoriaDay(
             date: DateTime(2019, 8, 9),
             menus: [
@@ -89,7 +114,13 @@ void main() {
       });
 
       testWidgets('Cafetoria row with date', (tester) async {
+        // ignore: missing_required_param
+        final user = User(
+          language:
+              UserValue('language', 'de', DateTime(2019, 8, 6, 22, 6, 11)),
+        );
         await tester.pumpWidget(makeTestableWidget(CafetoriaRow(
+          user: user,
           showDate: true,
           day: CafetoriaDay(
             date: DateTime(2019, 8, 9),

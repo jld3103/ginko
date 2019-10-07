@@ -76,17 +76,30 @@ class AppState extends State<App> with TickerProviderStateMixin {
             Page(
               name: AppTranslations.of(context).pageStart,
               icon: Icons.home,
-              child: HomePage(),
+              child: HomePage(
+                user: Data.user,
+                unitPlan: Data.unitPlan,
+                replacementPlan: Data.replacementPlan,
+                calendar: Data.calendar,
+                cafetoria: Data.cafetoria,
+                updateUser: Data.updateUser,
+              ),
             ),
             Page(
               name: AppTranslations.of(context).pageCafetoria,
               icon: Icons.restaurant,
-              child: CafetoriaPage(),
+              child: CafetoriaPage(
+                user: Data.user,
+                cafetoria: Data.cafetoria,
+              ),
             ),
             Page(
               name: AppTranslations.of(context).pageAiXformation,
               icon: MdiIcons.newspaper,
-              child: AiXformationPage(),
+              child: AiXformationPage(
+                user: Data.user,
+                posts: Data.posts,
+              ),
             ),
           ],
         );
@@ -139,7 +152,10 @@ class AppState extends State<App> with TickerProviderStateMixin {
           if (!allDetected) {
             await showDialog(
               context: context,
-              builder: (context) => ScanDialog(),
+              builder: (context) => ScanDialog(
+                teachers: Data.teachers,
+                unitPlan: Data.unitPlan,
+              ),
             );
           }
         }
@@ -158,5 +174,6 @@ class AppState extends State<App> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) => Header(
         pages: _pages,
+        user: Data.user,
       );
 }

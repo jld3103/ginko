@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/material.dart';
-import 'package:ginko/utils/data.dart';
 import 'package:ginko/utils/selection.dart';
 import 'package:ginko/utils/static.dart';
 import 'package:image_picker/image_picker.dart';
@@ -13,6 +12,19 @@ import 'package:translations/translations_app.dart';
 /// scan an image of a paper unit plan
 /// and insert all selections if possible using OCR
 class ScanDialog extends StatefulWidget {
+  // ignore: public_member_api_docs
+  const ScanDialog({
+    @required this.teachers,
+    @required this.unitPlan,
+    Key key,
+  }) : super(key: key);
+
+  // ignore: public_member_api_docs
+  final Teachers teachers;
+
+  // ignore: public_member_api_docs
+  final UnitPlanForGrade unitPlan;
+
   @override
   _ScanDialogState createState() => _ScanDialogState();
 }
@@ -41,16 +53,18 @@ class _ScanDialogState extends State<ScanDialog> {
                 RegExp(Subjects.regex).firstMatch(match).group(0));
         // ignore: avoid_catches_without_on_clauses, empty_catches
       } catch (e) {}
-      final teacher =
-          RegExp(Data.teachers.regex).firstMatch(match).group(0).toUpperCase();
+      final teacher = RegExp(widget.teachers.regex)
+          .firstMatch(match)
+          .group(0)
+          .toUpperCase();
       final room = Rooms.getRoom(match.substring(match.indexOf(
-                  RegExp(Data.teachers.regex).firstMatch(match).group(0)) +
+                  RegExp(widget.teachers.regex).firstMatch(match).group(0)) +
               3) ??
           match.substring(match.indexOf(
-                  RegExp(Data.teachers.regex).firstMatch(match).group(0)) +
+                  RegExp(widget.teachers.regex).firstMatch(match).group(0)) +
               3));
       final matchingSubjects = [];
-      for (final day in Data.unitPlan.days) {
+      for (final day in widget.unitPlan.days) {
         for (final lesson in day.lessons) {
           for (final s in lesson.subjects) {
             final sRoom = Rooms.getRoom(s.room ?? '');
@@ -82,7 +96,7 @@ class _ScanDialogState extends State<ScanDialog> {
           }
         }
         Static.rebuildUnitPlan();
-        for (final day in Data.unitPlan.days) {
+        for (final day in widget.unitPlan.days) {
           if (!_allDetected) {
             break;
           }
@@ -179,9 +193,9 @@ class _ScanDialogState extends State<ScanDialog> {
                                       .replaceAll('ü', 'u');
                                   final regExp = RegExp(
                                       // ignore: lines_longer_than_80_chars
-                                      '${Subjects.regex}([0-9]).{0,2}${Data.teachers.regex}${Rooms.regex}');
+                                      '${Subjects.regex}([0-9]).{0,2}${widget.teachers.regex}${Rooms.regex}');
                                   final maybeRegExp = RegExp(
-                                      '${Data.teachers.regex}${Rooms.regex}');
+                                      '${widget.teachers.regex}${Rooms.regex}');
                                   final matches =
                                       regExp.allMatches(text).toList();
                                   final maybeMatches =

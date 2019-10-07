@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ginko/utils/data.dart';
 import 'package:ginko/utils/platform/platform.dart';
 import 'package:ginko/views/aixformation/post.dart';
 import 'package:models/models.dart';
@@ -12,11 +11,24 @@ import 'package:url_launcher/url_launcher.dart';
 /// AiXformationPage class
 /// describes the AiXformation widget
 class AiXformationPage extends StatelessWidget {
+  // ignore: public_member_api_docs
+  const AiXformationPage({
+    @required this.posts,
+    @required this.user,
+    Key key,
+  }) : super(key: key);
+
+  // ignore: public_member_api_docs
+  final Posts posts;
+
+  // ignore: public_member_api_docs
+  final User user;
+
   @override
   Widget build(BuildContext context) => ListView(
         shrinkWrap: true,
         padding: EdgeInsets.all(5),
-        children: Data.posts.posts
+        children: posts.posts
             .map((post) => Card(
                   child: InkWell(
                     onTap: () {
@@ -53,6 +65,7 @@ class AiXformationPage extends StatelessWidget {
                             children: [
                               AiXformationPost(
                                 post: post,
+                                user: user,
                               ),
                             ],
                           ),
@@ -108,7 +121,8 @@ class AiXformationPage extends StatelessWidget {
                                   size: 12,
                                 ),
                                 Text(
-                                  outputDateFormat.format(post.date),
+                                  outputDateFormat(user.language.value)
+                                      .format(post.date),
                                   style: TextStyle(
                                     color: Colors.grey,
                                   ),
