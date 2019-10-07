@@ -81,9 +81,8 @@ translations/lib/translation_locales_list.dart
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
-.data.json
-
 config.json
 users.json
+aixformation.json
 
 google-services.json

@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:server/path.dart';
-
 // ignore: avoid_classes_with_only_static_members
 /// Config class
 /// handles all config things
@@ -36,13 +34,13 @@ class Config {
 
   /// Load all config
   static void load([bool environment = false]) {
-    if (File('${Path.getBasePath}server/config.json').existsSync()) {
+    final configFile = File('config.json');
+    if (configFile.existsSync()) {
       environment = false;
     }
     final Map<String, dynamic> data = environment
         ? Platform.environment
-        : json.decode(
-            File('${Path.getBasePath}server/config.json').readAsStringSync());
+        : json.decode(configFile.readAsStringSync());
     username = data['username'];
     password = data['password'];
     replacementPlanPassword = data['replacementPlanPassword'];
