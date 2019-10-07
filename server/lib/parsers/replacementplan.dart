@@ -45,7 +45,8 @@ class ReplacementPlanParser {
         .sublist(1)) {
       final fields =
           row.querySelectorAll('td').map((field) => field.text).toList();
-      for (final grade in fields[0].split(_arrow)[0].split(', ')) {
+      for (final grade
+          in fields[0].replaceAll(_arrow, ', ').split(', ').toSet().toList()) {
         try {
           if (!grades.contains(grade)) {
             continue;
