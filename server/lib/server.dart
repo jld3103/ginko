@@ -167,7 +167,7 @@ Future main() async {
 
 Future _setup() async {
   await setupDateFormats();
-  Config.load();
+  Config.loadFromDefault();
   print('Config loaded');
   Users.load();
   print('Users loaded');
@@ -257,7 +257,7 @@ Future _deleteOldTokens() async {
 
     final unregisteredTokens = [];
     for (final token in user.tokens) {
-      final tokenRegistered = await Notification.checkToken(token);
+      final tokenRegistered = await Notifications.checkToken(token);
       if (!tokenRegistered) {
         unregisteredTokens.add(token);
       }

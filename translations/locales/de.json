@@ -26,6 +26,7 @@
   "replacementPlanExam": "Klausur",
   "replacementPlanUnknown": "Unbekannt",
   "cafetoriaNoMenus": "Keine Cafétoriamenüs vorhanden",
+  "unit": "Stunde",
   "subjects": {
     "BI": "Bio",
     "CH": "Chemie",

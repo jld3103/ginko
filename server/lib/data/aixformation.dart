@@ -21,7 +21,7 @@ class AiXformationData {
 
 Future main(List<String> arguments) async {
   await setupDateFormats();
-  Config.load();
+  Config.loadFromDefault();
   Config.dev = true;
   await AiXformationData.load();
 }

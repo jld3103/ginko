@@ -30,7 +30,7 @@ class TeachersData {
 
 Future main(List<String> arguments) async {
   await setupDateFormats();
-  Config.load();
+  Config.loadFromDefault();
   Config.dev = true;
   await TeachersData.load();
   print(TeachersData.teachers.toJSON());

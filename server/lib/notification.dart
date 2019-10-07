@@ -7,14 +7,28 @@ import 'package:server/config.dart';
 /// Notification class
 /// create notifications and send them to users
 class Notification {
-  /// Create a simple notification
-  static Future<bool> send(
-    String token,
-    String title,
-    String body,
-    String bigBody, {
-    Map<String, dynamic> data,
-  }) async {
+  // ignore: public_member_api_docs
+  Notification(
+    this.title,
+    this.body,
+    this.bigBody, {
+    this.data,
+  });
+
+  // ignore: public_member_api_docs
+  final String title;
+
+  // ignore: public_member_api_docs
+  String body;
+
+  // ignore: public_member_api_docs
+  final String bigBody;
+
+  // ignore: public_member_api_docs
+  Map<String, dynamic> data;
+
+  /// Send the notification to a token
+  Future<bool> send(String token) async {
     data ??= {};
 
     if (data.isNotEmpty) {
@@ -51,7 +65,11 @@ class Notification {
     }
     return true;
   }
+}
 
+/// Notifications class
+/// notification utilities
+class Notifications {
   /// Check if a token is still registered
   static Future<bool> checkToken(String token) async {
     final data = {

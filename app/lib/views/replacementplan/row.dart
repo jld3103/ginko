@@ -46,7 +46,8 @@ class ReplacementPlanRow extends StatelessWidget {
     }
     if (change.changed.info != null &&
         (change.type != ChangeTypes.replaced ||
-            change.changed.subject != null)) {
+            (change.changed.subject != null &&
+                change.type != ChangeTypes.replaced))) {
       infoText += ' ';
     }
     if (change.changed.info != null) {

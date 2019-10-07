@@ -168,6 +168,38 @@ void main() {
         expect(find.text('525'), findsNWidgets(2));
       });
 
+      testWidgets('Normal replacement plan row with replaced type and info',
+          (tester) async {
+        await tester.pumpWidget(makeTestableWidget(ReplacementPlanRow(
+          change: Change(
+            unit: 0,
+            date: DateTime(2019, 8, 9),
+            changed: Changed(
+              subject: 'EK',
+              room: '525',
+              teacher: 'KRA',
+              info: 'LOL',
+            ),
+            subject: 'EK',
+            room: '525',
+            teacher: 'KRA',
+            type: ChangeTypes.replaced,
+          ),
+        )));
+        await tester.pumpAndSettle();
+        expect(find.text('1'), findsOneWidget);
+        expect(
+          find.text(ServerTranslations.subjects('en')['EK']),
+          findsOneWidget,
+        );
+        expect(
+          find.text('${ServerTranslations.subjects('en')['EK']}: LOL'),
+          findsOneWidget,
+        );
+        expect(find.text('KRA'), findsNWidgets(2));
+        expect(find.text('525'), findsNWidgets(2));
+      });
+
       testWidgets('Normal replacement plan row with exam type', (tester) async {
         await tester.pumpWidget(makeTestableWidget(ReplacementPlanRow(
           change: Change(

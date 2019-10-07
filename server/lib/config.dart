@@ -32,15 +32,8 @@ class Config {
   // ignore: public_member_api_docs
   static Map<String, String> replacementPlanHeaders;
 
-  /// Load all config
-  static void load([bool environment = false]) {
-    final configFile = File('config.json');
-    if (configFile.existsSync()) {
-      environment = false;
-    }
-    final Map<String, dynamic> data = environment
-        ? Platform.environment
-        : json.decode(configFile.readAsStringSync());
+  /// Load all config from an object
+  static void load(Map<String, dynamic> data) {
     username = data['username'];
     password = data['password'];
     replacementPlanPassword = data['replacementPlanPassword'];
@@ -58,5 +51,18 @@ class Config {
           // ignore: lines_longer_than_80_chars
           'Basic ${base64Encode(utf8.encode('${Config.username}:${Config.replacementPlanPassword}'))}',
     };
+  }
+
+  /// Load all data from environment or from config file if exists
+  static void loadFromDefault() {
+    var environment = true;
+    final configFile = File('config.json');
+    if (configFile.existsSync()) {
+      environment = false;
+    }
+    final Map<String, dynamic> data = environment
+        ? Platform.environment
+        : json.decode(configFile.readAsStringSync());
+    load(data);
   }
 }

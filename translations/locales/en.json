@@ -26,6 +26,7 @@
   "replacementPlanExam": "Exam",
   "replacementPlanUnknown": "Unknown",
   "cafetoriaNoMenus": "No Cafétoria menus available",
+  "unit": "unit",
   "subjects": {
     "BI": "Biology",
     "CH": "Chemistry",
