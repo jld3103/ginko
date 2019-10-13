@@ -6,7 +6,7 @@
 	    <line choice="choiceBase"/>
     </choices-outline>
     <choice id="choiceBase" title="base">
-        <pkg-ref id="ginko.base.pkg"/>
+        <pkg-ref id="de.ginko.base.pkg"/>
     </choice>
     <pkg-ref id="de.ginko.base.pkg" version="1.0.0+1" auth="Root">#base.pkg</pkg-ref>
 </installer-gui-script>
