@@ -10,6 +10,7 @@ import 'package:ginko/cafetoria.dart';
 import 'package:ginko/home.dart';
 import 'package:ginko/loading.dart';
 import 'package:ginko/login.dart';
+import 'package:ginko/replacementplan.dart';
 import 'package:ginko/utils/data.dart';
 import 'package:ginko/utils/platform/platform.dart';
 import 'package:ginko/utils/selection.dart';
@@ -83,6 +84,14 @@ class AppState extends State<App> with TickerProviderStateMixin {
                 calendar: Data.calendar,
                 cafetoria: Data.cafetoria,
                 updateUser: Data.updateUser,
+              ),
+            ),
+            Page(
+              name: AppTranslations.of(context).pageReplacementPlan,
+              icon: Icons.format_list_numbered,
+              child: ReplacementPlanPage(
+                user: Data.user,
+                replacementPlan: Data.replacementPlan,
               ),
             ),
             Page(
@@ -169,6 +178,9 @@ class AppState extends State<App> with TickerProviderStateMixin {
     Scaffold.of(context).showSnackBar(SnackBar(
       content: Text(AppTranslations.of(context).homeNewReplacementPlan),
     ));
+    if (Static.rebuildReplacementPlan != null) {
+      Static.rebuildReplacementPlan();
+    }
   }
 
   @override

@@ -5,11 +5,13 @@ import 'package:ginko/utils/screen_sizes.dart';
 import 'package:ginko/utils/selection.dart';
 import 'package:ginko/utils/static.dart';
 import 'package:ginko/views/extra_information.dart';
+import 'package:ginko/views/size_limit.dart';
 import 'package:ginko/views/tab_proxy.dart';
 import 'package:ginko/views/unitplan/all_row.dart';
 import 'package:ginko/views/unitplan/select_dialog.dart';
 import 'package:models/models.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:translations/translations_app.dart';
 
 /// HomePage class
 /// describes the home widget
@@ -147,6 +149,17 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   /// Get the content of the tabs
   Widget get getContent => TabProxy(
         controller: _tabController,
+        tabNames: AppTranslations.of(context)
+            .weekdays
+            .sublist(0, 5)
+            .map((weekday) => weekday
+                .substring(
+                    0,
+                    AppTranslations.of(context).locale.languageCode == 'de'
+                        ? 2
+                        : 3)
+                .toUpperCase())
+            .toList(),
         tabs: List.generate(
           5,
           (weekday) {
@@ -161,45 +174,47 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             Selection.get(lesson.block, isWeekA(start)) ==
                             subject.identifier)
                         .toList();
-                    return GestureDetector(
-                      onTap: () async {
-                        if (lesson.subjects.length > 1) {
-                          // ignore: omit_local_variable_types
-                          final List<Subject> selections = await showDialog(
-                            context: context,
-                            builder: (context) => UnitPlanSelectDialog(
-                              weekday: weekday,
-                              lesson: lesson,
-                            ),
-                          );
-                          if (selections == null) {
-                            return;
-                          }
-                          if (selections.length == 1) {
-                            selections.add(selections[0]);
-                          }
-                          Selection.set(
-                              lesson.block, true, selections[0].identifier);
-                          Selection.set(
-                              lesson.block, false, selections[1].identifier);
-                          // ignore: unawaited_futures
-                          widget.updateUser();
-                          Static.rebuildUnitPlan();
-                        }
-                      },
-                      child: UnitPlanAllRow(
-                        subject: subjects.isNotEmpty
-                            ? subjects[0]
-                            : Subject(
-                                subject: Keys.none,
-                                teacher: null,
-                                weeks: null,
-                                room: null,
-                                unit: lesson.unit,
+                    return SizeLimit(
+                      child: GestureDetector(
+                        onTap: () async {
+                          if (lesson.subjects.length > 1) {
+                            // ignore: omit_local_variable_types
+                            final List<Subject> selections = await showDialog(
+                              context: context,
+                              builder: (context) => UnitPlanSelectDialog(
+                                weekday: weekday,
+                                lesson: lesson,
                               ),
-                        unitPlanDay: widget.unitPlan.days[weekday],
-                        replacementPlan: widget.replacementPlan,
-                        start: start,
+                            );
+                            if (selections == null) {
+                              return;
+                            }
+                            if (selections.length == 1) {
+                              selections.add(selections[0]);
+                            }
+                            Selection.set(
+                                lesson.block, true, selections[0].identifier);
+                            Selection.set(
+                                lesson.block, false, selections[1].identifier);
+                            // ignore: unawaited_futures
+                            widget.updateUser();
+                            Static.rebuildUnitPlan();
+                          }
+                        },
+                        child: UnitPlanAllRow(
+                          subject: subjects.isNotEmpty
+                              ? subjects[0]
+                              : Subject(
+                                  subject: Keys.none,
+                                  teacher: null,
+                                  weeks: null,
+                                  room: null,
+                                  unit: lesson.unit,
+                                ),
+                          unitPlanDay: widget.unitPlan.days[weekday],
+                          replacementPlan: widget.replacementPlan,
+                          start: start,
+                        ),
                       ),
                     );
                   })

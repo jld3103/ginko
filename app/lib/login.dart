@@ -16,7 +16,8 @@ class LoginPage extends StatefulWidget {
 class LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _focus = FocusNode();
-  String _grade = grades[0];
+  String _grade;
+  List<String> _grades = grades;
   String _language;
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -79,6 +80,10 @@ class LoginPageState extends State<LoginPage> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((a) {
       _language = AppTranslations.of(context).locale.languageCode;
+      setState(() {
+        _grade = AppTranslations.of(context).loginSelectGrade;
+        _grades = (_grades.reversed.toList()..add(_grade)).reversed.toList();
+      });
     });
     super.initState();
   }
@@ -95,7 +100,7 @@ class LoginPageState extends State<LoginPage> {
         child: Scaffold(
           body: ListView(
             padding: EdgeInsets.all(10),
-            children: <Widget>[
+            children: [
               Container(
                 height: 125,
                 margin: EdgeInsets.only(bottom: 5),
@@ -110,15 +115,24 @@ class LoginPageState extends State<LoginPage> {
               Form(
                 key: _formKey,
                 child: Column(
-                  children: <Widget>[
+                  children: [
                     DropdownButtonFormField(
-                      items: grades
+                      items: _grades
                           .map((value) => DropdownMenuItem<String>(
                                 value: value,
                                 child: SizedBox(
                                   width:
                                       MediaQuery.of(context).size.width - 100,
-                                  child: Text(value),
+                                  child: Text(
+                                    value,
+                                    style: _grades[0] ==
+                                            AppTranslations.of(context)
+                                                .loginSelectGrade
+                                        ? TextStyle(
+                                            color: Colors.black54,
+                                          )
+                                        : null,
+                                  ),
                                 ),
                               ))
                           .toList(),
@@ -126,7 +140,16 @@ class LoginPageState extends State<LoginPage> {
                       onChanged: (grade) {
                         setState(() {
                           _grade = grade;
+                          _grades.remove(
+                              AppTranslations.of(context).loginSelectGrade);
                         });
+                      },
+                      // ignore: missing_return
+                      validator: (value) {
+                        if (value ==
+                            AppTranslations.of(context).loginSelectGrade) {
+                          return AppTranslations.of(context).loginGradeRequired;
+                        }
                       },
                     ),
                     // Username input

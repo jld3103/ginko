@@ -1,4 +1,7 @@
 
+# 2019-10-13  
+ jld3103: Fix and improve visual layout  
+
 # 2019-10-07  
  jld3103: Add localization to dates and refactor  
  jld3103: Fix grades in replacement plan parser  

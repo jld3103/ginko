@@ -56,9 +56,9 @@ class UnitPlanRow extends StatelessWidget {
           ),
           Expanded(
             child: Column(
-              children: <Widget>[
+              children: [
                 Row(
-                  children: <Widget>[
+                  children: [
                     Expanded(
                       flex: 85,
                       child: Text(
@@ -86,7 +86,7 @@ class UnitPlanRow extends StatelessWidget {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
+                  children: [
                     Expanded(
                       flex: 85,
                       child: Text(

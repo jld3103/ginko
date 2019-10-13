@@ -31,7 +31,7 @@ class UnitPlanExtra {
                             .length,
                       ),
                       (j) => Lesson(
-                            subjects: <Subject>[],
+                            subjects: [],
                             block: unitPlans[unitPlans[0]
                                             .unitPlans
                                             .where((i) => i.grade == grade)

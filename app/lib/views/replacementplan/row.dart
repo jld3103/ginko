@@ -85,9 +85,9 @@ class ReplacementPlanRow extends StatelessWidget {
             ),
             Expanded(
               child: Column(
-                children: <Widget>[
+                children: [
                   Row(
-                    children: <Widget>[
+                    children: [
                       Expanded(
                         flex: 70,
                         child: Text(
@@ -123,7 +123,7 @@ class ReplacementPlanRow extends StatelessWidget {
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
+                    children: [
                       Expanded(
                         flex: 70,
                         child: Text(

@@ -55,6 +55,10 @@ List<int> weekdays = [
 DateFormat outputDateFormat(String language) =>
     DateFormat(ServerTranslations.outputDateFormat(language));
 
+/// The date and time format to display all dates and times in
+DateFormat outputDateTimeFormat(String language) =>
+    DateFormat('${ServerTranslations.outputDateFormat(language)} HH:mm');
+
 var _dateFormats = [];
 
 /// Setup all date formats used by the web server

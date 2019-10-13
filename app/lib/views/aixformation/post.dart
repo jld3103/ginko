@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:ginko/views/size_limit.dart';
 import 'package:models/models.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -24,8 +25,7 @@ class AiXformationPost extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
         children: [
-          Container(
-            constraints: BoxConstraints(maxWidth: 800),
+          SizeLimit(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -44,7 +44,7 @@ class AiXformationPost extends StatelessWidget {
                       size: 12,
                     ),
                     Text(
-                      post.author,
+                      post.author ?? '',
                       style: TextStyle(
                         color: Colors.grey,
                       ),
@@ -91,8 +91,7 @@ class AiXformationPost extends StatelessWidget {
             ),
           ),
           Center(
-            child: Container(
-              constraints: BoxConstraints(maxWidth: 800),
+            child: SizeLimit(
               child: Html(
                 data: post.content,
                 onLinkTap: (url) async {

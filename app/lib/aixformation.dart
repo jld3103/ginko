@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ginko/utils/platform/platform.dart';
 import 'package:ginko/views/aixformation/post.dart';
+import 'package:ginko/views/size_limit.dart';
 import 'package:models/models.dart';
 import 'package:share/share.dart';
 import 'package:translations/translations_app.dart';
@@ -29,7 +30,9 @@ class AiXformationPage extends StatelessWidget {
         shrinkWrap: true,
         padding: EdgeInsets.all(5),
         children: posts.posts
-            .map((post) => Card(
+            .map(
+              (post) => SizeLimit(
+                child: Card(
                   child: InkWell(
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
@@ -38,7 +41,7 @@ class AiXformationPage extends StatelessWidget {
                             title: Text(
                               AppTranslations.of(context).pageAiXformation,
                             ),
-                            actions: <Widget>[
+                            actions: [
                               IconButton(
                                 icon: Icon(Icons.open_in_new),
                                 onPressed: () async {
@@ -106,7 +109,7 @@ class AiXformationPage extends StatelessWidget {
                                   size: 12,
                                 ),
                                 Text(
-                                  post.author,
+                                  post.author ?? '',
                                   style: TextStyle(
                                     color: Colors.grey,
                                   ),
@@ -134,7 +137,9 @@ class AiXformationPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                ))
+                ),
+              ),
+            )
             .toList()
             .cast<Widget>(),
       );

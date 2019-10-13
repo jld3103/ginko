@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ginko/utils/screen_sizes.dart';
-import 'package:translations/translations_app.dart';
 
 /// TabProxy class
 /// decides how to display tabs
@@ -9,6 +8,7 @@ class TabProxy extends StatelessWidget {
   // ignore: public_member_api_docs
   const TabProxy({
     @required this.tabs,
+    @required this.tabNames,
     @required this.controller,
   }) : super();
 
@@ -16,18 +16,13 @@ class TabProxy extends StatelessWidget {
   final List<Widget> tabs;
 
   // ignore: public_member_api_docs
+  final List<String> tabNames;
+
+  // ignore: public_member_api_docs
   final TabController controller;
 
   @override
   Widget build(BuildContext context) {
-    final weekdays = AppTranslations.of(context)
-        .weekdays
-        .sublist(0, 5)
-        .map((weekday) => weekday
-            .substring(0,
-                AppTranslations.of(context).locale.languageCode == 'de' ? 2 : 3)
-            .toUpperCase())
-        .toList();
     var tabFontSize = 15.0;
     final width = MediaQuery.of(context).size.width;
     if (width <= 320) {
@@ -48,7 +43,7 @@ class TabProxy extends StatelessWidget {
                         padding: EdgeInsets.only(top: 10),
                         color: Theme.of(context).primaryColor,
                         child: Text(
-                          weekdays[tabs.indexOf(tab)],
+                          tabNames[tabs.indexOf(tab)],
                           style: TextStyle(
                             fontSize: tabFontSize,
                             color: Colors.white,
@@ -74,7 +69,7 @@ class TabProxy extends StatelessWidget {
             controller: controller,
             indicatorColor: Theme.of(context).accentColor,
             indicatorWeight: 2.5,
-            tabs: weekdays
+            tabs: tabNames
                 .map((day) => Container(
                       padding: EdgeInsets.only(top: 10, bottom: 10),
                       child: Text(

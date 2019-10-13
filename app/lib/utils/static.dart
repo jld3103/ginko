@@ -9,6 +9,9 @@ class Static {
 
   // ignore: public_member_api_docs
   static VoidCallback rebuildUnitPlan;
+
+  // ignore: public_member_api_docs
+  static VoidCallback rebuildReplacementPlan;
 }
 
 typedef VoidCallback = void Function();

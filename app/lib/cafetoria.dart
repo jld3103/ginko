@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ginko/views/cafetoria/row.dart';
+import 'package:ginko/views/size_limit.dart';
 import 'package:models/models.dart';
 import 'package:translations/translations_app.dart';
 
@@ -42,6 +43,11 @@ class CafetoriaPage extends StatelessWidget {
                   ))
               .toList()
               .cast<Widget>()
-        ],
+        ]
+            .map((widget) => SizeLimit(
+                  child: widget,
+                ))
+            .toList()
+            .cast<Widget>(),
       );
 }
