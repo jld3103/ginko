@@ -1,14 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 
 <head>
     <title>Ginko</title>
-    <link rel="icon" type="image/png" href="assets/images/logo_green.png"/>
+    <link rel="icon" type="image/png" href="assets/images/logo_green_192x192.png"/>
+    <link rel="apple-touch-icon" type="image/png" href="assets/images/logo_green_192x192.png">
     <link rel="manifest" href="assets/web/manifest.json"/>
-    <script src="https://www.gstatic.com/firebasejs/6.3.5/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/6.3.5/firebase-messaging.js"></script>
+    <meta charset="UTF-8">
+    <meta name="description" content="An app for the Viktoriaschule in Aachen, Germany"/>
+    <meta name="keywords" content="Viktorischule,Aachen,Ginko">
+    <meta name="author" content="Jan-Luca Döen">
+    <meta name="theme-color" content="#64A441"/>
+    <script src="https://www.gstatic.com/firebasejs/6.6.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.6.2/firebase-messaging.js"></script>
     <script>
-        var firebaseConfig = {
+        const firebaseConfig = {
             apiKey: "AIzaSyBnMSYwjFbC3lRPzOfinBAu_78pybo7jPg",
             authDomain: "ginko-project.firebaseapp.com",
             databaseURL: "https://ginko-project.firebaseio.com",
@@ -20,9 +26,13 @@
         firebase.initializeApp(firebaseConfig);
     </script>
     <script src="assets/web/firebase-messaging.js"></script>
+    <script src="assets/web/pwa.js"></script>
 </head>
 
 <body>
+<noscript>
+    Die Ginko App funktioniert nicht ohne Javascript. Bitte aktiviere Javascript für diese Seite.
+</noscript>
 <script src="main.dart.js"></script>
 </body>
 

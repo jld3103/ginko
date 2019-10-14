@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ginko/main.dart';
+import 'package:ginko/utils/data.dart';
 import 'package:ginko/utils/platform/platform.dart';
-import 'package:ginko/utils/screen_sizes.dart';
-import 'package:ginko/utils/svg/svg.dart';
+import 'package:ginko/utils/pwa/pwa.dart';
 import 'package:models/models.dart';
 
 /// Header class
@@ -26,19 +28,87 @@ class Header extends StatefulWidget {
 
 class _HeaderState extends State<Header> {
   int _page = 0;
+  bool _permissionsGranted = true;
+  bool _permissionsChecking = false;
+  bool _canInstall = false;
+  bool _installing = false;
+  PWA _pwa;
+
+  @override
+  void initState() {
+    _pwa = PWA();
+    if (Platform().isWeb) {
+      WidgetsBinding.instance.addPostFrameCallback((a) async {
+        _permissionsGranted =
+            await Data.firebaseMessaging.hasNotificationPermissions();
+        _canInstall = await _pwa.canInstall();
+        setState(() {});
+      });
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) => _page + 1 > widget.pages.length
       ? Container()
       : Scaffold(
-          appBar: Platform().isWeb &&
-                  getScreenSize(MediaQuery.of(context).size.width) ==
-                      ScreenSize.small
-              ? null
-              : AppBar(
-                  title: Text(widget.pages[_page].name),
-                  elevation: 0,
+          appBar: AppBar(
+            title: Text(widget.pages[_page].name),
+            elevation: 0,
+            actions: [
+              if (_permissionsChecking)
+                FlatButton(
+                  onPressed: () {},
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    strokeWidth: 2,
+                  ),
                 ),
+              if (!_permissionsGranted && !_permissionsChecking)
+                FlatButton(
+                  onPressed: () async {
+                    setState(() {
+                      _permissionsChecking = true;
+                    });
+                    await AppState.updateTokens(context);
+                    _permissionsGranted = await Data.firebaseMessaging
+                        .hasNotificationPermissions();
+                    setState(() {
+                      _permissionsChecking = false;
+                    });
+                  },
+                  child: Icon(
+                    Icons.notifications_off,
+                    color: Colors.white,
+                  ),
+                ),
+              if (_installing)
+                FlatButton(
+                  onPressed: () {},
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    strokeWidth: 2,
+                  ),
+                ),
+              if (_canInstall && !_installing)
+                FlatButton(
+                  onPressed: () async {
+                    setState(() {
+                      _installing = true;
+                    });
+                    await _pwa.install();
+                    _canInstall = await _pwa.canInstall();
+                    setState(() {
+                      _installing = false;
+                    });
+                  },
+                  child: Icon(
+                    Icons.file_download,
+                    color: Colors.white,
+                  ),
+                ),
+            ],
+          ),
           drawer: Drawer(
             child: ListView(
               shrinkWrap: true,

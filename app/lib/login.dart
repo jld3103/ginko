@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ginko/utils/data.dart';
-import 'package:ginko/utils/svg/svg.dart';
+import 'package:ginko/utils/pwa/pwa.dart';
 import 'package:models/models.dart';
 import 'package:translations/translations_app.dart';
 
@@ -38,14 +39,16 @@ class LoginPageState extends State<LoginPage> {
         selection: [],
         tokens: [],
       );
-      await Data.load().then((code) {
+      await Data.load().then((code) async {
         setState(() {
           _isCheckingForm = false;
         });
         switch (code) {
           case ErrorCode.none:
-            Navigator.of(context).pop();
-            Navigator.of(context).pushReplacementNamed('/home');
+            if (!await PWA().navigateLoadingIfNeeded()) {
+              Navigator.of(context).pop();
+              await Navigator.of(context).pushReplacementNamed('/home');
+            }
             return;
           case ErrorCode.offline:
             Scaffold.of(context).showSnackBar(SnackBar(

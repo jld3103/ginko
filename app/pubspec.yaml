@@ -25,7 +25,12 @@ dependencies:
   cached_network_image: ^1.1.1
   flutter_html: ^0.11.0
   url_launcher: ^5.1.4
+  url_launcher_web:
+    git:
+      url: git://github.com/flutter/plugins.git
+      path: packages/url_launcher/url_launcher_web
   share: ^0.6.2+1
+  transparent_image: ^1.0.0
   models:
     path: ../models
   translations:
@@ -48,10 +53,12 @@ flutter:
   assets:
     - images/logo_green.svg
     - images/logo_green.png
+    - images/logo_green_192x192.png
     - images/logo_white.svg
     - web/manifest.json
+    - web/pwa.js
+    - web/sw.js
     - web/firebase-messaging.js
-    - web/firebase-messaging-sw.js
   fonts:
     - family: Roboto
       fonts:

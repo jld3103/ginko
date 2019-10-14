@@ -122,7 +122,7 @@ class Data {
     }
     if (Static.storage.has(Keys.user)) {
       _user = User.fromJSON(Static.storage.getJSON(Keys.user));
-      if (Platform().isAndroid || Platform().isWeb) {
+      if (Platform().isMobile || Platform().isWeb) {
         _user.tokens = [await firebaseMessaging.getToken()]
             .where((token) => token != 'null')
             .toList();

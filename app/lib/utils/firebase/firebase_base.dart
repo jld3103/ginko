@@ -18,6 +18,9 @@ abstract class FirebaseMessagingBase {
   Future<bool> requestNotificationPermissions(
       [IosNotificationSettings iosSettings = const IosNotificationSettings()]);
 
+  /// On Web, check if permission is given
+  Future<bool> hasNotificationPermissions();
+
   /// Stream that fires when the user changes their notification settings.
   ///
   /// Only fires on iOS.

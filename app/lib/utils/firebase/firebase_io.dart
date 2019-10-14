@@ -18,6 +18,9 @@ class FirebaseMessaging extends FirebaseMessagingBase {
   }
 
   @override
+  Future<bool> hasNotificationPermissions() async => true;
+
+  @override
   Stream<IosNotificationSettings> get onIosSettingsRegistered =>
       firebaseMessaging.onIosSettingsRegistered;
 

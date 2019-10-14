@@ -13,6 +13,7 @@ import 'package:ginko/login.dart';
 import 'package:ginko/replacementplan.dart';
 import 'package:ginko/utils/data.dart';
 import 'package:ginko/utils/platform/platform.dart';
+import 'package:ginko/utils/pwa/pwa.dart';
 import 'package:ginko/utils/selection.dart';
 import 'package:ginko/utils/static.dart';
 import 'package:ginko/utils/storage/storage.dart';
@@ -31,27 +32,27 @@ Future main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
 
-  Static.storage = Storage();
-  await Static.storage.init();
+  if (!await PWA().navigateLoadingIfNeeded()) {
+    Static.storage = Storage();
+    await Static.storage.init();
 
-  runApp(MaterialApp(
-    title: 'Ginko',
-    theme: theme,
-    localizationsDelegates: [
-      AppTranslationsDelegate(),
-      GlobalMaterialLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate,
-    ],
-    supportedLocales:
-        LocalesList.locales.map((locale) => Locale(locale)).toList(),
-    initialRoute: '/loading',
-    routes: <String, WidgetBuilder>{
-      '/': (context) => Container(),
-      '/loading': (context) => Scaffold(body: LoadingPage()),
-      '/login': (context) => Scaffold(body: LoginPage()),
-      '/home': (context) => Scaffold(body: App()),
-    },
-  ));
+    runApp(MaterialApp(
+      title: 'Ginko',
+      theme: theme,
+      localizationsDelegates: [
+        AppTranslationsDelegate(),
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales:
+          LocalesList.locales.map((locale) => Locale(locale)).toList(),
+      routes: <String, WidgetBuilder>{
+        '/': (context) => Scaffold(body: LoadingPage()),
+        '/login': (context) => Scaffold(body: LoginPage()),
+        '/home': (context) => Scaffold(body: App()),
+      },
+    ));
+  }
 }
 
 /// App class
@@ -118,62 +119,73 @@ class AppState extends State<App> with TickerProviderStateMixin {
           content: Text(AppTranslations.of(context).homeOffline),
         ));
       }
-      if (Platform().isAndroid || Platform().isWeb) {
-        final gotNullToken = await Data.firebaseMessaging.getToken() == 'null';
-        await Data.firebaseMessaging.requestNotificationPermissions();
-        Data.firebaseMessaging.configure(
-          onLaunch: (data) async => _handleNotification(data),
-          onResume: (data) async => _handleNotification(data),
-          onMessage: (data) async => _handleNotification(data),
-        );
-        _channel.setMethodCallHandler((call) async {
-          _handleNotification(json.decode(json.encode(call.arguments)));
-        });
+      if (Platform().isMobile) {
+        await updateTokens(context);
+      }
 
-        if (gotNullToken) {
-          print('Got a token after requesting permissions');
-          print('Updating tokens on server');
-          await Data.updateUser();
-        }
-
-        // Ask for scan
-        if (isSeniorGrade(Data.user.grade.value) &&
-            Platform().isAndroid &&
-            !(Static.storage.getBool(Keys.askedForScan) ?? false)) {
-          Static.storage.setBool(Keys.askedForScan, true);
-          var allDetected = true;
-          for (final day in Data.unitPlan.days) {
+      // Ask for scan
+      if (isSeniorGrade(Data.user.grade.value) &&
+          Platform().isMobile &&
+          !(Static.storage.getBool(Keys.askedForScan) ?? false)) {
+        Static.storage.setBool(Keys.askedForScan, true);
+        var allDetected = true;
+        for (final day in Data.unitPlan.days) {
+          if (!allDetected) {
+            break;
+          }
+          for (final lesson in day.lessons) {
             if (!allDetected) {
               break;
             }
-            for (final lesson in day.lessons) {
-              if (!allDetected) {
+            for (final weekA in [true, false]) {
+              if (Selection.get(lesson.block, weekA) == null) {
+                allDetected = false;
                 break;
-              }
-              for (final weekA in [true, false]) {
-                if (Selection.get(lesson.block, weekA) == null) {
-                  allDetected = false;
-                  break;
-                }
               }
             }
           }
-          if (!allDetected) {
-            await showDialog(
-              context: context,
-              builder: (context) => ScanDialog(
-                teachers: Data.teachers,
-                unitPlan: Data.unitPlan,
-              ),
-            );
-          }
+        }
+        if (!allDetected) {
+          await showDialog(
+            context: context,
+            builder: (context) => ScanDialog(
+              teachers: Data.teachers,
+              unitPlan: Data.unitPlan,
+            ),
+          );
         }
       }
     });
     super.initState();
   }
 
-  void _handleNotification(Map<String, dynamic> data) {
+  /// Update all tokens
+  static Future updateTokens(BuildContext context) async {
+    if (Platform().isMobile || Platform().isWeb) {
+      final gotNullToken = await Data.firebaseMessaging.getToken() == 'null';
+      await Data.firebaseMessaging.requestNotificationPermissions();
+      Data.firebaseMessaging.configure(
+        onLaunch: (data) async => _handleNotification(context, data),
+        onResume: (data) async => _handleNotification(context, data),
+        onMessage: (data) async => _handleNotification(context, data),
+      );
+      _channel.setMethodCallHandler((call) async {
+        _handleNotification(context, json.decode(json.encode(call.arguments)));
+      });
+
+      // If the notification permissions were previously not granted
+      // (means getting null as token) then get the token again and push it
+      // to the server
+      if (gotNullToken) {
+        print('Got a token after requesting permissions');
+        print('Updating tokens on server');
+        await Data.updateUser();
+      }
+    }
+  }
+
+  static void _handleNotification(
+      BuildContext context, Map<String, dynamic> data) {
     print(data);
     Scaffold.of(context).showSnackBar(SnackBar(
       content: Text(AppTranslations.of(context).homeNewReplacementPlan),

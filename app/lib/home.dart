@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import 'package:ginko/utils/platform/platform.dart';
 import 'package:ginko/utils/screen_sizes.dart';
 import 'package:ginko/utils/selection.dart';
 import 'package:ginko/utils/static.dart';
@@ -87,13 +86,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
               children: [
                 Container(
                   width: double.infinity,
-                  height: MediaQuery.of(context).size.height -
-                      (Platform().isWeb &&
-                              getScreenSize(
-                                      MediaQuery.of(context).size.width) ==
-                                  ScreenSize.small
-                          ? 5
-                          : 0),
+                  height: MediaQuery.of(context).size.height,
                   child: getContent,
                 ),
                 SlidingUpPanel(

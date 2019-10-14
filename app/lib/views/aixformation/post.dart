@@ -2,8 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:ginko/aixformation.dart';
+import 'package:ginko/utils/platform/platform.dart';
 import 'package:ginko/views/size_limit.dart';
 import 'package:models/models.dart';
+import 'package:transparent_image/transparent_image.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 /// AiXformationPost class
@@ -43,6 +46,11 @@ class AiXformationPost extends StatelessWidget {
                       color: Colors.grey,
                       size: 12,
                     ),
+                    Container(
+                      width: 5,
+                      height: 1,
+                      color: Colors.transparent,
+                    ),
                     Text(
                       post.author ?? '',
                       style: TextStyle(
@@ -50,7 +58,7 @@ class AiXformationPost extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      width: 10,
+                      width: 20,
                       height: 1,
                       color: Colors.transparent,
                     ),
@@ -58,6 +66,11 @@ class AiXformationPost extends StatelessWidget {
                       Icons.access_time,
                       color: Colors.grey,
                       size: 12,
+                    ),
+                    Container(
+                      width: 5,
+                      height: 1,
+                      color: Colors.transparent,
                     ),
                     Text(
                       outputDateFormat(user.language.value).format(post.date),
@@ -69,23 +82,23 @@ class AiXformationPost extends StatelessWidget {
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 10, bottom: 10),
-                  child: CachedNetworkImage(
-                    imageUrl: post.fullUrl,
-                    placeholder: (context, url) => Container(
-                      height: 56,
-                      width: 56,
-                      child: Center(
-                        child: SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 3,
-                          ),
+                  child: Platform().isWeb
+                      ? Stack(
+                          children: [
+                            AiXformationPage.getLoadingPlaceholder(context),
+                            FadeInImage.memoryNetwork(
+                              placeholder: kTransparentImage,
+                              image: post.fullUrl,
+                            ),
+                          ],
+                        )
+                      : CachedNetworkImage(
+                          imageUrl: post.fullUrl,
+                          placeholder: (context, url) =>
+                              AiXformationPage.getLoadingPlaceholder(context),
+                          errorWidget: (context, url, error) =>
+                              Icon(Icons.error),
                         ),
-                      ),
-                    ),
-                    errorWidget: (context, url, error) => Icon(Icons.error),
-                  ),
                 ),
               ],
             ),

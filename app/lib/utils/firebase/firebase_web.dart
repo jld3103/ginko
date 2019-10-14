@@ -1,7 +1,5 @@
 library firebase;
 
-// ignore_for_file: uri_does_not_exist
-
 import 'dart:async';
 import 'dart:convert';
 import 'dart:html';
@@ -39,6 +37,9 @@ class FirebaseMessaging extends FirebaseMessagingBase {
       } else if (data['method'] == 'request_permissions') {
         _permissionsRequestCallbacks[0](data['result']);
         _permissionsRequestCallbacks.removeAt(0);
+      } else if (data['method'] == 'has_permissions') {
+        _permissionsCheckCallbacks[0](data['result']);
+        _permissionsCheckCallbacks.removeAt(0);
       } else if (data['method'] == 'on_message') {
         _onMessage(data['result']);
       } else {
@@ -47,12 +48,12 @@ class FirebaseMessaging extends FirebaseMessagingBase {
     });
   }
 
-  // ignore: undefined_method
   final _channel = BroadcastChannel('firebase_messaging');
 
   final List<Callback> _tokenGetCallbacks = [];
   final List<Callback> _tokenRefreshCallbacks = [];
   final List<Callback> _permissionsRequestCallbacks = [];
+  final List<Callback> _permissionsCheckCallbacks = [];
 
   MessageHandler _onMessage;
 
@@ -67,9 +68,18 @@ class FirebaseMessaging extends FirebaseMessagingBase {
       [IosNotificationSettings iosSettings =
           const IosNotificationSettings()]) async {
     final completer = Completer<bool>();
-    _channel.postMessage(json.encode({'method': 'request_permissions'}));
     // ignore: unnecessary_lambdas
     _permissionsRequestCallbacks.add((data) => completer.complete(data));
+    _channel.postMessage(json.encode({'method': 'request_permissions'}));
+    return completer.future;
+  }
+
+  @override
+  Future<bool> hasNotificationPermissions() {
+    final completer = Completer<bool>();
+    // ignore: unnecessary_lambdas
+    _permissionsCheckCallbacks.add((data) => completer.complete(data));
+    _channel.postMessage(json.encode({'method': 'has_permissions'}));
     return completer.future;
   }
 
@@ -92,10 +102,10 @@ class FirebaseMessaging extends FirebaseMessagingBase {
   @override
   Future<String> getToken() {
     final completer = Completer<String>();
-    _channel.postMessage(json.encode({'method': 'get_token'}));
     _tokenGetCallbacks.add((data) {
       completer.complete(data.toString());
     });
+    _channel.postMessage(json.encode({'method': 'get_token'}));
     return completer.future;
   }
 

@@ -7,6 +7,7 @@ import 'package:ginko/views/size_limit.dart';
 import 'package:models/models.dart';
 import 'package:share/share.dart';
 import 'package:translations/translations_app.dart';
+import 'package:transparent_image/transparent_image.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 /// AiXformationPage class
@@ -78,24 +79,23 @@ class AiXformationPage extends StatelessWidget {
                     child: Container(
                       padding: EdgeInsets.only(top: 10, bottom: 10),
                       child: ListTile(
-                        leading: CachedNetworkImage(
-                          imageUrl: post.thumbnailUrl,
-                          placeholder: (context, url) => Container(
-                            height: 56,
-                            width: 56,
-                            child: Center(
-                              child: SizedBox(
-                                width: 20,
-                                height: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 3,
-                                ),
+                        leading: Platform().isWeb
+                            ? Stack(
+                                children: [
+                                  getLoadingPlaceholder(context),
+                                  FadeInImage.memoryNetwork(
+                                    placeholder: kTransparentImage,
+                                    image: post.thumbnailUrl,
+                                  ),
+                                ],
+                              )
+                            : CachedNetworkImage(
+                                imageUrl: post.thumbnailUrl,
+                                placeholder: (context, url) =>
+                                    getLoadingPlaceholder(context),
+                                errorWidget: (context, url, error) =>
+                                    Icon(Icons.error),
                               ),
-                            ),
-                          ),
-                          errorWidget: (context, url, error) =>
-                              Icon(Icons.error),
-                        ),
                         title: Text(
                           post.title,
                         ),
@@ -107,6 +107,11 @@ class AiXformationPage extends StatelessWidget {
                                   Icons.person,
                                   color: Colors.grey,
                                   size: 12,
+                                ),
+                                Container(
+                                  width: 5,
+                                  height: 1,
+                                  color: Colors.transparent,
                                 ),
                                 Text(
                                   post.author ?? '',
@@ -122,6 +127,11 @@ class AiXformationPage extends StatelessWidget {
                                   Icons.access_time,
                                   color: Colors.grey,
                                   size: 12,
+                                ),
+                                Container(
+                                  width: 5,
+                                  height: 1,
+                                  color: Colors.transparent,
                                 ),
                                 Text(
                                   outputDateFormat(user.language.value)
@@ -142,5 +152,20 @@ class AiXformationPage extends StatelessWidget {
             )
             .toList()
             .cast<Widget>(),
+      );
+
+  // ignore: public_member_api_docs
+  static Widget getLoadingPlaceholder(BuildContext context) => Container(
+        height: 56,
+        width: 56,
+        child: Center(
+          child: SizedBox(
+            width: 20,
+            height: 20,
+            child: CircularProgressIndicator(
+              strokeWidth: 3,
+            ),
+          ),
+        ),
       );
 }

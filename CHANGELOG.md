@@ -1,4 +1,7 @@
 
+# 2019-10-14  
+ jld3103: Fix most of the issues on web and add PWA support  
+
 # 2019-10-13  
  jld3103: Fix darwin-pkg packaging  
  jld3103: Fix and improve visual layout  
