@@ -18,8 +18,8 @@ void main() {
 
     test('Dateformat converts correctly', () async {
       await setupDateFormats();
-      expect(outputDateFormat('de').format(DateTime(2019, 7, 5)), '5.7.2019');
-      expect(outputDateFormat('en').format(DateTime(2019, 7, 5)), '7/5/2019');
+      expect(outputDateFormat('de').format(DateTime(2019, 7, 5)), '05.07.2019');
+      expect(outputDateFormat('en').format(DateTime(2019, 7, 5)), '07/05/2019');
       expect(parseDate('5.7.2019'), DateTime(2019, 7, 5));
       expect(parseDate('5.7.19'), DateTime(2019, 7, 5));
       expect(parseDate('5. Juli 2019'), DateTime(2019, 7, 5));

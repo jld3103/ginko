@@ -23,7 +23,6 @@ class LoadingPageState extends State<LoadingPage> {
         return;
       }
       while (!mounted) {}
-      Navigator.of(context).pop();
       Navigator.of(context).pushReplacementNamed('/home');
     });
     super.initState();

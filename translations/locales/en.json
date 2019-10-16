@@ -1,5 +1,5 @@
 {
-  "outputDateFormat": "M/d/y",
+  "outputDateFormat": "MM/dd/y",
   "loadingTitle": "Loading",
   "homeOffline": "Maybe old data is shown",
   "homeNewReplacementPlan": "New replacement plan!",

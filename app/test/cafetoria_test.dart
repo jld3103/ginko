@@ -139,7 +139,7 @@ void main() {
         await tester.pumpAndSettle();
         expect(find.text('Nudeln (3.99€)'), findsOneWidget);
         expect(find.text('12:40 - 13:00'), findsOneWidget);
-        expect(find.text('Friday 9.8.2019'), findsOneWidget);
+        expect(find.text('Friday 09.08.2019'), findsOneWidget);
         expect(find.byType(Text), findsNWidgets(3));
       });
     });
