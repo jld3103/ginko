@@ -31,7 +31,13 @@ Future main() async {
     request.response.headers.add('Access-Control-Allow-Methods', '*');
     if (request.uri.path == '/' && request.method == 'POST') {
       final content = await utf8.decoder.bind(request).join();
-      final queryParams = Uri(query: content).queryParameters;
+      Map<String, dynamic> queryParams;
+      try {
+        queryParams = json.decode(content);
+        queryParams['user'] = json.encode(queryParams['user']);
+      } on FormatException {
+        queryParams = Uri(query: content).queryParameters;
+      }
       if (queryParams[Keys.user] == 'null' || queryParams[Keys.user] == null) {
         request.response.statusCode = 401;
         request.response.write('401 Unauthorized');
@@ -65,7 +71,6 @@ Future main() async {
             // ignore: avoid_catches_without_on_clauses, empty_catches
           } catch (e) {}
         }
-
         if (correctPassword) {
           if (!Users.usernames.contains(user.username)) {
             Users.addUser(user);
@@ -78,9 +83,16 @@ Future main() async {
           final Map<String, dynamic> data = {
             'status': 'ok',
           };
-          if (json.encode(
-                  (Users.getUser(user.username)..tokens = []).toSafeJSON()) !=
-              json.encode((user..tokens = []).toSafeJSON())) {
+          if (json.encode((User.fromJSON(json.decode(
+                      json.encode(Users.getUser(user.username).toJSON())))
+                    ..tokens = []
+                    ..password = '')
+                  .toSafeJSON()) !=
+              json.encode(
+                  (User.fromJSON(json.decode(json.encode(user.toJSON())))
+                        ..tokens = []
+                        ..password = '')
+                      .toSafeJSON())) {
             data[Keys.user] = Users.getUser(user.username).toJSON();
           }
           for (final key in queryParams.keys.where((key) => key != Keys.user)) {

@@ -124,7 +124,6 @@ class UnitPlanParser {
                                         unit: unit,
                                       );
                                     }
-                                    //print(subject);
                                     return Subject(
                                       room: Rooms.getRoom(subject[2]),
                                       subject: Subjects.getSubject(subject[1]),

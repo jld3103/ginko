@@ -9,8 +9,5 @@ class PWA extends PWABase {
   Future<bool> canInstall() async => false;
 
   @override
-  void reloadPage() {}
-
-  @override
   Future<bool> navigateLoadingIfNeeded() async => false;
 }

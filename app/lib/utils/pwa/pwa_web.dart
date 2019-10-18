@@ -61,17 +61,12 @@ class PWA extends PWABase {
   }
 
   @override
-  void reloadPage() {
-    window.location.reload();
-  }
-
-  @override
   Future<bool> navigateLoadingIfNeeded() async {
     final hash = window.location.hash;
     final needsToNavigate = hash != '#/';
     if (needsToNavigate) {
       window.location.hash = '#/';
-      reloadPage();
+      window.location.reload();
     }
     return needsToNavigate;
   }

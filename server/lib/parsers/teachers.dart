@@ -6,7 +6,7 @@ import 'package:server/config.dart';
 /// handles all teachers parsing
 class TeachersParser {
   static const String _url =
-      'https://viktoriaschule-aachen.de/dokumente/upload/5c04d_Kollegiumsliste_mit_Angabe_des_Namens,_des_K%C3%BCrzels_und_der_unterrichten_F%C3%A4cher,_Stand_vom_28.08.2019.pdf';
+      'https://www.viktoriaschule-aachen.de/dokumente/upload/513b6_Lehrer_Fakultenliste_breites_Namensfeld_08_17.rtm_20191001.pdf';
 
   /// Download pdf teachers list
   static Future<List<int>> download() async {
@@ -23,7 +23,7 @@ class TeachersParser {
     data['pageTables'].map((x) => x['tables']).toList().forEach(entries.addAll);
 
     return Teachers(
-      date: DateTime(2019, 8, 28),
+      date: DateTime(2019, 10, 1),
       teachers: entries
           .map((i) => i[0])
           .where((i) => i != 'Fakultenliste' && i.isNotEmpty)
