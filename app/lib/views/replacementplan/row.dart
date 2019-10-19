@@ -10,6 +10,7 @@ class ReplacementPlanRow extends StatelessWidget {
     @required this.change,
     this.showUnit = true,
     this.addPadding = true,
+    this.showCard = true,
   });
 
   // ignore: public_member_api_docs
@@ -20,6 +21,9 @@ class ReplacementPlanRow extends StatelessWidget {
 
   // ignore: public_member_api_docs
   final bool addPadding;
+
+  // ignore: public_member_api_docs
+  final bool showCard;
 
   @override
   Widget build(BuildContext context) {
@@ -53,113 +57,132 @@ class ReplacementPlanRow extends StatelessWidget {
     if (change.changed.info != null) {
       infoText += change.changed.info;
     }
-    return Card(
-      margin: EdgeInsets.all(2.5),
-      child: Container(
-        width: double.infinity,
-        padding: EdgeInsets.only(top: 5, right: 5, bottom: 5, left: 7.5),
-        child: Row(
-          children: [
-            Container(
-              alignment: Alignment.centerLeft,
-              width: addPadding ? 20 : null,
-              child: showUnit
-                  ? Text(
-                      '${change.unit + 1}',
-                      style: TextStyle(
-                        color: Colors.black87,
+    final content = Container(
+      width: double.infinity,
+      padding: EdgeInsets.only(
+        top: showCard ? 5 : 2.5,
+        right: 5,
+        bottom: showCard ? 5 : 2.5,
+        left: 7.5,
+      ),
+      child: Row(
+        children: [
+          Container(
+            alignment: Alignment.centerLeft,
+            width: showUnit ? 20 : null,
+            child: showUnit
+                ? Text(
+                    '${change.unit + 1}',
+                    style: TextStyle(
+                      color: Colors.black87,
+                    ),
+                  )
+                : null,
+          ),
+          Container(
+            margin: EdgeInsets.only(right: 12.5),
+            alignment: Alignment.center,
+            height: 32,
+            width: 2,
+            color: change.type == ChangeTypes.freeLesson
+                ? Theme.of(context).primaryColor
+                : (change.type == ChangeTypes.exam
+                    ? Colors.red
+                    : Colors.orange),
+          ),
+          Expanded(
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 70,
+                      child: Text(
+                        AppTranslations.of(context).subjects[change.subject] ??
+                            '',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).primaryColor,
+                        ),
                       ),
-                    )
-                  : null,
-            ),
-            Container(
-              margin: EdgeInsets.only(right: 12.5),
-              alignment: Alignment.center,
-              height: 32,
-              width: 2,
-              color: change.type == ChangeTypes.freeLesson
-                  ? Theme.of(context).primaryColor
-                  : (change.type == ChangeTypes.exam
-                      ? Colors.red
-                      : Colors.orange),
-            ),
-            Expanded(
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 70,
+                    ),
+                    Expanded(
+                      flex: 15,
+                      child: Container(
+                        alignment: Alignment.centerLeft,
+                        child: Text(change.changed.room ?? ''),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 15,
+                      child: Container(
+                        alignment: Alignment.centerLeft,
                         child: Text(
-                          AppTranslations.of(context)
-                                  .subjects[change.subject] ??
-                              '',
+                          change.room ?? '',
                           style: TextStyle(
-                            fontWeight: FontWeight.bold,
                             color: Theme.of(context).primaryColor,
                           ),
                         ),
                       ),
-                      Expanded(
-                        flex: 15,
-                        child: Container(
-                          alignment: Alignment.centerLeft,
-                          child: Text(change.changed.room ?? ''),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      flex: 70,
+                      child: Text(
+                        infoText,
+                        style: TextStyle(
+                          color: Colors.grey,
                         ),
                       ),
-                      Expanded(
-                        flex: 15,
-                        child: Container(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            change.room ?? '',
-                            style: TextStyle(
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                        ),
+                    ),
+                    Expanded(
+                      flex: 15,
+                      child: Container(
+                        alignment: Alignment.centerLeft,
+                        child: Text(change.changed.teacher ?? ''),
                       ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        flex: 70,
+                    ),
+                    Expanded(
+                      flex: 15,
+                      child: Container(
+                        alignment: Alignment.centerLeft,
                         child: Text(
-                          infoText,
+                          change.teacher ?? '',
                           style: TextStyle(
-                            color: Colors.grey,
+                            color: Theme.of(context).primaryColor,
                           ),
                         ),
                       ),
-                      Expanded(
-                        flex: 15,
-                        child: Container(
-                          alignment: Alignment.centerLeft,
-                          child: Text(change.changed.teacher ?? ''),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 15,
-                        child: Container(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            change.teacher ?? '',
-                            style: TextStyle(
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
+    );
+    if (showCard) {
+      return Container(
+        padding: EdgeInsets.only(left: !showUnit && addPadding ? 20 : 0),
+        child: Card(
+          margin: EdgeInsets.only(
+            top: 0,
+            right: 2.5,
+            bottom: 0,
+            left: 2.5,
+          ),
+          child: content,
+        ),
+      );
+    }
+    return Container(
+      padding: EdgeInsets.only(left: !showUnit && addPadding ? 20 : 0),
+      child: content,
     );
   }
 }

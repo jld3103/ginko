@@ -82,7 +82,7 @@ class _ReplacementPlanPageState extends State<ReplacementPlanPage>
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           Container(
-                            height: 16,
+                            height: 5,
                             width: 1,
                             color: Colors.transparent,
                           ),
@@ -99,6 +99,9 @@ class _ReplacementPlanPageState extends State<ReplacementPlanPage>
                 ),
               ),
               ...widget.replacementPlan.changes
+                  .where((change) =>
+                      change.date ==
+                      widget.replacementPlan.replacementPlanDays[day].date)
                   .map((change) {
                     final showUnit = change.unit != previousUnit;
                     previousUnit = change.unit;
@@ -106,6 +109,7 @@ class _ReplacementPlanPageState extends State<ReplacementPlanPage>
                       child: ReplacementPlanRow(
                         change: change,
                         showUnit: showUnit,
+                        showCard: false,
                       ),
                     );
                   })

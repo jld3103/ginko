@@ -122,16 +122,16 @@ class _HeaderState extends State<Header> {
                     child: Column(
                       children: [
                         Container(
-                          height: 109,
+                          height: 111,
                           margin: EdgeInsets.only(bottom: 5),
                           child: SvgPicture.asset('images/logo_white.svg'),
                         ),
                         Text(
-                          widget.user.grade.value,
+                          // ignore: lines_longer_than_80_chars
+                          '${widget.user.username} - ${widget.user.grade.value}',
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 18,
                             color: Colors.white,
-                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],

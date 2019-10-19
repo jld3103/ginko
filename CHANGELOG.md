@@ -1,4 +1,7 @@
 
+# 2019-10-19  
+ jld3103: Visual improvements  
+
 # 2019-10-18  
  jld3103: Fix minor issues  
 

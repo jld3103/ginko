@@ -41,9 +41,6 @@ class ExtraInformation extends StatefulWidget {
 class _ExtraInformationState extends State<ExtraInformation> {
   @override
   Widget build(BuildContext context) {
-    final _showBig =
-        getScreenSize(MediaQuery.of(context).size.width) != ScreenSize.small;
-
     final start = widget.date;
     final end = start.add(Duration(days: 1)).subtract(Duration(seconds: 1));
     final events = widget.calendar.getEventsForTimeSpan(start, end);
@@ -62,57 +59,142 @@ class _ExtraInformationState extends State<ExtraInformation> {
               }
             }
           },
-          child: Container(
-            padding: EdgeInsets.only(
-              left: 15,
-              right: _showBig ? 15 : 0,
-            ),
-            color:
-                _showBig ? Theme.of(context).primaryColor : Colors.transparent,
-            width: double.infinity,
-            height: null,
-            alignment: _showBig ? Alignment.bottomLeft : null,
-            child: Container(
-              height: _showBig ? 41 : 34,
-              alignment: Alignment.center,
-              child: Row(
-                children: [
-                  Text(
-                    AppTranslations.of(context)
-                        .weekdays[widget.date.weekday - 1],
-                    style: TextStyle(
-                      fontWeight: !_showBig ? FontWeight.bold : null,
-                      color: _showBig ? Colors.white : null,
-                      fontSize: _showBig ? 18 : null,
+          child: Column(
+            children: [
+              if (getScreenSize(MediaQuery.of(context).size.width) ==
+                  ScreenSize.small)
+                Container(
+                  width: double.infinity,
+                  height: 20,
+                  color: Colors.transparent,
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 7, bottom: 7),
+                      child: SizedBox(
+                        height: 6,
+                        width: MediaQuery.of(context).size.width / 3,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
+                            color: Theme.of(context).accentColor,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                  Text(
-                    // ignore: lines_longer_than_80_chars
-                    ' - ${outputDateFormat(widget.user.language.value).format(widget.date)}',
-                    style: TextStyle(
-                      color: _showBig ? Colors.white : null,
-                      fontSize: _showBig ? 18 : null,
-                    ),
+                ),
+              if (getScreenSize(MediaQuery.of(context).size.width) !=
+                  ScreenSize.small)
+                Container(
+                  padding: EdgeInsets.only(
+                    left: 15,
+                    right: getScreenSize(MediaQuery.of(context).size.width) !=
+                            ScreenSize.small
+                        ? 15
+                        : 0,
                   ),
-                ],
-              ),
-            ),
+                  color: getScreenSize(MediaQuery.of(context).size.width) !=
+                          ScreenSize.small
+                      ? Theme.of(context).primaryColor
+                      : Colors.transparent,
+                  width: double.infinity,
+                  height: null,
+                  alignment: getScreenSize(MediaQuery.of(context).size.width) !=
+                          ScreenSize.small
+                      ? Alignment.bottomLeft
+                      : null,
+                  child: Container(
+                    height: getScreenSize(MediaQuery.of(context).size.width) !=
+                            ScreenSize.small
+                        ? 41
+                        : 34,
+                    alignment: Alignment.center,
+                    child: getHeaderText,
+                  ),
+                ),
+              if (getScreenSize(MediaQuery.of(context).size.width) ==
+                  ScreenSize.small)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 1,
+                      child: Center(
+                        child: Container(
+                          margin: EdgeInsetsDirectional.only(
+                            start: 1,
+                            end: 1,
+                          ),
+                          height: 1,
+                          color: Colors.black38,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.all(5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          getHeaderText,
+                          Row(
+                            children: [
+                              Text(
+                                events.length.toString(),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Container(
+                                width: 1.5,
+                                height: 1,
+                                color: Colors.transparent,
+                              ),
+                              Icon(
+                                Icons.calendar_today,
+                                color: Theme.of(context).primaryColor,
+                                size: 16,
+                              ),
+                              Container(
+                                width: 10,
+                                height: 1,
+                                color: Colors.transparent,
+                              ),
+                              Text(
+                                (cafetoriaDays.isNotEmpty
+                                        ? cafetoriaDays[0].menus.length
+                                        : 0)
+                                    .toString(),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Container(
+                                width: 1.5,
+                                height: 1,
+                                color: Colors.transparent,
+                              ),
+                              Icon(
+                                Icons.restaurant,
+                                color: Theme.of(context).primaryColor,
+                                size: 16,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+            ],
           ),
         ),
-        if (!_showBig)
-          SizedBox(
-            height: 1,
-            child: Center(
-              child: Container(
-                margin: EdgeInsetsDirectional.only(start: 1, end: 1),
-                height: 1,
-                color: Colors.grey,
-              ),
-            ),
-          ),
         Container(
-          height: _showBig ? MediaQuery.of(context).size.height - 97 : null,
-          decoration: _showBig
+          height: getScreenSize(MediaQuery.of(context).size.width) !=
+                  ScreenSize.small
+              ? MediaQuery.of(context).size.height - 97
+              : null,
+          decoration: getScreenSize(MediaQuery.of(context).size.width) !=
+                  ScreenSize.small
               ? BoxDecoration(
                   color: Colors.white,
                   boxShadow: [
@@ -126,7 +208,11 @@ class _ExtraInformationState extends State<ExtraInformation> {
                 )
               : null,
           child: ListView(
-            padding: EdgeInsets.all(_showBig ? 5 : 10),
+            padding: EdgeInsets.all(
+                getScreenSize(MediaQuery.of(context).size.width) !=
+                        ScreenSize.small
+                    ? 5
+                    : 10),
             shrinkWrap: true,
             children: [
               ...events
@@ -145,4 +231,40 @@ class _ExtraInformationState extends State<ExtraInformation> {
       ],
     );
   }
+
+  Widget get getHeaderText => Row(
+        children: [
+          Text(
+            AppTranslations.of(context).weekdays[widget.date.weekday - 1],
+            style: TextStyle(
+              fontWeight: getScreenSize(MediaQuery.of(context).size.width) ==
+                      ScreenSize.small
+                  ? FontWeight.bold
+                  : null,
+              color: getScreenSize(MediaQuery.of(context).size.width) !=
+                      ScreenSize.small
+                  ? Colors.white
+                  : null,
+              fontSize: getScreenSize(MediaQuery.of(context).size.width) !=
+                      ScreenSize.small
+                  ? 18
+                  : null,
+            ),
+          ),
+          Text(
+            // ignore: lines_longer_than_80_chars
+            ' - ${outputDateFormat(widget.user.language.value).format(widget.date)}',
+            style: TextStyle(
+              color: getScreenSize(MediaQuery.of(context).size.width) !=
+                      ScreenSize.small
+                  ? Colors.white
+                  : null,
+              fontSize: getScreenSize(MediaQuery.of(context).size.width) !=
+                      ScreenSize.small
+                  ? 18
+                  : null,
+            ),
+          ),
+        ],
+      );
 }

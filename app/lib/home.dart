@@ -82,43 +82,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) =>
       getScreenSize(MediaQuery.of(context).size.width) == ScreenSize.small
-          ? Stack(
-              children: [
-                Container(
-                  width: double.infinity,
-                  height: MediaQuery.of(context).size.height,
-                  child: getContent,
-                ),
-                SlidingUpPanel(
-                  controller: _panelController,
-                  parallaxEnabled: true,
-                  parallaxOffset: .1,
-                  maxHeight: MediaQuery.of(context).size.height * 0.75,
-                  minHeight: 30,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(24),
-                    topRight: Radius.circular(24),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey,
-                      spreadRadius: 1,
-                      blurRadius: 3,
-                    ),
-                  ],
-                  panelSnapping: true,
-                  backdropEnabled: true,
-                  backdropTapClosesPanel: true,
-                  panel: ExtraInformation(
-                    date: monday(DateTime.now()).add(Duration(days: _weekday)),
-                    calendar: widget.calendar,
-                    cafetoria: widget.cafetoria,
-                    panelController: _panelController,
-                    user: widget.user,
-                  ),
-                ),
-              ],
-            )
+          ? getContent
           : Row(
               children: [
                 Container(
@@ -157,9 +121,15 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
           5,
           (weekday) {
             final start = monday(DateTime.now()).add(Duration(days: weekday));
-            return ListView(
+            final list = ListView(
               shrinkWrap: true,
-              padding: EdgeInsets.only(top: 5, bottom: 5),
+              padding: EdgeInsets.only(
+                top: 5,
+                bottom: getScreenSize(MediaQuery.of(context).size.width) ==
+                        ScreenSize.small
+                    ? 23
+                    : 5,
+              ),
               children: widget.unitPlan.days[weekday].lessons
                   .map((lesson) {
                     final subjects = lesson.subjects
@@ -214,6 +184,33 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   .toList()
                   .cast<Widget>(),
             );
+            if (getScreenSize(MediaQuery.of(context).size.width) ==
+                ScreenSize.small) {
+              return Stack(
+                children: [
+                  list,
+                  SlidingUpPanel(
+                    controller: _panelController,
+                    minHeight: 48,
+                    backdropEnabled: true,
+                    boxShadow: [
+                      BoxShadow(
+                        blurRadius: 4.0,
+                        color: Color.fromRGBO(0, 0, 0, 0.25),
+                      )
+                    ],
+                    panel: ExtraInformation(
+                      date: monday(DateTime.now()).add(Duration(days: weekday)),
+                      calendar: widget.calendar,
+                      cafetoria: widget.cafetoria,
+                      panelController: _panelController,
+                      user: widget.user,
+                    ),
+                  ),
+                ],
+              );
+            }
+            return list;
           },
         ).toList().cast<Widget>(),
       );
