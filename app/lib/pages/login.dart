@@ -1,7 +1,8 @@
+import 'package:after_layout/after_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ginko/plugins/pwa/pwa.dart';
 import 'package:ginko/utils/data.dart';
-import 'package:ginko/utils/pwa/pwa.dart';
 import 'package:models/models.dart';
 import 'package:translations/translations_app.dart';
 
@@ -14,7 +15,7 @@ class LoginPage extends StatefulWidget {
 
 /// LoginPageState class
 /// describes the state of the login widget
-class LoginPageState extends State<LoginPage> {
+class LoginPageState extends State<LoginPage> with AfterLayoutMixin<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _focus = FocusNode();
   String _grade;
@@ -80,15 +81,12 @@ class LoginPageState extends State<LoginPage> {
   }
 
   @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((a) {
-      _language = AppTranslations.of(context).locale.languageCode;
-      setState(() {
-        _grade = AppTranslations.of(context).loginSelectGrade;
-        _grades = (_grades.reversed.toList()..add(_grade)).reversed.toList();
-      });
+  void afterFirstLayout(BuildContext context) {
+    _language = AppTranslations.of(context).locale.languageCode;
+    setState(() {
+      _grade = AppTranslations.of(context).loginSelectGrade;
+      _grades = (_grades.reversed.toList()..add(_grade)).reversed.toList();
     });
-    super.initState();
   }
 
   @override

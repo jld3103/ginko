@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:ginko/utils/firebase/firebase.dart';
-import 'package:ginko/utils/platform/platform.dart';
+import 'package:ginko/plugins/firebase/firebase.dart';
+import 'package:ginko/plugins/platform/platform.dart';
 import 'package:ginko/utils/static.dart';
 import 'package:http/http.dart';
 import 'package:models/models.dart';

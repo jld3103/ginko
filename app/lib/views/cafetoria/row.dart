@@ -1,3 +1,4 @@
+import 'package:after_layout/after_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
@@ -27,20 +28,17 @@ class CafetoriaRow extends StatefulWidget {
   State<StatefulWidget> createState() => _CafetoriaRowState();
 }
 
-class _CafetoriaRowState extends State<CafetoriaRow> {
+class _CafetoriaRowState extends State<CafetoriaRow>
+    with AfterLayoutMixin<CafetoriaRow> {
   DateFormat _timeFormat;
 
   @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((a) {
-      final languageCode = AppTranslations.of(context).locale.languageCode;
-      initializeDateFormatting(languageCode, null).then((_) {
-        setState(() {
-          _timeFormat = DateFormat.Hm(languageCode);
-        });
-      });
+  Future afterFirstLayout(BuildContext context) async {
+    final languageCode = AppTranslations.of(context).locale.languageCode;
+    await initializeDateFormatting(languageCode, null);
+    setState(() {
+      _timeFormat = DateFormat.Hm(languageCode);
     });
-    super.initState();
   }
 
   @override

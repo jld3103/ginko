@@ -1,4 +1,7 @@
 
+# 2019-10-20  
+ jld3103: Refactor app  
+
 # 2019-10-19  
  jld3103: Visual improvements  
 

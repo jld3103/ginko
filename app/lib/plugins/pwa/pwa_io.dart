@@ -1,4 +1,4 @@
-import 'package:ginko/utils/pwa/pwa_base.dart';
+import 'package:ginko/plugins/pwa/pwa_base.dart';
 
 // ignore: public_member_api_docs
 class PWA extends PWABase {

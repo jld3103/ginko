@@ -195,7 +195,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     backdropEnabled: true,
                     boxShadow: [
                       BoxShadow(
-                        blurRadius: 4.0,
+                        blurRadius: 4,
                         color: Color.fromRGBO(0, 0, 0, 0.25),
                       )
                     ],

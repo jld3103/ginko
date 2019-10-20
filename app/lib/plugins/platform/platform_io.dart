@@ -1,6 +1,6 @@
 import 'dart:io' as io show Platform;
 
-import 'package:ginko/utils/platform/platform_base.dart';
+import 'package:ginko/plugins/platform/platform_base.dart';
 
 /// Platform class
 /// handles platform on mobile and desktop devices

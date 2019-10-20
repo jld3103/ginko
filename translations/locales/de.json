@@ -2,7 +2,6 @@
   "outputDateFormat": "dd.MM.y",
   "loadingTitle": "Laden",
   "homeOffline": "Eventuell werden alte Daten angezeigt",
-  "homeNewReplacementPlan": "Neuer Vertretungsplan!",
   "homeAAndBWeeksCombination": "A- und B-Wochen Kombination",
   "loginUserNameRequired": "Benutzername erforderlich",
   "loginPasswordRequired": "Passwort erforderlich",
@@ -33,6 +32,8 @@
   "replacementPlanUpdated": "Vertretungsplan aktualisiert",
   "cafetoriaNoMenus": "Keine Cafétoriamenüs vorhanden",
   "unit": "Stunde",
+  "newReplacementPlan": "Neuer Vertretungsplan!",
+  "open": "Öffnen",
   "subjects": {
     "BI": "Bio",
     "CH": "Chemie",

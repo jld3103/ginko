@@ -1,3 +1,4 @@
+import 'package:after_layout/after_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:ginko/utils/theme.dart';
@@ -20,8 +21,11 @@ Widget makeTestableWidget(Widget child) => MediaQuery(
 typedef DataCallback = void Function(dynamic data);
 
 class DialogTester extends StatefulWidget {
-  const DialogTester(this.dialog, {@required this.dataCallback, Key key})
-      : super(key: key);
+  const DialogTester(
+    this.dialog, {
+    @required this.dataCallback,
+    Key key,
+  }) : super(key: key);
 
   final Widget dialog;
 
@@ -31,20 +35,18 @@ class DialogTester extends StatefulWidget {
   _DialogTesterState createState() => _DialogTesterState();
 }
 
-class _DialogTesterState extends State<DialogTester> {
+class _DialogTesterState extends State<DialogTester>
+    with AfterLayoutMixin<DialogTester> {
   dynamic _data;
 
   dynamic get data => _data;
 
   @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback(
-      (a) => showDialog(
-        context: context,
-        builder: (context) => widget.dialog,
-      ).then(widget.dataCallback),
-    );
-    super.initState();
+  Future afterFirstLayout(BuildContext context) async {
+    widget.dataCallback(await showDialog(
+      context: context,
+      builder: (context) => widget.dialog,
+    ));
   }
 
   @override

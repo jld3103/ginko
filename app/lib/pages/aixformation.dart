@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ginko/utils/platform/platform.dart';
+import 'package:ginko/plugins/platform/platform.dart';
 import 'package:ginko/views/aixformation/post.dart';
 import 'package:ginko/views/size_limit.dart';
 import 'package:models/models.dart';

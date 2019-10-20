@@ -2,7 +2,6 @@
   "outputDateFormat": "MM/dd/y",
   "loadingTitle": "Loading",
   "homeOffline": "Maybe old data is shown",
-  "homeNewReplacementPlan": "New replacement plan!",
   "homeAAndBWeeksCombination": "A- and B-weeks combination",
   "loginUserNameRequired": "Username required",
   "loginPasswordRequired": "Password required",
@@ -33,6 +32,8 @@
   "replacementPlanUpdated": "Replacement plan updated",
   "cafetoriaNoMenus": "No Cafétoria menus available",
   "unit": "unit",
+  "newReplacementPlan": "New replacement plan!",
+  "open": "Open",
   "subjects": {
     "BI": "Biology",
     "CH": "Chemistry",

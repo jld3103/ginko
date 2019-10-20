@@ -29,14 +29,13 @@ public class NotificationService extends FirebaseMessagingService {
             System.out.println("Notification received: " + remoteMessage.getData());
             if (flutterView != null && getCurrentClass().startsWith(getApplication().getPackageName())) {
                 System.out.println("Updating UI");
-                new Handler(Looper.getMainLooper()).post(() -> new MethodChannel(flutterView, CHANNEL).invokeMethod("notification", remoteMessage.getData()));
+                new Handler(Looper.getMainLooper()).post(() -> new MethodChannel(flutterView, CHANNEL).invokeMethod("foreground_notification", remoteMessage.getData()));
                 return;
             }
             System.out.println("Showing notification");
 
-            int channelId = 0;
             Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra("channel", channelId);
+            intent.putExtra("channel", remoteMessage.getData().get("type"));
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             int uniqueInt = (int) (System.currentTimeMillis() & 0xfffffff);
             PendingIntent pendingIntent = PendingIntent.getActivity(this, uniqueInt, intent, PendingIntent.FLAG_CANCEL_CURRENT);
@@ -55,7 +54,7 @@ public class NotificationService extends FirebaseMessagingService {
                             : Html.fromHtml(bigBody, Html.FROM_HTML_MODE_LEGACY)
             );
 
-            NotificationCompat.Builder notification = new NotificationCompat.Builder(getApplicationContext(), String.valueOf(channelId))
+            NotificationCompat.Builder notification = new NotificationCompat.Builder(getApplicationContext(), remoteMessage.getData().get("type"))
                     .setContentTitle(title)
                     .setContentText(formattedBody)
                     .setSmallIcon(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ? R.mipmap.ic_launcher : R.mipmap.logo_white)

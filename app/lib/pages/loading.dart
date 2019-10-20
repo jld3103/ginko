@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ginko/plugins/platform/platform.dart';
 import 'package:ginko/utils/data.dart';
-import 'package:ginko/utils/platform/platform.dart';
 import 'package:translations/translations_app.dart';
 
 /// LoadingPage class

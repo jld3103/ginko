@@ -1,4 +1,4 @@
-import 'package:ginko/utils/storage/storage.dart';
+import 'package:ginko/plugins/storage/storage.dart';
 
 // ignore: avoid_classes_with_only_static_members
 /// Static class

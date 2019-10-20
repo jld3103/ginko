@@ -93,7 +93,9 @@ Future main() async {
                         ..tokens = []
                         ..password = '')
                       .toSafeJSON())) {
-            data[Keys.user] = Users.getUser(user.username).toJSON();
+            data[Keys.user] =
+                User.fromJSON(json.decode(json.encode(user.toJSON())))
+                  ..tokens = [];
           }
           for (final key in queryParams.keys.where((key) => key != Keys.user)) {
             try {

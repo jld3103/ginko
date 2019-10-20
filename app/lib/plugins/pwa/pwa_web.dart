@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:html';
 
-import 'package:ginko/utils/pwa/pwa_base.dart';
+import 'package:ginko/plugins/pwa/pwa_base.dart';
 
 // ignore: avoid_annotating_with_dynamic
 typedef Callback = void Function(dynamic result);

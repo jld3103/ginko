@@ -3,7 +3,7 @@ library storage;
 import 'dart:convert';
 import 'dart:html';
 
-import 'package:ginko/utils/storage/storage_base.dart';
+import 'package:ginko/plugins/storage/storage_base.dart';
 
 /// Storage class
 /// handles storage on web devices

@@ -1,9 +1,10 @@
+import 'package:after_layout/after_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ginko/main.dart';
+import 'package:ginko/plugins/platform/platform.dart';
+import 'package:ginko/plugins/pwa/pwa.dart';
 import 'package:ginko/utils/data.dart';
-import 'package:ginko/utils/platform/platform.dart';
-import 'package:ginko/utils/pwa/pwa.dart';
 import 'package:models/models.dart';
 
 /// Header class
@@ -13,6 +14,7 @@ class Header extends StatefulWidget {
   const Header({
     @required this.pages,
     @required this.user,
+    this.initialPage = 0,
     Key key,
   }) : super(key: key);
 
@@ -22,11 +24,14 @@ class Header extends StatefulWidget {
   // ignore: public_member_api_docs
   final User user;
 
+  // ignore: public_member_api_docs
+  final int initialPage;
+
   @override
   _HeaderState createState() => _HeaderState();
 }
 
-class _HeaderState extends State<Header> {
+class _HeaderState extends State<Header> with AfterLayoutMixin<Header> {
   int _page = 0;
   bool _permissionsGranted = true;
   bool _permissionsChecking = false;
@@ -35,17 +40,17 @@ class _HeaderState extends State<Header> {
   PWA _pwa;
 
   @override
-  void initState() {
+  Future afterFirstLayout(BuildContext context) async {
+    setState(() {
+      _page = widget.initialPage;
+    });
     _pwa = PWA();
     if (Platform().isWeb) {
-      WidgetsBinding.instance.addPostFrameCallback((a) async {
-        _permissionsGranted =
-            await Data.firebaseMessaging.hasNotificationPermissions();
-        _canInstall = await _pwa.canInstall();
-        setState(() {});
-      });
+      _permissionsGranted =
+          await Data.firebaseMessaging.hasNotificationPermissions();
+      _canInstall = await _pwa.canInstall();
+      setState(() {});
     }
-    super.initState();
   }
 
   @override

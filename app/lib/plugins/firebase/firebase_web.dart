@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'dart:html';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:ginko/utils/firebase/firebase_base.dart';
+import 'package:ginko/plugins/firebase/firebase_base.dart';
 
 // ignore: avoid_annotating_with_dynamic
 typedef Callback = void Function(dynamic result);
