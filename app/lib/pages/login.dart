@@ -1,7 +1,6 @@
 import 'package:after_layout/after_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:ginko/plugins/pwa/pwa.dart';
 import 'package:ginko/utils/data.dart';
 import 'package:models/models.dart';
 import 'package:translations/translations_app.dart';
@@ -46,10 +45,8 @@ class LoginPageState extends State<LoginPage> with AfterLayoutMixin<LoginPage> {
         });
         switch (code) {
           case ErrorCode.none:
-            if (!await PWA().navigateLoadingIfNeeded()) {
-              Navigator.of(context).pop();
-              await Navigator.of(context).pushReplacementNamed('/home');
-            }
+            Navigator.of(context).pop();
+            await Navigator.of(context).pushReplacementNamed('/home');
             return;
           case ErrorCode.offline:
             Scaffold.of(context).showSnackBar(SnackBar(

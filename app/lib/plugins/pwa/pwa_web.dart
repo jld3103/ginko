@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:html';
+import 'dart:typed_data';
 
 import 'package:ginko/plugins/pwa/pwa_base.dart';
+import 'package:ginko/views/cloud/directory_overhead.dart';
 
 // ignore: avoid_annotating_with_dynamic
 typedef Callback = void Function(dynamic result);
@@ -61,13 +63,38 @@ class PWA extends PWABase {
   }
 
   @override
-  Future<bool> navigateLoadingIfNeeded() async {
-    final hash = window.location.hash;
-    final needsToNavigate = hash != '#/';
-    if (needsToNavigate) {
-      window.location.hash = '#/';
-      window.location.reload();
-    }
-    return needsToNavigate;
+  void download(String fileName, Uri uri) {
+    final link = document.createElement('a')
+      ..setAttribute('download', fileName)
+      ..setAttribute('href', uri.toString())
+      ..setAttribute('target', '_blank');
+    document.body.append(link);
+    link.click();
+  }
+
+  @override
+  Future<DummyFile> selectFile() {
+    final completer = Completer<DummyFile>();
+    final InputElement link = document.createElement('input')
+      ..setAttribute('type', 'file');
+    link.onChange.listen((e) {
+      final files = link.files;
+      if (files.isNotEmpty) {
+        final file = files[0];
+        final reader = FileReader();
+        reader.onLoad.listen((e) {
+          completer.complete(DummyFile(file.name, reader.result));
+        });
+        reader.onError.listen((e) {
+          print(reader.error.message);
+          completer.complete(DummyFile('', Uint8List(0)));
+        });
+        reader.readAsArrayBuffer(file);
+      } else {
+        completer.complete(DummyFile('', Uint8List(0)));
+      }
+    });
+    link.click();
+    return completer.future;
   }
 }

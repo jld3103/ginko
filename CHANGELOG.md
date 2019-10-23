@@ -1,4 +1,7 @@
 
+# 2019-10-23  
+ jld3103: Add cloud feature  
+
 # 2019-10-20  
  jld3103: Refactor app  
 

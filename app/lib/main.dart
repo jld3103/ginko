@@ -8,12 +8,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:ginko/pages/aixformation.dart';
 import 'package:ginko/pages/cafetoria.dart';
+import 'package:ginko/pages/cloud.dart';
 import 'package:ginko/pages/home.dart';
 import 'package:ginko/pages/loading.dart';
 import 'package:ginko/pages/login.dart';
 import 'package:ginko/pages/replacementplan.dart';
 import 'package:ginko/plugins/platform/platform.dart';
-import 'package:ginko/plugins/pwa/pwa.dart';
 import 'package:ginko/plugins/storage/storage.dart';
 import 'package:ginko/utils/data.dart';
 import 'package:ginko/utils/selection.dart';
@@ -33,46 +33,44 @@ Future main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
 
-  if (!await PWA().navigateLoadingIfNeeded()) {
-    Static.storage = Storage();
-    await Static.storage.init();
+  Static.storage = Storage();
+  await Static.storage.init();
 
-    runApp(MaterialApp(
-      title: 'Ginko',
-      theme: theme,
-      localizationsDelegates: [
-        AppTranslationsDelegate(),
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ],
-      supportedLocales:
-          LocalesList.locales.map((locale) => Locale(locale)).toList(),
-      routes: <String, WidgetBuilder>{
-        '/': (context) => Scaffold(body: LoadingPage()),
-        '/login': (context) => Scaffold(body: LoginPage()),
-        '/home': (context) => Scaffold(
-              body: App(
-                initialPage: 0,
-              ),
+  runApp(MaterialApp(
+    title: 'Ginko',
+    theme: theme,
+    localizationsDelegates: [
+      AppTranslationsDelegate(),
+      GlobalMaterialLocalizations.delegate,
+      GlobalWidgetsLocalizations.delegate,
+    ],
+    supportedLocales:
+        LocalesList.locales.map((locale) => Locale(locale)).toList(),
+    routes: <String, WidgetBuilder>{
+      '/': (context) => Scaffold(body: LoadingPage()),
+      '/login': (context) => Scaffold(body: LoginPage()),
+      '/home': (context) => Scaffold(
+            body: App(
+              initialPage: 0,
             ),
-        '/replacementplan': (context) => Scaffold(
-              body: App(
-                initialPage: 1,
-              ),
+          ),
+      '/replacementplan': (context) => Scaffold(
+            body: App(
+              initialPage: 1,
             ),
-        '/cafetoria': (context) => Scaffold(
-              body: App(
-                initialPage: 2,
-              ),
+          ),
+      '/cafetoria': (context) => Scaffold(
+            body: App(
+              initialPage: 2,
             ),
-        '/aixformation': (context) => Scaffold(
-              body: App(
-                initialPage: 3,
-              ),
+          ),
+      '/aixformation': (context) => Scaffold(
+            body: App(
+              initialPage: 3,
             ),
-      },
-    ));
-  }
+          ),
+    },
+  ));
 }
 
 /// App class
@@ -125,6 +123,13 @@ class AppState extends State<App>
             ),
           ),
           Page(
+            name: AppTranslations.of(context).pageCloud,
+            icon: Icons.cloud,
+            child: CloudPage(
+              user: Data.user,
+            ),
+          ),
+          Page(
             name: AppTranslations.of(context).pageCafetoria,
             icon: Icons.restaurant,
             child: CafetoriaPage(
@@ -151,11 +156,13 @@ class AppState extends State<App>
     if (Platform().isMobile) {
       await updateTokens(context);
     }
-    Data.firebaseMessaging.configure(
-      onLaunch: (data) async => _handleForegroundNotification(context, data),
-      onResume: (data) async => _handleForegroundNotification(context, data),
-      onMessage: (data) async => _handleForegroundNotification(context, data),
-    );
+    if (Platform().isMobile || Platform().isWeb) {
+      Data.firebaseMessaging.configure(
+        onLaunch: (data) async => _handleForegroundNotification(context, data),
+        onResume: (data) async => _handleForegroundNotification(context, data),
+        onMessage: (data) async => _handleForegroundNotification(context, data),
+      );
+    }
     _channel.setMethodCallHandler((call) async {
       if (call.method == 'background_notification') {
         await Data.load();

@@ -97,6 +97,10 @@ if (workbox) {
         ignoreURLParametersMatching: [/.*/]
     });
     workbox.routing.registerRoute(
+        /^https:\/\/cloud\.viktoria\.schule.*/,
+        new workbox.strategies.NetworkOnly()
+    );
+    workbox.routing.registerRoute(
         /.*\.js/,
         new workbox.strategies.NetworkFirst(),
     );
