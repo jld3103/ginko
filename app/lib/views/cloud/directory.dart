@@ -2,6 +2,7 @@ import 'package:after_layout/after_layout.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ginko/views/cloud/file.dart';
+import 'package:ginko/views/size_limit.dart';
 import 'package:models/models.dart';
 import 'package:nextcloud/nextcloud.dart';
 
@@ -77,36 +78,37 @@ class _CloudDirectoryState extends State<CloudDirectory>
   }
 
   @override
-  Widget build(BuildContext context) => _failed
-      ? Center(
-          child: Icon(Icons.error),
-        )
-      : (_files == null
-          ? Center(
-              child: SizedBox(
-                width: 25,
-                height: 25,
-                child: CircularProgressIndicator(),
-              ),
-            )
-          : ListView(
-              padding: EdgeInsets.all(5),
-              shrinkWrap: true,
-              children: _files
-                  .map((file) {
-                    final forbiddenFile = widget.path == '/' ||
-                        file.path == '/Eigene%20Dateien/Geteilte%20Dateien/';
-                    return CloudFile(
-                      client: widget.client,
-                      file: file,
-                      user: widget.user,
-                      onReload: _loadFiles,
-                      shareEnabled: !forbiddenFile,
-                      deleteEnabled: !forbiddenFile,
-                      renameEnabled: !forbiddenFile,
-                    );
-                  })
-                  .toList()
-                  .cast<Widget>(),
-            ));
+  Widget build(BuildContext context) => Center(
+        child: _failed
+            ? Icon(Icons.error)
+            : (_files == null
+                ? SizedBox(
+                    width: 25,
+                    height: 25,
+                    child: CircularProgressIndicator(),
+                  )
+                : SizeLimit(
+                    child: ListView(
+                      padding: EdgeInsets.all(5),
+                      shrinkWrap: true,
+                      children: _files
+                          .map((file) {
+                            final forbiddenFile = widget.path == '/' ||
+                                file.path ==
+                                    '/Eigene%20Dateien/Geteilte%20Dateien/';
+                            return CloudFile(
+                              client: widget.client,
+                              file: file,
+                              user: widget.user,
+                              onReload: _loadFiles,
+                              shareEnabled: !forbiddenFile,
+                              deleteEnabled: !forbiddenFile,
+                              renameEnabled: !forbiddenFile,
+                            );
+                          })
+                          .toList()
+                          .cast<Widget>(),
+                    ),
+                  )),
+      );
 }
