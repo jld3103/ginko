@@ -42,7 +42,7 @@ Future main() async {
         request.response.statusCode = 401;
         request.response.write('401 Unauthorized');
       } else {
-        final user = User.fromJSON(json.decode(queryParams[Keys.user]));
+        var user = User.fromJSON(json.decode(queryParams[Keys.user]));
         var correctPassword = false;
         if (Users.usernames.contains(user.username) &&
             user.toSafeJSON()['password'] ==
@@ -72,17 +72,22 @@ Future main() async {
           } catch (e) {}
         }
         if (correctPassword) {
+          // ignore: omit_local_variable_types
+          final Map<String, dynamic> data = {
+            'status': 'ok',
+          };
           if (!Users.usernames.contains(user.username)) {
-            Users.addUser(user);
+            user = await Users.addUser(user);
+            data[Keys.user] =
+                (User.fromJSON(json.decode(json.encode(user.toJSON())))
+                      ..tokens = [])
+                    .toJSON();
           }
           Users.updateGrade(user.username, user.grade);
           Users.updateLanguage(user.username, user.language);
           Users.updateSelection(user.username, user.selection);
           Users.updateTokens(user.username, user.tokens);
-          // ignore: omit_local_variable_types
-          final Map<String, dynamic> data = {
-            'status': 'ok',
-          };
+
           if (json.encode((User.fromJSON(json.decode(
                       json.encode(Users.getUser(user.username).toJSON())))
                     ..tokens = []

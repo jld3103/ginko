@@ -17,8 +17,6 @@ class LoginPage extends StatefulWidget {
 class LoginPageState extends State<LoginPage> with AfterLayoutMixin<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _focus = FocusNode();
-  String _grade;
-  List<String> _grades = grades;
   String _language;
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -34,18 +32,17 @@ class LoginPageState extends State<LoginPage> with AfterLayoutMixin<LoginPage> {
       Data.user = User(
         username: _usernameController.text,
         password: _passwordController.text,
-        grade: UserValue('grade', _grade),
+        grade: UserValue('grade', ''),
         language: UserValue('language', _language),
         selection: [],
         tokens: [],
       );
-      await Data.load().then((code) async {
+      await Data.load(timeout: Duration(seconds: 10)).then((code) async {
         setState(() {
           _isCheckingForm = false;
         });
         switch (code) {
           case ErrorCode.none:
-            Navigator.of(context).pop();
             await Navigator.of(context).pushReplacementNamed('/home');
             return;
           case ErrorCode.offline:
@@ -64,7 +61,7 @@ class LoginPageState extends State<LoginPage> with AfterLayoutMixin<LoginPage> {
         Data.user = User(
           username: '',
           password: '',
-          grade: UserValue('grade', _grade),
+          grade: UserValue('grade', ''),
           language: UserValue('language', _language),
           selection: [],
           tokens: [],
@@ -80,10 +77,6 @@ class LoginPageState extends State<LoginPage> with AfterLayoutMixin<LoginPage> {
   @override
   void afterFirstLayout(BuildContext context) {
     _language = AppTranslations.of(context).locale.languageCode;
-    setState(() {
-      _grade = AppTranslations.of(context).loginSelectGrade;
-      _grades = (_grades.reversed.toList()..add(_grade)).reversed.toList();
-    });
   }
 
   @override
@@ -114,44 +107,9 @@ class LoginPageState extends State<LoginPage> with AfterLayoutMixin<LoginPage> {
                 key: _formKey,
                 child: Column(
                   children: [
-                    DropdownButtonFormField(
-                      items: _grades
-                          .map((value) => DropdownMenuItem<String>(
-                                value: value,
-                                child: SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width - 100,
-                                  child: Text(
-                                    value,
-                                    style: _grades[0] ==
-                                            AppTranslations.of(context)
-                                                .loginSelectGrade
-                                        ? TextStyle(
-                                            color: Colors.black54,
-                                          )
-                                        : null,
-                                  ),
-                                ),
-                              ))
-                          .toList(),
-                      value: _grade,
-                      onChanged: (grade) {
-                        setState(() {
-                          _grade = grade;
-                          _grades.remove(
-                              AppTranslations.of(context).loginSelectGrade);
-                        });
-                      },
-                      // ignore: missing_return
-                      validator: (value) {
-                        if (value ==
-                            AppTranslations.of(context).loginSelectGrade) {
-                          return AppTranslations.of(context).loginGradeRequired;
-                        }
-                      },
-                    ),
                     // Username input
                     TextFormField(
+                      autofocus: true,
                       controller: _usernameController,
                       // ignore: missing_return
                       validator: (value) {

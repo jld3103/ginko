@@ -131,7 +131,9 @@ class Data {
   }
 
   /// Load all the data from the server
-  static Future<ErrorCode> load() async {
+  static Future<ErrorCode> load({
+    Duration timeout = const Duration(seconds: 3),
+  }) async {
     await loadOffline();
     if (_user == null || _user.username == '' || _user.password == '') {
       return ErrorCode.wrongCredentials;
@@ -153,7 +155,7 @@ class Data {
             baseUrl,
             body: parameters,
           )
-          .timeout(Duration(seconds: 3));
+          .timeout(timeout);
       if (response.statusCode == 401) {
         return ErrorCode.wrongCredentials;
       }

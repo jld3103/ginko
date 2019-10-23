@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:models/models.dart';
+import 'package:nextcloud/nextcloud.dart';
 
 // ignore: avoid_classes_with_only_static_members
 /// Users class
@@ -11,9 +12,19 @@ class Users {
   static List<User> _users = [];
 
   /// Add a user to the database
-  static void addUser(User user) {
-    _users.add(User.fromJSON(user.toSafeJSON()));
+  static Future<User> addUser(User user) async {
+    final safeUser = User.fromJSON(user.toSafeJSON());
+    final client =
+        NextCloudClient('cloud.viktoria.schule', user.username, user.password);
+    final metaData = await client.metaData.getMetaData();
+    final grade = metaData.groups
+        .where((group) => grades.contains(group.toUpperCase()))
+        .single
+        .toUpperCase();
+    safeUser.grade = UserValue('grade', grade);
+    _users.add(safeUser);
     save();
+    return safeUser;
   }
 
   /// Update the grade of a user
