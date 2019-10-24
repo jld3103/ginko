@@ -1,4 +1,7 @@
 
+# 2019-10-24  
+ jld3103: Fix automatic grade fetching  
+
 # 2019-10-23  
  jld3103: Add automatic grade fetching  
  jld3103: Fix cloud layout for bigger screens  

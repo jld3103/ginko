@@ -83,7 +83,11 @@ Future main() async {
                       ..tokens = [])
                     .toJSON();
           }
-          Users.updateGrade(user.username, user.grade);
+          if (user.grade.value != '') {
+            Users.updateGrade(user.username, user.grade);
+          } else {
+            user.grade.value = Users.getUser(user.username).grade.value;
+          }
           Users.updateLanguage(user.username, user.language);
           Users.updateSelection(user.username, user.selection);
           Users.updateTokens(user.username, user.tokens);
@@ -99,8 +103,9 @@ Future main() async {
                         ..password = '')
                       .toSafeJSON())) {
             data[Keys.user] =
-                User.fromJSON(json.decode(json.encode(user.toJSON())))
-                  ..tokens = [];
+                (User.fromJSON(json.decode(json.encode(user.toJSON())))
+                      ..tokens = [])
+                    .toJSON();
           }
           for (final key in queryParams.keys.where((key) => key != Keys.user)) {
             try {
