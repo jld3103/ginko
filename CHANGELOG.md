@@ -1,4 +1,7 @@
 
+# 2019-10-25  
+ jld3103: Fix daylight saving time  
+
 # 2019-10-24  
  jld3103: Fix automatic grade fetching  
 

@@ -44,6 +44,8 @@ void main() {
     test('Get correct mondays for dates', () {
       expect(monday(DateTime(2019, 8, 8)), DateTime(2019, 8, 5));
       expect(monday(DateTime(2019, 8, 10)), DateTime(2019, 8, 12));
+      // Daylight saving time
+      expect(monday(DateTime(2019, 10, 26)), DateTime(2019, 10, 28));
     });
   });
 }
