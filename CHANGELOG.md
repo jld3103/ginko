@@ -1,4 +1,7 @@
 
+# 2019-10-26  
+ jld3103: Add cloud share feature  
+
 # 2019-10-25  
  jld3103: Fix daylight saving time  
 

@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ginko/plugins/platform/platform.dart';
 import 'package:ginko/plugins/pwa/pwa.dart';
+import 'package:ginko/views/cloud/create_share_dialog.dart';
 import 'package:ginko/views/cloud/delete_dialog.dart';
 import 'package:ginko/views/cloud/details_dialog.dart';
 import 'package:ginko/views/cloud/directory_overhead.dart';
@@ -71,7 +72,7 @@ class _CloudFileState extends State<CloudFile>
         Choice(
           Icons.share,
           AppTranslations.of(context).cloudShare,
-          enabled: false,
+          enabled: widget.shareEnabled,
         ),
         Choice(
           Icons.info_outline,
@@ -189,80 +190,109 @@ class _CloudFileState extends State<CloudFile>
                   ),
                 ],
               ),
-              if (_choices != null)
-                PopupMenuButton<int>(
-                  onSelected: (choice) async {
-                    var result = false;
-                    switch (choice) {
-                      case 0:
-                        await showDialog(
-                          context: context,
-                          builder: (context) => CloudShareDialog(
-                            file: widget.file,
-                            user: widget.user,
-                            client: widget.client,
-                          ),
-                        );
-                        break;
-                      case 1:
-                        await showDialog(
-                          context: context,
-                          builder: (context) => CloudDetailsDialog(
-                            file: widget.file,
-                            user: widget.user,
-                          ),
-                        );
-                        break;
-                      case 2:
-                        result = (await showDialog(
+              Row(
+                children: [
+                  if (widget.file.shareTypes.isNotEmpty)
+                    IconButton(
+                      icon: Icon(Icons.share),
+                      onPressed: () => showDialog(
+                        context: context,
+                        builder: (context) => CloudShareDialog(
+                          file: widget.file,
+                          client: widget.client,
+                          onReload: widget.onReload,
+                        ),
+                      ),
+                    ),
+                  if (_choices != null)
+                    PopupMenuButton<int>(
+                      onSelected: (choice) async {
+                        var result = false;
+                        switch (choice) {
+                          case 0:
+                            if (widget.file.shareTypes.isNotEmpty) {
+                              await showDialog(
+                                context: context,
+                                builder: (context) => CloudShareDialog(
+                                  file: widget.file,
+                                  client: widget.client,
+                                  onReload: widget.onReload,
+                                ),
+                              );
+                            } else {
+                              await showDialog(
+                                context: context,
+                                builder: (context) => CloudCreateShareDialog(
+                                  file: widget.file,
+                                  client: widget.client,
+                                  onReload: widget.onReload,
+                                ),
+                              );
+                            }
+                            break;
+                          case 1:
+                            await showDialog(
                               context: context,
-                              builder: (context) => CloudDeleteDialog(
+                              builder: (context) => CloudDetailsDialog(
                                 file: widget.file,
                                 user: widget.user,
                                 client: widget.client,
+                                onReload: widget.onReload,
                               ),
-                            )) ??
-                            false;
-                        break;
-                      case 3:
-                        result = (await showDialog(
-                              context: context,
-                              builder: (context) => CloudRenameDialog(
-                                file: widget.file,
-                                user: widget.user,
-                                client: widget.client,
-                              ),
-                            )) ??
-                            false;
-                        break;
-                    }
-                    if (result) {
-                      widget.onReload();
-                    }
-                  },
-                  itemBuilder: (context) => _choices
-                      .map((choice) => PopupMenuItem<int>(
-                            value: _choices.indexOf(choice),
-                            enabled: choice.enabled,
-                            child: Row(
-                              children: [
-                                Icon(
-                                  choice.icon,
-                                  color: Colors.black,
+                            );
+                            break;
+                          case 2:
+                            result = (await showDialog(
+                                  context: context,
+                                  builder: (context) => CloudDeleteDialog(
+                                    file: widget.file,
+                                    user: widget.user,
+                                    client: widget.client,
+                                  ),
+                                )) ??
+                                false;
+                            break;
+                          case 3:
+                            result = (await showDialog(
+                                  context: context,
+                                  builder: (context) => CloudRenameDialog(
+                                    file: widget.file,
+                                    user: widget.user,
+                                    client: widget.client,
+                                  ),
+                                )) ??
+                                false;
+                            break;
+                        }
+                        if (result) {
+                          widget.onReload();
+                        }
+                      },
+                      itemBuilder: (context) => _choices
+                          .map((choice) => PopupMenuItem<int>(
+                                value: _choices.indexOf(choice),
+                                enabled: choice.enabled,
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      choice.icon,
+                                      color: Colors.black,
+                                    ),
+                                    Container(
+                                      height: 1,
+                                      width: 10,
+                                      color: Colors.transparent,
+                                    ),
+                                    Text(choice.label),
+                                  ],
                                 ),
-                                Container(
-                                  height: 1,
-                                  width: 10,
-                                  color: Colors.transparent,
-                                ),
-                                Text(choice.label),
-                              ],
-                            ),
-                          ))
-                      .toList()
-                      .cast<PopupMenuEntry<int>>()
-                      .toList(),
-                ),
+                              ))
+                          .toList()
+                          .cast<PopupMenuEntry<int>>()
+                          .toList(),
+                    ),
+                ],
+              ),
             ],
           ),
         ),

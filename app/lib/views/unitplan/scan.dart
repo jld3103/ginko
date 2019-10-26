@@ -149,7 +149,9 @@ class _ScanDialogState extends State<ScanDialog> {
                         SizedBox(
                           width: 75,
                           height: 75,
-                          child: CircularProgressIndicator(),
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                          ),
                         ),
                         Container(
                           margin: EdgeInsets.only(top: 20),

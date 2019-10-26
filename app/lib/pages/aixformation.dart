@@ -163,7 +163,7 @@ class AiXformationPage extends StatelessWidget {
             width: 20,
             height: 20,
             child: CircularProgressIndicator(
-              strokeWidth: 3,
+              strokeWidth: 2,
             ),
           ),
         ),

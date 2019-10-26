@@ -80,11 +80,25 @@ class _CloudDirectoryOverheadState extends State<CloudDirectoryOverhead>
               onPressed: reload,
             ),
             if (_uploading)
-              FlatButton(
-                onPressed: () {},
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                  strokeWidth: 2,
+              InkWell(
+                onTap: () {},
+                child: Container(
+                  width: 48,
+                  height: double.infinity,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 25,
+                        height: 25,
+                        child: CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.white),
+                          strokeWidth: 2,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             if (_choices != null && !_uploading)
@@ -95,12 +109,13 @@ class _CloudDirectoryOverheadState extends State<CloudDirectoryOverhead>
                   switch (choice) {
                     case 0:
                       result = await showDialog(
-                        context: context,
-                        builder: (context) => CloudCreateDirectoryDialog(
-                          file: widget.file,
-                          client: widget.client,
-                        ),
-                      );
+                            context: context,
+                            builder: (context) => CloudCreateDirectoryDialog(
+                              file: widget.file,
+                              client: widget.client,
+                            ),
+                          ) ??
+                          false;
                       break;
                     case 1:
                       Uint8List content;

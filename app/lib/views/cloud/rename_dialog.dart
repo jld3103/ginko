@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ginko/views/dialog_content_wrapper.dart';
 import 'package:models/models.dart';
 import 'package:nextcloud/nextcloud.dart';
 import 'package:translations/translations_app.dart';
@@ -37,23 +38,21 @@ class _CloudRenameDialogState extends State<CloudRenameDialog> {
   Widget build(BuildContext context) => SimpleDialog(
         title: Text(
             '${AppTranslations.of(context).cloudRename}: ${widget.file.name}'),
-        contentPadding: EdgeInsets.all(10),
         children: [
-          TextFormField(
-            autofocus: true,
-            decoration: InputDecoration(
-              hintText: widget.file.name,
-            ),
-            controller: _controller,
-            onFieldSubmitted: (value) {
-              FocusScope.of(context).requestFocus(_focus);
-            },
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 20),
-            child: SizedBox(
-              width: double.infinity,
-              child: RaisedButton(
+          DialogContentWrapper(
+            spread: true,
+            children: [
+              TextFormField(
+                autofocus: true,
+                decoration: InputDecoration(
+                  hintText: widget.file.name,
+                ),
+                controller: _controller,
+                onFieldSubmitted: (value) {
+                  FocusScope.of(context).requestFocus(_focus);
+                },
+              ),
+              RaisedButton(
                 focusNode: _focus,
                 color: Theme.of(context).accentColor,
                 onPressed: () async {
@@ -90,7 +89,7 @@ class _CloudRenameDialogState extends State<CloudRenameDialog> {
                         ),
                       ),
               ),
-            ),
+            ],
           ),
         ],
       );

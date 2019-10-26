@@ -24,7 +24,6 @@ class UnitPlanSelectDialog extends StatelessWidget {
         title: Text(
             // ignore: lines_longer_than_80_chars
             '${AppTranslations.of(context).weekdays[weekday]} ${lesson.unit + 1}.'),
-        contentPadding: EdgeInsets.all(10),
         children: [
           ..._abSubjects
               .map(

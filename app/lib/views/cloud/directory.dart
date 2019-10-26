@@ -85,7 +85,9 @@ class _CloudDirectoryState extends State<CloudDirectory>
                 ? SizedBox(
                     width: 25,
                     height: 25,
-                    child: CircularProgressIndicator(),
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                    ),
                   )
                 : SizeLimit(
                     child: ListView(

@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:ginko/views/dialog_content_wrapper.dart';
 import 'package:nextcloud/nextcloud.dart';
 import 'package:translations/translations_app.dart';
 
 /// CloudCreateDirectoryDialog class
-/// describes the cloud create dialog
+/// describes the cloud create directory dialog
 class CloudCreateDirectoryDialog extends StatefulWidget {
   // ignore: public_member_api_docs
   const CloudCreateDirectoryDialog({
@@ -33,30 +35,36 @@ class _CloudCreateDirectoryDialogState
   @override
   Widget build(BuildContext context) => SimpleDialog(
         title: Text(AppTranslations.of(context).cloudCreateDirectory),
-        contentPadding: EdgeInsets.all(10),
         children: [
-          TextFormField(
-            autofocus: true,
-            controller: _controller,
-            onFieldSubmitted: (value) {
-              FocusScope.of(context).requestFocus(_focus);
-            },
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 20),
-            child: SizedBox(
-              width: double.infinity,
-              child: RaisedButton(
+          DialogContentWrapper(
+            spread: true,
+            children: [
+              TextFormField(
+                autofocus: true,
+                controller: _controller,
+                decoration: InputDecoration(
+                  hintText: AppTranslations.of(context).cloudName,
+                ),
+                onChanged: (text) {
+                  setState(() {});
+                },
+                onFieldSubmitted: (value) {
+                  FocusScope.of(context).requestFocus(_focus);
+                },
+              ),
+              RaisedButton(
                 focusNode: _focus,
                 color: Theme.of(context).accentColor,
-                onPressed: () async {
-                  setState(() {
-                    _creating = true;
-                  });
-                  final path = widget.file.path + _controller.text;
-                  await widget.client.webDav.mkdir(path);
-                  Navigator.pop(context, true);
-                },
+                onPressed: _controller.text == ''
+                    ? null
+                    : () async {
+                        setState(() {
+                          _creating = true;
+                        });
+                        final path = widget.file.path + _controller.text;
+                        await widget.client.webDav.mkdir(path);
+                        Navigator.pop(context, true);
+                      },
                 child: !_creating
                     ? Text(AppTranslations.of(context).cloudCreateDirectory)
                     : SizedBox(
@@ -69,7 +77,7 @@ class _CloudCreateDirectoryDialogState
                         ),
                       ),
               ),
-            ),
+            ],
           ),
         ],
       );

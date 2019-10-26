@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:ginko/views/dialog_content_wrapper.dart';
 import 'package:models/models.dart';
 import 'package:nextcloud/nextcloud.dart';
 import 'package:translations/translations_app.dart';
@@ -36,30 +37,28 @@ class _CloudDeleteDialogState extends State<CloudDeleteDialog> {
   Widget build(BuildContext context) => SimpleDialog(
         title: Text(
             '${AppTranslations.of(context).cloudDelete}: ${widget.file.name}'),
-        contentPadding: EdgeInsets.all(10),
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+          DialogContentWrapper(
+            spread: true,
             children: [
-              Text(
-                  // ignore: lines_longer_than_80_chars
-                  '${AppTranslations.of(context).cloudSureYouWantToDelete}:'),
-              Container(
-                margin: EdgeInsets.only(top: 10),
-                child: Text(
-                  widget.file.name,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                      // ignore: lines_longer_than_80_chars
+                      '${AppTranslations.of(context).cloudSureYouWantToDelete}:'),
+                  Container(
+                    margin: EdgeInsets.only(top: 10),
+                    child: Text(
+                      widget.file.name,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 20),
-            child: SizedBox(
-              width: double.infinity,
-              child: RaisedButton(
+              RaisedButton(
                 color: Theme.of(context).accentColor,
                 onPressed: () async {
                   setState(() {
@@ -83,7 +82,7 @@ class _CloudDeleteDialogState extends State<CloudDeleteDialog> {
                         ),
                       ),
               ),
-            ),
+            ],
           ),
         ],
       );
