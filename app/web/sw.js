@@ -87,7 +87,6 @@ if (workbox) {
         '/assets/images/logo_white.svg',
         '/assets/fonts/Roboto/Roboto.ttf',
         '/assets/fonts/MaterialIcons-Regular.ttf',
-        '/assets/fonts/Material-Icons/MaterialIcons-Regular.ttf',
         '/assets/packages/material_design_icons_flutter/lib/fonts/materialdesignicons-webfont.ttf',
         '/assets/packages/cupertino_icons/assets/CupertinoIcons.ttf',
         '/assets/FontManifest.json',
