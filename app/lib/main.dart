@@ -16,11 +16,13 @@ import 'package:ginko/pages/login.dart';
 import 'package:ginko/pages/substitution_plan.dart';
 import 'package:ginko/plugins/platform/platform.dart';
 import 'package:ginko/plugins/storage/storage.dart';
+import 'package:ginko/plugins/system_locale/system_locale.dart';
 import 'package:ginko/utils/selection.dart';
 import 'package:ginko/utils/static.dart';
 import 'package:ginko/utils/theme.dart';
 import 'package:ginko/views/header.dart';
 import 'package:ginko/views/timetable/scan.dart';
+import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:models/models.dart';
 import 'package:translations/translation_locales_list.dart';
@@ -33,12 +35,15 @@ Future main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
 
+  await SystemLocale().setSystemLocale();
+
   Static.storage = Storage();
   await Static.storage.init();
 
   runApp(MaterialApp(
     title: 'Ginko',
     theme: theme,
+    locale: Locale(Intl.defaultLocale),
     localizationsDelegates: [
       AppTranslationsDelegate(),
       GlobalMaterialLocalizations.delegate,
