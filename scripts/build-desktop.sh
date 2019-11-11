@@ -2,7 +2,7 @@
 cd app || cd ..
 flutter clean
 rm -rf go/build
-formats=("linux-appimage" "linux-deb" "linux-snap" "windows-msi" "darwin-pkg")
+formats=("linux-appimage" "linux-deb" "linux-snap" "linux-rpm" "windows-msi" "darwin-pkg" "darwin-dmg")
 for format in "${formats[@]}"; do
   hover build "$format"
   status=$?

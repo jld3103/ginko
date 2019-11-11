@@ -1,5 +1,6 @@
 
 # 2019-11-12  
+ jld3103: Add new packaging formats  
  jld3103: Fix locales  
 
 # 2019-11-11  

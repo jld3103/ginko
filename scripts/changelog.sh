@@ -1,7 +1,4 @@
 #!/bin/bash
-DATE=$(date +%F)
-FILE="CHANGELOG.md"
-echo "# CHANGELOG ON $DATE" >${FILE}
 
 parent=$(/bin/ps -o ppid -p $PPID | tail -1)
 if [[ -n "$parent" ]]; then
@@ -10,6 +7,10 @@ if [[ -n "$parent" ]]; then
     exit 0
   fi
 fi
+
+DATE=$(date +%F)
+FILE="CHANGELOG.md"
+echo "# CHANGELOG ON $DATE" >${FILE}
 
 rm ${FILE}
 PREVIOUS=""
