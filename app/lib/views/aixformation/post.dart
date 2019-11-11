@@ -15,7 +15,7 @@ class AiXformationPost extends StatelessWidget {
   // ignore: public_member_api_docs
   const AiXformationPost({
     @required this.post,
-    @required this.user,
+    @required this.device,
     Key key,
   }) : super(key: key);
 
@@ -23,7 +23,7 @@ class AiXformationPost extends StatelessWidget {
   final Post post;
 
   // ignore: public_member_api_docs
-  final User user;
+  final Device device;
 
   @override
   Widget build(BuildContext context) => Column(
@@ -73,7 +73,7 @@ class AiXformationPost extends StatelessWidget {
                       color: Colors.transparent,
                     ),
                     Text(
-                      outputDateFormat(user.language.value).format(post.date),
+                      outputDateFormat(device.language).format(post.date),
                       style: TextStyle(
                         color: Colors.grey,
                       ),

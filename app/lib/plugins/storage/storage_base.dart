@@ -24,11 +24,11 @@ abstract class StorageBase {
   // ignore: public_member_api_docs
   bool getBool(String key);
 
-  // ignore: public_member_api_docs
-  void setJSON(String key, Map<String, dynamic> value);
+  // ignore: public_member_api_docs, type_annotate_public_apis
+  void setJSON(String key, value);
 
   // ignore: public_member_api_docs
-  Map<String, dynamic> getJSON(String key);
+  dynamic getJSON(String key);
 
   // ignore: public_member_api_docs
   bool has(String key);

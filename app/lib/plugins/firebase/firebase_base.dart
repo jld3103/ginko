@@ -1,6 +1,5 @@
 library firebase;
 
-// ignore_for_file: lines_longer_than_80_chars
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 /// THIS IMPLEMENTATION ONLY HAS THE FEATURES USED BY THE APP
@@ -11,8 +10,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 /// Your app should call [requestNotificationPermissions] first and then
 /// register handlers for incoming messages with [configure].
 abstract class FirebaseMessagingBase {
-  /// On iOS and Web, prompts the user for notification permissions the first time
-  /// it is called.
+  /// On iOS and Web, prompts the user for notification permissions the
+  /// first time it is called.
   ///
   /// Does nothing on Android.
   Future<bool> requestNotificationPermissions(

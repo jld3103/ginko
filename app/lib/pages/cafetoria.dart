@@ -10,7 +10,7 @@ class CafetoriaPage extends StatelessWidget {
   // ignore: public_member_api_docs
   const CafetoriaPage({
     @required this.cafetoria,
-    @required this.user,
+    @required this.device,
     Key key,
   }) : super(key: key);
 
@@ -18,7 +18,7 @@ class CafetoriaPage extends StatelessWidget {
   final Cafetoria cafetoria;
 
   // ignore: public_member_api_docs
-  final User user;
+  final Device device;
 
   @override
   Widget build(BuildContext context) => ListView(
@@ -39,7 +39,7 @@ class CafetoriaPage extends StatelessWidget {
               .map((day) => CafetoriaRow(
                     day: day,
                     showDate: true,
-                    user: user,
+                    device: device,
                   ))
               .toList()
               .cast<Widget>()

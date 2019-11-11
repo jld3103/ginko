@@ -35,11 +35,11 @@ class Storage extends StorageBase {
       _sharedPreferences.setBool(key, value);
 
   @override
-  Map<String, dynamic> getJSON(String key) => json.decode(getString(key));
+  dynamic getJSON(String key) => json.decode(getString(key));
 
   @override
-  void setJSON(String key, Map<String, dynamic> value) =>
-      setString(key, json.encode(value));
+  // ignore: type_annotate_public_apis
+  void setJSON(String key, value) => setString(key, json.encode(value));
 
   @override
   bool has(String key) => _sharedPreferences.containsKey(key);

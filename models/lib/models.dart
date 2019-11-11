@@ -4,17 +4,19 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:translations/translations_server.dart';
 
-export 'package:models/aixformation.dart';
-export 'package:models/cafetoria.dart';
-export 'package:models/calendar.dart';
-export 'package:models/keys.dart';
-export 'package:models/replacementplan.dart';
-export 'package:models/rooms.dart';
-export 'package:models/subjects.dart';
-export 'package:models/teachers.dart';
-export 'package:models/times.dart';
-export 'package:models/unitplan.dart';
-export 'package:models/user.dart';
+export 'package:models/src/aixformation.dart';
+export 'package:models/src/cafetoria.dart';
+export 'package:models/src/calendar.dart';
+export 'package:models/src/device.dart';
+export 'package:models/src/keys.dart';
+export 'package:models/src/rooms.dart';
+export 'package:models/src/selection.dart';
+export 'package:models/src/subjects.dart';
+export 'package:models/src/substitution_plan.dart';
+export 'package:models/src/teachers.dart';
+export 'package:models/src/times.dart';
+export 'package:models/src/timetable.dart';
+export 'package:models/src/user.dart';
 
 /// List of all grades
 List<String> grades = [

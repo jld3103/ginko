@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:after_layout/after_layout.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart'
     show debugDefaultTargetPlatformOverride;
 import 'package:flutter/material.dart';
@@ -12,15 +13,14 @@ import 'package:ginko/pages/cloud.dart';
 import 'package:ginko/pages/home.dart';
 import 'package:ginko/pages/loading.dart';
 import 'package:ginko/pages/login.dart';
-import 'package:ginko/pages/replacementplan.dart';
+import 'package:ginko/pages/substitution_plan.dart';
 import 'package:ginko/plugins/platform/platform.dart';
 import 'package:ginko/plugins/storage/storage.dart';
-import 'package:ginko/utils/data.dart';
 import 'package:ginko/utils/selection.dart';
 import 'package:ginko/utils/static.dart';
 import 'package:ginko/utils/theme.dart';
 import 'package:ginko/views/header.dart';
-import 'package:ginko/views/unitplan/scan.dart';
+import 'package:ginko/views/timetable/scan.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:models/models.dart';
 import 'package:translations/translation_locales_list.dart';
@@ -54,7 +54,7 @@ Future main() async {
               initialPage: 0,
             ),
           ),
-      '/replacementplan': (context) => Scaffold(
+      '/substitutionplan': (context) => Scaffold(
             body: App(
               initialPage: 1,
             ),
@@ -106,49 +106,50 @@ class AppState extends State<App>
             name: AppTranslations.of(context).pageStart,
             icon: Icons.home,
             child: HomePage(
-              user: Data.user,
-              unitPlan: Data.unitPlan,
-              replacementPlan: Data.replacementPlan,
-              calendar: Data.calendar,
-              cafetoria: Data.cafetoria,
-              updateUser: Data.updateUser,
+              device: Static.device.data,
+              timetable: Static.timetable.data,
+              substitutionPlan: Static.substitutionPlan.data,
+              calendar: Static.calendar.data,
+              cafetoria: Static.cafetoria.data,
+              selection: Static.selection.data,
             ),
           ),
           Page(
-            name: AppTranslations.of(context).pageReplacementPlan,
+            name: AppTranslations.of(context).pageSubstitutionPlan,
             icon: Icons.format_list_numbered,
-            child: ReplacementPlanPage(
-              user: Data.user,
-              replacementPlan: Data.replacementPlan,
+            child: SubstitutionPlanPage(
+              device: Static.device.data,
+              substitutionPlan: Static.substitutionPlan.data,
             ),
           ),
           Page(
             name: AppTranslations.of(context).pageCloud,
             icon: Icons.cloud,
             child: CloudPage(
-              user: Data.user,
+              user: Static.user.data,
+              device: Static.device.data,
             ),
           ),
           Page(
             name: AppTranslations.of(context).pageCafetoria,
             icon: Icons.restaurant,
             child: CafetoriaPage(
-              user: Data.user,
-              cafetoria: Data.cafetoria,
+              device: Static.device.data,
+              cafetoria: Static.cafetoria.data,
             ),
           ),
           Page(
             name: AppTranslations.of(context).pageAiXformation,
             icon: MdiIcons.newspaper,
             child: AiXformationPage(
-              user: Data.user,
-              posts: Data.posts,
+              device: Static.device.data,
+              posts: Static.aiXformation.data,
             ),
           ),
         ],
       );
     });
-    if (!Data.online) {
+    if (!Static.online) {
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text(AppTranslations.of(context).homeOffline),
       ));
@@ -157,7 +158,7 @@ class AppState extends State<App>
       await updateTokens(context);
     }
     if (Platform().isMobile || Platform().isWeb) {
-      Data.firebaseMessaging.configure(
+      Static.firebaseMessaging.configure(
         onLaunch: (data) async => _handleForegroundNotification(context, data),
         onResume: (data) async => _handleForegroundNotification(context, data),
         onMessage: (data) async => _handleForegroundNotification(context, data),
@@ -165,8 +166,8 @@ class AppState extends State<App>
     }
     _channel.setMethodCallHandler((call) async {
       if (call.method == 'background_notification') {
-        await Data.load();
-        await Navigator.of(context).pushReplacementNamed('/replacementplan');
+        await Static.substitutionPlan.loadOnline();
+        await Navigator.of(context).pushReplacementNamed('/substitutionplan');
       } else if (call.method == 'foreground_notification') {
         await _handleForegroundNotification(
             context, json.decode(json.encode(call.arguments)));
@@ -177,12 +178,12 @@ class AppState extends State<App>
     }
 
     // Ask for scan
-    if (isSeniorGrade(Data.user.grade.value) &&
+    if (isSeniorGrade(Static.user.data.grade) &&
         Platform().isMobile &&
         !(Static.storage.getBool(Keys.askedForScan) ?? false)) {
       Static.storage.setBool(Keys.askedForScan, true);
       var allDetected = true;
-      for (final day in Data.unitPlan.days) {
+      for (final day in Static.timetable.data.days) {
         if (!allDetected) {
           break;
         }
@@ -191,7 +192,7 @@ class AppState extends State<App>
             break;
           }
           for (final weekA in [true, false]) {
-            if (Selection.get(lesson.block, weekA) == null) {
+            if (TimetableSelection.get(lesson.block, weekA) == null) {
               allDetected = false;
               break;
             }
@@ -202,8 +203,8 @@ class AppState extends State<App>
         await showDialog(
           context: context,
           builder: (context) => ScanDialog(
-            teachers: Data.teachers,
-            unitPlan: Data.unitPlan,
+            teachers: Static.teachers.data,
+            timetable: Static.timetable.data,
           ),
         );
       }
@@ -213,16 +214,20 @@ class AppState extends State<App>
   /// Update all tokens
   static Future updateTokens(BuildContext context) async {
     if (Platform().isMobile || Platform().isWeb) {
-      final gotNullToken = await Data.firebaseMessaging.getToken() == 'null';
-      await Data.firebaseMessaging.requestNotificationPermissions();
-
-      // If the notification permissions were previously not granted
-      // (means getting null as token) then get the token again and push it
-      // to the server
-      if (gotNullToken) {
-        print('Got a token after requesting permissions');
+      print(await Static.firebaseMessaging.getToken());
+      await Static.firebaseMessaging.requestNotificationPermissions();
+      final token = await Static.firebaseMessaging.getToken();
+      if (token != 'null') {
+        Static.device.object = Device(
+          token: token,
+          os: Platform().platformName,
+          language: AppTranslations.of(context).locale.languageCode,
+        );
         print('Updating tokens on server');
-        await Data.updateUser();
+        try {
+          await Static.device.loadOnline();
+          // ignore: empty_catches
+        } on DioError {}
       }
     }
   }
@@ -231,28 +236,28 @@ class AppState extends State<App>
       BuildContext context, Map<String, dynamic> data) async {
     print(data);
     Scaffold.of(context).showSnackBar(SnackBar(
-      action: Static.rebuildReplacementPlan == null
+      action: Static.rebuildSubstitutionPlan == null
           ? SnackBarAction(
               label: AppTranslations.of(context).open,
               onPressed: () async {
-                await Data.load();
+                await Static.substitutionPlan.loadOnline();
                 await Navigator.of(context)
-                    .pushReplacementNamed('/replacementplan');
+                    .pushReplacementNamed('/substitutionplan');
               },
             )
           : null,
-      content: Text(AppTranslations.of(context).newReplacementPlan),
+      content: Text(AppTranslations.of(context).newSubstitutionPlan),
     ));
-    if (Static.rebuildReplacementPlan != null) {
-      await Data.load();
-      Static.rebuildReplacementPlan();
+    if (Static.rebuildSubstitutionPlan != null) {
+      await Static.substitutionPlan.loadOnline();
+      Static.rebuildSubstitutionPlan();
     }
   }
 
   @override
   Widget build(BuildContext context) => Header(
         pages: _pages,
-        user: Data.user,
+        user: Static.user.data,
         initialPage: widget.initialPage,
       );
 }

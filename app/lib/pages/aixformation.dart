@@ -16,15 +16,15 @@ class AiXformationPage extends StatelessWidget {
   // ignore: public_member_api_docs
   const AiXformationPage({
     @required this.posts,
-    @required this.user,
+    @required this.device,
     Key key,
   }) : super(key: key);
 
   // ignore: public_member_api_docs
-  final Posts posts;
+  final AiXformation posts;
 
   // ignore: public_member_api_docs
-  final User user;
+  final Device device;
 
   @override
   Widget build(BuildContext context) => ListView(
@@ -69,7 +69,7 @@ class AiXformationPage extends StatelessWidget {
                             children: [
                               AiXformationPost(
                                 post: post,
-                                user: user,
+                                device: device,
                               ),
                             ],
                           ),
@@ -134,7 +134,7 @@ class AiXformationPage extends StatelessWidget {
                                   color: Colors.transparent,
                                 ),
                                 Text(
-                                  outputDateFormat(user.language.value)
+                                  outputDateFormat(device.language)
                                       .format(post.date),
                                   style: TextStyle(
                                     color: Colors.grey,

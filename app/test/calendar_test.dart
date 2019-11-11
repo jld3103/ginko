@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ginko/views/calendar/row.dart';
-import 'package:models/calendar.dart';
 import 'package:models/models.dart';
 
 import 'utils.dart';

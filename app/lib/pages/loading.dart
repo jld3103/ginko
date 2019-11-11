@@ -1,7 +1,10 @@
+import 'package:after_layout/after_layout.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ginko/plugins/platform/platform.dart';
-import 'package:ginko/utils/data.dart';
+import 'package:ginko/utils/static.dart';
+import 'package:models/models.dart';
 import 'package:translations/translations_app.dart';
 
 /// LoadingPage class
@@ -13,19 +16,84 @@ class LoadingPage extends StatefulWidget {
 
 /// LoadingPageState class
 /// describes the state of the loading widget
-class LoadingPageState extends State<LoadingPage> {
+class LoadingPageState extends State<LoadingPage>
+    with AfterLayoutMixin<LoadingPage> {
   @override
-  void initState() {
-    Data.setup(443, 'api.app.viktoria.schule', 'https');
-    Data.load().then((code) {
-      if (code == ErrorCode.wrongCredentials) {
-        Navigator.of(context).pushReplacementNamed('/login');
-        return;
+  Future afterFirstLayout(BuildContext context) async {
+    try {
+      Static.user.loadOffline();
+      Static.device.loadOffline();
+      Static.device.object = Device(
+        token: Static.device.data == null ? '' : Static.device.data.token,
+        os: Platform().platformName,
+        language: AppTranslations.of(context).locale.languageCode,
+      );
+      Static.selection.loadOffline();
+      if (Static.selection.data == null) {
+        Static.selection.object = Selection([]);
       }
-      while (!mounted) {}
-      Navigator.of(context).pushReplacementNamed('/home');
-    });
-    super.initState();
+      Static.updates.loadOffline();
+      if (Static.updates.data == null) {
+        Static.updates.object = {};
+      }
+      Static.substitutionPlan.loadOffline();
+      Static.timetable.loadOffline();
+      Static.calendar.loadOffline();
+      Static.teachers.loadOffline();
+      Static.aiXformation.loadOffline();
+      Static.cafetoria.loadOffline();
+      final credentialsCorrect = await Static.user.forceLoadOnline();
+      if (credentialsCorrect) {
+        try {
+          final storedUpdates = Static.updates.data;
+          await Static.updates.forceLoadOnline();
+          final fetchedUpdates = Static.updates.data;
+          Static.updates.object = storedUpdates;
+          for (final key in fetchedUpdates.keys) {
+            if (fetchedUpdates[key] != storedUpdates[key]) {
+              print('Updating $key');
+              switch (key) {
+                case Keys.substitutionPlan:
+                  await Static.substitutionPlan.loadOnline();
+                  break;
+                case Keys.timetable:
+                  await Static.timetable.loadOnline();
+                  break;
+                case Keys.calendar:
+                  await Static.calendar.loadOnline();
+                  break;
+                case Keys.teachers:
+                  await Static.teachers.loadOnline();
+                  break;
+                case Keys.aiXformation:
+                  await Static.aiXformation.loadOnline();
+                  break;
+                case Keys.cafetoria:
+                  await Static.cafetoria.loadOnline();
+                  break;
+                case Keys.selection:
+                  await Static.selection.loadOnline();
+                  break;
+                default:
+                  print('unknown loader $key');
+                  break;
+              }
+              Static.updates.data[key] = fetchedUpdates[key];
+            }
+          }
+          await Static.selection.forceLoadOnline();
+          if (Static.device.data.token != '') {
+            await Static.device.forceLoadOnline();
+          }
+          // ignore: empty_catches
+        } on DioError {}
+        await Navigator.of(context).pushReplacementNamed('/home');
+      } else {
+        await Navigator.of(context).pushReplacementNamed('/login');
+      }
+    } on DioError {
+      await Navigator.of(context).pushReplacementNamed('/home');
+    }
   }
 
   @override

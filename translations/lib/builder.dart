@@ -103,7 +103,6 @@ void main() {
                   ))
                   ..lambda = true
                   ..body = Code(
-                      // ignore: lines_longer_than_80_chars
                       'Localizations.of<AppTranslations>(context, AppTranslations)')
                   ..docs.add('// ignore: public_member_api_docs'),
               ));
@@ -118,7 +117,6 @@ void main() {
                             : refer('String')
                     ..lambda = true
                     ..body = Code(
-                      // ignore: lines_longer_than_80_chars
                       "TranslationMap.translations[locale.languageCode]['$key']",
                     )
                     ..docs.add('// ignore: public_member_api_docs'),
@@ -161,7 +159,6 @@ void main() {
                   ))
                   ..lambda = true
                   ..body = Code(
-                      // ignore: lines_longer_than_80_chars
                       '${json.encode(locales.keys.toList()).replaceAll('"', "'")}.contains(locale.languageCode)'),
               ),
               Method(
@@ -213,9 +210,10 @@ void main() {
           b
             ..name = 'ServerTranslations'
             ..docs.addAll([
+              '// ignore_for_file: lines_longer_than_80_chars',
               '/// ServerTranslations class',
               '/// handles translation for the server',
-              '// ignore: lines_longer_than_80_chars',
+              '',
               '/// You have to pass the locale every time, because the server rarely needs the translations'
             ]);
           locales['de'].keys.forEach((key) => b.methods.add(Method(
@@ -234,7 +232,6 @@ void main() {
                       ..type = refer('String'),
                   ))
                   ..body = Code(
-                    // ignore: lines_longer_than_80_chars
                     "TranslationMap.translations[locale]['$key']",
                   )
                   ..docs.add('// ignore: public_member_api_docs'),

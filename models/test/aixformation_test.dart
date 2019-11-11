@@ -3,8 +3,8 @@ import 'package:test/test.dart';
 
 void main() {
   group('AiXformation', () {
-    test('Can create Posts', () {
-      final posts = Posts(
+    test('Can create AiXformation', () {
+      final posts = AiXformation(
         date: DateTime(2019, 8, 10),
         posts: [
           Post(
@@ -46,7 +46,7 @@ void main() {
     });
 
     test('Can create posts from JSON', () {
-      final posts = Posts.fromJSON({
+      final posts = AiXformation.fromJSON({
         'date': DateTime(2019, 8, 10).toIso8601String(),
         'posts': [
           Post(
@@ -88,7 +88,7 @@ void main() {
     });
 
     test('Can create JSON from posts', () {
-      final posts = Posts(
+      final posts = AiXformation(
         date: DateTime(2019, 8, 10),
         posts: [
           Post(
@@ -128,7 +128,7 @@ void main() {
     });
 
     test('Can create posts from JSON from posts', () {
-      final posts = Posts(
+      final posts = AiXformation(
         date: DateTime(2019, 8, 10),
         posts: [
           Post(
@@ -145,7 +145,7 @@ void main() {
           ),
         ],
       );
-      expect(Posts.fromJSON(posts.toJSON()).toJSON(), posts.toJSON());
+      expect(AiXformation.fromJSON(posts.toJSON()).toJSON(), posts.toJSON());
     });
   });
 

@@ -30,7 +30,7 @@ app/android/app/src/main/res/mipmap-*/
 app/android/app/src/main/res/drawable/*.png
 app/ios/Runner/Assets.xcassets/AppIcon.appiconset/*.png
 app/ios/Runner/Assets.xcassets/LaunchImage.imageset/*.png
-server/js/node_modules
+parsers/js/node_modules
 translations/lib/translation_map.dart
 translations/lib/translations_app.dart
 translations/lib/translations_server.dart
@@ -82,7 +82,4 @@ translations/lib/translation_locales_list.dart
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
 config.json
-users.json
-aixformation.json
-
 google-services.json

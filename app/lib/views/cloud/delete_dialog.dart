@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:ginko/views/dialog_content_wrapper.dart';
-import 'package:models/models.dart';
 import 'package:nextcloud/nextcloud.dart';
 import 'package:translations/translations_app.dart';
 
@@ -12,16 +11,12 @@ class CloudDeleteDialog extends StatefulWidget {
   // ignore: public_member_api_docs
   const CloudDeleteDialog({
     @required this.file,
-    @required this.user,
     @required this.client,
     Key key,
   }) : super(key: key);
 
   // ignore: public_member_api_docs
   final WebDavFile file;
-
-  // ignore: public_member_api_docs
-  final User user;
 
   // ignore: public_member_api_docs
   final NextCloudClient client;

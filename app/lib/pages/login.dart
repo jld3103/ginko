@@ -1,8 +1,7 @@
-import 'package:after_layout/after_layout.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:ginko/utils/data.dart';
-import 'package:models/models.dart';
+import 'package:ginko/utils/static.dart';
 import 'package:translations/translations_app.dart';
 
 /// LoginPage class
@@ -14,10 +13,9 @@ class LoginPage extends StatefulWidget {
 
 /// LoginPageState class
 /// describes the state of the login widget
-class LoginPageState extends State<LoginPage> with AfterLayoutMixin<LoginPage> {
+class LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _focus = FocusNode();
-  String _language;
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isCheckingForm = false;
@@ -29,54 +27,28 @@ class LoginPageState extends State<LoginPage> with AfterLayoutMixin<LoginPage> {
       _validInputs = _formKey.currentState.validate();
     });
     if (_validInputs) {
-      Data.user = User(
-        username: _usernameController.text,
-        password: _passwordController.text,
-        grade: UserValue('grade', ''),
-        language: UserValue('language', _language),
-        selection: [],
-        tokens: [],
-      );
-      await Data.load(timeout: Duration(seconds: 10)).then((code) async {
-        setState(() {
-          _isCheckingForm = false;
-        });
-        switch (code) {
-          case ErrorCode.none:
-            await Navigator.of(context).pushReplacementNamed('/home');
-            return;
-          case ErrorCode.offline:
-            Scaffold.of(context).showSnackBar(SnackBar(
-              content: Text(AppTranslations.of(context).loginFailed),
-            ));
-            break;
-          case ErrorCode.wrongCredentials:
-            Scaffold.of(context).showSnackBar(SnackBar(
-              content: Text(AppTranslations.of(context).loginCredentialsWrong),
-            ));
-            _passwordController.clear();
-            FocusScope.of(context).requestFocus(_focus);
-            break;
+      try {
+        final credentialsCorrect = await Static.user.forceLoadOnline(
+            _usernameController.text, _passwordController.text);
+        if (credentialsCorrect) {
+          await Navigator.of(context).pushReplacementNamed('/');
+          return;
+        } else {
+          Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text(AppTranslations.of(context).loginCredentialsWrong),
+          ));
+          _passwordController.clear();
+          FocusScope.of(context).requestFocus(_focus);
         }
-        Data.user = User(
-          username: '',
-          password: '',
-          grade: UserValue('grade', ''),
-          language: UserValue('language', _language),
-          selection: [],
-          tokens: [],
-        );
-      });
-    } else {
-      setState(() {
-        _isCheckingForm = false;
-      });
+      } on DioError {
+        Scaffold.of(context).showSnackBar(SnackBar(
+          content: Text(AppTranslations.of(context).loginFailed),
+        ));
+      }
     }
-  }
-
-  @override
-  void afterFirstLayout(BuildContext context) {
-    _language = AppTranslations.of(context).locale.languageCode;
+    setState(() {
+      _isCheckingForm = false;
+    });
   }
 
   @override

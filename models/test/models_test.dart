@@ -20,6 +20,14 @@ void main() {
       await setupDateFormats();
       expect(outputDateFormat('de').format(DateTime(2019, 7, 5)), '05.07.2019');
       expect(outputDateFormat('en').format(DateTime(2019, 7, 5)), '07/05/2019');
+      expect(
+        outputDateTimeFormat('de').format(DateTime(2019, 7, 5, 7, 53)),
+        '05.07.2019 07:53',
+      );
+      expect(
+        outputDateTimeFormat('en').format(DateTime(2019, 7, 5, 7, 53)),
+        '07/05/2019 07:53',
+      );
       expect(parseDate('5.7.2019'), DateTime(2019, 7, 5));
       expect(parseDate('5.7.19'), DateTime(2019, 7, 5));
       expect(parseDate('5. Juli 2019'), DateTime(2019, 7, 5));

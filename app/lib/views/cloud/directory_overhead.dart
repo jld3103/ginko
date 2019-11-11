@@ -23,7 +23,7 @@ class CloudDirectoryOverhead extends StatefulWidget {
   const CloudDirectoryOverhead({
     @required this.file,
     @required this.client,
-    @required this.user,
+    @required this.device,
     Key key,
   }) : super(key: key);
 
@@ -34,7 +34,7 @@ class CloudDirectoryOverhead extends StatefulWidget {
   final NextCloudClient client;
 
   // ignore: public_member_api_docs
-  final User user;
+  final Device device;
 
   @override
   _CloudDirectoryOverheadState createState() => _CloudDirectoryOverheadState();
@@ -184,7 +184,7 @@ class _CloudDirectoryOverheadState extends State<CloudDirectoryOverhead>
           key: _key,
           client: widget.client,
           path: widget.file.path,
-          user: widget.user,
+          device: widget.device,
         ),
       );
 }

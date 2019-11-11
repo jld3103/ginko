@@ -14,7 +14,7 @@ class CloudDetailsDialog extends StatefulWidget {
   // ignore: public_member_api_docs
   const CloudDetailsDialog({
     @required this.file,
-    @required this.user,
+    @required this.device,
     @required this.client,
     @required this.onReload,
     Key key,
@@ -24,7 +24,7 @@ class CloudDetailsDialog extends StatefulWidget {
   final WebDavFile file;
 
   // ignore: public_member_api_docs
-  final User user;
+  final Device device;
 
   // ignore: public_member_api_docs
   final NextCloudClient client;
@@ -84,7 +84,7 @@ class _CloudDetailsDialogState extends State<CloudDetailsDialog>
                   children: [
                     Text('${AppTranslations.of(context).cloudLastModified}: '),
                     Text(
-                      outputDateTimeFormat(widget.user.language.value).format(
+                      outputDateTimeFormat(widget.device.language).format(
                           widget.file.lastModified.add(Duration(hours: 2))),
                       style: TextStyle(
                         fontWeight: FontWeight.bold,

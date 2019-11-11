@@ -14,22 +14,20 @@ import androidx.core.app.NotificationManagerCompat;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import io.flutter.plugin.common.MethodChannel;
-import io.flutter.view.FlutterView;
 
 import static de.ginko.app.MainActivity.CHANNEL;
 
 public class NotificationService extends FirebaseMessagingService {
-    static public FlutterView flutterView;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
-        if (remoteMessage.getData().get("type") != null && remoteMessage.getData().get("type").equals("replacementPlan")) {
+        if (remoteMessage.getData().get("type") != null && remoteMessage.getData().get("type").equals("substitutionPlan")) {
             System.out.println("Notification received: " + remoteMessage.getData());
-            if (flutterView != null && getCurrentClass().startsWith(getApplication().getPackageName())) {
+            if (MainActivity.dartExecutor != null && getCurrentClass().startsWith(getApplication().getPackageName())) {
                 System.out.println("Updating UI");
-                new Handler(Looper.getMainLooper()).post(() -> new MethodChannel(flutterView, CHANNEL).invokeMethod("foreground_notification", remoteMessage.getData()));
+                new Handler(Looper.getMainLooper()).post(() -> new MethodChannel(MainActivity.dartExecutor, CHANNEL).invokeMethod("foreground_notification", remoteMessage.getData()));
                 return;
             }
             System.out.println("Showing notification");
@@ -57,7 +55,7 @@ public class NotificationService extends FirebaseMessagingService {
             NotificationCompat.Builder notification = new NotificationCompat.Builder(getApplicationContext(), remoteMessage.getData().get("type"))
                     .setContentTitle(title)
                     .setContentText(formattedBody)
-                    .setSmallIcon(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ? R.mipmap.ic_launcher : R.mipmap.logo_white)
+                    .setSmallIcon(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ? R.mipmap.ic_launcher : R.mipmap.logo_white)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .setStyle(new NotificationCompat.BigTextStyle().bigText(formattedBigBody))
                     .setContentIntent(pendingIntent)

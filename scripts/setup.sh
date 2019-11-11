@@ -35,10 +35,10 @@ fi
 
 pub global activate test_coverage
 
-cd server/js || exit
+cd parsers/js || exit
 yarn install
 cd ../..
-folders=("app" "models" "server" "translations")
+folders=("app" "models" "backend" "translations")
 for d in "${folders[@]}"; do
   cd "$d" || exit
   if [[ "$d" == "app" ]]; then

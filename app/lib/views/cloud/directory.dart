@@ -13,7 +13,7 @@ class CloudDirectory extends StatefulWidget {
   const CloudDirectory({
     @required this.client,
     @required this.path,
-    @required this.user,
+    @required this.device,
     Key key,
   }) : super(key: key);
 
@@ -24,7 +24,7 @@ class CloudDirectory extends StatefulWidget {
   final String path;
 
   // ignore: public_member_api_docs
-  final User user;
+  final Device device;
 
   @override
   _CloudDirectoryState createState() => _CloudDirectoryState();
@@ -101,7 +101,7 @@ class _CloudDirectoryState extends State<CloudDirectory>
                             return CloudFile(
                               client: widget.client,
                               file: file,
-                              user: widget.user,
+                              device: widget.device,
                               onReload: _loadFiles,
                               shareEnabled: !forbiddenFile,
                               deleteEnabled: !forbiddenFile,

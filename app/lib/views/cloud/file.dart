@@ -27,7 +27,7 @@ class CloudFile extends StatefulWidget {
   const CloudFile({
     @required this.client,
     @required this.file,
-    @required this.user,
+    @required this.device,
     @required this.onReload,
     Key key,
     this.shareEnabled = true,
@@ -42,7 +42,7 @@ class CloudFile extends StatefulWidget {
   final WebDavFile file;
 
   // ignore: public_member_api_docs
-  final User user;
+  final Device device;
 
   // ignore: public_member_api_docs
   final VoidCallback onReload;
@@ -101,7 +101,7 @@ class _CloudFileState extends State<CloudFile>
                 builder: (context) => CloudDirectoryOverhead(
                   file: widget.file,
                   client: widget.client,
-                  user: widget.user,
+                  device: widget.device,
                 ),
               ),
             );
@@ -179,7 +179,7 @@ class _CloudFileState extends State<CloudFile>
                       Text(
                         timeago.format(
                           widget.file.lastModified.add(Duration(hours: 2)),
-                          locale: widget.user.language.value,
+                          locale: widget.device.language,
                         ),
                         style: TextStyle(
                           color: Colors.grey,
@@ -235,7 +235,7 @@ class _CloudFileState extends State<CloudFile>
                               context: context,
                               builder: (context) => CloudDetailsDialog(
                                 file: widget.file,
-                                user: widget.user,
+                                device: widget.device,
                                 client: widget.client,
                                 onReload: widget.onReload,
                               ),
@@ -246,7 +246,6 @@ class _CloudFileState extends State<CloudFile>
                                   context: context,
                                   builder: (context) => CloudDeleteDialog(
                                     file: widget.file,
-                                    user: widget.user,
                                     client: widget.client,
                                   ),
                                 )) ??
@@ -257,7 +256,6 @@ class _CloudFileState extends State<CloudFile>
                                   context: context,
                                   builder: (context) => CloudRenameDialog(
                                     file: widget.file,
-                                    user: widget.user,
                                     client: widget.client,
                                   ),
                                 )) ??

@@ -11,7 +11,7 @@ class CafetoriaRow extends StatefulWidget {
   // ignore: public_member_api_docs
   const CafetoriaRow({
     @required this.day,
-    @required this.user,
+    @required this.device,
     this.showDate = false,
   });
 
@@ -19,7 +19,7 @@ class CafetoriaRow extends StatefulWidget {
   final CafetoriaDay day;
 
   // ignore: public_member_api_docs
-  final User user;
+  final Device device;
 
   // ignore: public_member_api_docs
   final bool showDate;
@@ -63,7 +63,7 @@ class _CafetoriaRowState extends State<CafetoriaRow>
                   margin: EdgeInsets.only(bottom: 15),
                   child: Text(
                     // ignore: lines_longer_than_80_chars
-                    '${AppTranslations.of(context).weekdays[widget.day.date.weekday - 1]} ${outputDateFormat(widget.user.language.value).format(widget.day.date)}',
+                    '${AppTranslations.of(context).weekdays[widget.day.date.weekday - 1]} ${outputDateFormat(widget.device.language).format(widget.day.date)}',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,

@@ -9,11 +9,15 @@ class CloudPage extends StatefulWidget {
   // ignore: public_member_api_docs
   const CloudPage({
     @required this.user,
+    @required this.device,
     Key key,
   }) : super(key: key);
 
   // ignore: public_member_api_docs
   final User user;
+
+  // ignore: public_member_api_docs
+  final Device device;
 
   @override
   _CloudPageState createState() => _CloudPageState();
@@ -36,6 +40,6 @@ class _CloudPageState extends State<CloudPage> {
   Widget build(BuildContext context) => CloudDirectory(
         client: _client,
         path: '/',
-        user: widget.user,
+        device: widget.device,
       );
 }

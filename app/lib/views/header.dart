@@ -4,7 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ginko/main.dart';
 import 'package:ginko/plugins/platform/platform.dart';
 import 'package:ginko/plugins/pwa/pwa.dart';
-import 'package:ginko/utils/data.dart';
+import 'package:ginko/utils/static.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:models/models.dart';
 
 /// Header class
@@ -47,7 +48,7 @@ class _HeaderState extends State<Header> with AfterLayoutMixin<Header> {
     _pwa = PWA();
     if (Platform().isWeb) {
       _permissionsGranted =
-          await Data.firebaseMessaging.hasNotificationPermissions();
+          await Static.firebaseMessaging.hasNotificationPermissions();
       _canInstall = await _pwa.canInstall();
       setState(() {});
     }
@@ -76,7 +77,7 @@ class _HeaderState extends State<Header> with AfterLayoutMixin<Header> {
                       _permissionsChecking = true;
                     });
                     await AppState.updateTokens(context);
-                    _permissionsGranted = await Data.firebaseMessaging
+                    _permissionsGranted = await Static.firebaseMessaging
                         .hasNotificationPermissions();
                     setState(() {
                       _permissionsChecking = false;
@@ -108,7 +109,7 @@ class _HeaderState extends State<Header> with AfterLayoutMixin<Header> {
                     });
                   },
                   child: Icon(
-                    Icons.file_download,
+                    MdiIcons.cellphoneArrowDown,
                     color: Colors.white,
                   ),
                 ),
@@ -132,8 +133,7 @@ class _HeaderState extends State<Header> with AfterLayoutMixin<Header> {
                           child: SvgPicture.asset('images/logo_white.svg'),
                         ),
                         Text(
-                          // ignore: lines_longer_than_80_chars
-                          '${widget.user.username} - ${widget.user.grade.value}',
+                          '${widget.user.fullName} - ${widget.user.grade}',
                           style: TextStyle(
                             fontSize: 18,
                             color: Colors.white,

@@ -1,3 +1,0 @@
-# server
-
-The Ginko server

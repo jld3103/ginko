@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:ginko/utils/screen_sizes.dart';
@@ -6,8 +7,8 @@ import 'package:ginko/utils/static.dart';
 import 'package:ginko/views/extra_information.dart';
 import 'package:ginko/views/size_limit.dart';
 import 'package:ginko/views/tab_proxy.dart';
-import 'package:ginko/views/unitplan/all_row.dart';
-import 'package:ginko/views/unitplan/select_dialog.dart';
+import 'package:ginko/views/timetable/all_row.dart';
+import 'package:ginko/views/timetable/select_dialog.dart';
 import 'package:models/models.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:translations/translations_app.dart';
@@ -17,20 +18,20 @@ import 'package:translations/translations_app.dart';
 class HomePage extends StatefulWidget {
   // ignore: public_member_api_docs
   const HomePage({
-    @required this.user,
-    @required this.unitPlan,
+    @required this.device,
+    @required this.timetable,
     @required this.calendar,
     @required this.cafetoria,
-    @required this.replacementPlan,
-    @required this.updateUser,
+    @required this.substitutionPlan,
+    @required this.selection,
     Key key,
   }) : super(key: key);
 
   // ignore: public_member_api_docs
-  final User user;
+  final Device device;
 
   // ignore: public_member_api_docs
-  final UnitPlanForGrade unitPlan;
+  final TimetableForGrade timetable;
 
   // ignore: public_member_api_docs
   final Calendar calendar;
@@ -39,10 +40,10 @@ class HomePage extends StatefulWidget {
   final Cafetoria cafetoria;
 
   // ignore: public_member_api_docs
-  final ReplacementPlanForGrade replacementPlan;
+  final SubstitutionPlanForGrade substitutionPlan;
 
   // ignore: public_member_api_docs
-  final VoidCallback updateUser;
+  final Selection selection;
 
   @override
   State<StatefulWidget> createState() => HomePageState();
@@ -60,8 +61,10 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
     _panelController = PanelController();
     _tabController = TabController(length: 5, vsync: this);
     _tabController
-      ..index = _weekday =
-          widget.unitPlan.initialDay(widget.user, DateTime.now()).weekday - 1
+      ..index = _weekday = widget.timetable
+              .initialDay(widget.selection, DateTime.now())
+              .weekday -
+          1
       ..addListener(() {
         if (_weekday != _tabController.index) {
           setState(() {
@@ -69,7 +72,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
           });
         }
       });
-    Static.rebuildUnitPlan = () => setState(() {});
+    Static.rebuildTimetable = () => setState(() {});
     super.initState();
   }
 
@@ -97,7 +100,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     date: monday(DateTime.now()).add(Duration(days: _weekday)),
                     calendar: widget.calendar,
                     cafetoria: widget.cafetoria,
-                    user: widget.user,
+                    device: widget.device,
                   ),
                 ),
               ],
@@ -130,11 +133,12 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     ? 23
                     : 5,
               ),
-              children: widget.unitPlan.days[weekday].lessons
+              children: widget.timetable.days[weekday].lessons
                   .map((lesson) {
                     final subjects = lesson.subjects
                         .where((subject) =>
-                            Selection.get(lesson.block, isWeekA(start)) ==
+                            TimetableSelection.get(
+                                lesson.block, isWeekA(start)) ==
                             subject.identifier)
                         .toList();
                     return SizeLimit(
@@ -144,7 +148,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             // ignore: omit_local_variable_types
                             final List<Subject> selections = await showDialog(
                               context: context,
-                              builder: (context) => UnitPlanSelectDialog(
+                              builder: (context) => TimetableSelectDialog(
                                 weekday: weekday,
                                 lesson: lesson,
                               ),
@@ -155,16 +159,19 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             if (selections.length == 1) {
                               selections.add(selections[0]);
                             }
-                            Selection.set(
+                            TimetableSelection.set(
                                 lesson.block, true, selections[0].identifier);
-                            Selection.set(
+                            TimetableSelection.set(
                                 lesson.block, false, selections[1].identifier);
-                            // ignore: unawaited_futures
-                            widget.updateUser();
-                            Static.rebuildUnitPlan();
+                            Static.selection.save();
+                            Static.rebuildTimetable();
+                            try {
+                              await Static.selection.forceLoadOnline();
+                              // ignore: empty_catches
+                            } on DioError {}
                           }
                         },
-                        child: UnitPlanAllRow(
+                        child: TimetableAllRow(
                           subject: subjects.isNotEmpty
                               ? subjects[0]
                               : Subject(
@@ -174,8 +181,8 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   room: null,
                                   unit: lesson.unit,
                                 ),
-                          unitPlanDay: widget.unitPlan.days[weekday],
-                          replacementPlan: widget.replacementPlan,
+                          timetableDay: widget.timetable.days[weekday],
+                          substitutionPlan: widget.substitutionPlan,
                           start: start,
                         ),
                       ),
@@ -204,7 +211,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       calendar: widget.calendar,
                       cafetoria: widget.cafetoria,
                       panelController: _panelController,
-                      user: widget.user,
+                      device: widget.device,
                     ),
                   ),
                 ],
