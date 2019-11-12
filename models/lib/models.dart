@@ -11,6 +11,7 @@ export 'package:models/src/device.dart';
 export 'package:models/src/keys.dart';
 export 'package:models/src/rooms.dart';
 export 'package:models/src/selection.dart';
+export 'package:models/src/settings.dart';
 export 'package:models/src/subjects.dart';
 export 'package:models/src/substitution_plan.dart';
 export 'package:models/src/teachers.dart';

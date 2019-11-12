@@ -13,6 +13,7 @@ import 'package:ginko/pages/cloud.dart';
 import 'package:ginko/pages/home.dart';
 import 'package:ginko/pages/loading.dart';
 import 'package:ginko/pages/login.dart';
+import 'package:ginko/pages/settings.dart';
 import 'package:ginko/pages/substitution_plan.dart';
 import 'package:ginko/plugins/platform/platform.dart';
 import 'package:ginko/plugins/storage/storage.dart';
@@ -64,14 +65,24 @@ Future main() async {
               initialPage: 1,
             ),
           ),
-      '/cafetoria': (context) => Scaffold(
+      '/cloud': (context) => Scaffold(
             body: App(
               initialPage: 2,
             ),
           ),
-      '/aixformation': (context) => Scaffold(
+      '/cafetoria': (context) => Scaffold(
             body: App(
               initialPage: 3,
+            ),
+          ),
+      '/aixformation': (context) => Scaffold(
+            body: App(
+              initialPage: 4,
+            ),
+          ),
+      '/settings': (context) => Scaffold(
+            body: App(
+              initialPage: 5,
             ),
           ),
     },
@@ -150,6 +161,11 @@ class AppState extends State<App>
               device: Static.device.data,
               posts: Static.aiXformation.data,
             ),
+          ),
+          Page(
+            name: AppTranslations.of(context).pageSettings,
+            icon: Icons.settings,
+            child: SettingsPage(),
           ),
         ],
       );

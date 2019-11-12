@@ -72,6 +72,7 @@ Future main(List<String> args) async {
   final user = UserHandler(mysqlConnection);
   final devices = DevicesHandler(mysqlConnection);
   final selection = SelectionHandler(mysqlConnection);
+  final settings = SettingsHandler(mysqlConnection);
 
   final substitutionPlan = SubstitutionPlanHandler(mysqlConnection);
   final timetable = TimetableHandler(mysqlConnection);
@@ -169,6 +170,25 @@ Future main(List<String> args) async {
               ..write(json.encode({
                 'status': await selection.updateSelection(login, request, body),
                 'data': await selection.getSelection(login, request),
+              }));
+          }
+        } else if (request.method == 'POST' &&
+            request.uri.path == '/${Keys.settings}') {
+          final s = Settings.fromJSON(json.decode(body));
+          if (s.settings == null) {
+            response
+              ..statusCode = request.method == 'OPTIONS'
+                  ? HttpStatus.ok
+                  : HttpStatus.badRequest
+              ..write(json.encode({
+                'status': false,
+              }));
+          } else {
+            response
+              ..statusCode = HttpStatus.ok
+              ..write(json.encode({
+                'status': await settings.updateSettings(login, request, body),
+                'data': await settings.getSettings(login, request),
               }));
           }
         } else if (request.method == 'GET' &&

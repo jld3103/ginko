@@ -56,4 +56,25 @@ class Keys {
 
   // ignore: public_member_api_docs
   static const String updates = 'updates';
+
+  // ignore: public_member_api_docs
+  static const String settings = 'settings';
+
+  // ignore: public_member_api_docs
+  static String settingsKey(String key) {
+    if (key == null) {
+      return 'settings';
+    }
+    return 'settings-$key';
+  }
+
+  // ignore: public_member_api_docs
+  static const String substitutionPlanNotifications =
+      'substitutionplannotifications';
+
+  // ignore: public_member_api_docs
+  static const String aiXformationNotifications = 'aixformationnotifications';
+
+  // ignore: public_member_api_docs
+  static const String cafetoriaNotifications = 'cafetorianotifications';
 }

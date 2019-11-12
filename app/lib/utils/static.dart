@@ -3,6 +3,7 @@ import 'package:ginko/loaders/cafetoria.dart';
 import 'package:ginko/loaders/calendar.dart';
 import 'package:ginko/loaders/device.dart';
 import 'package:ginko/loaders/selection.dart';
+import 'package:ginko/loaders/settings.dart';
 import 'package:ginko/loaders/substitution_plan.dart';
 import 'package:ginko/loaders/teachers.dart';
 import 'package:ginko/loaders/timetable.dart';
@@ -56,6 +57,9 @@ class Static {
 
   // ignore: public_member_api_docs
   static UpdatesLoader updates = UpdatesLoader();
+
+  // ignore: public_member_api_docs
+  static SettingsLoader settings = SettingsLoader();
 
   // ignore: public_member_api_docs
   static FirebaseMessaging firebaseMessaging = FirebaseMessaging();

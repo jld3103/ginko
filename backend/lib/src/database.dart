@@ -21,6 +21,9 @@ class Database {
         'CREATE TABLE IF NOT EXISTS users_selection (username VARCHAR(7) NOT NULL, selection_key VARCHAR(255) NOT NULL, selection_value TEXT NOT NULL, date_time DATETIME NOT NULL, UNIQUE KEY unique_username (username, selection_key)) ENGINE = InnoDB;');
     await mysqlConnection.query(
         // ignore: lines_longer_than_80_chars
+        'CREATE TABLE IF NOT EXISTS users_settings (username VARCHAR(7) NOT NULL, settings_key VARCHAR(255) NOT NULL, settings_value BOOLEAN NOT NULL, date_time DATETIME NOT NULL, UNIQUE KEY unique_username (username, settings_key)) ENGINE = InnoDB;');
+    await mysqlConnection.query(
+        // ignore: lines_longer_than_80_chars
         'CREATE TABLE IF NOT EXISTS data_substitution_plan (date_time DATE NOT NULL, update_time DATETIME NOT NULL, data LONGTEXT NOT NULL, UNIQUE KEY unique_date_time (date_time, update_time)) ENGINE = InnoDB;');
     await mysqlConnection.query(
         // ignore: lines_longer_than_80_chars

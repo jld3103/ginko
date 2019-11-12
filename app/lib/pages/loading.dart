@@ -36,6 +36,10 @@ class LoadingPageState extends State<LoadingPage>
       if (Static.updates.data == null) {
         Static.updates.object = {};
       }
+      Static.settings.loadOffline();
+      if (Static.settings.data == null) {
+        Static.settings.object = Settings([]);
+      }
       Static.substitutionPlan.loadOffline();
       Static.timetable.loadOffline();
       Static.calendar.loadOffline();
@@ -71,9 +75,6 @@ class LoadingPageState extends State<LoadingPage>
                 case Keys.cafetoria:
                   await Static.cafetoria.loadOnline();
                   break;
-                case Keys.selection:
-                  await Static.selection.loadOnline();
-                  break;
                 default:
                   print('unknown loader $key');
                   break;
@@ -82,6 +83,7 @@ class LoadingPageState extends State<LoadingPage>
             }
           }
           await Static.selection.forceLoadOnline();
+          await Static.settings.forceLoadOnline();
           if (Static.device.data.token != '') {
             await Static.device.forceLoadOnline();
           }

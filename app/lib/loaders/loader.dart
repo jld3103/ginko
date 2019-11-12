@@ -34,7 +34,7 @@ abstract class Loader {
 
   // ignore: public_member_api_docs
   void loadOffline() {
-    if (Static.storage.has(key)) {
+    if (Static.storage.has(key) && Static.storage.getString(key) != null) {
       object = fromJSON(Static.storage.getJSON(key));
     }
   }
@@ -54,7 +54,7 @@ abstract class Loader {
     }
     username ??= Static.user.data.username;
     password ??= Static.user.data.password;
-    const baseUrl = 'https://api.app.viktoria.schule';
+    const baseUrl = 'http://192.168.1.46:8000';
     try {
       final dio = Dio()
         ..options = BaseOptions(
@@ -109,6 +109,10 @@ abstract class Loader {
 
   // ignore: public_member_api_docs
   void save() {
-    Static.storage.setJSON(key, toJSON());
+    if (data == null) {
+      Static.storage.setString(key, null);
+    } else {
+      Static.storage.setJSON(key, toJSON());
+    }
   }
 }

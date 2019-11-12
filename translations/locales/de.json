@@ -25,6 +25,7 @@
   "pageCafetoria": "Cafétoria",
   "pageSubstitutionPlan": "Vertretungsplan",
   "pageCloud": "Cloud",
+  "pageSettings": "Einstellungen",
   "substitutionPlanFreeLesson": "Freistunde",
   "substitutionPlanReplaced": "Vertretung",
   "substitutionPlanExam": "Klausur",
@@ -54,6 +55,10 @@
   "cloudNoSearchResults": "Keine Suchergebnisse",
   "cloudName": "Name",
   "cloudShares": "Freigaben",
+  "settingsShowSubstitutionPlanNotifications": "Vertretungsplanbenachrichtigungen anzeigen",
+  "settingsShowAiXformationNotifications": "AiXformation-Benachrichtigungen anzeigen",
+  "settingsShowCafetoriaNotifications": "Cafétoria-Benachrichtigungen anzeigen",
+  "settingsLogout": "Abmelden",
   "subjects": {
     "BI": "Bio",
     "CH": "Chemie",
