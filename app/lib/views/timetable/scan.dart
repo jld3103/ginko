@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/material.dart';
 import 'package:ginko/utils/selection.dart';
@@ -95,6 +96,7 @@ class _ScanDialogState extends State<ScanDialog> {
             TimetableSelection.set(lesson.block, weekA, subject.identifier);
           }
         }
+        Static.selection.save();
         Static.rebuildTimetable();
         for (final day in widget.timetable.days) {
           if (!_allDetected) {
@@ -114,6 +116,10 @@ class _ScanDialogState extends State<ScanDialog> {
             }
           }
         }
+        try {
+          Static.selection.forceLoadOnline();
+          // ignore: empty_catches
+        } on DioError {}
       }
     }
   }

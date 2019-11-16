@@ -156,73 +156,22 @@ class Change {
       return [];
     }
     var subjects = lesson.subjects;
-    // TODO(jl3103): Add exam filter
-    if (type != ChangeTypes.exam) {
-      if (subject != null) {
-        subjects = subjects
-            .where((s) =>
-                Subjects.getSubject(s.subject) == Subjects.getSubject(subject))
-            .toList();
-      }
-      if (teacher != null) {
-        subjects = subjects.where((s) => s.teacher == teacher).toList();
-      }
-      if (room != null) {
-        if (Rooms.getRoom(room) == Rooms.rooms['KLH'] &&
-            subjects
-                .where((s) => Rooms.getRoom(s.room) == Rooms.rooms['KLH'])
-                .toList()
-                .isEmpty) {
-          if (subjects
-              .where((s) => Rooms.getRoom(s.room) == Rooms.rooms['GRH'])
-              .toList()
-              .isNotEmpty) {
-            subjects = subjects
-                .where((s) => Rooms.getRoom(s.room) == Rooms.rooms['GRH'])
-                .toList();
-          }
-        } else if (Rooms.getRoom(room) == Rooms.rooms['GRH'] &&
-            subjects
-                .where((s) => Rooms.getRoom(s.room) == Rooms.rooms['GRH'])
-                .toList()
-                .isEmpty) {
-          if (subjects
-              .where((s) => Rooms.getRoom(s.room) == Rooms.rooms['KLH'])
-              .toList()
-              .isNotEmpty) {
-            subjects = subjects
-                .where((s) => Rooms.getRoom(s.room) == Rooms.rooms['KLH'])
-                .toList();
-          }
-        } else if (subjects
-            .where((s) => Rooms.getRoom(s.room) == Rooms.getRoom(room))
-            .toList()
-            .isNotEmpty) {
-          subjects = subjects
-              .where((s) => Rooms.getRoom(s.room) == Rooms.getRoom(room))
-              .toList();
-        }
-      }
+    if (subject != null && subject != '') {
+      subjects = subjects.where((s) => s.subject == subject).toList();
+    }
+    if (teacher != null && teacher != '') {
+      subjects = subjects.where((s) => s.teacher == teacher).toList();
+    }
+    if (room != null && room != '') {
+      subjects = subjects.where((s) => s.room == room).toList();
+    }
+    if (course != null && course != '') {
+      subjects = subjects.where((s) => s.course == course).toList();
     }
     if (subjects.isEmpty) {
       return lesson.subjects;
     }
     return subjects;
-  }
-
-  /// Complete the information of this change using the timetable
-  void complete(Subject s) {
-    if (type != ChangeTypes.exam) {
-      if (subject == null || subject == '') {
-        subject = s.subject;
-      }
-      if (room == null || room == '') {
-        room = s.room;
-      }
-      if (teacher == null || teacher == '') {
-        teacher = s.teacher;
-      }
-    }
   }
 
   // ignore: public_member_api_docs

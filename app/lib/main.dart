@@ -198,15 +198,15 @@ class AppState extends State<App>
         if (!allDetected) {
           break;
         }
-        for (final lesson in day.lessons) {
+        for (final lesson
+            in day.lessons.where((lesson) => lesson.unit != 5).toList()) {
           if (!allDetected) {
             break;
           }
-          for (final weekA in [true, false]) {
-            if (TimetableSelection.get(lesson.block, weekA) == null) {
-              allDetected = false;
-              break;
-            }
+          if (TimetableSelection.get(lesson.block, true) == null) {
+            // FIXME
+            allDetected = false;
+            break;
           }
         }
       }

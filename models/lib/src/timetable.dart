@@ -218,7 +218,6 @@ class Subject {
       };
 
   /// Get the changes that match this subject
-
   List<Change> getMatchingChanges(
           SubstitutionPlanForGrade substitutionPlanForGrade) =>
       substitutionPlanForGrade.changes
@@ -233,15 +232,6 @@ class Subject {
               .toList()
               .isNotEmpty)
           .toList();
-
-  /// Complete the information of this subject using the replacement plan
-  void complete(Change c) {
-    if (c.type != ChangeTypes.exam) {
-      if (course == null || course == '') {
-        course = c.course;
-      }
-    }
-  }
 
   // ignore: public_member_api_docs
   String get identifier => '$teacher-$subject';

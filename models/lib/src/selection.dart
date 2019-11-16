@@ -19,7 +19,7 @@ class Selection {
   /// Get the value of a selection key
   String getSelection(String key) {
     final parts = key.split('-');
-    if (parts.length > 3 && parts[3] == '5') {
+    if (parts.length > 1 && parts[1] == 'mit') {
       return 'null-MIT';
     }
     final values = selection.where((i) => i.key == key).toList();

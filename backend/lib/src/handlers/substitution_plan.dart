@@ -245,12 +245,12 @@ class SubstitutionPlanHandler extends Handler {
       lines.add(buffer.toString());
     }
     final bigBody = lines.isEmpty
-        ? ServerTranslations.notificationsNoChanges(language)
+        ? ServerTranslations.substitutionPlanNoChanges(language)
         : lines.join('${formatting ? '<br/>' : '\n'}');
     final body = changes.isEmpty
-        ? ServerTranslations.notificationsNoChanges(language)
+        ? ServerTranslations.substitutionPlanNoChanges(language)
         // ignore: lines_longer_than_80_chars
-        : '${changes.length} ${ServerTranslations.notificationsChanges(language)}';
+        : '${changes.length} ${ServerTranslations.substitutionPlanChanges(language)}';
     return Notification(
       title,
       body,

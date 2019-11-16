@@ -173,28 +173,6 @@ void main() {
       );
     });
 
-    test('Can complete subject', () {
-      final subject = Subject(
-        unit: 0,
-        weeks: 'AB',
-        subject: 'EK',
-        room: '525',
-        teacher: 'KRA',
-      );
-      expect(subject.course, null);
-      subject.complete(Change(
-        date: DateTime(2019, 7, 11),
-        unit: 0,
-        course: 'GK1',
-        changed: Changed(),
-        type: ChangeTypes.replaced,
-        subject: null,
-        room: null,
-        teacher: null,
-      ));
-      expect(subject.course, 'GK1');
-    });
-
     test('Can create lesson', () {
       final subject = Subject(
         teacher: 'KRA',

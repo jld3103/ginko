@@ -23,6 +23,7 @@ public class MainActivity extends FlutterActivity {
         new MethodChannel(dartExecutor, CHANNEL).setMethodCallHandler((call, result) -> {
             if (call.method.equals("channel_registered")) {
                 if (registered[0]) {
+                    result.success(null);
                     return;
                 }
                 registered[0] = true;
@@ -30,7 +31,7 @@ public class MainActivity extends FlutterActivity {
                 if (data != null) {
                     new MethodChannel(dartExecutor, CHANNEL).invokeMethod("background_notification", data);
                 }
-                System.out.println("Data: " + data);
+                result.success(null);
             }
         });
     }

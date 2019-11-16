@@ -65,7 +65,7 @@ class _TimetableAllRowState extends State<TimetableAllRow> {
                       change
                           .getMatchingSubjectsByLesson(
                               widget.timetableDay.lessons[widget.subject.unit])
-                          .isNotEmpty)
+                          .contains(widget.subject))
                   .map((change) => SubstitutionPlanRow(
                         change: change,
                         showUnit: false,

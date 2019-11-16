@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:backend/backend.dart';
 import 'package:models/models.dart';
@@ -18,6 +17,7 @@ class TimetableHandler extends Handler {
     final results = await mySqlConnection.query(
         // ignore: lines_longer_than_80_chars
         'SELECT data FROM data_timetable ORDER BY date_time DESC LIMIT 2;');
+    /*
     final timetable = _mergeTimetables(results
             .toList()
             .map((row) => Timetable.fromJSON(json.decode(row[0].toString())))
@@ -26,6 +26,12 @@ class TimetableHandler extends Handler {
         .timetables
         .where((timetable) => timetable.grade == user.grade)
         .single;
+     */
+    final timetable =
+        Timetable.fromJSON(json.decode(results.toList()[0][0].toString()))
+            .timetables
+            .where((timetable) => timetable.grade == user.grade)
+            .single;
     return Tuple2(timetable.toJSON(), timetable.date.toIso8601String());
   }
 
@@ -33,24 +39,7 @@ class TimetableHandler extends Handler {
   @override
   Future update() async {
     final timetables = [
-      Timetable(
-        timetables: TimetableParser.extract(
-          await TimetableParser.download(
-            true,
-            Config.websiteUsername,
-            Config.websitePassword,
-          ),
-        ),
-      ),
-      Timetable(
-        timetables: TimetableParser.extract(
-          await TimetableParser.download(
-            false,
-            Config.websiteUsername,
-            Config.websitePassword,
-          ),
-        ),
-      ),
+      Timetable(timetables: TimetableParser.extract(TimetableParser.load())),
     ];
     for (final timetable in timetables) {
       await mySqlConnection.query(
@@ -59,6 +48,7 @@ class TimetableHandler extends Handler {
     }
   }
 
+/*
   static Timetable _mergeTimetables(List<Timetable> timetables) {
     final timetable = Timetable(
       timetables: grades.map((grade) {
@@ -225,4 +215,5 @@ class TimetableHandler extends Handler {
     );
     return timetable;
   }
+  */
 }

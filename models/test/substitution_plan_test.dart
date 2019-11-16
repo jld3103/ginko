@@ -379,32 +379,6 @@ void main() {
       expect(changes[1].getMatchingSubjectsByLesson(lessons[1])[0].room, 'KLH');
     });
 
-    test('Can complete change', () {
-      final change = Change(
-        date: DateTime(2019, 7, 11),
-        unit: 0,
-        course: 'GK1',
-        changed: Changed(),
-        type: ChangeTypes.replaced,
-        subject: null,
-        teacher: null,
-        room: null,
-      );
-      expect(change.subject, null);
-      expect(change.room, null);
-      expect(change.teacher, null);
-      change.complete(Subject(
-        unit: 0,
-        weeks: 'AB',
-        subject: 'EK',
-        room: '525',
-        teacher: 'KRA',
-      ));
-      expect(change.subject, 'EK');
-      expect(change.room, '525');
-      expect(change.teacher, 'KRA');
-    });
-
     test('Can create replacement plan day', () {
       final day = SubstitutionPlanDay(
         date: DateTime(2019, 7, 12),

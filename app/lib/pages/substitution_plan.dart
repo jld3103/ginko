@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ginko/utils/screen_sizes.dart';
+import 'package:ginko/utils/selection.dart';
 import 'package:ginko/utils/static.dart';
+import 'package:ginko/views/section.dart';
 import 'package:ginko/views/size_limit.dart';
 import 'package:ginko/views/substitution_plan/row.dart';
 import 'package:ginko/views/tab_proxy.dart';
@@ -91,7 +93,30 @@ class _SubstitutionPlanPageState extends State<SubstitutionPlanPage>
                     tabs: List.generate(
                         Static.substitutionPlan.data.substitutionPlanDays
                             .length, (day) {
-                      int previousUnit;
+                      int matchingChangesPreviousUnit;
+                      int notMatchingChangesPreviousUnit;
+                      final matchingChanges = [];
+                      final notMatchingChanges = [];
+                      for (final change in Static.substitutionPlan.data.changes
+                          .where((change) =>
+                              change.date ==
+                              Static.substitutionPlan.data
+                                  .substitutionPlanDays[day].date)) {
+                        final lesson = Static.timetable.data
+                            .days[change.date.weekday - 1].lessons[change.unit];
+                        final subjects = change.getMatchingSubjectsByTimetable(
+                            Static.timetable.data);
+                        if (subjects
+                            .where((subject) =>
+                                subject.identifier ==
+                                TimetableSelection.get(
+                                    lesson.block, true)) // FIXME
+                            .isNotEmpty) {
+                          matchingChanges.add(change);
+                        } else {
+                          notMatchingChanges.add(change);
+                        }
+                      }
                       return ListView(
                         shrinkWrap: true,
                         padding: EdgeInsets.all(5),
@@ -141,24 +166,70 @@ class _SubstitutionPlanPageState extends State<SubstitutionPlanPage>
                               ],
                             ),
                           ),
-                          ...Static.substitutionPlan.data.changes
-                              .where((change) =>
-                                  change.date ==
-                                  Static.substitutionPlan.data
-                                      .substitutionPlanDays[day].date)
-                              .map((change) {
-                                final showUnit = change.unit != previousUnit;
-                                previousUnit = change.unit;
-                                return SizeLimit(
-                                  child: SubstitutionPlanRow(
-                                    change: change,
-                                    showUnit: showUnit,
-                                    showCard: false,
+                          if (matchingChanges.isEmpty &&
+                              notMatchingChanges.isEmpty)
+                            Container(
+                              color: Colors.transparent,
+                              margin: EdgeInsets.only(
+                                top: 20,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  AppTranslations.of(context)
+                                      .substitutionPlanNoChanges,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                );
-                              })
-                              .toList()
-                              .cast<Widget>(),
+                                ),
+                              ),
+                            ),
+                          if (matchingChanges.isNotEmpty)
+                            Section(
+                              title:
+                                  // ignore: lines_longer_than_80_chars
+                                  '${AppTranslations.of(context).substitutionPlanMatchingChanges}:',
+                              children: [
+                                ...matchingChanges
+                                    .map((change) {
+                                      final showUnit = change.unit !=
+                                          matchingChangesPreviousUnit;
+                                      matchingChangesPreviousUnit = change.unit;
+                                      return SizeLimit(
+                                        child: SubstitutionPlanRow(
+                                          change: change,
+                                          showUnit: showUnit,
+                                          showCard: false,
+                                        ),
+                                      );
+                                    })
+                                    .toList()
+                                    .cast<Widget>(),
+                              ],
+                            ),
+                          if (notMatchingChanges.isNotEmpty)
+                            Section(
+                              title:
+                                  // ignore: lines_longer_than_80_chars
+                                  '${AppTranslations.of(context).substitutionPlanNotMatchingChanges}:',
+                              children: [
+                                ...notMatchingChanges
+                                    .map((change) {
+                                      final showUnit = change.unit !=
+                                          notMatchingChangesPreviousUnit;
+                                      notMatchingChangesPreviousUnit =
+                                          change.unit;
+                                      return SizeLimit(
+                                        child: SubstitutionPlanRow(
+                                          change: change,
+                                          showUnit: showUnit,
+                                          showCard: false,
+                                        ),
+                                      );
+                                    })
+                                    .toList()
+                                    .cast<Widget>(),
+                              ],
+                            ),
                         ],
                       );
                     }).toList().cast<Widget>(),
