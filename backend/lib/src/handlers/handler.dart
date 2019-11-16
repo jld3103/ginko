@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:backend/backend.dart';
 import 'package:crypto/crypto.dart';
 import 'package:models/models.dart';
 import 'package:mysql1/mysql1.dart';
@@ -18,7 +17,7 @@ abstract class Handler {
   final MySqlConnection mySqlConnection;
 
   // ignore: public_member_api_docs
-  Future update(Config config);
+  Future update() async {}
 
   // ignore: public_member_api_docs
   Future<Tuple2<Map<String, dynamic>, String>> fetchLatest(User user);

@@ -26,7 +26,13 @@ class Static {
   static VoidCallback rebuildTimetable;
 
   // ignore: public_member_api_docs
-  static VoidCallback rebuildSubstitutionPlan;
+  static FutureCallbackShouldRender refreshSubstitutionPlan;
+
+  // ignore: public_member_api_docs
+  static FutureCallbackShouldRender refreshCafetoria;
+
+  // ignore: public_member_api_docs
+  static FutureCallbackShouldRender refreshAiXformation;
 
   // ignore: public_member_api_docs
   static TimetableLoader timetable = TimetableLoader();
@@ -66,3 +72,5 @@ class Static {
 }
 
 typedef VoidCallback = void Function();
+typedef FutureCallback = Future Function();
+typedef FutureCallbackShouldRender = Future Function(bool shouldRender);

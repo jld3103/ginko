@@ -11,7 +11,11 @@ void main() {
       testWidgets('Normal cafetoria row', (tester) async {
         await tester.pumpWidget(makeTestableWidget(CafetoriaRow(
           // ignore: missing_required_param
-          device: Device(language: 'de'),
+          device: Device(
+            language: 'de',
+            token: null,
+            os: null,
+          ),
           day: CafetoriaDay(
             date: DateTime(2019, 8, 9),
             menus: [
@@ -35,7 +39,11 @@ void main() {
       testWidgets('Cafetoria row without price', (tester) async {
         await tester.pumpWidget(makeTestableWidget(CafetoriaRow(
           // ignore: missing_required_param
-          device: Device(language: 'de'),
+          device: Device(
+            language: 'de',
+            token: null,
+            os: null,
+          ),
           day: CafetoriaDay(
             date: DateTime(2019, 8, 9),
             menus: [
@@ -59,7 +67,11 @@ void main() {
       testWidgets('Cafetoria row without times', (tester) async {
         await tester.pumpWidget(makeTestableWidget(CafetoriaRow(
           // ignore: missing_required_param
-          device: Device(language: 'de'),
+          device: Device(
+            language: 'de',
+            token: null,
+            os: null,
+          ),
           day: CafetoriaDay(
             date: DateTime(2019, 8, 9),
             menus: [
@@ -79,7 +91,11 @@ void main() {
       testWidgets('Cafetoria row without times', (tester) async {
         await tester.pumpWidget(makeTestableWidget(CafetoriaRow(
           // ignore: missing_required_param
-          device: Device(language: 'de'),
+          device: Device(
+            language: 'de',
+            token: null,
+            os: null,
+          ),
           day: CafetoriaDay(
             date: DateTime(2019, 8, 9),
             menus: [
@@ -99,7 +115,11 @@ void main() {
       testWidgets('Cafetoria row with date', (tester) async {
         await tester.pumpWidget(makeTestableWidget(CafetoriaRow(
           // ignore: missing_required_param
-          device: Device(language: 'de'),
+          device: Device(
+            language: 'de',
+            token: null,
+            os: null,
+          ),
           showDate: true,
           day: CafetoriaDay(
             date: DateTime(2019, 8, 9),

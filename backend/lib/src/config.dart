@@ -3,62 +3,64 @@ import 'dart:io';
 
 import 'package:logging/logging.dart';
 
+// ignore: avoid_classes_with_only_static_members
 /// Config class
 class Config {
-  // ignore: public_member_api_docs
-  Config() : _log = Logger('Config');
+  static final Logger _log = Logger('Config');
 
-  final Logger _log;
-
-  int _port;
-  String _websiteUsername;
-  String _websitePassword;
-  String _dbHost;
-  int _dbPort;
-  String _dbUsername;
-  String _dbPassword;
-  String _dbName;
-  String _cafetoriaUsername;
-  String _cafetoriaPassword;
+  static int _port;
+  static String _websiteUsername;
+  static String _websitePassword;
+  static String _dbHost;
+  static int _dbPort;
+  static String _dbUsername;
+  static String _dbPassword;
+  static String _dbName;
+  static String _cafetoriaUsername;
+  static String _cafetoriaPassword;
+  static String _fcmServerKey;
 
   /// Whether to fetch all data on start
-  bool fetchOnStart = true;
+  static bool fetchOnStart = true;
 
   /// Whether to log all requests made to the server
-  bool verbose = false;
+  static bool verbose = false;
 
   /// The port of the web server
-  int get port => _port;
+  static int get port => _port;
 
   /// The username of the website
-  String get websiteUsername => _websiteUsername;
+  static String get websiteUsername => _websiteUsername;
 
   /// The password of the website
-  String get websitePassword => _websitePassword;
+  static String get websitePassword => _websitePassword;
 
   /// The host of the database
-  String get dbHost => _dbHost;
+  static String get dbHost => _dbHost;
 
   /// The port of the database
-  int get dbPort => _dbPort;
+  static int get dbPort => _dbPort;
 
   /// The username of the database user
-  String get dbUsername => _dbUsername;
+  static String get dbUsername => _dbUsername;
 
   /// The password of the database user
-  String get dbPassword => _dbPassword;
+  static String get dbPassword => _dbPassword;
 
   /// The name of the database
-  String get dbName => _dbName;
+  static String get dbName => _dbName;
 
   /// The username of the cafetoria service user
-  String get cafetoriaUsername => _cafetoriaUsername;
+  static String get cafetoriaUsername => _cafetoriaUsername;
 
   /// The password of the cafetoria service user
-  String get cafetoriaPassword => _cafetoriaPassword;
+  static String get cafetoriaPassword => _cafetoriaPassword;
+
+  /// The fcm server key
+  static String get fcmServerKey => _fcmServerKey;
 
   /// Loads the config from file if it exists else from environment variables
-  void load() {
+  static void load() {
     final file = File('config.json');
     var data = {};
     if (!file.existsSync()) {
@@ -79,9 +81,10 @@ class Config {
     _dbName = _readString(data, 'db_name');
     _cafetoriaUsername = _readString(data, 'cafetoria_username');
     _cafetoriaPassword = _readString(data, 'cafetoria_password');
+    _fcmServerKey = _readString(data, 'fcm_server_key');
   }
 
-  dynamic _readValue(Map<String, dynamic> data, String key) {
+  static dynamic _readValue(Map<String, dynamic> data, String key) {
     if (key != key.toLowerCase()) {
       _log.warning('Please provide the key in lower case: $key.');
       exit(1);
@@ -96,10 +99,10 @@ class Config {
     exit(1);
   }
 
-  String _readString(Map<String, dynamic> data, String key) =>
+  static String _readString(Map<String, dynamic> data, String key) =>
       _readValue(data, key);
 
-  int _readInt(Map<String, dynamic> data, String key) {
+  static int _readInt(Map<String, dynamic> data, String key) {
     final value = _readValue(data, key);
     try {
       return value;

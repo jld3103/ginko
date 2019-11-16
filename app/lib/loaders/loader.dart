@@ -54,7 +54,7 @@ abstract class Loader {
     }
     username ??= Static.user.data.username;
     password ??= Static.user.data.password;
-    const baseUrl = 'http://192.168.1.46:8000';
+    const baseUrl = 'https://api.app.viktoria.schule';
     try {
       final dio = Dio()
         ..options = BaseOptions(

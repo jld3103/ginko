@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:backend/backend.dart';
+import 'package:backend/src/notifications.dart';
 import 'package:models/models.dart';
 import 'package:mysql1/mysql1.dart';
 import 'package:parsers/parsers.dart';
@@ -41,7 +42,7 @@ class AiXformationHandler extends Handler {
   }
 
   @override
-  Future update(Config config) async {
+  Future update() async {
     var cache = {
       'users': {},
       'media': {},
@@ -90,6 +91,15 @@ class AiXformationHandler extends Handler {
           .toList(),
     );
     final dataString = json.encode(escapedAiXformation.toJSON());
+    final results = await mySqlConnection.query(
+        // ignore: lines_longer_than_80_chars
+        'SELECT data FROM data_aixformation WHERE date_time = \'${posts.date}\';');
+    if (results.isNotEmpty) {
+      final storedData = results.toList()[0][0].toString();
+      if (storedData == dataString) {
+        return;
+      }
+    }
     await mySqlConnection.query(
         // ignore: lines_longer_than_80_chars
         'INSERT INTO data_aixformation (date_time, data) VALUES (\'${posts.date}\', \'$dataString\') ON DUPLICATE KEY UPDATE data = \'$dataString\';');
@@ -109,5 +119,40 @@ class AiXformationHandler extends Handler {
           // ignore: lines_longer_than_80_chars
           'INSERT INTO data_aixformation_tags (id, name) VALUES (\'$id\', \'${cache['tags'][id]}\') ON DUPLICATE KEY UPDATE name = \'${cache['tags'][id]}\';');
     }
+    final post = escapedAiXformation.posts
+        .where((post) => post.date == escapedAiXformation.date)
+        .single;
+    final title = post.title;
+    final body = '${post.content.substring(0, 500)}...';
+    final bigBody = body;
+    final notification = Notification(
+      title,
+      body,
+      bigBody,
+      data: {
+        Keys.type: Keys.aiXformation,
+      },
+    );
+    final tokens = [];
+    final devicesResults = await mySqlConnection.query(
+        // ignore: lines_longer_than_80_chars
+        'SELECT username, token FROM users_devices;');
+    for (final row in devicesResults.toList()) {
+      final username = row[0].toString();
+      final token = row[1].toString();
+      final settingsResults = await mySqlConnection.query(
+          // ignore: lines_longer_than_80_chars
+          'SELECT settings_value FROM users_settings WHERE username = \'$username\' AND settings_key = \'${Keys.settingsKey(Keys.aiXformationNotifications)}\';');
+      bool showNotifications;
+      if (settingsResults.isNotEmpty) {
+        showNotifications = settingsResults.toList()[0][0] == 1;
+      } else {
+        showNotifications = true;
+      }
+      if (showNotifications) {
+        tokens.add(token);
+      }
+    }
+    await Notifications.sendNotification(notification, tokens.cast<String>());
   }
 }

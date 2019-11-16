@@ -77,4 +77,7 @@ class Keys {
 
   // ignore: public_member_api_docs
   static const String cafetoriaNotifications = 'cafetorianotifications';
+
+  // ignore: public_member_api_docs
+  static const String type = 'type';
 }

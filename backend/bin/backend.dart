@@ -4,36 +4,13 @@ import 'dart:io';
 
 import 'package:args/args.dart';
 import 'package:backend/backend.dart';
-import 'package:colorize/colorize.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:models/models.dart';
 import 'package:mysql1/mysql1.dart';
 
 Future main(List<String> args) async {
-  Logger.root.level = Level.ALL;
-  Logger.root.onRecord.listen((rec) {
-    if ((rec.loggerName == 'BufferedSocket' ||
-            rec.loggerName == 'AuthHandler' ||
-            rec.loggerName == 'MySqlConnection' ||
-            rec.loggerName == 'QueryStreamHandler' ||
-            rec.loggerName == 'StandardDataPacket') &&
-        rec.level.name == 'FINE') {
-      return;
-    }
-    final text = Colorize(
-        // ignore: lines_longer_than_80_chars
-        '[${rec.loggerName}] ${rec.time.toIso8601String()} ${rec.level.name}: ${rec.message}');
-    switch (rec.level.name) {
-      case 'WARNING':
-        text.yellow();
-        break;
-      case 'INFO':
-        text.green();
-        break;
-    }
-    print(text);
-  });
+  Logging.setup();
 
   final log = Logger('Backend');
 
@@ -50,37 +27,40 @@ Future main(List<String> args) async {
     );
   final results = argParser.parse(args);
 
-  final config = Config()
-    ..load()
-    ..fetchOnStart = results['fetch']
-    ..verbose = results['verbose'];
-  log.info('Loaded config.');
+  Config.load();
+  Config.fetchOnStart = results['fetch'];
+  Config.verbose = results['verbose'];
+  log.info('Loaded config');
 
-  final mysqlConnection = await MySqlConnection.connect(ConnectionSettings(
-    host: config.dbHost,
-    port: config.dbPort,
-    user: config.dbUsername,
-    password: config.dbPassword,
-    db: config.dbName,
+  final mySqlConnection = await MySqlConnection.connect(ConnectionSettings(
+    host: Config.dbHost,
+    port: Config.dbPort,
+    user: Config.dbUsername,
+    password: Config.dbPassword,
+    db: Config.dbName,
   ));
-  log.info('Connected to database.');
-  await Database.createDefaultTables(mysqlConnection);
+  log.info('Connected to database');
+  await Database.createDefaultTables(mySqlConnection);
 
-  final server = await HttpServer.bind(InternetAddress.anyIPv4, config.port);
+  final server = await HttpServer.bind(InternetAddress.anyIPv4, Config.port);
 
-  final login = LoginHandler(mysqlConnection);
-  final user = UserHandler(mysqlConnection);
-  final devices = DevicesHandler(mysqlConnection);
-  final selection = SelectionHandler(mysqlConnection);
-  final settings = SettingsHandler(mysqlConnection);
+  final login = LoginHandler(mySqlConnection);
+  final user = UserHandler(mySqlConnection);
+  final devices = DevicesHandler(mySqlConnection);
+  final selection = SelectionHandler(mySqlConnection);
+  final settings = SettingsHandler(mySqlConnection);
 
-  final substitutionPlan = SubstitutionPlanHandler(mysqlConnection);
-  final timetable = TimetableHandler(mysqlConnection);
-  final calendar = CalendarHandler(mysqlConnection);
-  final teachers = TeachersHandler(mysqlConnection);
-  final aiXformation = AiXformationHandler(mysqlConnection);
-  final cafetoria = CafetoriaHandler(mysqlConnection);
-  final updates = UpdatesHandler(mysqlConnection, [
+  final timetable = TimetableHandler(mySqlConnection);
+  final substitutionPlan = SubstitutionPlanHandler(
+    mySqlConnection,
+    timetable,
+    selection,
+  );
+  final calendar = CalendarHandler(mySqlConnection);
+  final teachers = TeachersHandler(mySqlConnection);
+  final aiXformation = AiXformationHandler(mySqlConnection);
+  final cafetoria = CafetoriaHandler(mySqlConnection);
+  final updates = UpdatesHandler(mySqlConnection, [
     substitutionPlan,
     timetable,
     calendar,
@@ -92,17 +72,16 @@ Future main(List<String> args) async {
 
   await setupAutoFetchers(
     log,
-    config,
-    mysqlConnection,
+    mySqlConnection,
     minutely: [substitutionPlan],
     hourly: [aiXformation],
     daily: [timetable, calendar, teachers, cafetoria],
   );
 
-  log.info('Serving on *:${config.port}');
+  log.info('Serving on *:${Config.port}');
 
   await for (final request in server) {
-    if (config.verbose) {
+    if (Config.verbose) {
       log.fine('${request.method}: ${request.uri}');
     }
     final response = request.response;
@@ -127,9 +106,7 @@ Future main(List<String> args) async {
       final body = await utf8.decoder.bind(request).join();
       if (!await login.checkLogin(request)) {
         response
-          ..statusCode = request.method == 'OPTIONS'
-              ? HttpStatus.ok
-              : HttpStatus.unauthorized
+          ..statusCode = HttpStatus.ok
           ..write(json.encode({
             'status': false,
           }));
@@ -140,9 +117,7 @@ Future main(List<String> args) async {
               device.language == null ||
               device.os == null) {
             response
-              ..statusCode = request.method == 'OPTIONS'
-                  ? HttpStatus.ok
-                  : HttpStatus.badRequest
+              ..statusCode = HttpStatus.ok
               ..write(json.encode({
                 'status': false,
               }));
@@ -158,9 +133,7 @@ Future main(List<String> args) async {
           final s = Selection.fromJSON(json.decode(body));
           if (s.selection == null) {
             response
-              ..statusCode = request.method == 'OPTIONS'
-                  ? HttpStatus.ok
-                  : HttpStatus.badRequest
+              ..statusCode = HttpStatus.ok
               ..write(json.encode({
                 'status': false,
               }));
@@ -168,8 +141,14 @@ Future main(List<String> args) async {
             response
               ..statusCode = HttpStatus.ok
               ..write(json.encode({
-                'status': await selection.updateSelection(login, request, body),
-                'data': await selection.getSelection(login, request),
+                'status': await selection.updateSelection(
+                  (await login.getUser(request)).username,
+                  body,
+                ),
+                'data': (await selection.getSelection(
+                  (await login.getUser(request)).username,
+                ))
+                    .toJSON(),
               }));
           }
         } else if (request.method == 'POST' &&
@@ -177,9 +156,7 @@ Future main(List<String> args) async {
           final s = Settings.fromJSON(json.decode(body));
           if (s.settings == null) {
             response
-              ..statusCode = request.method == 'OPTIONS'
-                  ? HttpStatus.ok
-                  : HttpStatus.badRequest
+              ..statusCode = HttpStatus.ok
               ..write(json.encode({
                 'status': false,
               }));
@@ -217,9 +194,7 @@ Future main(List<String> args) async {
           await buildResponse(request, login, cafetoria);
         } else {
           response
-            ..statusCode = request.method == 'OPTIONS'
-                ? HttpStatus.ok
-                : HttpStatus.notFound
+            ..statusCode = HttpStatus.ok
             ..write('${request.method} ${request.uri} not found');
         }
       }
@@ -228,8 +203,7 @@ Future main(List<String> args) async {
       print(e);
       print(stacktrace);
       response
-        ..statusCode =
-            request.method == 'OPTIONS' ? HttpStatus.ok : HttpStatus.badRequest
+        ..statusCode = HttpStatus.ok
         ..write(json.encode({
           'status': false,
         }));
@@ -254,41 +228,40 @@ Future buildResponse(
 
 Future setupAutoFetchers(
   Logger log,
-  Config config,
-  MySqlConnection mysqlConnection, {
+  MySqlConnection mySqlConnection, {
   @required List<Handler> minutely,
   @required List<Handler> hourly,
   @required List<Handler> daily,
 }) async {
   Timer.periodic(
     Duration(minutes: 1),
-    (a) => mysqlConnection.query('SELECT 1;'),
+    (a) => mySqlConnection.query('SELECT 1;'),
   );
 
-  Timer.periodic(
-    Duration(minutes: 1),
-    (a) => callHandlers(log, minutely, config),
-  );
-  Timer.periodic(
-    Duration(hours: 1),
-    (a) => callHandlers(log, hourly, config),
-  );
-  Timer.periodic(
-    Duration(days: 1),
-    (a) => callHandlers(log, daily, config),
-  );
-  if (config.fetchOnStart) {
-    await callHandlers(log, minutely, config);
-    await callHandlers(log, hourly, config);
-    await callHandlers(log, daily, config);
+  if (Config.fetchOnStart) {
+    Timer.periodic(
+      Duration(minutes: 1),
+      (a) => callHandlers(log, minutely),
+    );
+    Timer.periodic(
+      Duration(hours: 1),
+      (a) => callHandlers(log, hourly),
+    );
+    Timer.periodic(
+      Duration(days: 1),
+      (a) => callHandlers(log, daily),
+    );
+    await callHandlers(log, minutely);
+    await callHandlers(log, hourly);
+    await callHandlers(log, daily);
   }
 }
 
-Future callHandlers(Logger log, List<Handler> handlers, Config config) async {
+Future callHandlers(Logger log, List<Handler> handlers) async {
   for (final handler in handlers) {
     try {
       log.info('Fetching ${handler.name}');
-      await handler.update(config);
+      await handler.update();
       log.info('Fetched ${handler.name}');
       // ignore: avoid_catches_without_on_clauses
     } catch (e, stacktrace) {

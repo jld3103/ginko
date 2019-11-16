@@ -18,32 +18,8 @@ import 'package:translations/translations_app.dart';
 class HomePage extends StatefulWidget {
   // ignore: public_member_api_docs
   const HomePage({
-    @required this.device,
-    @required this.timetable,
-    @required this.calendar,
-    @required this.cafetoria,
-    @required this.substitutionPlan,
-    @required this.selection,
     Key key,
   }) : super(key: key);
-
-  // ignore: public_member_api_docs
-  final Device device;
-
-  // ignore: public_member_api_docs
-  final TimetableForGrade timetable;
-
-  // ignore: public_member_api_docs
-  final Calendar calendar;
-
-  // ignore: public_member_api_docs
-  final Cafetoria cafetoria;
-
-  // ignore: public_member_api_docs
-  final SubstitutionPlanForGrade substitutionPlan;
-
-  // ignore: public_member_api_docs
-  final Selection selection;
 
   @override
   State<StatefulWidget> createState() => HomePageState();
@@ -61,8 +37,8 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
     _panelController = PanelController();
     _tabController = TabController(length: 5, vsync: this);
     _tabController
-      ..index = _weekday = widget.timetable
-              .initialDay(widget.selection, DateTime.now())
+      ..index = _weekday = Static.timetable.data
+              .initialDay(Static.selection.data, DateTime.now())
               .weekday -
           1
       ..addListener(() {
@@ -98,9 +74,9 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   width: 300,
                   child: ExtraInformation(
                     date: monday(DateTime.now()).add(Duration(days: _weekday)),
-                    calendar: widget.calendar,
-                    cafetoria: widget.cafetoria,
-                    device: widget.device,
+                    calendar: Static.calendar.data,
+                    cafetoria: Static.cafetoria.data,
+                    device: Static.device.data,
                   ),
                 ),
               ],
@@ -133,7 +109,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     ? 23
                     : 5,
               ),
-              children: widget.timetable.days[weekday].lessons
+              children: Static.timetable.data.days[weekday].lessons
                   .map((lesson) {
                     final subjects = lesson.subjects
                         .where((subject) =>
@@ -181,8 +157,8 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   room: null,
                                   unit: lesson.unit,
                                 ),
-                          timetableDay: widget.timetable.days[weekday],
-                          substitutionPlan: widget.substitutionPlan,
+                          timetableDay: Static.timetable.data.days[weekday],
+                          substitutionPlan: Static.substitutionPlan.data,
                           start: start,
                         ),
                       ),
@@ -208,10 +184,10 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     ],
                     panel: ExtraInformation(
                       date: monday(DateTime.now()).add(Duration(days: weekday)),
-                      calendar: widget.calendar,
-                      cafetoria: widget.cafetoria,
+                      calendar: Static.calendar.data,
+                      cafetoria: Static.cafetoria.data,
                       panelController: _panelController,
-                      device: widget.device,
+                      device: Static.device.data,
                     ),
                   ),
                 ],

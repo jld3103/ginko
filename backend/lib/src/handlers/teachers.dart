@@ -22,11 +22,11 @@ class TeachersHandler extends Handler {
   }
 
   @override
-  Future update(Config config) async {
+  Future update() async {
     final teachers = await TeachersParser.extract(
       await TeachersParser.download(
-        config.websiteUsername,
-        config.websitePassword,
+        Config.websiteUsername,
+        Config.websitePassword,
       ),
     );
     await mySqlConnection.query(

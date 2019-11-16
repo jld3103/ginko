@@ -1,16 +1,31 @@
 import 'dart:convert';
 
 import 'package:backend/backend.dart';
+import 'package:backend/src/notifications.dart';
 import 'package:models/models.dart';
 import 'package:mysql1/mysql1.dart';
 import 'package:parsers/parsers.dart';
+import 'package:translations/translation_locales_list.dart';
+import 'package:translations/translations_server.dart';
 import 'package:tuple/tuple.dart';
 
 /// SubstitutionPlanHandler class
 class SubstitutionPlanHandler extends Handler {
   // ignore: public_member_api_docs
-  SubstitutionPlanHandler(MySqlConnection mySqlConnection)
-      : super(Keys.substitutionPlan, mySqlConnection);
+  SubstitutionPlanHandler(
+    MySqlConnection mySqlConnection,
+    this.timetableHandler,
+    this.selectionHandler,
+  ) : super(
+          Keys.substitutionPlan,
+          mySqlConnection,
+        );
+
+  // ignore: public_member_api_docs
+  final TimetableHandler timetableHandler;
+
+  // ignore: public_member_api_docs
+  final SelectionHandler selectionHandler;
 
   /// Fetch the latest version from the database
   @override
@@ -18,6 +33,26 @@ class SubstitutionPlanHandler extends Handler {
     final results = await mySqlConnection.query(
         // ignore: lines_longer_than_80_chars
         'SELECT data FROM data_substitution_plan ORDER BY update_time DESC LIMIT 2;');
+    if (results.toList().length == 1) {
+      return Tuple2(
+        json.decode(results.toList()[0][0].toString()),
+        SubstitutionPlanForGrade.fromJSON(
+                json.decode(results.toList()[0][0].toString()))
+            .substitutionPlanDays[0]
+            .date
+            .toIso8601String(),
+      );
+    }
+    if (results.toList().isEmpty) {
+      return Tuple2(
+        SubstitutionPlanForGrade(
+          grade: user.grade,
+          substitutionPlanDays: [],
+          changes: [],
+        ).toJSON(),
+        '',
+      );
+    }
     final substitutionPlan = _mergeSubstitutionPlans(results
             .toList()
             .map((row) =>
@@ -28,22 +63,23 @@ class SubstitutionPlanHandler extends Handler {
         .where((substitutionPlan) => substitutionPlan.grade == user.grade)
         .single;
     return Tuple2(
-        substitutionPlan.toJSON(),
-        substitutionPlan.substitutionPlanDays
-            .map((day) => day.date.toIso8601String())
-            .join(''));
+      substitutionPlan.toJSON(),
+      substitutionPlan.substitutionPlanDays
+          .map((day) => day.date.toIso8601String())
+          .join(''),
+    );
   }
 
   /// Update the data from the website into the database
   @override
-  Future update(Config config) async {
+  Future update() async {
     final substitutionPlans = [
       SubstitutionPlan(
         substitutionPlans: SubstitutionPlanParser.extract(
           await SubstitutionPlanParser.download(
             true,
-            config.websiteUsername,
-            config.websitePassword,
+            Config.websiteUsername,
+            Config.websitePassword,
           ),
         ),
       ),
@@ -51,17 +87,179 @@ class SubstitutionPlanHandler extends Handler {
         substitutionPlans: SubstitutionPlanParser.extract(
           await SubstitutionPlanParser.download(
             false,
-            config.websiteUsername,
-            config.websitePassword,
+            Config.websiteUsername,
+            Config.websitePassword,
           ),
         ),
       ),
     ];
+    // ignore: omit_local_variable_types
+    final List<SubstitutionPlan> notificationPlans = [];
     for (final substitutionPlan in substitutionPlans) {
+      final dataString = json.encode(substitutionPlan.toJSON());
+      final results = await mySqlConnection.query(
+          // ignore: lines_longer_than_80_chars
+          'SELECT data FROM data_substitution_plan WHERE date_time = \'${substitutionPlan.substitutionPlans[0].substitutionPlanDays[0].date.toIso8601String()}\' AND update_time = \'${substitutionPlan.substitutionPlans[0].substitutionPlanDays[0].updated.toIso8601String()}\';');
+      if (results.isNotEmpty) {
+        final storedData = results.toList()[0][0].toString();
+        if (storedData == dataString) {
+          continue;
+        }
+      }
       await mySqlConnection.query(
           // ignore: lines_longer_than_80_chars
-          'INSERT INTO data_substitution_plan (date_time, update_time, data) VALUES (\'${substitutionPlan.substitutionPlans[0].substitutionPlanDays[0].date.toIso8601String()}\', \'${substitutionPlan.substitutionPlans[0].substitutionPlanDays[0].updated.toIso8601String()}\', \'${json.encode(substitutionPlan.toJSON())}\') ON DUPLICATE KEY UPDATE data = \'${json.encode(substitutionPlan.toJSON())}\', update_time = \'${substitutionPlan.substitutionPlans[0].substitutionPlanDays[0].updated.toIso8601String()}\';');
+          'INSERT INTO data_substitution_plan (date_time, update_time, data) VALUES (\'${substitutionPlan.substitutionPlans[0].substitutionPlanDays[0].date.toIso8601String()}\', \'${substitutionPlan.substitutionPlans[0].substitutionPlanDays[0].updated.toIso8601String()}\', \'$dataString\') ON DUPLICATE KEY UPDATE data = \'$dataString\';');
+      notificationPlans.add(substitutionPlan);
     }
+    if (notificationPlans.isNotEmpty) {
+      // ignore: omit_local_variable_types
+      final Map<String, List<String>> notifications = {};
+      for (final locale in LocalesList.locales) {
+        for (final substitutionPlan in notificationPlans) {
+          final devicesResults = await mySqlConnection.query(
+              // ignore: lines_longer_than_80_chars
+              'SELECT username, token FROM users_devices WHERE language = \'$locale\';');
+          for (final row in devicesResults.toList()) {
+            final username = row[0].toString();
+            final token = row[1].toString();
+            final gradeResults = await mySqlConnection.query(
+                // ignore: lines_longer_than_80_chars
+                'SELECT grade FROM users_grade WHERE username = \'$username\';');
+            final grade = gradeResults.toList()[0][0].toString();
+            final settingsResults = await mySqlConnection.query(
+                // ignore: lines_longer_than_80_chars
+                'SELECT settings_value FROM users_settings WHERE username = \'$username\' AND settings_key = \'${Keys.settingsKey(Keys.substitutionPlanNotifications)}\';');
+            bool showNotifications;
+            if (settingsResults.isNotEmpty) {
+              showNotifications = settingsResults.toList()[0][0] == 1;
+            } else {
+              showNotifications = true;
+            }
+            if (showNotifications) {
+              final notification = _createNotification(
+                TimetableForGrade.fromJSON(
+                  (await timetableHandler.fetchLatest(User(
+                    grade: grade,
+                    username: null,
+                    password: null,
+                    fullName: null,
+                  )))
+                      .item1,
+                ),
+                substitutionPlan.substitutionPlans[grades.indexOf(grade)],
+                substitutionPlan.substitutionPlans[grades.indexOf(grade)]
+                    .substitutionPlanDays[0],
+                await selectionHandler.getSelection(username),
+                locale,
+              );
+              if (notifications[json.encode(notification.toJSON())] == null) {
+                notifications[json.encode(notification.toJSON())] = [];
+              }
+              notifications[json.encode(notification.toJSON())].add(token);
+            }
+          }
+        }
+      }
+      for (final notification in notifications.keys) {
+        await Notifications.sendNotification(
+          Notification.fromJSON(json.decode(notification)),
+          notifications[notification],
+        );
+      }
+    }
+  }
+
+  static Notification _createNotification(
+    TimetableForGrade timetableForGrade,
+    SubstitutionPlanForGrade substitutionPlanForGrade,
+    SubstitutionPlanDay substitutionPlanDay,
+    Selection selection,
+    String language, {
+    bool formatting = true,
+  }) {
+    final changes = substitutionPlanForGrade.changes
+        .where((change) => change.date == substitutionPlanDay.date)
+        .where((change) {
+      final block = timetableForGrade.days[substitutionPlanDay.date.weekday - 1]
+          .lessons[change.unit].block;
+      final key = Keys.selectionBlock(block, isWeekA(substitutionPlanDay.date));
+      final userSelected = selection.getSelection(key);
+      final originalSubjects =
+          change.getMatchingSubjectsByTimetable(timetableForGrade);
+      if (originalSubjects.length != 1) {
+        return true;
+      }
+      return userSelected == originalSubjects[0].identifier;
+    }).toList();
+    final title =
+        // ignore: lines_longer_than_80_chars
+        '${ServerTranslations.weekdays(language)[substitutionPlanDay.date.weekday - 1]} ${outputDateFormat(language).format(substitutionPlanDay.date)}';
+    final lines = [];
+    var previousUnit = -1;
+    for (final change in changes) {
+      if (change.unit != previousUnit) {
+        lines.add(
+            // ignore: lines_longer_than_80_chars
+            '${formatting ? '<b>' : ''}${change.unit + 1}. ${ServerTranslations.unit(language)}:${formatting ? '</b>' : ''}');
+        previousUnit = change.unit;
+      }
+
+      final buffer = StringBuffer();
+      if (change.subject != null && change.subject.isNotEmpty) {
+        buffer.write(ServerTranslations.subjects(language)[change.subject]);
+      }
+      if (change.room != null && change.room.isNotEmpty) {
+        buffer.write(' ${change.room}');
+      }
+      if (change.teacher != null && change.teacher.isNotEmpty) {
+        buffer.write(' ${change.teacher}');
+      }
+      buffer.write(':');
+      if (change.changed.subject != null &&
+          change.changed.subject.isNotEmpty &&
+          change.subject != change.changed.subject) {
+        buffer.write(
+            // ignore: lines_longer_than_80_chars
+            ' ${ServerTranslations.subjects(language)[change.changed.subject]}');
+      }
+      if (change.changed.room != null && change.room != change.changed.room) {
+        buffer.write(' ${change.changed.room}');
+      }
+      if (change.changed.teacher != null &&
+          change.teacher != change.changed.teacher) {
+        buffer.write(' ${change.changed.teacher}');
+      }
+      if (change.type == ChangeTypes.freeLesson) {
+        buffer.write(
+            // ignore: lines_longer_than_80_chars
+            ' ${ServerTranslations.substitutionPlanFreeLesson(language)}');
+      }
+      if (change.type == ChangeTypes.exam) {
+        buffer.write(
+            // ignore: lines_longer_than_80_chars
+            ' ${ServerTranslations.substitutionPlanExam(language)}');
+      }
+      if (change.changed.info != null) {
+        buffer.write(' ${change.changed.info}');
+      }
+      lines.add(buffer.toString());
+    }
+    final bigBody = lines.isEmpty
+        ? ServerTranslations.notificationsNoChanges(language)
+        : lines.join('${formatting ? '<br/>' : '\n'}');
+    final body = changes.isEmpty
+        ? ServerTranslations.notificationsNoChanges(language)
+        // ignore: lines_longer_than_80_chars
+        : '${changes.length} ${ServerTranslations.notificationsChanges(language)}';
+    return Notification(
+      title,
+      body,
+      bigBody,
+      data: {
+        Keys.type: Keys.substitutionPlan,
+        Keys.weekday: substitutionPlanDay.date.weekday - 1,
+      },
+    );
   }
 
   static SubstitutionPlan _mergeSubstitutionPlans(

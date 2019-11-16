@@ -22,11 +22,11 @@ class CalendarHandler extends Handler {
   }
 
   @override
-  Future update(Config config) async {
+  Future update() async {
     final calendar = await CalendarParser.extract(
       await CalendarParser.download(
-        config.websiteUsername,
-        config.websitePassword,
+        Config.websiteUsername,
+        Config.websitePassword,
       ),
     );
     await mySqlConnection.query(

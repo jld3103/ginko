@@ -12,8 +12,4 @@ class UserHandler extends Handler {
   @override
   Future<Tuple2<Map<String, dynamic>, String>> fetchLatest(User user) async =>
       Tuple2(user.toJSON(), '');
-
-  @override
-  // ignore: missing_return
-  Future update(Config config) {}
 }

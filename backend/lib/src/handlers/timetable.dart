@@ -31,14 +31,14 @@ class TimetableHandler extends Handler {
 
   /// Update the data from the website into the database
   @override
-  Future update(Config config) async {
+  Future update() async {
     final timetables = [
       Timetable(
         timetables: TimetableParser.extract(
           await TimetableParser.download(
             true,
-            config.websiteUsername,
-            config.websitePassword,
+            Config.websiteUsername,
+            Config.websitePassword,
           ),
         ),
       ),
@@ -46,8 +46,8 @@ class TimetableHandler extends Handler {
         timetables: TimetableParser.extract(
           await TimetableParser.download(
             false,
-            config.websiteUsername,
-            config.websitePassword,
+            Config.websiteUsername,
+            Config.websitePassword,
           ),
         ),
       ),

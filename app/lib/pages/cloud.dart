@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:ginko/utils/static.dart';
 import 'package:ginko/views/cloud/directory.dart';
-import 'package:models/models.dart';
 import 'package:nextcloud/nextcloud.dart';
 
 /// CloudPage class
@@ -8,16 +8,8 @@ import 'package:nextcloud/nextcloud.dart';
 class CloudPage extends StatefulWidget {
   // ignore: public_member_api_docs
   const CloudPage({
-    @required this.user,
-    @required this.device,
     Key key,
   }) : super(key: key);
-
-  // ignore: public_member_api_docs
-  final User user;
-
-  // ignore: public_member_api_docs
-  final Device device;
 
   @override
   _CloudPageState createState() => _CloudPageState();
@@ -30,8 +22,8 @@ class _CloudPageState extends State<CloudPage> {
   void initState() {
     _client = NextCloudClient(
       'cloud.viktoria.schule',
-      widget.user.username,
-      widget.user.password,
+      Static.user.data.username,
+      Static.user.data.password,
     );
     super.initState();
   }
@@ -40,6 +32,6 @@ class _CloudPageState extends State<CloudPage> {
   Widget build(BuildContext context) => CloudDirectory(
         client: _client,
         path: '/',
-        device: widget.device,
+        device: Static.device.data,
       );
 }

@@ -1,4 +1,7 @@
 
+# 2019-11-16  
+ jld3103: Re-add notifications  
+
 # 2019-11-12  
  jld3103: Add settings  
  jld3103: Add new packaging formats  

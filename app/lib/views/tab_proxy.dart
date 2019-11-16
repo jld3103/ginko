@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ginko/utils/screen_sizes.dart';
+import 'package:ginko/utils/static.dart';
 
 /// TabProxy class
 /// decides how to display tabs
@@ -10,6 +11,7 @@ class TabProxy extends StatelessWidget {
     @required this.tabs,
     @required this.tabNames,
     @required this.controller,
+    this.onReload,
   }) : super();
 
   // ignore: public_member_api_docs
@@ -20,6 +22,9 @@ class TabProxy extends StatelessWidget {
 
   // ignore: public_member_api_docs
   final TabController controller;
+
+  // ignore: public_member_api_docs
+  final FutureCallback onReload;
 
   @override
   Widget build(BuildContext context) {
@@ -50,10 +55,15 @@ class TabProxy extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Container(
-                        margin: EdgeInsets.only(top: 39),
-                        alignment: Alignment.topCenter,
-                        child: tab,
+                      RefreshIndicator(
+                        onRefresh: () async {
+                          await onReload();
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(top: 39),
+                          alignment: Alignment.topCenter,
+                          child: tab,
+                        ),
                       ),
                     ],
                   ),
@@ -85,10 +95,15 @@ class TabProxy extends StatelessWidget {
           body: TabBarView(
             controller: controller,
             children: tabs
-                .map((tab) => Container(
-                      height: double.infinity,
-                      color: Colors.white,
-                      child: tab,
+                .map((tab) => RefreshIndicator(
+                      onRefresh: () async {
+                        await onReload();
+                      },
+                      child: Container(
+                        height: double.infinity,
+                        color: Colors.white,
+                        child: tab,
+                      ),
                     ))
                 .toList(),
           ),

@@ -19,8 +19,4 @@ class UpdatesHandler extends Handler {
     }
     return Tuple2(data.cast<String, dynamic>(), data.values.join(''));
   }
-
-  @override
-  // ignore: missing_return
-  Future update(Config config) {}
 }

@@ -36,7 +36,7 @@ public class MainActivity extends FlutterActivity {
     }
 
     @Override
-    protected void onNewIntent(Intent intent) {
+    protected void onNewIntent(@NonNull Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
         String data = getIntent().getStringExtra("channel");

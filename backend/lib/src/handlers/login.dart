@@ -17,6 +17,10 @@ class LoginHandler {
   /// check the login
   Future<bool> checkLogin(HttpRequest request) async {
     try {
+      if (request.headers.value('authorization') == null ||
+          !request.headers.value('authorization').contains(' ')) {
+        return false;
+      }
       final encodedString =
           request.headers.value('authorization').split(' ')[1];
       final decodedString = utf8.decode(base64.decode(encodedString));

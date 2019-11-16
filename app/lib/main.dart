@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:ginko/loaders/loader.dart';
 import 'package:ginko/pages/aixformation.dart';
 import 'package:ginko/pages/cafetoria.dart';
 import 'package:ginko/pages/cloud.dart';
@@ -121,46 +122,27 @@ class AppState extends State<App>
           Page(
             name: AppTranslations.of(context).pageStart,
             icon: Icons.home,
-            child: HomePage(
-              device: Static.device.data,
-              timetable: Static.timetable.data,
-              substitutionPlan: Static.substitutionPlan.data,
-              calendar: Static.calendar.data,
-              cafetoria: Static.cafetoria.data,
-              selection: Static.selection.data,
-            ),
+            child: HomePage(),
           ),
           Page(
             name: AppTranslations.of(context).pageSubstitutionPlan,
             icon: Icons.format_list_numbered,
-            child: SubstitutionPlanPage(
-              device: Static.device.data,
-              substitutionPlan: Static.substitutionPlan.data,
-            ),
+            child: SubstitutionPlanPage(),
           ),
           Page(
             name: AppTranslations.of(context).pageCloud,
             icon: Icons.cloud,
-            child: CloudPage(
-              user: Static.user.data,
-              device: Static.device.data,
-            ),
+            child: CloudPage(),
           ),
           Page(
             name: AppTranslations.of(context).pageCafetoria,
             icon: Icons.restaurant,
-            child: CafetoriaPage(
-              device: Static.device.data,
-              cafetoria: Static.cafetoria.data,
-            ),
+            child: CafetoriaPage(),
           ),
           Page(
             name: AppTranslations.of(context).pageAiXformation,
             icon: MdiIcons.newspaper,
-            child: AiXformationPage(
-              device: Static.device.data,
-              posts: Static.aiXformation.data,
-            ),
+            child: AiXformationPage(),
           ),
           Page(
             name: AppTranslations.of(context).pageSettings,
@@ -187,8 +169,16 @@ class AppState extends State<App>
     }
     _channel.setMethodCallHandler((call) async {
       if (call.method == 'background_notification') {
-        await Static.substitutionPlan.loadOnline();
-        await Navigator.of(context).pushReplacementNamed('/substitutionplan');
+        if (call.arguments.toString() == Keys.substitutionPlan) {
+          await Static.substitutionPlan.forceLoadOnline();
+          await Navigator.of(context).pushReplacementNamed('/substitutionplan');
+        } else if (call.arguments.toString() == Keys.cafetoria) {
+          await Static.cafetoria.forceLoadOnline();
+          await Navigator.of(context).pushReplacementNamed('/cafetoria');
+        } else if (call.arguments.toString() == Keys.aiXformation) {
+          await Static.aiXformation.forceLoadOnline();
+          await Navigator.of(context).pushReplacementNamed('/aixformation');
+        }
       } else if (call.method == 'foreground_notification') {
         await _handleForegroundNotification(
             context, json.decode(json.encode(call.arguments)));
@@ -235,7 +225,6 @@ class AppState extends State<App>
   /// Update all tokens
   static Future updateTokens(BuildContext context) async {
     if (Platform().isMobile || Platform().isWeb) {
-      print(await Static.firebaseMessaging.getToken());
       await Static.firebaseMessaging.requestNotificationPermissions();
       final token = await Static.firebaseMessaging.getToken();
       if (token != 'null') {
@@ -244,7 +233,6 @@ class AppState extends State<App>
           os: Platform().platformName,
           language: AppTranslations.of(context).locale.languageCode,
         );
-        print('Updating tokens on server');
         try {
           await Static.device.loadOnline();
           // ignore: empty_catches
@@ -255,23 +243,45 @@ class AppState extends State<App>
 
   static Future _handleForegroundNotification(
       BuildContext context, Map<String, dynamic> data) async {
-    print(data);
+    FutureCallbackShouldRender refreshCallback;
+    Loader loader;
+    String route;
+    String text;
+    switch (data[Keys.type]) {
+      case Keys.substitutionPlan:
+        refreshCallback = Static.refreshSubstitutionPlan;
+        loader = Static.substitutionPlan;
+        route = '/substitutionplan';
+        text = AppTranslations.of(context).newSubstitutionPlan;
+        break;
+      case Keys.cafetoria:
+        refreshCallback = Static.refreshCafetoria;
+        loader = Static.cafetoria;
+        route = '/cafetoria';
+        text = AppTranslations.of(context).newCafetoria;
+        break;
+      case Keys.aiXformation:
+        refreshCallback = Static.refreshAiXformation;
+        loader = Static.aiXformation;
+        route = '/aixformation';
+        text = AppTranslations.of(context).newAiXformationArticle;
+        break;
+    }
+
     Scaffold.of(context).showSnackBar(SnackBar(
-      action: Static.rebuildSubstitutionPlan == null
+      action: refreshCallback == null
           ? SnackBarAction(
               label: AppTranslations.of(context).open,
               onPressed: () async {
-                await Static.substitutionPlan.loadOnline();
-                await Navigator.of(context)
-                    .pushReplacementNamed('/substitutionplan');
+                await loader.forceLoadOnline();
+                await Navigator.of(context).pushReplacementNamed(route);
               },
             )
           : null,
-      content: Text(AppTranslations.of(context).newSubstitutionPlan),
+      content: Text(text),
     ));
-    if (Static.rebuildSubstitutionPlan != null) {
-      await Static.substitutionPlan.loadOnline();
-      Static.rebuildSubstitutionPlan();
+    if (refreshCallback != null) {
+      await refreshCallback(true);
     }
   }
 
