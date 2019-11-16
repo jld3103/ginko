@@ -1,5 +1,6 @@
 
 # 2019-11-16  
+ jld3103: Fix AiXformation parsing  
  jld3103: Fix AiXformation update checking  
  jld3103: Add new timetable format and fix minor issues  
  jld3103: Fix Android App Signing and rename package  

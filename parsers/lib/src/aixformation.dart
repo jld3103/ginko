@@ -43,11 +43,8 @@ class AiXformationParser {
       date: DateTime.parse(data[0]['date']),
       posts: [],
     );
-    var usersFailed = false;
-    var mediaFailed = false;
-    var tagsFailed = false;
     for (final post in data) {
-      if (users[post['author'].toString()] == null && !usersFailed) {
+      if (users[post['author'].toString()] == null) {
         final url = '$_url/users/${post['author']}';
         try {
           users[post['author'].toString()] = json.decode(
@@ -58,10 +55,9 @@ class AiXformationParser {
           print(e.response);
           print(e);
           print(stacktrace);
-          usersFailed = true;
         }
       }
-      if (media[post['featured_media'].toString()] == null && !mediaFailed) {
+      if (media[post['featured_media'].toString()] == null) {
         final url = '$_url/media/${post['featured_media']}';
         try {
           final sizes = json.decode(
@@ -77,11 +73,10 @@ class AiXformationParser {
           print(e.response);
           print(e);
           print(stacktrace);
-          mediaFailed = true;
         }
       }
       for (final tag in post['tags']) {
-        if (tags[tag.toString()] == null && !tagsFailed) {
+        if (tags[tag.toString()] == null) {
           final url = '$_url/tags/$tag';
           try {
             tags[tag.toString()] = json.decode(
@@ -92,7 +87,6 @@ class AiXformationParser {
             print(e.response);
             print(e);
             print(stacktrace);
-            tagsFailed = true;
           }
         }
       }
