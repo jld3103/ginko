@@ -20,12 +20,10 @@ doc/
 .flutter-plugins
 .packages
 pubspec.lock
-.last_goflutter_check
 
 app/images/*
 !app/images/logo_white.svg
 app/go/assets/icon.png
-app/go/.gitignore
 app/android/app/src/main/res/mipmap-*/
 app/android/app/src/main/res/drawable/*.png
 app/android/key.properties

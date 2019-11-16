@@ -1,0 +1,32 @@
+name: Tests
+on: [push]
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '12.x'
+      - name: Install required packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install unzip imagemagick apt-transport-https -y
+          sudo sh -c 'wget -qO- https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -'
+          sudo sh -c 'wget -qO- https://storage.googleapis.com/download.dartlang.org/linux/debian/dart_stable.list > /etc/apt/sources.list.d/dart_stable.list'
+          sudo apt-get update
+          sudo apt-get install dart -y
+          sudo ln -sf /usr/lib/dart/bin/pub /usr/bin/pub
+      - name: Get flutter source
+        run: git clone https://github.com/flutter/flutter /home/runner/flutter
+      - name: Build flutter
+        run: |
+          sudo ln -sf /home/runner/flutter/bin/flutter /usr/bin/flutter
+          flutter doctor -v
+      - name: Generate icons
+        run: ./scripts/icons.sh
+      - name: Generate translations
+        run: ./scripts/translations.sh
+      - name: Run tests
+        run: ./scripts/test.sh
