@@ -1,4 +1,4 @@
-package de.ginko.app;
+package de.ginko;
 
 import android.content.Intent;
 import androidx.annotation.NonNull;
@@ -9,7 +9,7 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugins.GeneratedPluginRegistrant;
 
 public class MainActivity extends FlutterActivity {
-    static final String CHANNEL = "de.ginko.app";
+    static final String CHANNEL = "de.ginko";
     static DartExecutor dartExecutor;
 
     @Override

@@ -28,6 +28,7 @@ app/go/assets/icon.png
 app/go/.gitignore
 app/android/app/src/main/res/mipmap-*/
 app/android/app/src/main/res/drawable/*.png
+app/android/key.properties
 app/ios/Runner/Assets.xcassets/AppIcon.appiconset/*.png
 app/ios/Runner/Assets.xcassets/LaunchImage.imageset/*.png
 parsers/js/node_modules

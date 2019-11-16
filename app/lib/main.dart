@@ -110,7 +110,7 @@ class App extends StatefulWidget {
 /// describes the state of the home widget
 class AppState extends State<App>
     with TickerProviderStateMixin, AfterLayoutMixin<App> {
-  static final _channel = MethodChannel('de.ginko.app');
+  static final _channel = MethodChannel('de.ginko');
 
   final List<Page> _pages = [];
 

@@ -1,4 +1,4 @@
-package de.ginko.app;
+package de.ginko;
 
 import android.app.ActivityManager;
 import android.app.PendingIntent;
@@ -18,7 +18,7 @@ import io.flutter.plugin.common.MethodChannel;
 
 import java.util.Objects;
 
-import static de.ginko.app.MainActivity.CHANNEL;
+import static de.ginko.MainActivity.CHANNEL;
 
 public class NotificationService extends FirebaseMessagingService {
 
