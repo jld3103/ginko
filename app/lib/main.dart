@@ -157,10 +157,8 @@ class AppState extends State<App>
         content: Text(AppTranslations.of(context).homeOffline),
       ));
     }
-    if (Platform().isMobile) {
-      await updateTokens(context);
-    }
     if (Platform().isMobile || Platform().isWeb) {
+      await updateTokens(context);
       Static.firebaseMessaging.configure(
         onLaunch: (data) async => _handleForegroundNotification(context, data),
         onResume: (data) async => _handleForegroundNotification(context, data),

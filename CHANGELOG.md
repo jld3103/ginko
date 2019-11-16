@@ -1,5 +1,6 @@
 
 # 2019-11-16  
+ jld3103: Fix web automatic token upload  
  jld3103: Fix AiXformation parsing  
  jld3103: Fix AiXformation update checking  
  jld3103: Add new timetable format and fix minor issues  
