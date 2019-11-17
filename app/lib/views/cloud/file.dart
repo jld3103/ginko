@@ -124,7 +124,6 @@ class _CloudFileState extends State<CloudFile>
                 'ViktoriaCloud',
                 widget.file.path.substring(1, widget.file.path.length),
               );
-              print(filePath);
               File(filePath)
                 ..createSync(recursive: true)
                 ..writeAsBytesSync(content);

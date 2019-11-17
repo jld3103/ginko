@@ -1,14 +1,5 @@
 #!/bin/bash
 
-parent=$(/bin/ps -o ppid -p $PPID | tail -1)
-if [[ -n "$parent" ]]; then
-  # shellcheck disable=SC2086
-  amended=$(/bin/ps -o command -p ${parent} | grep -e '--amend')
-  if [[ -n "$amended" ]]; then
-    exit 0
-  fi
-fi
-
 rm -rf app/lib/generated_plugin_registrant.dart
 
 folders=("models" "backend" "app" "translations")
@@ -27,5 +18,3 @@ for d in "${folders[@]}"; do
   fi
   cd ..
 done
-
-bash scripts/test.sh

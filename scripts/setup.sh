@@ -51,9 +51,5 @@ done
 bash scripts/generate.sh
 
 echo "#!/bin/bash
-bash scripts/check.sh" >.git/hooks/pre-commit
-chmod a+x .git/hooks/pre-commit
-
-echo "#!/bin/bash
 bash scripts/changelog.sh" >.git/hooks/post-commit
 chmod a+x .git/hooks/post-commit

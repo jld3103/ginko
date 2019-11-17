@@ -1,5 +1,6 @@
 
 # 2019-11-17  
+ jld3103: Remove pre-commit hook  
  jld3103: Fix windows cloud paths  
  jld3103: Switch to Github Actions  
 
