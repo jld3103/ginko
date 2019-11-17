@@ -60,6 +60,7 @@ Future main(List<String> args) async {
   final teachers = TeachersHandler(mySqlConnection);
   final aiXformation = AiXformationHandler(mySqlConnection);
   final cafetoria = CafetoriaHandler(mySqlConnection);
+  final releases = ReleasesHandler(mySqlConnection);
   final updates = UpdatesHandler(mySqlConnection, [
     substitutionPlan,
     timetable,
@@ -67,6 +68,7 @@ Future main(List<String> args) async {
     teachers,
     aiXformation,
     cafetoria,
+    releases,
   ]);
   await setupDateFormats();
 
@@ -74,7 +76,7 @@ Future main(List<String> args) async {
     log,
     mySqlConnection,
     minutely: [substitutionPlan],
-    hourly: [aiXformation],
+    hourly: [aiXformation, releases],
     daily: [timetable, calendar, teachers, cafetoria],
   );
 
@@ -104,98 +106,108 @@ Future main(List<String> args) async {
     );
     try {
       final body = await utf8.decoder.bind(request).join();
-      if (!await login.checkLogin(request)) {
-        response
+      if (request.method == 'GET' && request.uri.path == '/${Keys.releases}') {
+        request.response
           ..statusCode = HttpStatus.ok
           ..write(json.encode({
-            'status': false,
+            'status': true,
+            'data': (await releases.fetchLatest(null)).item1,
           }));
       } else {
-        if (request.method == 'POST' && request.uri.path == '/${Keys.device}') {
-          final device = Device.fromJSON(json.decode(body));
-          if (device.token == null ||
-              device.language == null ||
-              device.os == null) {
-            response
-              ..statusCode = HttpStatus.ok
-              ..write(json.encode({
-                'status': false,
-              }));
-          } else {
-            response
-              ..statusCode = HttpStatus.ok
-              ..write(json.encode({
-                'status': await devices.updateDevice(login, request, body),
-              }));
-          }
-        } else if (request.method == 'POST' &&
-            request.uri.path == '/${Keys.selection}') {
-          final s = Selection.fromJSON(json.decode(body));
-          if (s.selection == null) {
-            response
-              ..statusCode = HttpStatus.ok
-              ..write(json.encode({
-                'status': false,
-              }));
-          } else {
-            response
-              ..statusCode = HttpStatus.ok
-              ..write(json.encode({
-                'status': await selection.updateSelection(
-                  (await login.getUser(request)).username,
-                  body,
-                ),
-                'data': (await selection.getSelection(
-                  (await login.getUser(request)).username,
-                ))
-                    .toJSON(),
-              }));
-          }
-        } else if (request.method == 'POST' &&
-            request.uri.path == '/${Keys.settings}') {
-          final s = Settings.fromJSON(json.decode(body));
-          if (s.settings == null) {
-            response
-              ..statusCode = HttpStatus.ok
-              ..write(json.encode({
-                'status': false,
-              }));
-          } else {
-            response
-              ..statusCode = HttpStatus.ok
-              ..write(json.encode({
-                'status': await settings.updateSettings(login, request, body),
-                'data': await settings.getSettings(login, request),
-              }));
-          }
-        } else if (request.method == 'GET' &&
-            request.uri.path == '/${Keys.updates}') {
-          await buildResponse(request, login, updates);
-        } else if (request.method == 'GET' &&
-            request.uri.path == '/${Keys.user}') {
-          await buildResponse(request, login, user);
-        } else if (request.method == 'GET' &&
-            request.uri.path == '/${Keys.substitutionPlan}') {
-          await buildResponse(request, login, substitutionPlan);
-        } else if (request.method == 'GET' &&
-            request.uri.path == '/${Keys.timetable}') {
-          await buildResponse(request, login, timetable);
-        } else if (request.method == 'GET' &&
-            request.uri.path == '/${Keys.calendar}') {
-          await buildResponse(request, login, calendar);
-        } else if (request.method == 'GET' &&
-            request.uri.path == '/${Keys.teachers}') {
-          await buildResponse(request, login, teachers);
-        } else if (request.method == 'GET' &&
-            request.uri.path == '/${Keys.aiXformation}') {
-          await buildResponse(request, login, aiXformation);
-        } else if (request.method == 'GET' &&
-            request.uri.path == '/${Keys.cafetoria}') {
-          await buildResponse(request, login, cafetoria);
-        } else {
+        if (!await login.checkLogin(request)) {
           response
             ..statusCode = HttpStatus.ok
-            ..write('${request.method} ${request.uri} not found');
+            ..write(json.encode({
+              'status': false,
+            }));
+        } else {
+          if (request.method == 'POST' &&
+              request.uri.path == '/${Keys.device}') {
+            final device = Device.fromJSON(json.decode(body));
+            if (device.token == null ||
+                device.language == null ||
+                device.os == null) {
+              response
+                ..statusCode = HttpStatus.ok
+                ..write(json.encode({
+                  'status': false,
+                }));
+            } else {
+              response
+                ..statusCode = HttpStatus.ok
+                ..write(json.encode({
+                  'status': await devices.updateDevice(login, request, body),
+                }));
+            }
+          } else if (request.method == 'POST' &&
+              request.uri.path == '/${Keys.selection}') {
+            final s = Selection.fromJSON(json.decode(body));
+            if (s.selection == null) {
+              response
+                ..statusCode = HttpStatus.ok
+                ..write(json.encode({
+                  'status': false,
+                }));
+            } else {
+              response
+                ..statusCode = HttpStatus.ok
+                ..write(json.encode({
+                  'status': await selection.updateSelection(
+                    (await login.getUser(request)).username,
+                    body,
+                  ),
+                  'data': (await selection.getSelection(
+                    (await login.getUser(request)).username,
+                  ))
+                      .toJSON(),
+                }));
+            }
+          } else if (request.method == 'POST' &&
+              request.uri.path == '/${Keys.settings}') {
+            final s = Settings.fromJSON(json.decode(body));
+            if (s.settings == null) {
+              response
+                ..statusCode = HttpStatus.ok
+                ..write(json.encode({
+                  'status': false,
+                }));
+            } else {
+              response
+                ..statusCode = HttpStatus.ok
+                ..write(json.encode({
+                  'status': await settings.updateSettings(login, request, body),
+                  'data': await settings.getSettings(login, request),
+                }));
+            }
+          } else if (request.method == 'GET' &&
+              request.uri.path == '/${Keys.updates}') {
+            await buildResponse(request, login, updates);
+          } else if (request.method == 'GET' &&
+              request.uri.path == '/${Keys.user}') {
+            await buildResponse(request, login, user);
+          } else if (request.method == 'GET' &&
+              request.uri.path == '/${Keys.substitutionPlan}') {
+            await buildResponse(request, login, substitutionPlan);
+          } else if (request.method == 'GET' &&
+              request.uri.path == '/${Keys.timetable}') {
+            await buildResponse(request, login, timetable);
+          } else if (request.method == 'GET' &&
+              request.uri.path == '/${Keys.calendar}') {
+            await buildResponse(request, login, calendar);
+          } else if (request.method == 'GET' &&
+              request.uri.path == '/${Keys.teachers}') {
+            await buildResponse(request, login, teachers);
+          } else if (request.method == 'GET' &&
+              request.uri.path == '/${Keys.aiXformation}') {
+            await buildResponse(request, login, aiXformation);
+          } else if (request.method == 'GET' &&
+              request.uri.path == '/${Keys.cafetoria}') {
+            await buildResponse(request, login, cafetoria);
+          } else {
+            response
+              ..statusCode = HttpStatus.ok
+              ..write('${request.method} ${request.uri} not found');
+          }
         }
       }
       // ignore: avoid_catches_without_on_clauses

@@ -80,4 +80,7 @@ class Keys {
 
   // ignore: public_member_api_docs
   static const String type = 'type';
+
+  // ignore: public_member_api_docs
+  static const String releases = 'releases';
 }

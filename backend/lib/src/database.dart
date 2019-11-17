@@ -49,5 +49,8 @@ class Database {
     await mySqlConnection.query(
         // ignore: lines_longer_than_80_chars
         'CREATE TABLE IF NOT EXISTS data_cafetoria (date_time DATE NOT NULL, data LONGTEXT NOT NULL, UNIQUE KEY unique_date_time (date_time)) ENGINE = InnoDB;');
+    await mySqlConnection.query(
+        // ignore: lines_longer_than_80_chars
+        'CREATE TABLE IF NOT EXISTS data_releases (date_time DATETIME NOT NULL, data LONGTEXT NOT NULL, UNIQUE KEY unique_date_time (date_time)) ENGINE = InnoDB;');
   }
 }

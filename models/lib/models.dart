@@ -9,6 +9,7 @@ export 'package:models/src/cafetoria.dart';
 export 'package:models/src/calendar.dart';
 export 'package:models/src/device.dart';
 export 'package:models/src/keys.dart';
+export 'package:models/src/releases.dart';
 export 'package:models/src/rooms.dart';
 export 'package:models/src/selection.dart';
 export 'package:models/src/settings.dart';

@@ -62,6 +62,9 @@
   "settingsShowAiXformationNotifications": "AiXformation-Benachrichtigungen anzeigen",
   "settingsShowCafetoriaNotifications": "Cafétoria-Benachrichtigungen anzeigen",
   "settingsLogout": "Abmelden",
+  "chooseTitle": "Du kannst entweder die Desktopanwendung herunterladen oder dich anmelden und die Ginko App als Webseite nutzen",
+  "upgrade": "Aktualisieren",
+  "newAppVersionAvailable": "Neue Appversion verfügbar",
   "subjects": {
     "BI": "Bio",
     "CH": "Chemie",

@@ -1,6 +1,7 @@
 
 # 2019-11-17  
- jld3103: Remove pre-commit hook  
+ jld3103: Add desktop app download feature for web  
+ jld3103: Cleanup scripts  
  jld3103: Fix windows cloud paths  
  jld3103: Switch to Github Actions  
 

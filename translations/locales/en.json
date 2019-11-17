@@ -62,6 +62,9 @@
   "settingsShowAiXformationNotifications": "Show AiXformation notifications",
   "settingsShowCafetoriaNotifications": "Show Cafétoria notifications",
   "settingsLogout": "Logout",
+  "chooseTitle": "You can either download the desktop application or login and use the Ginko app as website",
+  "upgrade": "Upgrade",
+  "newAppVersionAvailable": "New app version available",
   "subjects": {
     "BI": "Biology",
     "CH": "Chemistry",

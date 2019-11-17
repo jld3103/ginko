@@ -8,6 +8,7 @@ export 'package:backend/src/handlers/calendar.dart';
 export 'package:backend/src/handlers/devices.dart';
 export 'package:backend/src/handlers/handler.dart';
 export 'package:backend/src/handlers/login.dart';
+export 'package:backend/src/handlers/releases.dart';
 export 'package:backend/src/handlers/selection.dart';
 export 'package:backend/src/handlers/settings.dart';
 export 'package:backend/src/handlers/substitution_plan.dart';

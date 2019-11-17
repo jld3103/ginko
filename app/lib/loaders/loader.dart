@@ -46,14 +46,16 @@ abstract class Loader {
   // ignore: public_member_api_docs
   Future<bool> loadOnline(
       [String username, String password, bool force = false]) async {
-    if (Static.user.object == null && (username == null || password == null)) {
+    if (Static.user.object == null &&
+        (username == null || password == null) &&
+        !force) {
       return false;
     }
     if (_loadedFromOnline && !force) {
       return true;
     }
-    username ??= Static.user.data.username;
-    password ??= Static.user.data.password;
+    username ??= Static.user.data?.username;
+    password ??= Static.user.data?.password;
     const baseUrl = 'https://api.app.viktoria.schule';
     try {
       final dio = Dio()

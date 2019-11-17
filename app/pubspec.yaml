@@ -1,6 +1,6 @@
 name: ginko
 description: The Ginko app
-version: 1.1.0+5
+version: 1.1.1+6
 author: jld3103
 
 environment:
@@ -42,6 +42,7 @@ dependencies:
     git:
       url: git://github.com/jld3103/downloads_path_provider.git
   dio: ^3.0.4
+  version: ^1.0.3
   models:
     path: ../models
   translations:
@@ -63,6 +64,7 @@ flutter:
     - web/manifest.json
     - web/pwa.js
     - web/firebase-messaging.js
+    - pubspec.yaml
   fonts:
     - family: Roboto
       fonts:

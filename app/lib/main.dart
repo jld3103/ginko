@@ -10,6 +10,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:ginko/loaders/loader.dart';
 import 'package:ginko/pages/aixformation.dart';
 import 'package:ginko/pages/cafetoria.dart';
+import 'package:ginko/pages/choose.dart';
 import 'package:ginko/pages/cloud.dart';
 import 'package:ginko/pages/home.dart';
 import 'package:ginko/pages/loading.dart';
@@ -29,6 +30,8 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:models/models.dart';
 import 'package:translations/translation_locales_list.dart';
 import 'package:translations/translations_app.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:version/version.dart';
 
 Future main() async {
   if (Platform().isDesktop) {
@@ -85,6 +88,9 @@ Future main() async {
             body: App(
               initialPage: 5,
             ),
+          ),
+      '/choose': (context) => Scaffold(
+            body: ChoosePage(),
           ),
     },
   ));
@@ -217,6 +223,20 @@ class AppState extends State<App>
           ),
         );
       }
+    }
+    if (Platform().isDesktop &&
+        Version.parse(Static.releases.data.version) >
+            Version.parse(await Static.releases.getCurrentAppVersion())) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        duration: Duration(seconds: 30),
+        content: Text(AppTranslations.of(context).newAppVersionAvailable),
+        action: SnackBarAction(
+          label: AppTranslations.of(context).upgrade,
+          onPressed: () {
+            launch(Static.releases.data.url);
+          },
+        ),
+      ));
     }
   }
 

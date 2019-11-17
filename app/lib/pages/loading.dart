@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ginko/plugins/platform/platform.dart';
+import 'package:ginko/utils/screen_sizes.dart';
 import 'package:ginko/utils/static.dart';
 import 'package:models/models.dart';
 import 'package:translations/translations_app.dart';
@@ -46,6 +47,7 @@ class LoadingPageState extends State<LoadingPage>
       Static.teachers.loadOffline();
       Static.aiXformation.loadOffline();
       Static.cafetoria.loadOffline();
+      Static.releases.loadOffline();
       final credentialsCorrect = await Static.user.forceLoadOnline();
       if (credentialsCorrect) {
         try {
@@ -75,6 +77,9 @@ class LoadingPageState extends State<LoadingPage>
                 case Keys.cafetoria:
                   await Static.cafetoria.loadOnline();
                   break;
+                case Keys.releases:
+                  await Static.releases.loadOnline();
+                  break;
                 default:
                   print('unknown loader $key');
                   break;
@@ -91,7 +96,13 @@ class LoadingPageState extends State<LoadingPage>
         } on DioError {}
         await Navigator.of(context).pushReplacementNamed('/home');
       } else {
-        await Navigator.of(context).pushReplacementNamed('/login');
+        if (getScreenSize(MediaQuery.of(context).size.width) !=
+                ScreenSize.small &&
+            Platform().isWeb) {
+          await Navigator.of(context).pushReplacementNamed('/choose');
+        } else {
+          await Navigator.of(context).pushReplacementNamed('/login');
+        }
       }
     } on DioError {
       await Navigator.of(context).pushReplacementNamed('/home');

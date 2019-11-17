@@ -2,6 +2,7 @@ import 'package:ginko/loaders/aixformation.dart';
 import 'package:ginko/loaders/cafetoria.dart';
 import 'package:ginko/loaders/calendar.dart';
 import 'package:ginko/loaders/device.dart';
+import 'package:ginko/loaders/releases.dart';
 import 'package:ginko/loaders/selection.dart';
 import 'package:ginko/loaders/settings.dart';
 import 'package:ginko/loaders/substitution_plan.dart';
@@ -66,6 +67,9 @@ class Static {
 
   // ignore: public_member_api_docs
   static SettingsLoader settings = SettingsLoader();
+
+  // ignore: public_member_api_docs
+  static ReleasesLoader releases = ReleasesLoader();
 
   // ignore: public_member_api_docs
   static FirebaseMessaging firebaseMessaging = FirebaseMessaging();

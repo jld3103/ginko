@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ginko/utils/static.dart';
+import 'package:ginko/views/size_limit.dart';
 import 'package:translations/translations_app.dart';
 
 /// LoginPage class
@@ -59,86 +60,90 @@ class LoginPageState extends State<LoginPage> {
   }
 
   @override
-  Widget build(BuildContext context) => SafeArea(
-        child: Scaffold(
-          body: ListView(
-            padding: EdgeInsets.all(10),
-            children: [
-              Container(
-                height: 125,
-                margin: EdgeInsets.only(bottom: 5),
-                child: SvgPicture.asset('images/logo_green.svg'),
+  Widget build(BuildContext context) => Center(
+        child: ListView(
+          shrinkWrap: true,
+          padding: EdgeInsets.all(10),
+          children: [
+            Container(
+              height: 125,
+              margin: EdgeInsets.only(bottom: 5),
+              child: SvgPicture.asset('images/logo_green.svg'),
+            ),
+            Center(
+              child: Text(
+                AppTranslations.of(context).appName,
+                style: TextStyle(fontSize: 25),
               ),
-              Center(
-                child: Text(
-                  AppTranslations.of(context).appName,
-                  style: TextStyle(fontSize: 25),
-                ),
-              ),
-              Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    // Username input
-                    TextFormField(
-                      autofocus: true,
-                      controller: _usernameController,
-                      // ignore: missing_return
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return AppTranslations.of(context)
-                              .loginUserNameRequired;
-                        }
-                      },
-                      decoration: InputDecoration(
-                          hintText: AppTranslations.of(context).loginUsername),
-                      onFieldSubmitted: (value) {
-                        FocusScope.of(context).requestFocus(_focus);
-                      },
-                    ),
-                    // Password input
-                    TextFormField(
-                      controller: _passwordController,
-                      // ignore: missing_return
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return AppTranslations.of(context)
-                              .loginPasswordRequired;
-                        }
-                      },
-                      decoration: InputDecoration(
-                          hintText: AppTranslations.of(context).loginPassword),
-                      onFieldSubmitted: _checkForm,
-                      obscureText: true,
-                      focusNode: _focus,
-                    ),
-                    // Login button
-                    Container(
-                      margin: EdgeInsets.only(top: 20),
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: RaisedButton(
-                          color: Theme.of(context).accentColor,
-                          onPressed: _checkForm,
-                          child: !_isCheckingForm
-                              ? Text(AppTranslations.of(context).loginSubmit)
-                              : SizedBox(
-                                  height: 20,
-                                  width: 20,
-                                  child: CircularProgressIndicator(
-                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                        Colors.white),
-                                    strokeWidth: 2,
-                                  ),
+            ),
+            Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  // Username input
+                  TextFormField(
+                    autofocus: true,
+                    controller: _usernameController,
+                    // ignore: missing_return
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return AppTranslations.of(context)
+                            .loginUserNameRequired;
+                      }
+                    },
+                    decoration: InputDecoration(
+                        hintText: AppTranslations.of(context).loginUsername),
+                    onFieldSubmitted: (value) {
+                      FocusScope.of(context).requestFocus(_focus);
+                    },
+                  ),
+                  // Password input
+                  TextFormField(
+                    controller: _passwordController,
+                    // ignore: missing_return
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return AppTranslations.of(context)
+                            .loginPasswordRequired;
+                      }
+                    },
+                    decoration: InputDecoration(
+                        hintText: AppTranslations.of(context).loginPassword),
+                    onFieldSubmitted: _checkForm,
+                    obscureText: true,
+                    focusNode: _focus,
+                  ),
+                  // Login button
+                  Container(
+                    margin: EdgeInsets.only(top: 20),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: RaisedButton(
+                        color: Theme.of(context).accentColor,
+                        onPressed: _checkForm,
+                        child: !_isCheckingForm
+                            ? Text(AppTranslations.of(context).loginSubmit)
+                            : SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                      Colors.white),
+                                  strokeWidth: 2,
                                 ),
-                        ),
+                              ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ]
+              .map((child) => SizeLimit(
+                    child: child,
+                  ))
+              .cast<Widget>()
+              .toList(),
         ),
       );
 }
