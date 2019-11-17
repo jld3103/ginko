@@ -119,13 +119,12 @@ class _CloudFileState extends State<CloudFile>
               );
               PWA().download(widget.file.name, uri);
             } else {
-              final filePath = Uri(
-                path: path.join(
-                  (await DownloadsPathProvider.downloadsDirectory).path,
-                  'ViktoriaCloud',
-                  widget.file.path.substring(1, widget.file.path.length),
-                ),
-              ).toFilePath(windows: Platform().isWindows);
+              final filePath = path.join(
+                (await DownloadsPathProvider.downloadsDirectory).path,
+                'ViktoriaCloud',
+                widget.file.path.substring(1, widget.file.path.length),
+              );
+              print(filePath);
               File(filePath)
                 ..createSync(recursive: true)
                 ..writeAsBytesSync(content);
