@@ -106,6 +106,15 @@ class LoadingPageState extends State<LoadingPage>
       }
     } on DioError {
       await Navigator.of(context).pushReplacementNamed('/home');
+      // ignore: avoid_catching_errors
+    } on NoSuchMethodError {
+      if (getScreenSize(MediaQuery.of(context).size.width) !=
+              ScreenSize.small &&
+          Platform().isWeb) {
+        await Navigator.of(context).pushReplacementNamed('/choose');
+      } else {
+        await Navigator.of(context).pushReplacementNamed('/login');
+      }
     }
   }
 
