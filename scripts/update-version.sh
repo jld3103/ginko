@@ -13,4 +13,6 @@ echo "Current version: $currentVersion"
 echo "New version: $1"
 find . -name "pubspec.yaml" -print0 | xargs -0 sed -i "s/$currentVersion/$1/g"
 find ./go/packaging -type f -print0 | xargs -0 sed -i "s/$currentVersion/$1/g"
+mv go/packaging/linux-rpm/rpmbuild/BUILDROOT/ginko-"$currentVersion"-"$currentVersion".x86_64 go/packaging/linux-rpm/rpmbuild/BUILDROOT/ginko-"$1"-"$1".x86_64
+rm -rf go/build
 cd ..

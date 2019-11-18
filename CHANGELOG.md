@@ -1,4 +1,7 @@
 
+# 2019-11-18  
+ jld3103: Fix build scripts and update version script  
+
 # 2019-11-17  
  jld3103: Fix packaging  
  jld3103: Update badges  

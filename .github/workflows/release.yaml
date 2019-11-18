@@ -46,22 +46,9 @@ jobs:
           go get -u github.com/tcnksm/ghr
           sudo ln -sf $(go env GOPATH)/bin/ghr /usr/bin/ghr
       - name: Build desktop apps
-        run: |
-          version=$(cat app/pubspec.yaml | grep version)
-          version=${version:9}
-          ./scripts/build-desktop.sh --docker
-          mkdir artifacts -p
-          cp "app/go/build/outputs/darwin-dmg/ginko $version.dmg"                "artifacts/ginko_$version.dmg"
-          cp "app/go/build/outputs/darwin-pkg/ginko $version Installer.pkg"      "artifacts/ginko_$version.pkg"
-          cp "app/go/build/outputs/linux-appimage/ginko-x86_64.AppImage"         "artifacts/ginko_$version.AppImage"
-          cp "app/go/build/outputs/linux-deb/ginko_amd64.deb"                    "artifacts/ginko_$version.deb"
-          cp "app/go/build/outputs/linux-rpm/ginko-$version-$version.x86_64.rpm" "artifacts/ginko_$version.rpm"
-          cp "app/go/build/outputs/linux-snap/ginko_${version}_amd64.snap"       "artifacts/ginko_$version.snap"
-          cp "app/go/build/outputs/windows-msi/ginko.msi"                        "artifacts/ginko_$version.msi"
+        run: ./scripts/build-desktop.sh --docker
       - name: Build web
-        run: |
-          ./scripts/build-web.sh
-          tar -czvf artifacts/web.tar.gz app/build/web
+        run: ./scripts/build-web.sh
       - name: Upload release artifacts
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

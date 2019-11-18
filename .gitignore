@@ -21,6 +21,7 @@ doc/
 .packages
 pubspec.lock
 
+artifacts
 app/images/*
 !app/images/logo_white.svg
 app/go/assets/icon.png
