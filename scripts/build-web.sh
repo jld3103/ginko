@@ -4,5 +4,6 @@ flutter clean
 rm -rf go/build
 flutter build web
 cp web/sw.js build/web
-tar -czvf ../artifacts/ginko_web.tar.gz build/web >/dev/null
-cd ..
+cd build/web || cd ../..
+tar -czvf ../../../artifacts/ginko_web.tar.gz . >/dev/null
+cd ../../..
