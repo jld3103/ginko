@@ -26,6 +26,7 @@ messaging.setBackgroundMessageHandler(payload => {
         icon: '/assets/images/logo_green.png',
         badge: '/assets/images/logo_green.png',
         data: data,
+        tag: payload.data.type === 'substitutionplan' ? payload.data.type + '-' + payload.data.weekday : payload.data.type,
     };
 
     return self.registration.showNotification(payload.data.title, notificationOptions);
