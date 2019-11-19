@@ -1,2 +1,2 @@
-FROM dockercore/golang-cross
+FROM goreng/golang-cross
 RUN apt-get update && apt-get install libgl1-mesa-dev xorg-dev -y

@@ -1,4 +1,7 @@
 
+# 2019-11-19  
+ jld3103: Update go-flutter dependencies  
+
 # 2019-11-18  
  jld3103: Fix web notifications not replacing  
  jld3103: Fix logout  
