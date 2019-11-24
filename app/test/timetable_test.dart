@@ -41,10 +41,9 @@ void main() {
             room: '525',
             weeks: null,
           ),
-          showUnit: false,
         )));
         await tester.pumpAndSettle();
-        expect(find.text('1'), findsNothing);
+        expect(find.text('1'), findsOneWidget);
         expect(
           find.text(ServerTranslations.subjects('en')['EK']),
           findsOneWidget,
@@ -63,10 +62,9 @@ void main() {
             room: '525',
             weeks: null,
           ),
-          showUnit: false,
         )));
         await tester.pumpAndSettle();
-        expect(find.text('1'), findsNothing);
+        expect(find.text('1'), findsOneWidget);
         expect(find.text(''), findsOneWidget);
         expect(find.text('08:00 - 09:00'), findsOneWidget);
         expect(find.text('KRA'), findsOneWidget);
@@ -82,10 +80,9 @@ void main() {
             room: null,
             weeks: null,
           ),
-          showUnit: false,
         )));
         await tester.pumpAndSettle();
-        expect(find.text('1'), findsNothing);
+        expect(find.text('1'), findsOneWidget);
         expect(
           find.text(ServerTranslations.subjects('en')['EK']),
           findsOneWidget,
@@ -104,10 +101,9 @@ void main() {
             room: '525',
             weeks: null,
           ),
-          showUnit: false,
         )));
         await tester.pumpAndSettle();
-        expect(find.text('1'), findsNothing);
+        expect(find.text('1'), findsOneWidget);
         expect(
           find.text(ServerTranslations.subjects('en')['EK']),
           findsOneWidget,
@@ -160,6 +156,7 @@ void main() {
                 teacher: 'KRA',
                 room: '525',
                 changed: Changed(),
+                type: ChangeTypes.changed,
               ),
               Change(
                 unit: 1,
@@ -168,6 +165,7 @@ void main() {
                 teacher: 'KRA',
                 room: '525',
                 changed: Changed(),
+                type: ChangeTypes.changed,
               ),
               Change(
                 unit: 0,
@@ -176,6 +174,7 @@ void main() {
                 teacher: 'STA',
                 room: '525',
                 changed: Changed(),
+                type: ChangeTypes.changed,
               ),
             ],
           ),
@@ -235,6 +234,7 @@ void main() {
                   teacher: 'KRA',
                   room: '525',
                 ),
+                type: ChangeTypes.changed,
               ),
             ],
           ),
@@ -243,18 +243,15 @@ void main() {
         expect(find.text('1'), findsOneWidget);
         expect(
           find.text(ServerTranslations.subjects('en')['EK']),
-          findsNWidgets(2),
-        );
-        expect(
-          // ignore: prefer_interpolation_to_compose_strings
-          find.text(ServerTranslations.subjects('en')['EK'] +
-              ': ' +
-              ServerTranslations.substitutionPlanUnknown('en')),
           findsOneWidget,
         );
-        expect(find.text('08:00 - 09:00'), findsOneWidget);
-        expect(find.text('KRA'), findsNWidgets(3));
-        expect(find.text('525'), findsNWidgets(3));
+        expect(
+          find.text(''),
+          findsOneWidget,
+        );
+        expect(find.text('08:00 - 09:00'), findsNothing);
+        expect(find.text('KRA'), findsNWidgets(2));
+        expect(find.text('525'), findsNWidgets(2));
       });
 
       testWidgets('Timetable all row with changes with info', (tester) async {
@@ -299,6 +296,7 @@ void main() {
                   room: '525',
                   info: 'LOL',
                 ),
+                type: ChangeTypes.changed,
               ),
             ],
           ),
@@ -306,17 +304,11 @@ void main() {
         await tester.pumpAndSettle();
         expect(find.text('1'), findsOneWidget);
         expect(
-          find.text(ServerTranslations.subjects('en')['EK']),
-          findsNWidgets(2),
-        );
-        expect(
-          // ignore: prefer_interpolation_to_compose_strings
-          find.text(ServerTranslations.substitutionPlanUnknown('en') + ' LOL'),
-          findsOneWidget,
-        );
-        expect(find.text('08:00 - 09:00'), findsOneWidget);
-        expect(find.text('KRA'), findsNWidgets(3));
-        expect(find.text('525'), findsNWidgets(3));
+            find.text(ServerTranslations.subjects('en')['EK']), findsOneWidget);
+        expect(find.text('LOL'), findsOneWidget);
+        expect(find.text('08:00 - 09:00'), findsNothing);
+        expect(find.text('KRA'), findsNWidgets(2));
+        expect(find.text('525'), findsNWidgets(2));
       });
 
       testWidgets('Timetable all row with changes with info and subject',
@@ -363,6 +355,7 @@ void main() {
                   room: '525',
                   info: 'LOL',
                 ),
+                type: ChangeTypes.changed,
               ),
             ],
           ),
@@ -371,19 +364,12 @@ void main() {
         expect(find.text('1'), findsOneWidget);
         expect(
           find.text(ServerTranslations.subjects('en')['EK']),
-          findsNWidgets(2),
-        );
-        expect(find.text('08:00 - 09:00'), findsOneWidget);
-        expect(find.text('KRA'), findsNWidgets(3));
-        expect(find.text('525'), findsNWidgets(3));
-        expect(
-          // ignore: prefer_interpolation_to_compose_strings
-          find.text(ServerTranslations.subjects('en')['EK'] +
-              ': ' +
-              ServerTranslations.substitutionPlanUnknown('en') +
-              ' LOL'),
           findsOneWidget,
         );
+        expect(find.text('08:00 - 09:00'), findsNothing);
+        expect(find.text('KRA'), findsNWidgets(2));
+        expect(find.text('525'), findsNWidgets(2));
+        expect(find.text('LOL'), findsOneWidget);
       });
     });
 

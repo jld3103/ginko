@@ -110,8 +110,8 @@ class Change {
     @required this.subject,
     @required this.room,
     @required this.teacher,
+    @required this.type,
     this.course,
-    this.type = ChangeTypes.unknown,
   });
 
   /// Creates a Change object from json
@@ -172,6 +172,29 @@ class Change {
       return lesson.subjects;
     }
     return subjects;
+  }
+
+  /// Complete the information of this change using the timetable
+  Change completed(Lesson lesson) {
+    final newChange = Change.fromJSON(toJSON());
+    if (lesson == null) {
+      return newChange;
+    }
+    final subjects = getMatchingSubjectsByLesson(lesson);
+    if (subjects.length != 1) {
+      return newChange;
+    }
+    final s = subjects[0];
+    if (subject == null || subject == '') {
+      newChange.subject = s.subject;
+    }
+    if (room == null || room == '') {
+      newChange.room = s.room;
+    }
+    if (teacher == null || teacher == '') {
+      newChange.teacher = s.teacher;
+    }
+    return newChange;
   }
 
   // ignore: public_member_api_docs
@@ -243,11 +266,9 @@ class Changed {
 /// describes the possible types of a replacement plan change
 enum ChangeTypes {
   // ignore: public_member_api_docs
-  unknown,
-  // ignore: public_member_api_docs
   exam,
   // ignore: public_member_api_docs
   freeLesson,
   // ignore: public_member_api_docs
-  replaced,
+  changed,
 }

@@ -174,9 +174,8 @@ class SubstitutionPlanHandler extends Handler {
     SubstitutionPlanForGrade substitutionPlanForGrade,
     SubstitutionPlanDay substitutionPlanDay,
     Selection selection,
-    String language, {
-    bool formatting = true,
-  }) {
+    String language,
+  ) {
     final changes = substitutionPlanForGrade.changes
         .where((change) => change.date == substitutionPlanDay.date)
         .where((change) {
@@ -195,62 +194,41 @@ class SubstitutionPlanHandler extends Handler {
         // ignore: lines_longer_than_80_chars
         '${ServerTranslations.weekdays(language)[substitutionPlanDay.date.weekday - 1]} ${outputDateFormat(language).format(substitutionPlanDay.date)}';
     final lines = [];
-    var previousUnit = -1;
     for (final change in changes) {
-      if (change.unit != previousUnit) {
-        lines.add(
-            // ignore: lines_longer_than_80_chars
-            '${formatting ? '<b>' : ''}${change.unit + 1}. ${ServerTranslations.unit(language)}:${formatting ? '</b>' : ''}');
-        previousUnit = change.unit;
-      }
+      final completedChange = change.completed(
+          timetableForGrade.days[change.date.weekday - 1].lessons[change.unit]);
 
-      final buffer = StringBuffer();
-      if (change.subject != null && change.subject.isNotEmpty) {
-        buffer.write(ServerTranslations.subjects(language)[change.subject]);
-      }
-      if (change.room != null && change.room.isNotEmpty) {
-        buffer.write(' ${change.room}');
-      }
-      if (change.teacher != null && change.teacher.isNotEmpty) {
-        buffer.write(' ${change.teacher}');
-      }
-      buffer.write(':');
-      if (change.changed.subject != null &&
-          change.changed.subject.isNotEmpty &&
-          change.subject != change.changed.subject) {
+      final buffer = StringBuffer()..write('<b>${change.unit + 1}.</b> ');
+
+      if (completedChange.subject != null &&
+          completedChange.subject.isNotEmpty) {
         buffer.write(
             // ignore: lines_longer_than_80_chars
-            ' ${ServerTranslations.subjects(language)[change.changed.subject]}');
+            '${ServerTranslations.subjects(language)[completedChange.subject]} ');
       }
-      if (change.changed.room != null && change.room != change.changed.room) {
-        buffer.write(' ${change.changed.room}');
+      if (completedChange.type == ChangeTypes.freeLesson) {
+        buffer.write(ServerTranslations.substitutionPlanFreeLesson(language));
       }
-      if (change.changed.teacher != null &&
-          change.teacher != change.changed.teacher) {
-        buffer.write(' ${change.changed.teacher}');
+      if (completedChange.type == ChangeTypes.exam) {
+        buffer.write(ServerTranslations.substitutionPlanExam(language));
       }
-      if (change.type == ChangeTypes.freeLesson) {
-        buffer.write(
-            // ignore: lines_longer_than_80_chars
-            ' ${ServerTranslations.substitutionPlanFreeLesson(language)}');
+      if (completedChange.type == ChangeTypes.changed) {
+        buffer.write(ServerTranslations.substitutionPlanChanged(language));
       }
-      if (change.type == ChangeTypes.exam) {
-        buffer.write(
-            // ignore: lines_longer_than_80_chars
-            ' ${ServerTranslations.substitutionPlanExam(language)}');
-      }
-      if (change.changed.info != null) {
-        buffer.write(' ${change.changed.info}');
+      if (completedChange.changed.info != null) {
+        buffer.write(' ${completedChange.changed.info}');
       }
       lines.add(buffer.toString());
     }
     final bigBody = lines.isEmpty
         ? ServerTranslations.substitutionPlanNoChanges(language)
-        : lines.join('${formatting ? '<br/>' : '\n'}');
+        : lines.join('<br/>');
     final body = changes.isEmpty
         ? ServerTranslations.substitutionPlanNoChanges(language)
-        // ignore: lines_longer_than_80_chars
-        : '${changes.length} ${ServerTranslations.substitutionPlanChanges(language)}';
+        : changes.length == 1
+            ? lines[0]
+            // ignore: lines_longer_than_80_chars
+            : '${changes.length} ${ServerTranslations.substitutionPlanChanges(language)}';
     return Notification(
       title,
       body,

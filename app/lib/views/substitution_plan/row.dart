@@ -9,7 +9,6 @@ class SubstitutionPlanRow extends StatelessWidget {
   const SubstitutionPlanRow({
     @required this.change,
     this.showUnit = true,
-    this.addPadding = true,
     this.showCard = true,
   });
 
@@ -20,67 +19,51 @@ class SubstitutionPlanRow extends StatelessWidget {
   final bool showUnit;
 
   // ignore: public_member_api_docs
-  final bool addPadding;
-
-  // ignore: public_member_api_docs
   final bool showCard;
 
   @override
   Widget build(BuildContext context) {
-    var infoText = '';
-    if (change.changed.subject != null) {
-      infoText += AppTranslations.of(context).subjects[change.changed.subject];
-    }
+    final infoText = [];
     if (change.changed.subject != null &&
-        (change.type != ChangeTypes.replaced || change.changed.info != null)) {
-      infoText += ': ';
+        (change.subject != null && change.subject != change.changed.subject)) {
+      infoText
+          .add(AppTranslations.of(context).subjects[change.changed.subject]);
     }
     switch (change.type) {
-      case ChangeTypes.unknown:
-        infoText += AppTranslations.of(context).substitutionPlanUnknown;
-        break;
       case ChangeTypes.exam:
-        infoText += AppTranslations.of(context).substitutionPlanExam;
+        infoText.add(AppTranslations.of(context).substitutionPlanExam);
         break;
       case ChangeTypes.freeLesson:
-        infoText += AppTranslations.of(context).substitutionPlanFreeLesson;
+        infoText.add(AppTranslations.of(context).substitutionPlanFreeLesson);
         break;
-      case ChangeTypes.replaced:
+      case ChangeTypes.changed:
         break;
-    }
-    if (change.changed.info != null &&
-        (change.type != ChangeTypes.replaced ||
-            (change.changed.subject != null &&
-                change.type != ChangeTypes.replaced))) {
-      infoText += ' ';
     }
     if (change.changed.info != null) {
-      infoText += change.changed.info;
+      infoText.add(change.changed.info);
     }
     final content = Container(
       width: double.infinity,
       padding: EdgeInsets.only(
-        top: showCard ? 5 : 2.5,
-        right: 5,
-        bottom: showCard ? 5 : 2.5,
-        left: 7.5,
+        top: 2.5,
+        right: 6.5,
+        bottom: 2.5,
+        left: 6.5,
       ),
       child: Row(
         children: [
           Container(
-            alignment: Alignment.centerLeft,
-            width: showUnit ? 20 : null,
-            child: showUnit
-                ? Text(
-                    '${change.unit + 1}',
-                    style: TextStyle(
-                      color: Colors.black87,
-                    ),
-                  )
-                : null,
+            width: 15,
+            child: Text(
+              showUnit ? '${change.unit + 1}' : '',
+              style: TextStyle(
+                color: Color(0xff444444),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
           Container(
-            margin: EdgeInsets.only(right: 12.5),
+            margin: EdgeInsets.only(right: 5),
             alignment: Alignment.center,
             height: 32,
             width: 2,
@@ -110,7 +93,14 @@ class SubstitutionPlanRow extends StatelessWidget {
                       flex: 15,
                       child: Container(
                         alignment: Alignment.centerLeft,
-                        child: Text(change.changed.room ?? ''),
+                        child: Text(
+                          change.changed.room ?? '',
+                          style: change.changed.room != null
+                              ? TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                )
+                              : null,
+                        ),
                       ),
                     ),
                     Expanded(
@@ -119,21 +109,22 @@ class SubstitutionPlanRow extends StatelessWidget {
                         alignment: Alignment.centerLeft,
                         child: Text(
                           change.room ?? '',
-                          style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                          ),
+                          style: change.changed.room == null
+                              ? TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                )
+                              : null,
                         ),
                       ),
                     ),
                   ],
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
                       flex: 70,
                       child: Text(
-                        infoText,
+                        infoText.join(' '),
                         style: TextStyle(
                           color: Colors.grey,
                         ),
@@ -143,7 +134,14 @@ class SubstitutionPlanRow extends StatelessWidget {
                       flex: 15,
                       child: Container(
                         alignment: Alignment.centerLeft,
-                        child: Text(change.changed.teacher ?? ''),
+                        child: Text(
+                          change.changed.teacher ?? '',
+                          style: change.changed.teacher != null
+                              ? TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                )
+                              : null,
+                        ),
                       ),
                     ),
                     Expanded(
@@ -152,9 +150,11 @@ class SubstitutionPlanRow extends StatelessWidget {
                         alignment: Alignment.centerLeft,
                         child: Text(
                           change.teacher ?? '',
-                          style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                          ),
+                          style: change.changed.teacher == null
+                              ? TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                )
+                              : null,
                         ),
                       ),
                     ),
@@ -167,22 +167,11 @@ class SubstitutionPlanRow extends StatelessWidget {
       ),
     );
     if (showCard) {
-      return Container(
-        padding: EdgeInsets.only(left: !showUnit && addPadding ? 20 : 0),
-        child: Card(
-          margin: EdgeInsets.only(
-            top: 0,
-            right: 2.5,
-            bottom: 0,
-            left: 2.5,
-          ),
-          child: content,
-        ),
+      return Card(
+        margin: EdgeInsets.all(2.5),
+        child: content,
       );
     }
-    return Container(
-      padding: EdgeInsets.only(left: !showUnit && addPadding ? 20 : 0),
-      child: content,
-    );
+    return content;
   }
 }

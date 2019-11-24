@@ -8,18 +8,10 @@ class TimetableRow extends StatelessWidget {
   // ignore: public_member_api_docs
   const TimetableRow({
     @required this.subject,
-    this.showUnit = true,
-    this.addPadding = true,
   });
 
   // ignore: public_member_api_docs
   final Subject subject;
-
-  // ignore: public_member_api_docs
-  final bool showUnit;
-
-  // ignore: public_member_api_docs
-  final bool addPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -40,19 +32,19 @@ class TimetableRow extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.only(top: 5, right: 9, bottom: 5, left: 6.5),
+      padding: EdgeInsets.only(top: 5, right: 9, bottom: 5, left: 6),
       child: Row(
         children: [
           Container(
-            width: addPadding ? 17.5 : null,
-            child: showUnit
-                ? Text(
-                    '${subject.unit + 1}',
-                    style: TextStyle(
-                      color: Colors.black87,
-                    ),
-                  )
-                : null,
+            margin: EdgeInsets.only(left: 2.5, right: 2.5),
+            width: 20,
+            child: Text(
+              '${subject.unit + 1}',
+              style: TextStyle(
+                color: Color(0xff444444),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
           Expanded(
             child: Column(
@@ -85,7 +77,6 @@ class TimetableRow extends StatelessWidget {
                   ],
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
                       flex: 85,

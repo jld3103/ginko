@@ -2,6 +2,6 @@ Package: ginko
 Architecture: amd64
 Maintainer: @jld3103
 Priority: optional
-Version: 1.1.4+9
+Version: 1.2.0+10
 Description: The Ginko app
 Depends: libx11-6,libxrandr2,libxcursor1,libxinerama1,libglu1-mesa,libgcc1,libstdc++6,libtinfo5,zlib1g

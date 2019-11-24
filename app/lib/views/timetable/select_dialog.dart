@@ -31,8 +31,6 @@ class TimetableSelectDialog extends StatelessWidget {
                   onTap: () => Navigator.of(context).pop([subject]),
                   child: TimetableRow(
                     subject: subject,
-                    showUnit: false,
-                    addPadding: false,
                   ),
                 ),
               )
@@ -69,13 +67,9 @@ class TimetableSelectDialog extends StatelessWidget {
                                 children: [
                                   TimetableRow(
                                     subject: subject1,
-                                    showUnit: false,
-                                    addPadding: false,
                                   ),
                                   TimetableRow(
                                     subject: subject2,
-                                    showUnit: false,
-                                    addPadding: false,
                                   ),
                                 ],
                               ),

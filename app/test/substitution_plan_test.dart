@@ -24,6 +24,7 @@ void main() {
             subject: 'EK',
             room: '525',
             teacher: 'KRA',
+            type: ChangeTypes.changed,
           ),
         )));
         await tester.pumpAndSettle();
@@ -32,13 +33,7 @@ void main() {
           find.text(ServerTranslations.subjects('en')['EK']),
           findsOneWidget,
         );
-        expect(
-          // ignore: prefer_interpolation_to_compose_strings
-          find.text(ServerTranslations.subjects('en')['EK'] +
-              ': ' +
-              ServerTranslations.substitutionPlanUnknown('en')),
-          findsOneWidget,
-        );
+        expect(find.text(''), findsOneWidget);
         expect(find.text('KRA'), findsNWidgets(2));
         expect(find.text('525'), findsNWidgets(2));
         expect(
@@ -60,6 +55,7 @@ void main() {
             subject: 'EK',
             room: '525',
             teacher: 'KRA',
+            type: ChangeTypes.changed,
           ),
           showCard: false,
         )));
@@ -69,13 +65,7 @@ void main() {
           find.text(ServerTranslations.subjects('en')['EK']),
           findsOneWidget,
         );
-        expect(
-          // ignore: prefer_interpolation_to_compose_strings
-          find.text(ServerTranslations.subjects('en')['EK'] +
-              ': ' +
-              ServerTranslations.substitutionPlanUnknown('en')),
-          findsOneWidget,
-        );
+        expect(find.text(''), findsOneWidget);
         expect(find.text('KRA'), findsNWidgets(2));
         expect(find.text('525'), findsNWidgets(2));
         expect(
@@ -97,6 +87,7 @@ void main() {
             subject: 'EK',
             room: '525',
             teacher: 'KRA',
+            type: ChangeTypes.changed,
           ),
           showUnit: false,
         )));
@@ -106,13 +97,7 @@ void main() {
           find.text(ServerTranslations.subjects('en')['EK']),
           findsOneWidget,
         );
-        expect(
-          // ignore: prefer_interpolation_to_compose_strings
-          find.text(ServerTranslations.subjects('en')['EK'] +
-              ': ' +
-              ServerTranslations.substitutionPlanUnknown('en')),
-          findsOneWidget,
-        );
+        expect(find.text(''), findsNWidgets(2));
         expect(find.text('KRA'), findsNWidgets(2));
         expect(find.text('525'), findsNWidgets(2));
       });
@@ -130,6 +115,7 @@ void main() {
             subject: 'EK',
             room: '525',
             teacher: 'KRA',
+            type: ChangeTypes.changed,
           ),
         )));
         await tester.pumpAndSettle();
@@ -138,11 +124,7 @@ void main() {
           find.text(ServerTranslations.subjects('en')['EK']),
           findsOneWidget,
         );
-        expect(
-          // ignore: prefer_interpolation_to_compose_strings
-          find.text(ServerTranslations.substitutionPlanUnknown('en') + ' LOL'),
-          findsOneWidget,
-        );
+        expect(find.text('LOL'), findsOneWidget);
         expect(find.text('KRA'), findsNWidgets(2));
         expect(find.text('525'), findsNWidgets(2));
       });
@@ -162,6 +144,7 @@ void main() {
             subject: 'EK',
             room: '525',
             teacher: 'KRA',
+            type: ChangeTypes.changed,
           ),
         )));
         await tester.pumpAndSettle();
@@ -170,14 +153,7 @@ void main() {
           find.text(ServerTranslations.subjects('en')['EK']),
           findsOneWidget,
         );
-        expect(
-          // ignore: prefer_interpolation_to_compose_strings
-          find.text(ServerTranslations.subjects('en')['EK'] +
-              ': ' +
-              ServerTranslations.substitutionPlanUnknown('en') +
-              ' LOL'),
-          findsOneWidget,
-        );
+        expect(find.text('LOL'), findsOneWidget);
         expect(find.text('KRA'), findsNWidgets(2));
         expect(find.text('525'), findsNWidgets(2));
       });
@@ -196,14 +172,14 @@ void main() {
             subject: 'EK',
             room: '525',
             teacher: 'KRA',
-            type: ChangeTypes.replaced,
+            type: ChangeTypes.changed,
           ),
         )));
         await tester.pumpAndSettle();
         expect(find.text('1'), findsOneWidget);
         expect(
           find.text(ServerTranslations.subjects('en')['EK']),
-          findsNWidgets(2),
+          findsOneWidget,
         );
         expect(find.text('KRA'), findsNWidgets(2));
         expect(find.text('525'), findsNWidgets(2));
@@ -224,7 +200,7 @@ void main() {
             subject: 'EK',
             room: '525',
             teacher: 'KRA',
-            type: ChangeTypes.replaced,
+            type: ChangeTypes.changed,
           ),
         )));
         await tester.pumpAndSettle();
@@ -233,10 +209,7 @@ void main() {
           find.text(ServerTranslations.subjects('en')['EK']),
           findsOneWidget,
         );
-        expect(
-          find.text('${ServerTranslations.subjects('en')['EK']}: LOL'),
-          findsOneWidget,
-        );
+        expect(find.text('LOL'), findsOneWidget);
         expect(find.text('KRA'), findsNWidgets(2));
         expect(find.text('525'), findsNWidgets(2));
       });
@@ -266,9 +239,7 @@ void main() {
         expect(find.text('KRA'), findsNWidgets(2));
         expect(find.text('525'), findsNWidgets(2));
         expect(
-          find.text(
-              // ignore: lines_longer_than_80_chars
-              '${ServerTranslations.subjects('en')['EK']}: ${ServerTranslations.substitutionPlanExam('en')}'),
+          find.text(ServerTranslations.substitutionPlanExam('en')),
           findsOneWidget,
         );
       });
@@ -287,6 +258,7 @@ void main() {
             subject: 'EK',
             room: '525',
             teacher: 'KRA',
+            type: ChangeTypes.changed,
           ),
         )));
         await tester.pumpAndSettle();
@@ -295,13 +267,7 @@ void main() {
           find.text(ServerTranslations.subjects('en')['EK']),
           findsOneWidget,
         );
-        expect(
-          // ignore: prefer_interpolation_to_compose_strings
-          find.text(ServerTranslations.subjects('en')['EK'] +
-              ': ' +
-              ServerTranslations.substitutionPlanUnknown('en')),
-          findsOneWidget,
-        );
+        expect(find.text(''), findsOneWidget);
         expect(find.text('KRA'), findsNWidgets(2));
         expect(find.text('525'), findsNWidgets(2));
         var containers = find
@@ -342,10 +308,7 @@ void main() {
           findsOneWidget,
         );
         expect(
-          // ignore: prefer_interpolation_to_compose_strings
-          find.text(ServerTranslations.subjects('en')['EK'] +
-              ': ' +
-              ServerTranslations.substitutionPlanFreeLesson('en')),
+          find.text(ServerTranslations.substitutionPlanFreeLesson('en')),
           findsOneWidget,
         );
         expect(find.text('KRA'), findsNWidgets(2));
@@ -387,10 +350,7 @@ void main() {
           findsOneWidget,
         );
         expect(
-          // ignore: prefer_interpolation_to_compose_strings
-          find.text(ServerTranslations.subjects('en')['EK'] +
-              ': ' +
-              ServerTranslations.substitutionPlanExam('en')),
+          find.text(ServerTranslations.substitutionPlanExam('en')),
           findsOneWidget,
         );
         expect(find.text('KRA'), findsNWidgets(2));
@@ -423,17 +383,12 @@ void main() {
             subject: null,
             room: '525',
             teacher: 'KRA',
+            type: ChangeTypes.changed,
           ),
         )));
         await tester.pumpAndSettle();
         expect(find.text('1'), findsOneWidget);
-        expect(
-          // ignore: prefer_interpolation_to_compose_strings
-          find.text(ServerTranslations.subjects('en')['EK'] +
-              ': ' +
-              ServerTranslations.substitutionPlanUnknown('en')),
-          findsOneWidget,
-        );
+        expect(find.text(''), findsNWidgets(2));
         expect(find.text('KRA'), findsNWidgets(2));
         expect(find.text('525'), findsNWidgets(2));
       });
@@ -451,6 +406,7 @@ void main() {
             subject: 'EK',
             room: null,
             teacher: 'KRA',
+            type: ChangeTypes.changed,
           ),
         )));
         await tester.pumpAndSettle();
@@ -459,13 +415,7 @@ void main() {
           find.text(ServerTranslations.subjects('en')['EK']),
           findsOneWidget,
         );
-        expect(
-          // ignore: prefer_interpolation_to_compose_strings
-          find.text(ServerTranslations.subjects('en')['EK'] +
-              ': ' +
-              ServerTranslations.substitutionPlanUnknown('en')),
-          findsOneWidget,
-        );
+        expect(find.text(''), findsNWidgets(2));
         expect(find.text('KRA'), findsNWidgets(2));
         expect(find.text('525'), findsOneWidget);
       });
@@ -484,6 +434,7 @@ void main() {
             subject: 'EK',
             room: '525',
             teacher: null,
+            type: ChangeTypes.changed,
           ),
         )));
         await tester.pumpAndSettle();
@@ -492,13 +443,7 @@ void main() {
           find.text(ServerTranslations.subjects('en')['EK']),
           findsOneWidget,
         );
-        expect(
-          // ignore: prefer_interpolation_to_compose_strings
-          find.text(ServerTranslations.subjects('en')['EK'] +
-              ': ' +
-              ServerTranslations.substitutionPlanUnknown('en')),
-          findsOneWidget,
-        );
+        expect(find.text(''), findsNWidgets(2));
         expect(find.text('KRA'), findsOneWidget);
         expect(find.text('525'), findsNWidgets(2));
       });
@@ -516,6 +461,7 @@ void main() {
             subject: 'EK',
             room: '525',
             teacher: 'KRA',
+            type: ChangeTypes.changed,
           ),
         )));
         await tester.pumpAndSettle();
@@ -540,6 +486,7 @@ void main() {
             subject: 'EK',
             room: '525',
             teacher: 'KRA',
+            type: ChangeTypes.changed,
           ),
         )));
         await tester.pumpAndSettle();
@@ -548,13 +495,7 @@ void main() {
           find.text(ServerTranslations.subjects('en')['EK']),
           findsOneWidget,
         );
-        expect(
-          // ignore: prefer_interpolation_to_compose_strings
-          find.text(ServerTranslations.subjects('en')['EK'] +
-              ': ' +
-              ServerTranslations.substitutionPlanUnknown('en')),
-          findsOneWidget,
-        );
+        expect(find.text(''), findsNWidgets(2));
         expect(find.text('KRA'), findsNWidgets(2));
         expect(find.text('525'), findsOneWidget);
       });
@@ -572,6 +513,7 @@ void main() {
             subject: 'EK',
             room: '525',
             teacher: 'KRA',
+            type: ChangeTypes.changed,
           ),
         )));
         await tester.pumpAndSettle();
@@ -580,13 +522,7 @@ void main() {
           find.text(ServerTranslations.subjects('en')['EK']),
           findsOneWidget,
         );
-        expect(
-          // ignore: prefer_interpolation_to_compose_strings
-          find.text(ServerTranslations.subjects('en')['EK'] +
-              ': ' +
-              ServerTranslations.substitutionPlanUnknown('en')),
-          findsOneWidget,
-        );
+        expect(find.text(''), findsNWidgets(2));
         expect(find.text('KRA'), findsOneWidget);
         expect(find.text('525'), findsNWidgets(2));
       });

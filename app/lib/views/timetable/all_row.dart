@@ -37,44 +37,50 @@ class TimetableAllRow extends StatefulWidget {
 
 class _TimetableAllRowState extends State<TimetableAllRow> {
   @override
-  Widget build(BuildContext context) => Container(
-        padding: EdgeInsets.only(
-          left: 5,
-          right: 5,
-          top: 0,
-          bottom: widget.timetableDay.lessons.indexOf(
-                          widget.timetableDay.lessons[widget.subject.unit]) ==
-                      widget.timetableDay.lessons.length - 1 &&
-                  getScreenSize(MediaQuery.of(context).size.width) ==
-                      ScreenSize.small
-              ? 25
-              : 0,
+  Widget build(BuildContext context) {
+    final changes = widget.substitutionPlan.changes.where((change) =>
+        change.date ==
+            monday(widget.current ?? DateTime.now())
+                .add(Duration(days: widget.timetableDay.weekday)) &&
+        change.unit == widget.timetableDay.lessons[widget.subject.unit].unit &&
+        change
+            .getMatchingSubjectsByLesson(
+                widget.timetableDay.lessons[widget.subject.unit])
+            .contains(widget.subject));
+    final showOriginal = (changes.isEmpty ||
+            changes
+                .where((change) => change.type == ChangeTypes.exam)
+                .isNotEmpty) &&
+        changes.where((change) => change.type != ChangeTypes.exam).length != 1;
+    return Container(
+      padding: EdgeInsets.only(
+        left: 5,
+        right: 5,
+        top: 10,
+        bottom: widget.timetableDay.lessons.indexOf(
+                        widget.timetableDay.lessons[widget.subject.unit]) ==
+                    widget.timetableDay.lessons.length - 1 &&
+                getScreenSize(MediaQuery.of(context).size.width) ==
+                    ScreenSize.small
+            ? 35
+            : 0,
+      ),
+      child: Center(
+        child: Column(
+          children: [
+            if (showOriginal) TimetableRow(subject: widget.subject),
+            ...changes
+                .map((change) => SubstitutionPlanRow(
+                      change: change.completed(
+                          widget.timetableDay.lessons[widget.subject.unit]),
+                      showUnit: !showOriginal &&
+                          (changes.toList().indexOf(change) == 0),
+                    ))
+                .toList()
+                .cast<Widget>(),
+          ],
         ),
-        child: Center(
-          child: Column(
-            children: [
-              TimetableRow(subject: widget.subject),
-              ...widget.substitutionPlan.changes
-                  .where((change) =>
-                      change.date ==
-                          monday(widget.current ?? DateTime.now()).add(
-                              Duration(days: widget.timetableDay.weekday)) &&
-                      change.unit ==
-                          widget
-                              .timetableDay.lessons[widget.subject.unit].unit &&
-                      change
-                          .getMatchingSubjectsByLesson(
-                              widget.timetableDay.lessons[widget.subject.unit])
-                          .contains(widget.subject))
-                  .map((change) => SubstitutionPlanRow(
-                        change: change,
-                        showUnit: false,
-                        addPadding: false,
-                      ))
-                  .toList()
-                  .cast<Widget>(),
-            ],
-          ),
-        ),
-      );
+      ),
+    );
+  }
 }

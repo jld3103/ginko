@@ -172,7 +172,7 @@ void main() {
           room: '525',
           teacher: 'KRA',
           changed: Changed(),
-          type: ChangeTypes.unknown,
+          type: ChangeTypes.changed,
         ),
         Change(
           date: DateTime(2019, 7, 8),
@@ -181,7 +181,7 @@ void main() {
           room: '526',
           teacher: 'STA',
           changed: Changed(),
-          type: ChangeTypes.unknown,
+          type: ChangeTypes.changed,
         ),
         Change(
           date: DateTime(2019, 7, 8),
@@ -190,7 +190,7 @@ void main() {
           room: '527',
           teacher: 'KRA',
           changed: Changed(),
-          type: ChangeTypes.unknown,
+          type: ChangeTypes.changed,
         ),
         Change(
           date: DateTime(2019, 7, 8),
@@ -199,25 +199,25 @@ void main() {
           room: '527',
           teacher: 'LIC',
           changed: Changed(),
-          type: ChangeTypes.unknown,
+          type: ChangeTypes.changed,
         ),
         Change(
           date: DateTime(2019, 7, 8),
           unit: 0,
           room: '527',
           changed: Changed(),
-          type: ChangeTypes.unknown,
           subject: null,
           teacher: null,
+          type: ChangeTypes.changed,
         ),
         Change(
           date: DateTime(2019, 7, 8),
           unit: 1,
           room: '527',
           changed: Changed(),
-          type: ChangeTypes.unknown,
           subject: null,
           teacher: null,
+          type: ChangeTypes.changed,
         ),
       ];
       final timetableForGrade = TimetableForGrade(
@@ -335,6 +335,7 @@ void main() {
           subject: null,
           teacher: null,
           changed: null,
+          type: ChangeTypes.changed,
         ),
         Change(
           unit: 0,
@@ -343,6 +344,7 @@ void main() {
           subject: null,
           teacher: null,
           changed: null,
+          type: ChangeTypes.changed,
         ),
       ];
       final lessons = [
@@ -377,6 +379,38 @@ void main() {
       expect(changes[1].getMatchingSubjectsByLesson(lessons[0])[0].room, 'GRH');
       expect(changes[0].getMatchingSubjectsByLesson(lessons[1])[0].room, 'KLH');
       expect(changes[1].getMatchingSubjectsByLesson(lessons[1])[0].room, 'KLH');
+    });
+
+    test('Can complete change', () {
+      final change = Change(
+        date: DateTime(2019, 7, 11),
+        unit: 0,
+        course: 'GK1',
+        changed: Changed(),
+        type: ChangeTypes.changed,
+        subject: null,
+        teacher: null,
+        room: null,
+      );
+      expect(change.subject, null);
+      expect(change.room, null);
+      expect(change.teacher, null);
+      final completedChange = change.completed(Lesson(
+        unit: 0,
+        block: null,
+        subjects: [
+          Subject(
+            unit: 0,
+            weeks: 'AB',
+            subject: 'EK',
+            room: '525',
+            teacher: 'KRA',
+          ),
+        ],
+      ));
+      expect(completedChange.subject, 'EK');
+      expect(completedChange.room, '525');
+      expect(completedChange.teacher, 'KRA');
     });
 
     test('Can create replacement plan day', () {

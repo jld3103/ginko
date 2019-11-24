@@ -1,4 +1,7 @@
 
+# 2019-11-24  
+ jld3103: Update substitution design  
+
 # 2019-11-19  
  jld3103: Update go-flutter dependencies  
 

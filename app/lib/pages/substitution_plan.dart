@@ -196,7 +196,11 @@ class _SubstitutionPlanPageState extends State<SubstitutionPlanPage>
                                       matchingChangesPreviousUnit = change.unit;
                                       return SizeLimit(
                                         child: SubstitutionPlanRow(
-                                          change: change,
+                                          change: change.completed(Static
+                                              .timetable
+                                              .data
+                                              .days[change.date.weekday - 1]
+                                              .lessons[change.unit]),
                                           showUnit: showUnit,
                                           showCard: false,
                                         ),
@@ -220,7 +224,11 @@ class _SubstitutionPlanPageState extends State<SubstitutionPlanPage>
                                           change.unit;
                                       return SizeLimit(
                                         child: SubstitutionPlanRow(
-                                          change: change,
+                                          change: change.completed(Static
+                                              .timetable
+                                              .data
+                                              .days[change.date.weekday - 1]
+                                              .lessons[change.unit]),
                                           showUnit: showUnit,
                                           showCard: false,
                                         ),

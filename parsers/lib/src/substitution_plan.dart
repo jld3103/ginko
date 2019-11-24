@@ -68,13 +68,13 @@ class SubstitutionPlanParser {
           });
           for (final unit in units) {
             try {
-              var type = ChangeTypes.unknown;
+              ChangeTypes type;
               if (fields[3] == 'Entfall') {
                 type = ChangeTypes.freeLesson;
               } else if (fields[3] == 'Klausur') {
                 type = ChangeTypes.exam;
               } else {
-                type = ChangeTypes.replaced;
+                type = ChangeTypes.changed;
               }
               while (fields[2].contains('  ')) {
                 fields[2] = fields[2].replaceAll('  ', ' ').trim();
