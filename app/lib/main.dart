@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:after_layout/after_layout.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart'
@@ -164,30 +162,22 @@ class AppState extends State<App>
       ));
     }
     if (Platform().isMobile || Platform().isWeb) {
-      await updateTokens(context);
       Static.firebaseMessaging.configure(
-        onLaunch: (data) async => _handleForegroundNotification(context, data),
-        onResume: (data) async => _handleForegroundNotification(context, data),
-        onMessage: (data) async => _handleForegroundNotification(context, data),
+        onLaunch: (data) async {
+          print('onLaunch: $data');
+          await _backgroundNotification(data);
+        },
+        onResume: (data) async {
+          print('onResume: $data');
+          await _backgroundNotification(data);
+        },
+        onMessage: (data) async {
+          print('onMessage: $data');
+          await _foregroundNotification(data);
+        },
       );
+      await updateTokens(context);
     }
-    _channel.setMethodCallHandler((call) async {
-      if (call.method == 'background_notification') {
-        if (call.arguments.toString() == Keys.substitutionPlan) {
-          await Static.substitutionPlan.forceLoadOnline();
-          await Navigator.of(context).pushReplacementNamed('/substitutionplan');
-        } else if (call.arguments.toString() == Keys.cafetoria) {
-          await Static.cafetoria.forceLoadOnline();
-          await Navigator.of(context).pushReplacementNamed('/cafetoria');
-        } else if (call.arguments.toString() == Keys.aiXformation) {
-          await Static.aiXformation.forceLoadOnline();
-          await Navigator.of(context).pushReplacementNamed('/aixformation');
-        }
-      } else if (call.method == 'foreground_notification') {
-        await _handleForegroundNotification(
-            context, json.decode(json.encode(call.arguments)));
-      }
-    });
     if (Platform().isAndroid) {
       await _channel.invokeMethod('channel_registered');
     }
@@ -240,27 +230,7 @@ class AppState extends State<App>
     }
   }
 
-  /// Update all tokens
-  static Future updateTokens(BuildContext context) async {
-    if (Platform().isMobile || Platform().isWeb) {
-      await Static.firebaseMessaging.requestNotificationPermissions();
-      final token = await Static.firebaseMessaging.getToken();
-      if (token != 'null') {
-        Static.device.object = Device(
-          token: token,
-          os: Platform().platformName,
-          language: AppTranslations.of(context).locale.languageCode,
-        );
-        try {
-          await Static.device.loadOnline();
-          // ignore: empty_catches
-        } on DioError {}
-      }
-    }
-  }
-
-  static Future _handleForegroundNotification(
-      BuildContext context, Map<String, dynamic> data) async {
+  Future _foregroundNotification(Map<String, dynamic> data) async {
     FutureCallbackShouldRender refreshCallback;
     Loader loader;
     String route;
@@ -285,7 +255,6 @@ class AppState extends State<App>
         text = AppTranslations.of(context).newAiXformationArticle;
         break;
     }
-
     Scaffold.of(context).showSnackBar(SnackBar(
       action: refreshCallback == null
           ? SnackBarAction(
@@ -300,6 +269,45 @@ class AppState extends State<App>
     ));
     if (refreshCallback != null) {
       await refreshCallback(true);
+    }
+  }
+
+  Future _backgroundNotification(Map<String, dynamic> data) async {
+    switch (data['type']) {
+      case Keys.substitutionPlan:
+        await Static.substitutionPlan.forceLoadOnline();
+        await Navigator.of(context).pushReplacementNamed('/substitutionplan');
+        break;
+      case Keys.cafetoria:
+        await Static.cafetoria.forceLoadOnline();
+        await Navigator.of(context).pushReplacementNamed('/cafetoria');
+        break;
+      case Keys.aiXformation:
+        await Static.aiXformation.forceLoadOnline();
+        await Navigator.of(context).pushReplacementNamed('/aixformation');
+        break;
+      default:
+        print('Unknown key: ${data['type']}');
+        break;
+    }
+  }
+
+  /// Update all tokens
+  static Future updateTokens(BuildContext context) async {
+    if ((Platform().isMobile || Platform().isWeb) &&
+        await Static.firebaseMessaging.hasNotificationPermissions()) {
+      final token = await Static.firebaseMessaging.getToken();
+      if (token != 'null') {
+        Static.device.object = Device(
+          token: token,
+          os: Platform().platformName,
+          language: AppTranslations.of(context).locale.languageCode,
+        );
+        try {
+          await Static.device.forceLoadOnline();
+          // ignore: empty_catches
+        } on DioError {}
+      }
     }
   }
 

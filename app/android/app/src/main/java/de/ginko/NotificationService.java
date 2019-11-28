@@ -18,8 +18,6 @@ import io.flutter.plugin.common.MethodChannel;
 
 import java.util.Objects;
 
-import static de.ginko.MainActivity.CHANNEL;
-
 public class NotificationService extends FirebaseMessagingService {
 
     @SuppressWarnings("deprecation")
@@ -30,16 +28,14 @@ public class NotificationService extends FirebaseMessagingService {
         String type = remoteMessage.getData().get("type");
 
         if (type != null && (type.equals("substitutionplan") || type.equals("cafetoria") || type.equals("aixformation"))) {
-            System.out.println("Notification received: " + remoteMessage.getData());
-            if (MainActivity.dartExecutor != null && getCurrentClass().startsWith(getApplication().getPackageName())) {
-                System.out.println("Updating UI");
-                new Handler(Looper.getMainLooper()).post(() -> new MethodChannel(MainActivity.dartExecutor, CHANNEL).invokeMethod("foreground_notification", remoteMessage.getData()));
-                return;
-            }
-            System.out.println("Showing notification");
-
             Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra("channel", type);
+            for (int i = 0; i < remoteMessage.getData().keySet().size() - 1; i++) {
+                String key = Objects.requireNonNull(remoteMessage.getData().keySet().toArray())[i].toString();
+                intent.putExtra(key, remoteMessage.getData().get(key));
+            }
+            if (MainActivity.dartExecutor != null && getCurrentClass().startsWith(getApplication().getPackageName())) {
+                sendMessageFromIntent("onMesage", intent);
+            }
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             int uniqueInt = (int) (System.currentTimeMillis() & 0xfffffff);
             PendingIntent pendingIntent = PendingIntent.getActivity(this, uniqueInt, intent, PendingIntent.FLAG_CANCEL_CURRENT);

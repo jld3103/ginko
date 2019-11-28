@@ -1,3 +1,4 @@
+@JS('firebase')
 library firebase;
 
 import 'dart:async';
@@ -6,82 +7,53 @@ import 'dart:html';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:ginko/plugins/firebase/firebase_base.dart';
+import 'package:ginko/plugins/firebase/notification_web.dart';
+import 'package:js/js.dart';
+import 'package:js/js_util.dart';
 
 // ignore: avoid_annotating_with_dynamic
-typedef Callback = void Function(dynamic result);
+typedef DataCallback = void Function(dynamic data);
+
+// ignore: public_member_api_docs
+external Messaging messaging();
+
+@JS()
+// ignore: public_member_api_docs
+class Messaging {
+  // ignore: public_member_api_docs
+  external dynamic getToken();
+
+  // ignore: public_member_api_docs
+  external void onTokenRefresh(VoidCallback callback);
+
+  // ignore: public_member_api_docs, type_annotate_public_apis
+  external void onMessage(DataCallback callback);
+}
 
 /// FirebaseMessaging class
-/// Firebase messaging for Android and iOS
+/// Firebase messaging for Web
 class FirebaseMessaging extends FirebaseMessagingBase {
-  // ignore: public_member_api_docs
-  FirebaseMessaging() {
-    var canceled = false;
-    var timer = Timer(Duration(milliseconds: 100), () {
-      if (!canceled) {
-        _channel.postMessage(json.encode({'method': 'is_setup'}));
-      }
-    });
-    _channel.onMessage.listen((event) {
-      final data = json.decode(event.data);
-      if (data['method'] == 'is_setup') {
-        canceled = true;
-        timer.cancel();
-        timer = null;
-      } else if (data['method'] == 'get_token') {
-        _tokenGetCallbacks[0](data['result']);
-        _tokenGetCallbacks.removeAt(0);
-      } else if (data['method'] == 'token_refresh') {
-        for (final callback in _tokenRefreshCallbacks) {
-          callback(data['result']);
-        }
-      } else if (data['method'] == 'request_permissions') {
-        _permissionsRequestCallbacks[0](data['result']);
-        _permissionsRequestCallbacks.removeAt(0);
-      } else if (data['method'] == 'has_permissions') {
-        _permissionsCheckCallbacks[0](data['result']);
-        _permissionsCheckCallbacks.removeAt(0);
-      } else if (data['method'] == 'on_message') {
-        _onMessage(data['result']);
-      } else {
-        print(data);
-      }
-    });
-  }
-
-  final _channel = BroadcastChannel('firebase_messaging');
-
-  final List<Callback> _tokenGetCallbacks = [];
-  final List<Callback> _tokenRefreshCallbacks = [];
-  final List<Callback> _permissionsRequestCallbacks = [];
-  final List<Callback> _permissionsCheckCallbacks = [];
-
+  Messaging _messaging;
   MessageHandler _onMessage;
-
-  // ignore: unused_field
   MessageHandler _onLaunch;
-
-  // ignore: unused_field
   MessageHandler _onResume;
 
   @override
   Future<bool> requestNotificationPermissions(
       [IosNotificationSettings iosSettings =
           const IosNotificationSettings()]) async {
-    final completer = Completer<bool>();
-    // ignore: unnecessary_lambdas
-    _permissionsRequestCallbacks.add((data) => completer.complete(data));
-    _channel.postMessage(json.encode({'method': 'request_permissions'}));
-    return completer.future;
+    final permission = await Notification.requestPermission();
+    if (permission == 'granted') {
+      print('Notification permission granted.');
+      return true;
+    } else {
+      print('Unable to get permission to notify.');
+      return false;
+    }
   }
 
   @override
-  Future<bool> hasNotificationPermissions() {
-    final completer = Completer<bool>();
-    // ignore: unnecessary_lambdas
-    _permissionsCheckCallbacks.add((data) => completer.complete(data));
-    _channel.postMessage(json.encode({'method': 'has_permissions'}));
-    return completer.future;
-  }
+  Future<bool> hasNotificationPermissions() async => permission == 'granted';
 
   @override
   // ignore: missing_return
@@ -97,27 +69,35 @@ class FirebaseMessaging extends FirebaseMessagingBase {
     _onMessage = onMessage;
     _onLaunch = onLaunch;
     _onResume = onResume;
+    _messaging = messaging();
+    window.navigator.serviceWorker.addEventListener('message', (rawEvent) {
+      final MessageEvent event = rawEvent;
+      final Map<String, dynamic> data = event.data.cast<String, dynamic>();
+      if (data['type'] != null) {
+        if (data['type'] == '1') {
+          _onResume(data['data']);
+        } else {
+          final messageChannel = MessageChannel();
+          window.navigator.serviceWorker.controller
+              .postMessage('received', [messageChannel.port2]);
+          _onLaunch(data['data']);
+        }
+      } else {
+        _onMessage(json
+            .decode(json.encode(data['firebase-messaging-msg-data']['data'])));
+      }
+    });
   }
 
   @override
-  Future<String> getToken() {
-    final completer = Completer<String>();
-    _tokenGetCallbacks.add((data) {
-      completer.complete(data.toString());
-    });
-    _channel.postMessage(json.encode({'method': 'get_token'}));
-    return completer.future;
-  }
+  Future<String> getToken() => promiseToFuture(_messaging.getToken());
 
   @override
   Stream<String> get onTokenRefresh {
     final controller = StreamController<String>();
-    final callback = controller.add;
-    _tokenRefreshCallbacks.add(callback);
-    controller.onCancel = () {
-      _tokenRefreshCallbacks.remove(callback);
-      controller.close();
-    };
+    _messaging.onTokenRefresh(
+        () async => controller.add(await _messaging.getToken()));
+    controller.onCancel = controller.close;
     return controller.stream;
   }
 }

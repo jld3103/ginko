@@ -1,3 +1,5 @@
+library pwa;
+
 import 'dart:typed_data';
 
 import 'package:ginko/plugins/pwa/pwa_base.dart';
@@ -9,7 +11,7 @@ class PWA extends PWABase {
   Future<bool> install() async => false;
 
   @override
-  Future<bool> canInstall() async => false;
+  bool canInstall() => false;
 
   @override
   void download(String fileName, Uri uri) {}

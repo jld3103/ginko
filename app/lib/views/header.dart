@@ -76,9 +76,9 @@ class _HeaderState extends State<Header> with AfterLayoutMixin<Header> {
                     setState(() {
                       _permissionsChecking = true;
                     });
-                    await AppState.updateTokens(context);
                     _permissionsGranted = await Static.firebaseMessaging
-                        .hasNotificationPermissions();
+                        .requestNotificationPermissions();
+                    await AppState.updateTokens(context);
                     setState(() {
                       _permissionsChecking = false;
                     });

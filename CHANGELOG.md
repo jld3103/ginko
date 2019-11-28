@@ -1,4 +1,7 @@
 
+# 2019-11-28  
+ jld3103: Rewrite web plugins in Dart and unify Firebase message routing  
+
 # 2019-11-24  
  jld3103: Update substitution design  
 

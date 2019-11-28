@@ -38,7 +38,7 @@ self.addEventListener('notificationclick', event => {
 
     const urlToOpen = new URL(self.location.origin);
 
-    const data = clickedNotification.data;
+    const data = {'data': clickedNotification.data['firebase-messaging-msg-data']};
 
     const promiseChain = clients.matchAll({
         type: 'window',
@@ -47,27 +47,35 @@ self.addEventListener('notificationclick', event => {
         let matchingClient = windowClients.filter(client => new URL(client.url).hostname === urlToOpen.hostname)[0];
         // Check if window already open or has to be opened
         if (matchingClient) {
+            data['type'] = '1';
             return matchingClient.focus();
         } else {
+            data['type'] = '2';
             return clients.openWindow(urlToOpen.href);
         }
     });
 
     event.waitUntil(promiseChain);
-    sendData(urlToOpen, event, data);
+    sendData(urlToOpen, event, data, 0);
 });
 
+let postInterval;
+
 // Retry sending data to the client until a client is available to send to
-function sendData(urlToOpen, event, data) {
+function sendData(urlToOpen, event, data, count) {
     const promiseChain = clients.matchAll({
         type: 'window',
         includeUncontrolled: true
     }).then(windowClients => {
         let matchingClient = windowClients.filter(client => new URL(client.url).hostname === urlToOpen.hostname)[0];
         if (matchingClient) {
-            matchingClient.postMessage(data);
+            if (count === 0) {
+                matchingClient.postMessage(data);
+            } else {
+                postInterval = setInterval(() => matchingClient.postMessage(data), 1000);
+            }
         } else {
-            setTimeout(() => sendData(urlToOpen, event, data), 100);
+            setTimeout(() => sendData(urlToOpen, event, data, count + 1), 100);
         }
     });
 
@@ -77,6 +85,10 @@ function sendData(urlToOpen, event, data) {
 
     }
 }
+
+self.addEventListener('message', (event) => {
+    clearInterval(postInterval);
+});
 
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js');
 
@@ -91,7 +103,7 @@ if (workbox) {
         '/assets/packages/material_design_icons_flutter/lib/fonts/materialdesignicons-webfont.ttf',
         '/assets/packages/cupertino_icons/assets/CupertinoIcons.ttf',
         '/assets/FontManifest.json',
-        '/assets/web/manifest.json',
+        '/manifest.json',
     ], {
         // Ignore all URL parameters.
         ignoreURLParametersMatching: [/.*/]

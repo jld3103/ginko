@@ -1,7 +1,7 @@
 {
   "short_name": "Ginko",
   "name": "Ginko",
-  "description": "An app for the Viktoriaschule in Aachen, Germany",
+  "description": "Eine App für die Viktoriaschule",
   "start_url": "/",
   "scope": "/",
   "background_color": "white",

@@ -5,9 +5,9 @@
     <title>Ginko</title>
     <link rel="icon" type="image/png" href="assets/images/logo_green_192x192.png"/>
     <link rel="apple-touch-icon" type="image/png" href="assets/images/logo_green_192x192.png">
-    <link rel="manifest" href="assets/web/manifest.json"/>
+    <link rel="manifest" href="manifest.json"/>
     <meta charset="UTF-8">
-    <meta name="description" content="An app for the Viktoriaschule in Aachen, Germany"/>
+    <meta name="description" content="Eine App für die Viktoriaschule"/>
     <meta name="keywords" content="Viktorischule,Aachen,Ginko">
     <meta name="author" content="Jan-Luca Döen">
     <meta name="theme-color" content="#64A441"/>
@@ -28,9 +28,17 @@
             appId: "1:324907216916:web:5a3512edd37931c6"
         };
         firebase.initializeApp(firebaseConfig);
+        navigator.serviceWorker.register('sw.js')
+            .then((registration) => {
+                if (firebase.messaging() != null) {
+                    firebase.messaging().useServiceWorker(registration);
+                }
+            });
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            window.deferredPrompt = e;
+        });
     </script>
-    <script src="assets/web/firebase-messaging.js"></script>
-    <script src="assets/web/pwa.js"></script>
 </head>
 
 <body>

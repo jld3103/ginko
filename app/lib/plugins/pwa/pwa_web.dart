@@ -1,10 +1,14 @@
+@JS('window')
+library pwa;
+
 import 'dart:async';
-import 'dart:convert';
 import 'dart:html';
+import 'dart:js';
 import 'dart:typed_data';
 
 import 'package:ginko/plugins/pwa/pwa_base.dart';
 import 'package:ginko/views/cloud/directory_overhead.dart';
+import 'package:js/js.dart';
 
 // ignore: avoid_annotating_with_dynamic
 typedef Callback = void Function(dynamic result);
@@ -13,54 +17,29 @@ typedef Callback = void Function(dynamic result);
 class PWA extends PWABase {
   // ignore: public_member_api_docs
   PWA() {
-    var canceled = false;
-    var timer = Timer(Duration(milliseconds: 100), () {
-      if (!canceled) {
-        _channel.postMessage(json.encode({'method': 'is_setup'}));
-      }
-    });
-    _channel.onMessage.listen((event) {
-      final data = json.decode(event.data);
-      if (data['method'] == 'is_setup') {
-        canceled = true;
-        if (timer != null) {
-          timer.cancel();
-          timer = null;
-        }
-      } else if (data['method'] == 'install') {
-        _installCallbacks[0](data['result']);
-        _installCallbacks.removeAt(0);
-      } else if (data['method'] == 'can_install') {
-        _canInstallCallbacks[0](data['result']);
-        _canInstallCallbacks.removeAt(0);
-      } else {
-        print(data);
-      }
-    });
+    _deferredPrompt = context['deferredPrompt'];
   }
 
-  final _channel = BroadcastChannel('pwa');
-
-  final List<Callback> _installCallbacks = [];
-  final List<Callback> _canInstallCallbacks = [];
+  BeforeInstallPromptEvent _deferredPrompt;
 
   @override
-  Future<bool> install() {
-    final completer = Completer<bool>();
-    // ignore: unnecessary_lambdas
-    _installCallbacks.add((data) => completer.complete(data));
-    _channel.postMessage(json.encode({'method': 'install'}));
-    return completer.future;
+  Future<bool> install() async {
+    if (_deferredPrompt != null) {
+      await _deferredPrompt.prompt();
+      // ignore: omit_local_variable_types
+      final Map<String, dynamic> choiceResult =
+          await _deferredPrompt.userChoice;
+      final accepted = choiceResult['outcome'] == 'accepted';
+      if (accepted) {
+        _deferredPrompt = null;
+      }
+      return accepted;
+    }
+    return false;
   }
 
   @override
-  Future<bool> canInstall() {
-    final completer = Completer<bool>();
-    // ignore: unnecessary_lambdas
-    _canInstallCallbacks.add((data) => completer.complete(data));
-    _channel.postMessage(json.encode({'method': 'can_install'}));
-    return completer.future;
-  }
+  bool canInstall() => _deferredPrompt != null;
 
   @override
   void download(String fileName, Uri uri) {

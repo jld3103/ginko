@@ -1,3 +1,5 @@
+library pwa;
+
 // ignore: public_member_api_docs
 import 'package:ginko/views/cloud/directory_overhead.dart';
 
@@ -7,7 +9,7 @@ abstract class PWABase {
   Future<bool> install();
 
   // ignore: public_member_api_docs
-  Future<bool> canInstall();
+  bool canInstall();
 
   // ignore: public_member_api_docs
   void download(String fileName, Uri uri);
