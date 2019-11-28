@@ -43,7 +43,7 @@ public class MainActivity extends FlutterActivity {
         sendMessageFromIntent("onResume", intent);
     }
 
-    private boolean sendMessageFromIntent(String method, Intent intent) {
+    static boolean sendMessageFromIntent(String method, Intent intent) {
         Bundle extras = intent.getExtras();
 
         if (extras == null || extras.get("type") == null) {

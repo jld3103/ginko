@@ -5,8 +5,6 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.Html;
 import android.text.SpannableString;
 import androidx.annotation.NonNull;
@@ -14,7 +12,6 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import io.flutter.plugin.common.MethodChannel;
 
 import java.util.Objects;
 
@@ -34,7 +31,7 @@ public class NotificationService extends FirebaseMessagingService {
                 intent.putExtra(key, remoteMessage.getData().get(key));
             }
             if (MainActivity.dartExecutor != null && getCurrentClass().startsWith(getApplication().getPackageName())) {
-                sendMessageFromIntent("onMesage", intent);
+                MainActivity.sendMessageFromIntent("onMesage", intent);
             }
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             int uniqueInt = (int) (System.currentTimeMillis() & 0xfffffff);
