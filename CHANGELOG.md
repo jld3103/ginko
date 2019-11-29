@@ -1,4 +1,7 @@
 
+# 2019-11-29  
+ jld3103: Fix AiXformation media parsing  
+
 # 2019-11-28  
  jld3103: Fix android  
  jld3103: Rewrite web plugins in Dart and unify Firebase message routing  

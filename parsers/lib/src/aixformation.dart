@@ -54,7 +54,6 @@ class AiXformationParser {
           print(url);
           print(e.response);
           print(e);
-          print(stacktrace);
         }
       }
       if (media[post['featured_media'].toString()] == null) {
@@ -72,7 +71,11 @@ class AiXformationParser {
           print(url);
           print(e.response);
           print(e);
-          print(stacktrace);
+          media[post['featured_media'].toString()] = {
+            'thumbnail': post['jetpack_featured_media_url'],
+            'medium': post['jetpack_featured_media_url'],
+            'full': post['jetpack_featured_media_url'],
+          };
         }
       }
       for (final tag in post['tags']) {
@@ -86,7 +89,6 @@ class AiXformationParser {
             print(url);
             print(e.response);
             print(e);
-            print(stacktrace);
           }
         }
       }
