@@ -68,7 +68,6 @@ Future main(List<String> args) async {
     substitutionPlan,
     timetable,
     calendar,
-    teachers,
     aiXformation,
     cafetoria,
     releases,
