@@ -12,7 +12,8 @@ class Timetable {
   });
 
   /// Creates a Timetable object from json
-  factory Timetable.fromJSON(json) => Timetable(
+  factory Timetable.fromJSON(json) =>
+      Timetable(
         timetables: json['timetables']
             .map((i) => TimetableForGrade.fromJSON(i))
             .toList()
@@ -20,7 +21,8 @@ class Timetable {
       );
 
   /// Creates json from a Timetable object
-  Map<String, dynamic> toJSON() => {
+  Map<String, dynamic> toJSON() =>
+      {
         'timetables': timetables.map((i) => i.toJSON()).toList(),
       };
 
@@ -39,7 +41,8 @@ class TimetableForGrade {
   });
 
   /// Creates a TimetableForGrade object from json
-  factory TimetableForGrade.fromJSON(json) => TimetableForGrade(
+  factory TimetableForGrade.fromJSON(json) =>
+      TimetableForGrade(
         grade: json['grade'],
         date: DateTime.parse(json['date']),
         days: json['days']
@@ -49,7 +52,8 @@ class TimetableForGrade {
       );
 
   /// Creates json from a TimetableForGrade object
-  Map<String, dynamic> toJSON() => {
+  Map<String, dynamic> toJSON() =>
+      {
         'grade': grade,
         'date': date.toIso8601String(),
         'days': days.map((i) => i.toJSON()).toList(),
@@ -66,7 +70,7 @@ class TimetableForGrade {
       day = monday(date);
     }
     final lessonCount =
-        days[day.weekday - 1].userLessonsCount(selection, isWeekA(day));
+    days[day.weekday - 1].userLessonsCount(selection, isWeekA(day));
     if (date.isAfter(day.add(Times.getUnitTimes(lessonCount - 1)[1]))) {
       day = day.add(Duration(days: 1));
     }
@@ -99,16 +103,18 @@ class TimetableDay {
   });
 
   /// Creates a TimetableDay object from json
-  factory TimetableDay.fromJSON(json) => TimetableDay(
+  factory TimetableDay.fromJSON(json) =>
+      TimetableDay(
         weekday: json['weekday'],
         lessons: json['lessons']
-            .map((i) => Lesson.fromJSON(i))
+            .map((i) => TimetableLesson.fromJSON(i))
             .toList()
-            .cast<Lesson>(),
+            .cast<TimetableLesson>(),
       );
 
   /// Creates json from a TimetableDay object
-  Map<String, dynamic> toJSON() => {
+  Map<String, dynamic> toJSON() =>
+      {
         'weekday': weekday,
         'lessons': lessons.map((i) => i.toJSON()).toList(),
       };
@@ -121,13 +127,11 @@ class TimetableDay {
         final lesson = lessons[j];
         final selected = lesson.subjects
             .where((subject) =>
-                subject.identifier ==
-                selection
-                    .getSelection(Keys.selectionBlock(lesson.block, weekA)))
+        subject.identifier ==
+            selection
+                .getSelection(Keys.selectionBlock(lesson.block, weekA)))
             .toList();
-        if (selected.isNotEmpty &&
-            selected[0].subject != Subjects.subjects['FR'] &&
-            j != 5) {
+        if (selected.isNotEmpty && selected[0].subject != 'FR' && j != 5) {
           somethingBetween = true;
         }
       }
@@ -145,31 +149,33 @@ class TimetableDay {
   int weekday;
 
   // ignore: public_member_api_docs
-  List<Lesson> lessons;
+  List<TimetableLesson> lessons;
 }
 
-/// Lesson class
+/// TimetableLesson class
 /// describes a lesson
-class Lesson {
+class TimetableLesson {
   // ignore: public_member_api_docs
-  Lesson({
+  TimetableLesson({
     @required this.unit,
     @required this.block,
     @required this.subjects,
   });
 
-  /// Creates a Lesson object from json
-  factory Lesson.fromJSON(json) => Lesson(
+  /// Creates a TimetableLesson object from json
+  factory TimetableLesson.fromJSON(json) =>
+      TimetableLesson(
         unit: json['unit'],
         block: json['block'],
         subjects: json['subjects']
-            .map((i) => Subject.fromJSON(i, json['unit']))
+            .map((i) => TimetableSubject.fromJSON(i, json['unit']))
             .toList()
-            .cast<Subject>(),
+            .cast<TimetableSubject>(),
       );
 
-  /// Creates json from a Lesson object
-  Map<String, dynamic> toJSON() => {
+  /// Creates json from a TimetableLesson object
+  Map<String, dynamic> toJSON() =>
+      {
         'unit': unit,
         'block': block,
         'subjects': subjects.map((i) => i.toJSON()).toList(),
@@ -182,14 +188,14 @@ class Lesson {
   String block;
 
   // ignore: public_member_api_docs
-  List<Subject> subjects;
+  List<TimetableSubject> subjects;
 }
 
-/// Subject class
+/// TimetableSubject class
 /// describes a subject
-class Subject {
+class TimetableSubject {
   // ignore: public_member_api_docs
-  Subject({
+  TimetableSubject({
     @required this.teacher,
     @required this.subject,
     @required this.room,
@@ -198,8 +204,9 @@ class Subject {
     this.course,
   });
 
-  /// Creates a Subject object from json
-  factory Subject.fromJSON(json, int unit) => Subject(
+  /// Creates a TimetableSubject object from json
+  factory TimetableSubject.fromJSON(json, int unit) =>
+      TimetableSubject(
         teacher: json['teacher'],
         subject: json['subject'],
         room: json['room'],
@@ -208,8 +215,9 @@ class Subject {
         unit: unit,
       );
 
-  /// Creates json from a Subject object
-  Map<String, dynamic> toJSON() => {
+  /// Creates json from a TimetableSubject object
+  Map<String, dynamic> toJSON() =>
+      {
         'teacher': teacher,
         'subject': subject,
         'room': room,
@@ -219,18 +227,19 @@ class Subject {
 
   /// Get the changes that match this subject
   List<Change> getMatchingChanges(
-          SubstitutionPlanForGrade substitutionPlanForGrade) =>
+      SubstitutionPlanForGrade substitutionPlanForGrade) =>
       substitutionPlanForGrade.changes
-          .where((change) => change
-              .getMatchingSubjectsByLesson(Lesson(
-                unit: unit,
-                block: null,
-                subjects: [this],
-              ))
-              .where((subject) =>
-                  json.encode(subject.toJSON()) == json.encode(toJSON()))
-              .toList()
-              .isNotEmpty)
+          .where((change) =>
+      change
+          .getMatchingSubjectsByLesson(TimetableLesson(
+        unit: unit,
+        block: null,
+        subjects: [this],
+      ))
+          .where((subject) =>
+      json.encode(subject.toJSON()) == json.encode(toJSON()))
+          .toList()
+          .isNotEmpty)
           .toList();
 
   // ignore: public_member_api_docs
@@ -253,20 +262,4 @@ class Subject {
 
   // ignore: public_member_api_docs
   int unit;
-}
-
-/// MatchingSubject scan
-/// a subject that matches a scanned string
-class MatchingSubject {
-  // ignore: public_member_api_docs
-  MatchingSubject({
-    @required this.subject,
-    @required this.lesson,
-  }) : super();
-
-  // ignore: public_member_api_docs
-  final Subject subject;
-
-  // ignore: public_member_api_docs
-  final Lesson lesson;
 }

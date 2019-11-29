@@ -1,5 +1,6 @@
 
 # 2019-11-29  
+ jld3103: Remove scan and update models accordingly  
  jld3103: Fix AiXformation media parsing  
 
 # 2019-11-28  

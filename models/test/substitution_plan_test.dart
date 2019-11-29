@@ -227,32 +227,32 @@ void main() {
           TimetableDay(
             weekday: 0,
             lessons: [
-              Lesson(
+              TimetableLesson(
                 unit: 0,
                 block: 'EFa',
                 subjects: [
-                  Subject(
+                  TimetableSubject(
                     subject: 'EK',
                     room: '525',
                     teacher: 'KRA',
                     unit: 0,
                     weeks: 'AB',
                   ),
-                  Subject(
+                  TimetableSubject(
                     subject: 'EK',
                     room: '526',
                     teacher: 'STA',
                     unit: 0,
                     weeks: 'AB',
                   ),
-                  Subject(
+                  TimetableSubject(
                     subject: 'PK',
                     room: '527',
                     teacher: 'KRA',
                     unit: 0,
                     weeks: 'AB',
                   ),
-                  Subject(
+                  TimetableSubject(
                     subject: 'KR',
                     room: '527',
                     teacher: 'LIC',
@@ -348,11 +348,11 @@ void main() {
         ),
       ];
       final lessons = [
-        Lesson(
+        TimetableLesson(
           unit: 0,
           block: 'a',
           subjects: [
-            Subject(
+            TimetableSubject(
               unit: 0,
               subject: 'SP',
               room: 'GRH',
@@ -361,11 +361,11 @@ void main() {
             ),
           ],
         ),
-        Lesson(
+        TimetableLesson(
           unit: 0,
           block: 'b',
           subjects: [
-            Subject(
+            TimetableSubject(
               unit: 0,
               subject: 'SP',
               room: 'KLH',
@@ -395,11 +395,11 @@ void main() {
       expect(change.subject, null);
       expect(change.room, null);
       expect(change.teacher, null);
-      final completedChange = change.completed(Lesson(
+      final completedChange = change.completed(TimetableLesson(
         unit: 0,
         block: null,
         subjects: [
-          Subject(
+          TimetableSubject(
             unit: 0,
             weeks: 'AB',
             subject: 'EK',

@@ -17,7 +17,7 @@ class TimetableSelectDialog extends StatelessWidget {
   final int weekday;
 
   // ignore: public_member_api_docs
-  final Lesson lesson;
+  final TimetableLesson lesson;
 
   @override
   Widget build(BuildContext context) => SimpleDialog(
@@ -39,10 +39,8 @@ class TimetableSelectDialog extends StatelessWidget {
             Column(
               children: [
                 for (final subject2 in _bSubjects)
-                  if (Subjects.getSubject(subject1.subject) !=
-                          Subjects.getSubject(subject2.subject) &&
-                      Rooms.getRoom(subject1.room ?? '') !=
-                          Rooms.getRoom(subject2.room ?? '') &&
+                  if (subject1.subject != subject2.subject &&
+                      (subject1.room ?? '') != (subject2.room ?? '') &&
                       subject1.teacher != subject2.teacher)
                     GestureDetector(
                       onTap: () =>
@@ -83,14 +81,14 @@ class TimetableSelectDialog extends StatelessWidget {
         ],
       );
 
-  List<Subject> get _aSubjects => lesson.subjects
+  List<TimetableSubject> get _aSubjects => lesson.subjects
       .where((subject) => subject.weeks == 'A' || subject.subject == 'FR')
       .toList();
 
-  List<Subject> get _bSubjects => lesson.subjects
+  List<TimetableSubject> get _bSubjects => lesson.subjects
       .where((subject) => subject.weeks == 'B' || subject.subject == 'FR')
       .toList();
 
-  List<Subject> get _abSubjects =>
+  List<TimetableSubject> get _abSubjects =>
       lesson.subjects.where((subject) => subject.weeks == 'AB').toList();
 }

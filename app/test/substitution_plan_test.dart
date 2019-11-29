@@ -136,7 +136,7 @@ void main() {
             unit: 0,
             date: DateTime(2019, 8, 9),
             changed: Changed(
-              subject: 'EK',
+              subject: 'PK',
               room: '525',
               teacher: 'KRA',
               info: 'LOL',
@@ -153,7 +153,10 @@ void main() {
           find.text(ServerTranslations.subjects('en')['EK']),
           findsOneWidget,
         );
-        expect(find.text('LOL'), findsOneWidget);
+        expect(
+          find.text('${ServerTranslations.subjects('en')['PK']} LOL'),
+          findsOneWidget,
+        );
         expect(find.text('KRA'), findsNWidgets(2));
         expect(find.text('525'), findsNWidgets(2));
       });

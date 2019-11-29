@@ -44,7 +44,6 @@ class LoadingPageState extends State<LoadingPage>
       Static.substitutionPlan.loadOffline();
       Static.timetable.loadOffline();
       Static.calendar.loadOffline();
-      Static.teachers.loadOffline();
       Static.aiXformation.loadOffline();
       Static.cafetoria.loadOffline();
       Static.releases.loadOffline();
@@ -67,9 +66,6 @@ class LoadingPageState extends State<LoadingPage>
                   break;
                 case Keys.calendar:
                   await Static.calendar.loadOnline();
-                  break;
-                case Keys.teachers:
-                  await Static.teachers.loadOnline();
                   break;
                 case Keys.aiXformation:
                   await Static.aiXformation.loadOnline();

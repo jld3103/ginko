@@ -17,7 +17,7 @@ class TimetableAllRow extends StatefulWidget {
   });
 
   // ignore: public_member_api_docs
-  final Subject subject;
+  final TimetableSubject subject;
 
   // ignore: public_member_api_docs
   final TimetableDay timetableDay;

@@ -139,7 +139,7 @@ class Change {
       };
 
   /// Get all subject indexes in a lesson that match the change
-  List<Subject> getMatchingSubjectsByTimetable(
+  List<TimetableSubject> getMatchingSubjectsByTimetable(
       TimetableForGrade timetableForGrade) {
     try {
       return getMatchingSubjectsByLesson(
@@ -151,7 +151,7 @@ class Change {
   }
 
   /// Get all subject indexes in a lesson that match the change
-  List<Subject> getMatchingSubjectsByLesson(Lesson lesson) {
+  List<TimetableSubject> getMatchingSubjectsByLesson(TimetableLesson lesson) {
     if (unit != lesson.unit) {
       return [];
     }
@@ -175,7 +175,7 @@ class Change {
   }
 
   /// Complete the information of this change using the timetable
-  Change completed(Lesson lesson) {
+  Change completed(TimetableLesson lesson) {
     final newChange = Change.fromJSON(toJSON());
     if (lesson == null) {
       return newChange;

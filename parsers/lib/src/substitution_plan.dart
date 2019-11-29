@@ -125,24 +125,6 @@ class SubstitutionPlanParser {
         }
       }
     }
-    for (final grade in changes.keys) {
-      for (final change in changes[grade]) {
-        try {
-          change.subject = Subjects.getSubject(change.subject);
-          if (change.changed.subject != null) {
-            change.changed.subject =
-                Subjects.getSubject(change.changed.subject);
-          }
-          change.room = Rooms.getRoom(change.room);
-          if (change.changed.room != null) {
-            change.changed.room = Rooms.getRoom(change.changed.room);
-          }
-          // ignore: avoid_catches_without_on_clauses
-        } catch (e) {
-          print(change.toJSON());
-        }
-      }
-    }
     return grades
         .map((grade) => SubstitutionPlanForGrade(
               grade: grade,

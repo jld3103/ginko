@@ -13,7 +13,7 @@ void main() {
     group('Timetable row', () {
       testWidgets('Normal timetable row', (tester) async {
         await tester.pumpWidget(makeTestableWidget(TimetableRow(
-          subject: Subject(
+          subject: TimetableSubject(
             unit: 0,
             subject: 'EK',
             teacher: 'KRA',
@@ -34,7 +34,7 @@ void main() {
 
       testWidgets('Timetable row without unit', (tester) async {
         await tester.pumpWidget(makeTestableWidget(TimetableRow(
-          subject: Subject(
+          subject: TimetableSubject(
             unit: 0,
             subject: 'EK',
             teacher: 'KRA',
@@ -55,7 +55,7 @@ void main() {
 
       testWidgets('Timetable row without real subject', (tester) async {
         await tester.pumpWidget(makeTestableWidget(TimetableRow(
-          subject: Subject(
+          subject: TimetableSubject(
             unit: 0,
             subject: 'LOL',
             teacher: 'KRA',
@@ -73,7 +73,7 @@ void main() {
 
       testWidgets('Timetable row without real room', (tester) async {
         await tester.pumpWidget(makeTestableWidget(TimetableRow(
-          subject: Subject(
+          subject: TimetableSubject(
             unit: 0,
             subject: 'EK',
             teacher: 'KRA',
@@ -94,7 +94,7 @@ void main() {
 
       testWidgets('Timetable row without real teacher', (tester) async {
         await tester.pumpWidget(makeTestableWidget(TimetableRow(
-          subject: Subject(
+          subject: TimetableSubject(
             unit: 0,
             subject: 'EK',
             teacher: null,
@@ -116,7 +116,7 @@ void main() {
 
     group('Timetable all row', () {
       testWidgets('Timetable all row without changes ', (tester) async {
-        final subject = Subject(
+        final subject = TimetableSubject(
           unit: 0,
           subject: 'EK',
           teacher: 'KRA',
@@ -128,7 +128,7 @@ void main() {
           timetableDay: TimetableDay(
             weekday: 0,
             lessons: [
-              Lesson(
+              TimetableLesson(
                 unit: 0,
                 block: 'a',
                 subjects: [subject],
@@ -193,7 +193,7 @@ void main() {
 
       testWidgets('Timetable all row with changes with subject',
           (tester) async {
-        final subject = Subject(
+        final subject = TimetableSubject(
           unit: 0,
           subject: 'EK',
           teacher: 'KRA',
@@ -206,7 +206,7 @@ void main() {
           timetableDay: TimetableDay(
             weekday: 0,
             lessons: [
-              Lesson(
+              TimetableLesson(
                 unit: 0,
                 block: 'a',
                 subjects: [subject],
@@ -255,7 +255,7 @@ void main() {
       });
 
       testWidgets('Timetable all row with changes with info', (tester) async {
-        final subject = Subject(
+        final subject = TimetableSubject(
           unit: 0,
           subject: 'EK',
           teacher: 'KRA',
@@ -268,7 +268,7 @@ void main() {
           timetableDay: TimetableDay(
             weekday: 0,
             lessons: [
-              Lesson(
+              TimetableLesson(
                 unit: 0,
                 block: 'a',
                 subjects: [subject],
@@ -313,7 +313,7 @@ void main() {
 
       testWidgets('Timetable all row with changes with info and subject',
           (tester) async {
-        final subject = Subject(
+        final subject = TimetableSubject(
           unit: 0,
           subject: 'EK',
           teacher: 'KRA',
@@ -326,7 +326,7 @@ void main() {
           timetableDay: TimetableDay(
             weekday: 0,
             lessons: [
-              Lesson(
+              TimetableLesson(
                 unit: 0,
                 block: 'a',
                 subjects: [subject],
@@ -376,21 +376,21 @@ void main() {
     group('Select dialog', () {
       testWidgets('Normal select dialog', (tester) async {
         final subjects = [
-          Subject(
+          TimetableSubject(
             unit: 0,
             subject: 'EK',
             teacher: 'KRA',
             room: '525',
             weeks: 'AB',
           ),
-          Subject(
+          TimetableSubject(
             unit: 0,
             subject: 'IF',
             teacher: 'HNZ',
             room: 'PC2',
             weeks: 'AB',
           ),
-          Subject(
+          TimetableSubject(
             unit: 0,
             subject: 'FR',
             weeks: 'AB',
@@ -401,14 +401,14 @@ void main() {
         await tester.pumpWidget(makeTestableWidget(DialogTester(
           TimetableSelectDialog(
             weekday: 0,
-            lesson: Lesson(
+            lesson: TimetableLesson(
               unit: 0,
               block: 'a',
               subjects: subjects,
             ),
           ),
           dataCallback: (data) {
-            final s = data.cast<Subject>();
+            final s = data.cast<TimetableSubject>();
             expect(s.length, 1);
             expect(s[0], subjects[1]);
           },
@@ -443,21 +443,21 @@ void main() {
 
       testWidgets('Select dialog with a/b options', (tester) async {
         final subjects = [
-          Subject(
+          TimetableSubject(
             unit: 0,
             subject: 'EK',
             teacher: 'KRA',
             room: '525',
             weeks: 'A',
           ),
-          Subject(
+          TimetableSubject(
             unit: 0,
             subject: 'IF',
             teacher: 'HNZ',
             room: 'PC2',
             weeks: 'B',
           ),
-          Subject(
+          TimetableSubject(
             unit: 0,
             subject: 'FR',
             weeks: 'AB',
@@ -468,14 +468,14 @@ void main() {
         await tester.pumpWidget(makeTestableWidget(DialogTester(
           TimetableSelectDialog(
             weekday: 0,
-            lesson: Lesson(
+            lesson: TimetableLesson(
               unit: 0,
               block: 'a',
               subjects: subjects,
             ),
           ),
           dataCallback: (data) {
-            final s = data.cast<Subject>();
+            final s = data.cast<TimetableSubject>();
             expect(s.length, 2);
             expect(s[0], subjects[0]);
             expect(s[1], subjects[1]);

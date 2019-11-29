@@ -98,7 +98,8 @@ class AiXformationParser {
           id: post['id'],
           date: DateTime.parse(post['date']),
           title: unescape.convert(post['title']['rendered']),
-          content: document.outerHtml,
+          content:
+              document.outerHtml.replaceAll(RegExp('<script.*script>'), ''),
           url: post['link'],
           thumbnailUrl: media[post['featured_media'].toString()]['thumbnail'],
           mediumUrl: media[post['featured_media'].toString()]['medium'],

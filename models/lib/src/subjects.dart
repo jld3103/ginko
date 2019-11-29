@@ -1,83 +1,32 @@
-// ignore: avoid_classes_with_only_static_members
+import 'package:meta/meta.dart';
+
 /// Subjects class
 /// describes all subjects
 class Subjects {
-  static final Map<String, String> _subjects = {
-    'BI': 'BI',
-    'CH': 'CH',
-    'DP': 'POWI',
-    'DFÖ': 'DF',
-    'DF': 'DF',
-    'DB': 'NW',
-    'D': 'D',
-    'ER': 'ER',
-    'EK': 'EK',
-    'EF': 'EF',
-    'E': 'E',
-    'FS': 'FS',
-    'FR': 'FR',
-    'FÖ': 'FÖ',
-    'FF': 'FF',
-    'F': 'F',
-    'GE': 'GE',
-    'IV': 'MU',
-    'IF': 'IF',
-    'KW': 'KU',
-    'KU': 'KU',
-    'KR': 'KR',
-    'LF': 'LF',
-    'L': 'L',
-    'MU': 'MU',
-    'MIT': 'MIT',
-    'MINT': 'MINT',
-    'MI': 'MINT',
-    'MT': 'MINT',
-    'MF': 'MF',
-    'MC': 'MC',
-    'M': 'M',
-    'NWP': 'NW',
-    'NWB': 'NW',
-    'NW': 'NW',
-    'ORI': 'ORI',
-    'OR': 'ORI',
-    'POW': 'POWI',
-    'POWI': 'POWI',
-    'PO': 'POWI',
-    'PJD': 'PJD',
-    'PJ': 'PJ',
-    'PL': 'PL',
-    'PK': 'PK',
-    'PH': 'PH',
-    'SW': 'SOWI',
-    'SOWI': 'SOWI',
-    'SP': 'SP',
-    'SCHW': 'SCHW',
-    'SN': 'SOWI',
-    'SG': 'SG',
-    'S': 'S',
-    'UC': 'UC',
-    'VM': 'VM',
-    'VE': 'VE',
-    'VD': 'VD'
-  };
+  // ignore: public_member_api_docs
+  Subjects({
+    @required this.subjects,
+    @required this.date,
+  });
+
+  /// Creates a Subjects object from json
+  factory Subjects.fromJSON(json) => Subjects(
+        subjects: json['subjects'],
+        date: DateTime.parse(json['date']),
+      );
+
+  /// Creates json from a Subjects object
+  Map<String, dynamic> toJSON() => {
+        'subjects': subjects,
+        'date': date.toIso8601String(),
+      };
+
+  /// Get the time stamp of this object
+  int get timeStamp => date.millisecondsSinceEpoch ~/ 1000;
 
   // ignore: public_member_api_docs
-  static Map<String, String> get subjects => _subjects;
+  final List<String> subjects;
 
-  /// Gets a subject by some variant of it's name
-  static String getSubject(String name) {
-    if (name == '' || name == null) {
-      return '';
-    }
-    name = name.trim().toUpperCase().replaceAll(RegExp('[ÖÄÜ0-9]'), '');
-    if (_subjects[name] == null) {
-      throw Exception('Unknown subject $name');
-    }
-    return _subjects[name];
-  }
-
-  /// Get the regex to match all subjects
-  static String get regex =>
-      // ignore: lines_longer_than_80_chars
-      '(${_subjects.keys.toList().map((subject) => subject.toLowerCase()).join('|')})';
+  // ignore: public_member_api_docs
+  final DateTime date;
 }

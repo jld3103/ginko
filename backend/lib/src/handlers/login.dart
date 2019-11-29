@@ -39,9 +39,12 @@ class LoginHandler {
       final client =
           NextCloudClient('nextcloud.aachen-vsa.logoip.de', username, password);
       final metaData = await client.metaData.getMetaData();
-      final grade = metaData.groups.singleWhere((group) =>
+      var grade = metaData.groups.singleWhere((group) =>
           grades.contains(group.toUpperCase()) ||
           grades.contains(group.toLowerCase()));
+      if (!grades.contains(grade)) {
+        grade = grade.toUpperCase();
+      }
       await _mySqlConnection.query(
           // ignore: lines_longer_than_80_chars
           'INSERT INTO users_password (username, password) VALUES (\'$username\' , \'$hashedPassword\') ON DUPLICATE KEY UPDATE password = \'$hashedPassword\';');

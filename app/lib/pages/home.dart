@@ -122,7 +122,8 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         onTap: () async {
                           if (lesson.subjects.length > 1) {
                             // ignore: omit_local_variable_types
-                            final List<Subject> selections = await showDialog(
+                            final List<TimetableSubject> selections =
+                                await showDialog(
                               context: context,
                               builder: (context) => TimetableSelectDialog(
                                 weekday: weekday,
@@ -150,7 +151,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         child: TimetableAllRow(
                           subject: subjects.isNotEmpty
                               ? subjects[0]
-                              : Subject(
+                              : TimetableSubject(
                                   subject: Keys.none,
                                   teacher: null,
                                   weeks: null,

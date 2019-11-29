@@ -40,9 +40,6 @@ class Keys {
   static const String user = 'user';
 
   // ignore: public_member_api_docs
-  static const String askedForScan = 'askedforscan';
-
-  // ignore: public_member_api_docs
   static const String teachers = 'teachers';
 
   // ignore: public_member_api_docs
@@ -83,4 +80,10 @@ class Keys {
 
   // ignore: public_member_api_docs
   static const String releases = 'releases';
+
+  // ignore: public_member_api_docs
+  static const String subjects = 'subjects';
+
+  // ignore: public_member_api_docs
+  static const String rooms = 'rooms';
 }

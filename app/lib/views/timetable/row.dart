@@ -11,7 +11,7 @@ class TimetableRow extends StatelessWidget {
   });
 
   // ignore: public_member_api_docs
-  final Subject subject;
+  final TimetableSubject subject;
 
   @override
   Widget build(BuildContext context) {

@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 void main() {
   group('Timetable', () {
     test('Can create subject', () {
-      final subject = Subject(
+      final subject = TimetableSubject(
         teacher: 'KRA',
         subject: 'EK',
         room: '525',
@@ -22,7 +22,7 @@ void main() {
     });
 
     test('Can create subject from JSON', () {
-      final subject = Subject.fromJSON({
+      final subject = TimetableSubject.fromJSON({
         'teacher': 'KRA',
         'subject': 'EK',
         'room': '525',
@@ -40,7 +40,7 @@ void main() {
     });
 
     test('Can create JSON from subject', () {
-      final subject = Subject(
+      final subject = TimetableSubject(
         teacher: 'KRA',
         subject: 'EK',
         room: '525',
@@ -61,7 +61,7 @@ void main() {
     });
 
     test('Can create subject from JSON from subject', () {
-      final subject = Subject(
+      final subject = TimetableSubject(
         teacher: 'KRA',
         subject: 'EK',
         room: '525',
@@ -69,7 +69,10 @@ void main() {
         weeks: 'AB',
         unit: 0,
       );
-      expect(Subject.fromJSON(subject.toJSON(), 0).toJSON(), subject.toJSON());
+      expect(
+        TimetableSubject.fromJSON(subject.toJSON(), 0).toJSON(),
+        subject.toJSON(),
+      );
     });
 
     test('Can apply filter', () {
@@ -156,7 +159,7 @@ void main() {
           ),
         ],
       );
-      final subject = Subject(
+      final subject = TimetableSubject(
         subject: 'EK',
         room: '525',
         teacher: 'KRA',
@@ -174,7 +177,7 @@ void main() {
     });
 
     test('Can create lesson', () {
-      final subject = Subject(
+      final subject = TimetableSubject(
         teacher: 'KRA',
         subject: 'EK',
         room: '525',
@@ -182,7 +185,7 @@ void main() {
         weeks: 'AB',
         unit: 0,
       );
-      final lesson = Lesson(
+      final lesson = TimetableLesson(
         unit: 0,
         block: 'test',
         subjects: [subject],
@@ -196,7 +199,7 @@ void main() {
     });
 
     test('Can create lesson from JSON', () {
-      final subject = Subject(
+      final subject = TimetableSubject(
         teacher: 'KRA',
         subject: 'EK',
         room: '525',
@@ -204,7 +207,7 @@ void main() {
         weeks: 'AB',
         unit: 0,
       );
-      final lesson = Lesson.fromJSON({
+      final lesson = TimetableLesson.fromJSON({
         'unit': 0,
         'block': 'test',
         'subjects': [subject.toJSON()],
@@ -218,7 +221,7 @@ void main() {
     });
 
     test('Can create JSON from lesson', () {
-      final subject = Subject(
+      final subject = TimetableSubject(
         teacher: 'KRA',
         subject: 'EK',
         room: '525',
@@ -226,7 +229,7 @@ void main() {
         weeks: 'AB',
         unit: 0,
       );
-      final lesson = Lesson(
+      final lesson = TimetableLesson(
         unit: 0,
         block: 'test',
         subjects: [subject],
@@ -242,7 +245,7 @@ void main() {
     });
 
     test('Can create lesson from JSON from lesson', () {
-      final subject = Subject(
+      final subject = TimetableSubject(
         teacher: 'KRA',
         subject: 'EK',
         room: '525',
@@ -250,16 +253,19 @@ void main() {
         weeks: 'AB',
         unit: 0,
       );
-      final lesson = Lesson(
+      final lesson = TimetableLesson(
         unit: 0,
         block: 'test',
         subjects: [subject],
       );
-      expect(Lesson.fromJSON(lesson.toJSON()).toJSON(), lesson.toJSON());
+      expect(
+        TimetableLesson.fromJSON(lesson.toJSON()).toJSON(),
+        lesson.toJSON(),
+      );
     });
 
     test('Can create timetable day', () {
-      final lesson = Lesson(
+      final lesson = TimetableLesson(
         unit: 0,
         block: 'test',
         subjects: [],
@@ -276,7 +282,7 @@ void main() {
     });
 
     test('Can create timetable day from JSON', () {
-      final lesson = Lesson(
+      final lesson = TimetableLesson(
         unit: 0,
         block: 'test',
         subjects: [],
@@ -293,7 +299,7 @@ void main() {
     });
 
     test('Can create JSON from timetable day', () {
-      final lesson = Lesson(
+      final lesson = TimetableLesson(
         unit: 0,
         block: 'test',
         subjects: [],
@@ -312,7 +318,7 @@ void main() {
     });
 
     test('Can create timetable day from JSON from timetable day', () {
-      final lesson = Lesson(
+      final lesson = TimetableLesson(
         unit: 0,
         block: 'test',
         subjects: [],
@@ -351,77 +357,77 @@ void main() {
         TimetableDay(
           weekday: 0,
           lessons: [
-            Lesson(
+            TimetableLesson(
               unit: 0,
               block: 'a',
               subjects: [
                 // ignore: missing_required_param
-                Subject(
+                TimetableSubject(
                   subject: 'EK',
                   teacher: 'KRA',
                 ),
               ],
             ),
-            Lesson(
+            TimetableLesson(
               unit: 1,
               block: 'b',
               subjects: [
                 // ignore: missing_required_param
-                Subject(
+                TimetableSubject(
                   subject: 'EK',
                   teacher: 'KRA',
                 ),
               ],
             ),
-            Lesson(
+            TimetableLesson(
               unit: 2,
               block: 'c',
               subjects: [
                 // ignore: missing_required_param
-                Subject(
+                TimetableSubject(
                   subject: 'EK',
                   teacher: 'KRA',
                 ),
               ],
             ),
-            Lesson(
+            TimetableLesson(
               unit: 3,
               block: 'd',
               subjects: [
                 // ignore: missing_required_param
-                Subject(
+                TimetableSubject(
                   subject: 'EK',
                   teacher: 'KRA',
                 ),
               ],
             ),
-            Lesson(
+            TimetableLesson(
               unit: 4,
               block: 'e',
               subjects: [
                 // ignore: missing_required_param
-                Subject(
+                TimetableSubject(
                   subject: 'EK',
                   teacher: 'KRA',
                 ),
               ],
             ),
-            Lesson(
+            TimetableLesson(
               unit: 5,
               block: 'f',
               subjects: [
                 // ignore: missing_required_param
-                Subject(
+                TimetableSubject(
                   subject: 'MIT',
                 ),
               ],
             ),
-            Lesson(
+            TimetableLesson(
               unit: 6,
               block: 'g',
               subjects: [
                 // ignore: missing_required_param
-                Subject(
+                TimetableSubject(
                   subject: 'EK',
                   teacher: 'KRA',
                 ),
@@ -432,77 +438,77 @@ void main() {
         TimetableDay(
           weekday: 1,
           lessons: [
-            Lesson(
+            TimetableLesson(
               unit: 0,
               block: 'h',
               subjects: [
                 // ignore: missing_required_param
-                Subject(
+                TimetableSubject(
                   subject: 'EK',
                   teacher: 'KRA',
                 ),
               ],
             ),
-            Lesson(
+            TimetableLesson(
               unit: 1,
               block: 'i',
               subjects: [
                 // ignore: missing_required_param
-                Subject(
+                TimetableSubject(
                   subject: 'EK',
                   teacher: 'KRA',
                 ),
               ],
             ),
-            Lesson(
+            TimetableLesson(
               unit: 2,
               block: 'j',
               subjects: [
                 // ignore: missing_required_param
-                Subject(
+                TimetableSubject(
                   subject: 'EK',
                   teacher: 'KRA',
                 ),
               ],
             ),
-            Lesson(
+            TimetableLesson(
               unit: 3,
               block: 'k',
               subjects: [
                 // ignore: missing_required_param
-                Subject(
+                TimetableSubject(
                   subject: 'EK',
                   teacher: 'KRA',
                 ),
               ],
             ),
-            Lesson(
+            TimetableLesson(
               unit: 4,
               block: 'l',
               subjects: [
                 // ignore: missing_required_param
-                Subject(
+                TimetableSubject(
                   subject: 'EK',
                   teacher: 'KRA',
                 ),
               ],
             ),
-            Lesson(
+            TimetableLesson(
               unit: 5,
               block: 'm',
               subjects: [
                 // ignore: missing_required_param
-                Subject(
+                TimetableSubject(
                   subject: 'MIT',
                 ),
               ],
             ),
-            Lesson(
+            TimetableLesson(
               unit: 6,
               block: 'n',
               subjects: [
                 // ignore: missing_required_param
-                Subject(
+                TimetableSubject(
                   subject: 'EK',
                   teacher: 'KRA',
                 ),
@@ -513,23 +519,23 @@ void main() {
         TimetableDay(
           weekday: 2,
           lessons: [
-            Lesson(
+            TimetableLesson(
               unit: 0,
               block: 'o',
               subjects: [
                 // ignore: missing_required_param
-                Subject(
+                TimetableSubject(
                   subject: 'EK',
                   teacher: 'KRA',
                 ),
               ],
             ),
-            Lesson(
+            TimetableLesson(
               unit: 1,
               block: 'p',
               subjects: [
                 // ignore: missing_required_param
-                Subject(
+                TimetableSubject(
                   subject: 'FR',
                 ),
               ],
@@ -539,23 +545,23 @@ void main() {
         TimetableDay(
           weekday: 3,
           lessons: [
-            Lesson(
+            TimetableLesson(
               unit: 0,
               block: 'q',
               subjects: [
                 // ignore: missing_required_param
-                Subject(
+                TimetableSubject(
                   subject: 'EK',
                   teacher: 'KRA',
                 ),
               ],
             ),
-            Lesson(
+            TimetableLesson(
               unit: 1,
               block: 'r',
               subjects: [
                 // ignore: missing_required_param
-                Subject(
+                TimetableSubject(
                   subject: 'EK',
                   teacher: 'KRA',
                 ),
@@ -566,23 +572,23 @@ void main() {
         TimetableDay(
           weekday: 4,
           lessons: [
-            Lesson(
+            TimetableLesson(
               unit: 0,
               block: 's',
               subjects: [
                 // ignore: missing_required_param
-                Subject(
+                TimetableSubject(
                   subject: 'EK',
                   teacher: 'KRA',
                 ),
               ],
             ),
-            Lesson(
+            TimetableLesson(
               unit: 1,
               block: 't',
               subjects: [
                 // ignore: missing_required_param
-                Subject(
+                TimetableSubject(
                   subject: 'EK',
                   teacher: 'KRA',
                 ),
@@ -593,23 +599,23 @@ void main() {
         TimetableDay(
           weekday: 5,
           lessons: [
-            Lesson(
+            TimetableLesson(
               unit: 0,
               block: 'u',
               subjects: [
                 // ignore: missing_required_param
-                Subject(
+                TimetableSubject(
                   subject: 'EK',
                   teacher: 'KRA',
                 ),
               ],
             ),
-            Lesson(
+            TimetableLesson(
               unit: 1,
               block: 'v',
               subjects: [
                 // ignore: missing_required_param
-                Subject(
+                TimetableSubject(
                   subject: 'EK',
                   teacher: 'KRA',
                 ),
@@ -722,12 +728,12 @@ void main() {
           TimetableDay(
             weekday: 0,
             lessons: [
-              Lesson(
+              TimetableLesson(
                 block: 'a',
                 unit: 0,
                 subjects: [
                   // ignore: missing_required_param
-                  Subject(
+                  TimetableSubject(
                     subject: 'EK',
                     teacher: 'KRA',
                   ),
@@ -750,12 +756,12 @@ void main() {
           TimetableDay(
             weekday: 4,
             lessons: [
-              Lesson(
+              TimetableLesson(
                 block: 'b',
                 unit: 0,
                 subjects: [
                   // ignore: missing_required_param
-                  Subject(
+                  TimetableSubject(
                     subject: 'EK',
                     teacher: 'KRA',
                   ),
@@ -867,28 +873,6 @@ void main() {
         Timetable.fromJSON(timetable.toJSON()).toJSON(),
         timetable.toJSON(),
       );
-    });
-
-    test('Can create matching subject', () {
-      final subject = Subject(
-        teacher: 'KRA',
-        subject: 'EK',
-        room: '525',
-        course: 'GK1',
-        weeks: 'AB',
-        unit: 0,
-      );
-      final lesson = Lesson(
-        unit: 0,
-        block: 'a',
-        subjects: [subject],
-      );
-      final matchingSubject = MatchingSubject(
-        subject: subject,
-        lesson: lesson,
-      );
-      expect(matchingSubject.subject.toJSON(), subject.toJSON());
-      expect(matchingSubject.lesson.toJSON(), lesson.toJSON());
     });
   });
 }

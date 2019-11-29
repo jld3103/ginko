@@ -18,11 +18,9 @@ import 'package:ginko/pages/substitution_plan.dart';
 import 'package:ginko/plugins/platform/platform.dart';
 import 'package:ginko/plugins/storage/storage.dart';
 import 'package:ginko/plugins/system_locale/system_locale.dart';
-import 'package:ginko/utils/selection.dart';
 import 'package:ginko/utils/static.dart';
 import 'package:ginko/utils/theme.dart';
 import 'package:ginko/views/header.dart';
-import 'package:ginko/views/timetable/scan.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:models/models.dart';
@@ -180,39 +178,6 @@ class AppState extends State<App>
     }
     if (Platform().isAndroid) {
       await _channel.invokeMethod('channel_registered');
-    }
-
-    // Ask for scan
-    if (isSeniorGrade(Static.user.data.grade) &&
-        Platform().isMobile &&
-        !(Static.storage.getBool(Keys.askedForScan) ?? false)) {
-      Static.storage.setBool(Keys.askedForScan, true);
-      var allDetected = true;
-      for (final day in Static.timetable.data.days) {
-        if (!allDetected) {
-          break;
-        }
-        for (final lesson
-            in day.lessons.where((lesson) => lesson.unit != 5).toList()) {
-          if (!allDetected) {
-            break;
-          }
-          if (TimetableSelection.get(lesson.block, true) == null) {
-            // FIXME
-            allDetected = false;
-            break;
-          }
-        }
-      }
-      if (!allDetected) {
-        await showDialog(
-          context: context,
-          builder: (context) => ScanDialog(
-            teachers: Static.teachers.data,
-            timetable: Static.timetable.data,
-          ),
-        );
-      }
     }
     if (Platform().isDesktop &&
         Version.parse(Static.releases.data.version) >

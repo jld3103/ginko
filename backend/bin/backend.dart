@@ -57,7 +57,10 @@ Future main(List<String> args) async {
     selection,
   );
   final calendar = CalendarHandler(mySqlConnection);
-  final teachers = TeachersHandler(mySqlConnection);
+  final teachers = TeachersHandler(
+    mySqlConnection,
+    timetable,
+  );
   final aiXformation = AiXformationHandler(mySqlConnection);
   final cafetoria = CafetoriaHandler(mySqlConnection);
   final releases = ReleasesHandler(mySqlConnection);
@@ -194,9 +197,6 @@ Future main(List<String> args) async {
           } else if (request.method == 'GET' &&
               request.uri.path == '/${Keys.calendar}') {
             await buildResponse(request, login, calendar);
-          } else if (request.method == 'GET' &&
-              request.uri.path == '/${Keys.teachers}') {
-            await buildResponse(request, login, teachers);
           } else if (request.method == 'GET' &&
               request.uri.path == '/${Keys.aiXformation}') {
             await buildResponse(request, login, aiXformation);

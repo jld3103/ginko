@@ -6,7 +6,6 @@ import 'package:ginko/loaders/releases.dart';
 import 'package:ginko/loaders/selection.dart';
 import 'package:ginko/loaders/settings.dart';
 import 'package:ginko/loaders/substitution_plan.dart';
-import 'package:ginko/loaders/teachers.dart';
 import 'package:ginko/loaders/timetable.dart';
 import 'package:ginko/loaders/updates.dart';
 import 'package:ginko/loaders/user.dart';
@@ -49,9 +48,6 @@ class Static {
 
   // ignore: public_member_api_docs
   static AiXformationLoader aiXformation = AiXformationLoader();
-
-  // ignore: public_member_api_docs
-  static TeachersLoader teachers = TeachersLoader();
 
   // ignore: public_member_api_docs
   static UserLoader user = UserLoader();

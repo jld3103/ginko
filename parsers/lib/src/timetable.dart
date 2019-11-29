@@ -30,20 +30,19 @@ class TimetableParser {
                   final subjects = [];
                   final rows2 = rows1.where((row) => row[6] == unit).toList();
                   for (final row in rows2) {
-                    subjects.add(Subject(
+                    subjects.add(TimetableSubject(
                       unit: patchedUnit,
-                      subject: Subjects.getSubject(
-                          row[3].toString().split(' ').first),
+                      subject: row[3].toString().split(' ').first,
                       course: row[3].toString().contains(' ')
                           ? row[3].toString().split(' ').last
                           : null,
                       teacher: row[2],
-                      room: Rooms.getRoom(row[4]),
+                      room: row[4],
                       weeks: 'AB', // FIXME
                     ));
                   }
                   if (grades.indexOf(grade) >= 15) {
-                    subjects.add(Subject(
+                    subjects.add(TimetableSubject(
                       unit: unit,
                       subject: 'FR',
                       teacher: null,
@@ -51,21 +50,21 @@ class TimetableParser {
                       weeks: 'AB',
                     ));
                   }
-                  lessons.add(Lesson(
+                  lessons.add(TimetableLesson(
                     unit: patchedUnit,
                     block: rows2[0][0].toString(),
-                    subjects: subjects.cast<Subject>(),
+                    subjects: subjects.cast<TimetableSubject>(),
                   ));
                 }
                 if (lessons
                     .where((lesson) => lesson.unit > 4)
                     .toList()
                     .isNotEmpty) {
-                  lessons.add(Lesson(
+                  lessons.add(TimetableLesson(
                     unit: 5,
                     block: 'mit',
                     subjects: [
-                      Subject(
+                      TimetableSubject(
                         weeks: null,
                         teacher: null,
                         room: null,
@@ -77,7 +76,7 @@ class TimetableParser {
                 }
                 return TimetableDay(
                   weekday: day,
-                  lessons: lessons.cast<Lesson>()
+                  lessons: lessons.cast<TimetableLesson>()
                     ..sort((a, b) => a.unit.compareTo(b.unit)),
                 );
               }),
