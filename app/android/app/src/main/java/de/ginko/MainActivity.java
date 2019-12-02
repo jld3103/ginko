@@ -1,6 +1,9 @@
 package de.ginko;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity;
@@ -34,6 +37,27 @@ public class MainActivity extends FlutterActivity {
                 result.success(sendMessageFromIntent("onLaunch", getIntent()));
             }
         });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Channel[] channels = new Channel[]{
+                    new Channel("substitutionplan", "Vertretungsplan", "Änderungen für deinen Vertretungsplan"),
+                    new Channel("cafetoria", "Cafetoria", "Neue Cafetoriamenüs"),
+                    new Channel("aixformation", "AiXformation", "Neuer AiXformationartikel"),
+            };
+            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            for (int i = 0; i < channels.length; i++) {
+                int importance = i == 0 ? NotificationManager.IMPORTANCE_HIGH : NotificationManager.IMPORTANCE_DEFAULT;
+                NotificationChannel channel = new NotificationChannel(channels[i].name, channels[i].title, importance);
+                channel.setDescription(channels[i].description);
+                channel.setVibrationPattern(new long[]{500, 500});
+                channel.enableVibration(true);
+                channel.enableLights(true);
+                channel.setLightColor(0xFF00FF00);
+                if (notificationManager != null) {
+                    notificationManager.createNotificationChannel(channel);
+                }
+            }
+
+        }
     }
 
     @Override
@@ -60,5 +84,17 @@ public class MainActivity extends FlutterActivity {
         }
         new MethodChannel(dartExecutor, "plugins.flutter.io/firebase_messaging").invokeMethod(method, data);
         return true;
+    }
+}
+
+class Channel {
+    String name;
+    String title;
+    String description;
+
+    public Channel(String name, String title, String description) {
+        this.name = name;
+        this.title = title;
+        this.description = description;
     }
 }

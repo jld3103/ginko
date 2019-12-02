@@ -1,4 +1,7 @@
 
+# 2019-12-02  
+ jld3103: Fix Android Notifications  
+
 # 2019-11-29  
  jld3103: Fix updates  
  jld3103: Remove scan and update models accordingly  
