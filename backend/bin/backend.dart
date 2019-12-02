@@ -61,6 +61,14 @@ Future main(List<String> args) async {
     mySqlConnection,
     timetable,
   );
+  final subjects = SubjectsHandler(
+    mySqlConnection,
+    timetable,
+  );
+  final rooms = RoomsHandler(
+    mySqlConnection,
+    timetable,
+  );
   final aiXformation = AiXformationHandler(mySqlConnection);
   final cafetoria = CafetoriaHandler(mySqlConnection);
   final releases = ReleasesHandler(mySqlConnection);
@@ -79,7 +87,7 @@ Future main(List<String> args) async {
     mySqlConnection,
     minutely: [substitutionPlan],
     hourly: [aiXformation, releases],
-    daily: [timetable, calendar, teachers, cafetoria],
+    daily: [timetable, calendar, teachers, subjects, rooms, cafetoria],
   );
 
   log.info('Serving on *:${Config.port}');

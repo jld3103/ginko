@@ -84,7 +84,12 @@ class SubstitutionPlanParser {
                 unit: unit,
                 subject: fields[2].split(_arrow)[0] != '---' &&
                         fields[2].split(_arrow)[0].split(' ').length > 1
-                    ? fields[2].split(_arrow)[0].split(' ')[0].trim()
+                    ? fields[2]
+                        .split(_arrow)[0]
+                        .split(' ')[0]
+                        .trim()
+                        .toUpperCase()
+                        .replaceAll(RegExp('[0-9]'), '')
                     : null,
                 course: fields[2].split(_arrow)[0] != '---' &&
                         fields[2].split(_arrow)[0].split(' ').length > 1
@@ -99,7 +104,11 @@ class SubstitutionPlanParser {
                 changed: Changed(
                   subject: fields[2].split(_arrow).length > 1 &&
                           fields[2].split(_arrow)[1] != '---'
-                      ? fields[2].split(_arrow)[1].trim()
+                      ? fields[2]
+                          .split(_arrow)[1]
+                          .trim()
+                          .toUpperCase()
+                          .replaceAll(RegExp('[0-9]'), '')
                       : null,
                   teacher: fields[4].split(_arrow).length > 1 &&
                           fields[4].split(_arrow)[1] != '---'

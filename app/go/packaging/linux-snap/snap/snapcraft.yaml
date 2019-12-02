@@ -1,6 +1,6 @@
 name: ginko
 base: core18
-version: '1.2.2+12'
+version: '1.2.3+13'
 summary: The Ginko app
 description: |
   The Ginko app

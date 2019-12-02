@@ -1,6 +1,6 @@
 Name: ginko
-Version: 1.2.2+12
-Release: 1.2.2+12
+Version: 1.2.3+13
+Release: 1.2.3+13
 Summary: The Ginko app
 License: FIXME
 

@@ -1,5 +1,6 @@
 
 # 2019-12-02  
+ jld3103: Fix subject names not always shown  
  jld3103: Fix Android Notifications  
 
 # 2019-11-29  

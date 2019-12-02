@@ -32,7 +32,12 @@ class TimetableParser {
                   for (final row in rows2) {
                     subjects.add(TimetableSubject(
                       unit: patchedUnit,
-                      subject: row[3].toString().split(' ').first,
+                      subject: row[3]
+                          .toString()
+                          .split(' ')
+                          .first
+                          .toUpperCase()
+                          .replaceAll(RegExp('[0-9]'), ''),
                       course: row[3].toString().contains(' ')
                           ? row[3].toString().split(' ').last
                           : null,
