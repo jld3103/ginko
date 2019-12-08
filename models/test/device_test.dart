@@ -8,10 +8,12 @@ void main() {
         token: 'abc',
         language: 'de',
         os: 'android',
+        version: '1.0.0+1',
       );
       expect(device.token, 'abc');
       expect(device.language, 'de');
       expect(device.os, 'android');
+      expect(device.version, '1.0.0+1');
     });
 
     test('Can create device from JSON', () {
@@ -19,10 +21,12 @@ void main() {
         'token': 'abc',
         'language': 'de',
         'os': 'android',
+        'version': '1.0.0+1',
       });
       expect(device.token, 'abc');
       expect(device.language, 'de');
       expect(device.os, 'android');
+      expect(device.version, '1.0.0+1');
     });
 
     test('Can create JSON from device', () {
@@ -30,6 +34,7 @@ void main() {
         token: 'abc',
         language: 'de',
         os: 'android',
+        version: '1.0.0+1',
       );
       expect(
         device.toJSON(),
@@ -37,6 +42,7 @@ void main() {
           'token': 'abc',
           'language': 'de',
           'os': 'android',
+          'version': '1.0.0+1',
         },
       );
     });
@@ -46,6 +52,7 @@ void main() {
         token: 'abc',
         language: 'de',
         os: 'android',
+        version: '1.0.0+1',
       );
       expect(
         Device.fromJSON(device.toJSON()).toJSON(),

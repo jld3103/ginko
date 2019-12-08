@@ -12,6 +12,8 @@ github.com/go-flutter-desktop/go-flutter v0.33.0 h1:+0R9hn+oOKj5A9p95H7jcgPoWrjd
 github.com/go-flutter-desktop/go-flutter v0.33.0/go.mod h1:NCryd/AqiRbYSd8pMzQldYkgH1tZIFGt2ToUghZcWGA=
 github.com/go-flutter-desktop/plugins/image_picker v0.1.5 h1:VQza8aA+Els+trCLqNJa7phNJDBetLWVQMyzAIqYjts=
 github.com/go-flutter-desktop/plugins/image_picker v0.1.5/go.mod h1:lOmQKrMiJNsA55VM4ww3u78ufo//ptu2om+B3Ime+6o=
+github.com/go-flutter-desktop/plugins/package_info v0.0.0-20191107105320-39f89c3e8eca h1:+XI2mFPrmTrHIT8eYlPuZCT6vKahcN90N4KFYhqqSbE=
+github.com/go-flutter-desktop/plugins/package_info v0.0.0-20191107105320-39f89c3e8eca/go.mod h1:qf/KmNfakRqV0qC5YiaCn8rz5XZHnq+kyl0SjyJzjMM=
 github.com/go-flutter-desktop/plugins/path_provider v0.3.3 h1:4jWpvMkzikyIVbyDg92a6IBktdSrYVGjWHaD+pJo/9s=
 github.com/go-flutter-desktop/plugins/path_provider v0.3.3/go.mod h1:AV9Q6YfAoOkHHRNAY0yBpoNYVqImxgvX3XW3xXp84os=
 github.com/go-flutter-desktop/plugins/shared_preferences v0.4.3 h1:gFO2I08ll8frTDFrMQfscD4UqIHvFyxGk8xg2O+hPzI=

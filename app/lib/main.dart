@@ -24,6 +24,7 @@ import 'package:ginko/views/header.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:models/models.dart';
+import 'package:package_info/package_info.dart';
 import 'package:translations/translation_locales_list.dart';
 import 'package:translations/translations_app.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -263,10 +264,12 @@ class AppState extends State<App>
         await Static.firebaseMessaging.hasNotificationPermissions()) {
       final token = await Static.firebaseMessaging.getToken();
       if (token != 'null') {
+        final packageInfo = await PackageInfo.fromPlatform();
         Static.device.object = Device(
           token: token,
           os: Platform().platformName,
           language: AppTranslations.of(context).locale.languageCode,
+          version: '${packageInfo.version}+${packageInfo.buildNumber}',
         );
         try {
           await Static.device.forceLoadOnline();

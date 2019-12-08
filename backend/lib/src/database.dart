@@ -15,7 +15,7 @@ class Database {
         'CREATE TABLE IF NOT EXISTS users_full_name (username VARCHAR(7) NOT NULL, full_name TEXT NOT NULL, UNIQUE KEY unique_username (username)) ENGINE = InnoDB;');
     await mySqlConnection.query(
         // ignore: lines_longer_than_80_chars
-        'CREATE TABLE IF NOT EXISTS users_devices (username VARCHAR(7) NOT NULL, token VARCHAR(255) NOT NULL, language TEXT NOT NULL, os TEXT NOT NULL, UNIQUE KEY unique_username (username, token)) ENGINE = InnoDB;');
+        'CREATE TABLE IF NOT EXISTS users_devices (username VARCHAR(7) NOT NULL, token VARCHAR(255) NOT NULL, language TEXT NOT NULL, os TEXT NOT NULL, version TEXT NOT NULL, UNIQUE KEY unique_username (username, token)) ENGINE = InnoDB;');
     await mySqlConnection.query(
         // ignore: lines_longer_than_80_chars
         'CREATE TABLE IF NOT EXISTS users_selection (username VARCHAR(7) NOT NULL, selection_key VARCHAR(255) NOT NULL, selection_value TEXT NOT NULL, date_time DATETIME NOT NULL, UNIQUE KEY unique_username (username, selection_key)) ENGINE = InnoDB;');

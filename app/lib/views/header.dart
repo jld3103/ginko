@@ -49,7 +49,7 @@ class _HeaderState extends State<Header> with AfterLayoutMixin<Header> {
     if (Platform().isWeb) {
       _permissionsGranted =
           await Static.firebaseMessaging.hasNotificationPermissions();
-      _canInstall = await _pwa.canInstall();
+      _canInstall = _pwa.canInstall();
       setState(() {});
     }
   }
@@ -103,7 +103,7 @@ class _HeaderState extends State<Header> with AfterLayoutMixin<Header> {
                       _installing = true;
                     });
                     await _pwa.install();
-                    _canInstall = await _pwa.canInstall();
+                    _canInstall = _pwa.canInstall();
                     setState(() {
                       _installing = false;
                     });

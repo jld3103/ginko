@@ -50,7 +50,7 @@ class AiXformationParser {
           users[post['author'].toString()] = json.decode(
               (await _dio.get(url).timeout(Duration(seconds: 10)))
                   .toString())['name'];
-        } on DioError catch (e, stacktrace) {
+        } on DioError catch (e) {
           print(url);
           print(e.response);
           print(e);
@@ -67,7 +67,7 @@ class AiXformationParser {
             'medium': sizes['medium']['source_url'],
             'full': sizes['full']['source_url'],
           };
-        } on DioError catch (e, stacktrace) {
+        } on DioError catch (e) {
           print(url);
           print(e.response);
           print(e);
@@ -85,7 +85,7 @@ class AiXformationParser {
             tags[tag.toString()] = json.decode(
                 (await _dio.get(url).timeout(Duration(seconds: 10)))
                     .toString())['name'];
-          } on DioError catch (e, stacktrace) {
+          } on DioError catch (e) {
             print(url);
             print(e.response);
             print(e);

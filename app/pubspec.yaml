@@ -1,6 +1,6 @@
 name: ginko
 description: The Ginko app
-version: 1.2.3+13
+version: 1.2.4+14
 author: jld3103
 
 environment:
@@ -17,7 +17,7 @@ dependencies:
   flutter_svg: ^0.14.3
   intl: ^0.16.0
   sliding_up_panel: ^0.3.6
-  firebase_messaging: ^5.1.6
+  firebase_messaging: ^6.0.2
   shared_preferences: ^0.5.4
   material_design_icons_flutter:
   cached_network_image: ^2.0.0-rc
@@ -42,6 +42,7 @@ dependencies:
   dio: ^3.0.4
   version: ^1.0.3
   js: ^0.6.1+1
+  package_info: ^0.4.0+12
   models:
     path: ../models
   translations:

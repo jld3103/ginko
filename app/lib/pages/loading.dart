@@ -6,6 +6,7 @@ import 'package:ginko/plugins/platform/platform.dart';
 import 'package:ginko/utils/screen_sizes.dart';
 import 'package:ginko/utils/static.dart';
 import 'package:models/models.dart';
+import 'package:package_info/package_info.dart';
 import 'package:translations/translations_app.dart';
 
 /// LoadingPage class
@@ -24,10 +25,12 @@ class LoadingPageState extends State<LoadingPage>
     try {
       Static.user.loadOffline();
       Static.device.loadOffline();
+      final packageInfo = await PackageInfo.fromPlatform();
       Static.device.object = Device(
         token: Static.device.data == null ? '' : Static.device.data.token,
         os: Platform().platformName,
         language: AppTranslations.of(context).locale.languageCode,
+        version: '${packageInfo.version}+${packageInfo.buildNumber}',
       );
       Static.selection.loadOffline();
       if (Static.selection.data == null) {

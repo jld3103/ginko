@@ -8,6 +8,7 @@ class Device {
     @required this.token,
     @required this.language,
     @required this.os,
+    @required this.version,
   });
 
   // ignore: public_member_api_docs
@@ -15,6 +16,7 @@ class Device {
         token: json['token'],
         language: json['language'],
         os: json['os'],
+        version: json['version'],
       );
 
   // ignore: public_member_api_docs
@@ -22,6 +24,7 @@ class Device {
         'token': token,
         'language': language,
         'os': os,
+        'version': version,
       };
 
   // ignore: public_member_api_docs
@@ -32,4 +35,7 @@ class Device {
 
   // ignore: public_member_api_docs
   final String os;
+
+  // ignore: public_member_api_docs
+  final String version;
 }
