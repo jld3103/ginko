@@ -10,6 +10,7 @@ require (
 	github.com/go-flutter-desktop/plugins/path_provider v0.3.3
 	github.com/go-flutter-desktop/plugins/shared_preferences v0.4.3
 	github.com/go-flutter-desktop/plugins/url_launcher v0.1.2
+	github.com/go-gl/glfw v0.0.0-20191125211704-12ad95a8df72 // indirect
 	github.com/golang/snappy v0.0.1 // indirect
 	github.com/gopherjs/gopherjs v0.0.0-20191106031601-ce3c9ade29de // indirect
 	github.com/jld3103/downloads_path_provider/go v0.0.0-20191023105457-1e3049f4cb68

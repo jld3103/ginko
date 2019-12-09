@@ -1,5 +1,0 @@
-<pkg-info format-version="2" identifier="de.ginko.base.pkg" version="1.2.4+14" install-location="/" auth="root">
-	<bundle-version>
-		<bundle id="de.ginko" CFBundleIdentifier="de.ginko" path="./Applications/ginko.app" CFBundleVersion="1.2.4+14"/>
-    </bundle-version>
-</pkg-info>

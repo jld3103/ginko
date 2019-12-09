@@ -1,4 +1,7 @@
 
+# 2019-12-09  
+ jld3103: Update hover packaging  
+
 # 2019-12-08  
  jld3103: Add version to device info  
 
