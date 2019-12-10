@@ -1,4 +1,7 @@
 
+# 2019-12-10  
+ jld3103: Unpin dependencies  
+
 # 2019-12-09  
  jld3103: Update hover packaging  
 

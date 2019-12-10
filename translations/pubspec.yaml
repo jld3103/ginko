@@ -6,5 +6,5 @@ environment:
   sdk: ">=2.3.0 <3.0.0"
 
 dependencies:
-  code_builder: ^3.2.0
-  dart_style: ^1.2.9
+  code_builder:
+  dart_style:

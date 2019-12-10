@@ -6,14 +6,14 @@ environment:
   sdk: ">=2.3.0 <3.0.0"
 
 dependencies:
-  logging: ^0.11.3+2
-  colorize: ^2.0.0
-  mysql1: ^0.17.0+1
-  nextcloud: ^1.0.8
-  crypto: ^2.1.3
-  meta: ^1.1.8
-  tuple: ^1.0.3
-  args: ^1.5.2
+  logging:
+  colorize:
+  mysql1:
+  nextcloud:
+  crypto:
+  meta:
+  tuple:
+  args:
   translations:
     path: ../translations
   models:
@@ -22,4 +22,4 @@ dependencies:
     path: ../parsers
 
 dev_dependencies:
-  test: ^1.8.0
+  test:
