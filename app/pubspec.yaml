@@ -1,6 +1,6 @@
 name: ginko
 description: The Ginko app
-version: 2.0.0+16
+version: 2.0.1+17
 author: jld3103
 
 environment:
@@ -29,6 +29,9 @@ dependencies:
   version:
   js:
   google_fonts:
+    git:
+      url: git://github.com/jld3103/google-fonts-flutter
+      ref: fix-mixed-content
   add_2_calendar:
   models:
     path: ../models
