@@ -1,6 +1,6 @@
 name: ginko
 description: The Ginko app
-version: 1.2.5+15
+version: 2.0.0+16
 author: jld3103
 
 environment:
@@ -11,59 +11,34 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  cupertino_icons:
   http:
   crypto:
-  flutter_svg:
   intl:
-  sliding_up_panel:
   firebase_messaging:
   shared_preferences:
   material_design_icons_flutter:
   cached_network_image: ^2.0.0-rc
   flutter_html:
   url_launcher:
-  url_launcher_web:
-    git:
-      url: git://github.com/flutter/plugins.git
-      path: packages/url_launcher/url_launcher_web
   share:
   transparent_image:
   after_layout:
-  nextcloud:
-  open_file:
   path_provider:
-  filesize:
   timeago:
-  file_picker:
-  downloads_path_provider:
-    git:
-      url: git://github.com/jld3103/downloads_path_provider.git
   dio:
   version:
   js:
-  package_info:
+  google_fonts:
+  add_2_calendar:
   models:
     path: ../models
-  translations:
-    path: ../translations
 
 dev_dependencies:
   flutter_launcher_icons:
-  test:
-  flutter_test:
-    sdk: flutter
 
 flutter:
   uses-material-design: true
   assets:
-    - images/logo_green.svg
     - images/logo_green.png
     - images/logo_green_192x192.png
-    - images/logo_white.svg
     - pubspec.yaml
-  fonts:
-    - family: Roboto
-      fonts:
-        - asset: fonts/Roboto/Roboto.ttf
-          weight: 400

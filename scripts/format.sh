@@ -2,7 +2,7 @@
 
 rm -rf app/lib/generated_plugin_registrant.dart
 
-folders=("models" "backend" "app" "translations")
+folders=("models" "backend" "app" "parsers")
 for d in "${folders[@]}"; do
   cd "$d" || exit
 

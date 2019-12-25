@@ -94,14 +94,10 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox
 
 if (workbox) {
     workbox.precaching.precacheAndRoute([
-        '/assets/images/logo_green.svg',
         '/assets/images/logo_green.png',
         '/assets/images/logo_green_192x192.png',
-        '/assets/images/logo_white.svg',
-        '/assets/fonts/Roboto/Roboto.ttf',
         '/assets/fonts/MaterialIcons-Regular.ttf',
         '/assets/packages/material_design_icons_flutter/lib/fonts/materialdesignicons-webfont.ttf',
-        '/assets/packages/cupertino_icons/assets/CupertinoIcons.ttf',
         '/assets/FontManifest.json',
         '/manifest.json',
     ], {

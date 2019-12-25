@@ -5,9 +5,6 @@ import 'basic_handler_runner.dart';
 Future main() async {
   await runBasic(
     'Subjects',
-    (mySqlConnection) => SubjectsHandler(
-      mySqlConnection,
-      TimetableHandler(mySqlConnection),
-    ),
+    (mySqlConnection) => SubjectsHandler(mySqlConnection),
   );
 }

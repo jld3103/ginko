@@ -5,8 +5,6 @@ import 'package:backend/src/notifications.dart';
 import 'package:models/models.dart';
 import 'package:mysql1/mysql1.dart';
 import 'package:parsers/parsers.dart';
-import 'package:translations/translation_locales_list.dart';
-import 'package:translations/translations_server.dart';
 import 'package:tuple/tuple.dart';
 
 /// CafetoriaHandler class
@@ -61,45 +59,43 @@ class CafetoriaHandler extends Handler {
     if (notificationDays.isNotEmpty) {
       // ignore: omit_local_variable_types
       final Map<String, List<String>> notifications = {};
-      for (final locale in LocalesList.locales) {
-        final title = ServerTranslations.pageCafetoria(locale);
-        final body =
-            // ignore: lines_longer_than_80_chars
-            '${notificationDays.length} ${ServerTranslations.cafetoriaDays(locale)}';
-        final bigBody = notificationDays
-            .map((day) =>
-                // ignore: lines_longer_than_80_chars
-                '${ServerTranslations.weekdays(locale)[day.date.weekday - 1]} (${day.menus.length} ${ServerTranslations.cafetoriaMenus(locale)})')
-            .join('<br/>');
-        final notification = Notification(
-          title,
-          body,
-          bigBody,
-          data: {
-            Keys.type: Keys.cafetoria,
-          },
-        );
-        final devicesResults = await mySqlConnection.query(
-            // ignore: lines_longer_than_80_chars
-            'SELECT username, token FROM users_devices WHERE language = \'$locale\';');
-        for (final row in devicesResults.toList()) {
-          final username = row[0].toString();
-          final token = row[1].toString();
-          final settingsResults = await mySqlConnection.query(
+      const title = 'Cafétoria';
+      final body =
+          // ignore: lines_longer_than_80_chars
+          '${notificationDays.length} Tage';
+      final bigBody = notificationDays
+          .map((day) =>
               // ignore: lines_longer_than_80_chars
-              'SELECT settings_value FROM users_settings WHERE username = \'$username\' AND settings_key = \'${Keys.settingsKey(Keys.cafetoriaNotifications)}\';');
-          bool showNotifications;
-          if (settingsResults.isNotEmpty) {
-            showNotifications = settingsResults.toList()[0][0] == 1;
-          } else {
-            showNotifications = true;
+              '${weekdays[day.date.weekday - 1]} (${day.menus.length} Menüs)')
+          .join('<br/>');
+      final notification = Notification(
+        title,
+        body,
+        bigBody,
+        data: {
+          Keys.type: Keys.cafetoria,
+        },
+      );
+      final devicesResults = await mySqlConnection.query(
+          // ignore: lines_longer_than_80_chars
+          'SELECT username, token FROM users_devices;');
+      for (final row in devicesResults.toList()) {
+        final username = row[0].toString();
+        final token = row[1].toString();
+        final settingsResults = await mySqlConnection.query(
+            // ignore: lines_longer_than_80_chars
+            'SELECT settings_value FROM users_settings WHERE username = \'$username\' AND settings_key = \'${Keys.cafetoriaNotifications}\';');
+        bool showNotifications;
+        if (settingsResults.isNotEmpty) {
+          showNotifications = settingsResults.toList()[0][0] == 1;
+        } else {
+          showNotifications = true;
+        }
+        if (showNotifications) {
+          if (notifications[json.encode(notification.toJSON())] == null) {
+            notifications[json.encode(notification.toJSON())] = [];
           }
-          if (showNotifications) {
-            if (notifications[json.encode(notification.toJSON())] == null) {
-              notifications[json.encode(notification.toJSON())] = [];
-            }
-            notifications[json.encode(notification.toJSON())].add(token);
-          }
+          notifications[json.encode(notification.toJSON())].add(token);
         }
       }
       for (final notification in notifications.keys) {

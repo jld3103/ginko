@@ -4,15 +4,16 @@ import 'package:dio/dio.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' show parse;
 import 'package:models/models.dart';
+import 'package:parsers/parsers.dart';
 
 // ignore: avoid_classes_with_only_static_members
 /// SubstitutionPlanParser class
-/// handles all replacement plan parsing
+/// handles all substitution plan parsing
 class SubstitutionPlanParser {
   static const _arrow = '→';
   static final Dio _dio = Dio();
 
-  /// Download html replacement plan
+  /// Download html substitution plan
   static Future<Document> download(
       bool dayOne, String username, String password) async {
     final response = await _dio
@@ -29,7 +30,7 @@ class SubstitutionPlanParser {
     return parse(response.toString());
   }
 
-  /// Extract replacement plans from html
+  /// Extract substitution plans from html
   static List<SubstitutionPlanForGrade> extract(Document document) {
     final date =
         parseDate(document.querySelector('.mon_title').text.split(' ')[0]);
@@ -50,8 +51,9 @@ class SubstitutionPlanParser {
         .sublist(1)) {
       final fields =
           row.querySelectorAll('td').map((field) => field.text).toList();
-      for (final grade
+      for (var grade
           in fields[0].replaceAll(_arrow, ', ').split(', ').toSet().toList()) {
+        grade = grade.toLowerCase();
         try {
           if (!grades.contains(grade)) {
             continue;
@@ -68,18 +70,18 @@ class SubstitutionPlanParser {
           });
           for (final unit in units) {
             try {
-              ChangeTypes type;
+              SubstitutionPlanChangeTypes type;
               if (fields[3] == 'Entfall') {
-                type = ChangeTypes.freeLesson;
+                type = SubstitutionPlanChangeTypes.freeLesson;
               } else if (fields[3] == 'Klausur') {
-                type = ChangeTypes.exam;
+                type = SubstitutionPlanChangeTypes.exam;
               } else {
-                type = ChangeTypes.changed;
+                type = SubstitutionPlanChangeTypes.changed;
               }
               while (fields[2].contains('  ')) {
                 fields[2] = fields[2].replaceAll('  ', ' ').trim();
               }
-              final change = Change(
+              final change = SubstitutionPlanChange(
                 date: date,
                 unit: unit,
                 subject: fields[2].split(_arrow)[0] != '---' &&
@@ -88,35 +90,47 @@ class SubstitutionPlanParser {
                         .split(_arrow)[0]
                         .split(' ')[0]
                         .trim()
-                        .toUpperCase()
+                        .toLowerCase()
                         .replaceAll(RegExp('[0-9]'), '')
                     : null,
                 course: fields[2].split(_arrow)[0] != '---' &&
                         fields[2].split(_arrow)[0].split(' ').length > 1
-                    ? fields[2].split(_arrow)[0].split(' ')[1].trim()
+                    ? fields[2]
+                        .split(_arrow)[0]
+                        .split(' ')[1]
+                        .trim()
+                        .toLowerCase()
                     : null,
                 room: fields[5].split(_arrow)[0] != '---'
-                    ? fields[5].split(_arrow)[0].trim()
+                    ? RoomsParser.fix(fields[5]
+                        .split(_arrow)[0]
+                        .trim()
+                        .toLowerCase()
+                        .replaceAll(' ', ''))
                     : null,
                 teacher: fields[4].split(_arrow)[0] != '---'
-                    ? fields[4].split(_arrow)[0].trim()
+                    ? fields[4].split(_arrow)[0].trim().toLowerCase()
                     : null,
-                changed: Changed(
+                changed: SubstitutionPlanChanged(
                   subject: fields[2].split(_arrow).length > 1 &&
                           fields[2].split(_arrow)[1] != '---'
                       ? fields[2]
                           .split(_arrow)[1]
                           .trim()
-                          .toUpperCase()
+                          .toLowerCase()
                           .replaceAll(RegExp('[0-9]'), '')
                       : null,
                   teacher: fields[4].split(_arrow).length > 1 &&
                           fields[4].split(_arrow)[1] != '---'
-                      ? fields[4].split(_arrow)[1].trim()
+                      ? fields[4].split(_arrow)[1].trim().toLowerCase()
                       : null,
                   room: fields[5].split(_arrow).length > 1 &&
                           fields[5].split(_arrow)[1] != '---'
-                      ? fields[5].split(_arrow)[1].trim()
+                      ? RoomsParser.fix(fields[5]
+                          .split(_arrow)[1]
+                          .trim()
+                          .toLowerCase()
+                          .replaceAll(' ', ''))
                       : null,
                   info: fields[6].trim() != '' ? fields[6].trim() : null,
                 ),
@@ -143,7 +157,7 @@ class SubstitutionPlanParser {
                   updated: updated,
                 ),
               ],
-              changes: (changes[grade] ?? []).cast<Change>(),
+              changes: (changes[grade] ?? []).cast<SubstitutionPlanChange>(),
             ))
         .toList();
   }

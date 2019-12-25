@@ -31,12 +31,12 @@ public class NotificationService extends FirebaseMessagingService {
                 intent.putExtra(key, remoteMessage.getData().get(key));
             }
             if (MainActivity.dartExecutor != null && getCurrentClass().startsWith(getApplication().getPackageName())) {
-                MainActivity.sendMessageFromIntent("onMesage", intent);
+                MainActivity.sendMessageFromIntent("onMessage", intent);
+                return;
             }
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             int uniqueInt = (int) (System.currentTimeMillis() & 0xfffffff);
             PendingIntent pendingIntent = PendingIntent.getActivity(this, uniqueInt, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-
 
             String title = remoteMessage.getData().get("title");
             String body = remoteMessage.getData().get("body");

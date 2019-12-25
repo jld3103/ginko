@@ -73,48 +73,47 @@ void main() {
     });
 
     test('Can get correct date string for single day event', () async {
-      await initializeDateFormatting('en');
+      await initializeDateFormatting('de');
       // ignore: missing_required_param
       final event = CalendarEvent(
         start: DateTime(2019, 8, 25),
         end: DateTime(2019, 8, 25, 23, 59, 59),
       );
-      expect(event.dateString('en'), 'August 25, 2019');
+      expect(event.dateString, '25. August 2019');
     });
 
     test('Can get correct date string for single day event starting later',
         () async {
-      await initializeDateFormatting('en');
+      await initializeDateFormatting('de');
       // ignore: missing_required_param
       final event = CalendarEvent(
         start: DateTime(2019, 8, 25, 8),
         end: DateTime(2019, 8, 25, 23, 59, 59),
       );
-      expect(event.dateString('en'), 'August 25, 2019 08:00');
+      expect(event.dateString, '25. August 2019 08:00');
     });
 
     test('Can get correct date string for multiple days event', () async {
-      await initializeDateFormatting('en');
+      await initializeDateFormatting('de');
       // ignore: missing_required_param
       final event = CalendarEvent(
         start: DateTime(2019, 8, 25),
         end: DateTime(2019, 8, 26, 23, 59, 59),
       );
-      expect(event.dateString('en'), 'August 25, 2019 - August 26, 2019');
+      expect(event.dateString, '25. August 2019 - 26. August 2019');
     });
 
     test(
         // ignore: lines_longer_than_80_chars
         'Can get correct date string for multiple days event starting later and ending earlier',
         () async {
-      await initializeDateFormatting('en');
+      await initializeDateFormatting('de');
       // ignore: missing_required_param
       final event = CalendarEvent(
         start: DateTime(2019, 8, 25, 8),
         end: DateTime(2019, 8, 26, 12),
       );
-      expect(event.dateString('en'),
-          'August 25, 2019 08:00 - August 26, 2019 12:00');
+      expect(event.dateString, '25. August 2019 08:00 - 26. August 2019 12:00');
     });
 
     test('Can create calendar', () {

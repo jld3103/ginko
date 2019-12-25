@@ -139,7 +139,7 @@ class AiXformationHandler extends Handler {
       final token = row[1].toString();
       final settingsResults = await mySqlConnection.query(
           // ignore: lines_longer_than_80_chars
-          'SELECT settings_value FROM users_settings WHERE username = \'$username\' AND settings_key = \'${Keys.settingsKey(Keys.aiXformationNotifications)}\';');
+          'SELECT settings_value FROM users_settings WHERE username = \'$username\' AND settings_key = \'${Keys.aiXformationNotifications}\';');
       bool showNotifications;
       if (settingsResults.isNotEmpty) {
         showNotifications = settingsResults.toList()[0][0] == 1;

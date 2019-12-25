@@ -3,7 +3,6 @@ library pwa;
 import 'dart:typed_data';
 
 import 'package:ginko/plugins/pwa/pwa_base.dart';
-import 'package:ginko/views/cloud/directory_overhead.dart';
 
 // ignore: public_member_api_docs
 class PWA extends PWABase {

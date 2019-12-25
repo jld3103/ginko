@@ -14,8 +14,6 @@ dependencies:
   meta:
   tuple:
   args:
-  translations:
-    path: ../translations
   models:
     path: ../models
   parsers:

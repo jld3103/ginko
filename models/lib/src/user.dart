@@ -11,7 +11,6 @@ class User {
     @required this.username,
     @required this.password,
     @required this.grade,
-    @required this.fullName,
   });
 
   // ignore: public_member_api_docs
@@ -19,7 +18,6 @@ class User {
         username: json['username'],
         password: json['password'],
         grade: json['grade'],
-        fullName: json['fullName'],
       );
 
   // ignore: public_member_api_docs
@@ -27,7 +25,6 @@ class User {
         'username': username,
         'password': password,
         'grade': grade,
-        'fullName': fullName,
       };
 
   // ignore: public_member_api_docs
@@ -35,7 +32,6 @@ class User {
         'username': username,
         'password': sha256.convert(utf8.encode(password)).toString(),
         'grade': grade,
-        'fullName': fullName,
       };
 
   // ignore: public_member_api_docs
@@ -46,7 +42,4 @@ class User {
 
   // ignore: public_member_api_docs
   String grade;
-
-  // ignore: public_member_api_docs
-  String fullName;
 }

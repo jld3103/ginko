@@ -1,3 +1,0 @@
-# models
-
-The Ginko translations

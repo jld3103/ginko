@@ -9,6 +9,7 @@ Future main() async {
       mySqlConnection,
       TimetableHandler(mySqlConnection),
       SelectionHandler(mySqlConnection),
+      SubjectsHandler(mySqlConnection),
     ),
   );
 }

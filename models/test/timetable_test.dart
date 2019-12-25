@@ -5,68 +5,67 @@ void main() {
   group('Timetable', () {
     test('Can create subject', () {
       final subject = TimetableSubject(
-        teacher: 'KRA',
-        subject: 'EK',
+        teachers: ['kra', 'bdn'],
+        subject: 'ek',
         room: '525',
-        course: 'GK1',
-        weeks: 'AB',
+        course: 'g1',
         unit: 0,
       );
-      expect(subject.teacher, 'KRA');
-      expect(subject.subject, 'EK');
+      expect(subject.teachers, ['kra', 'bdn']);
+      expect(subject.subject, 'ek');
       expect(subject.room, '525');
-      expect(subject.course, 'GK1');
-      expect(subject.weeks, 'AB');
+      expect(subject.course, 'g1');
       expect(subject.unit, 0);
-      expect(subject.identifier, '${subject.teacher}-${subject.subject}');
+      expect(
+        subject.identifier,
+        '${subject.teachers.join('+')}-${subject.subject}',
+      );
     });
 
     test('Can create subject from JSON', () {
       final subject = TimetableSubject.fromJSON({
-        'teacher': 'KRA',
-        'subject': 'EK',
+        'teachers': ['kra', 'bdn'],
+        'subject': 'ek',
         'room': '525',
-        'course': 'GK1',
+        'course': 'g1',
         'changes': [],
-        'weeks': 'AB',
       }, 0);
-      expect(subject.teacher, 'KRA');
-      expect(subject.subject, 'EK');
+      expect(subject.teachers, ['kra', 'bdn']);
+      expect(subject.subject, 'ek');
       expect(subject.room, '525');
-      expect(subject.course, 'GK1');
-      expect(subject.weeks, 'AB');
+      expect(subject.course, 'g1');
       expect(subject.unit, 0);
-      expect(subject.identifier, '${subject.teacher}-${subject.subject}');
+      expect(
+        subject.identifier,
+        '${subject.teachers.join('+')}-${subject.subject}',
+      );
     });
 
     test('Can create JSON from subject', () {
       final subject = TimetableSubject(
-        teacher: 'KRA',
-        subject: 'EK',
+        teachers: ['kra', 'bdn'],
+        subject: 'ek',
         room: '525',
-        course: 'GK1',
-        weeks: 'AB',
+        course: 'g1',
         unit: 0,
       );
       expect(
         subject.toJSON(),
         {
-          'teacher': 'KRA',
-          'subject': 'EK',
+          'teachers': ['kra', 'bdn'],
+          'subject': 'ek',
           'room': '525',
-          'course': 'GK1',
-          'weeks': 'AB',
+          'course': 'g1',
         },
       );
     });
 
     test('Can create subject from JSON from subject', () {
       final subject = TimetableSubject(
-        teacher: 'KRA',
-        subject: 'EK',
+        teachers: ['kra', 'bdn'],
+        subject: 'ek',
         room: '525',
-        course: 'GK1',
-        weeks: 'AB',
+        course: 'g1',
         unit: 0,
       );
       expect(
@@ -77,7 +76,7 @@ void main() {
 
     test('Can apply filter', () {
       final substitutionPlanForGrade = SubstitutionPlanForGrade(
-        grade: 'EF',
+        grade: 'ef',
         substitutionPlanDays: [
           SubstitutionPlanDay(
             date: DateTime(2019, 7, 8),
@@ -85,86 +84,85 @@ void main() {
           ),
         ],
         changes: [
-          Change(
+          SubstitutionPlanChange(
             date: DateTime(2019, 7, 8),
             unit: 0,
-            subject: 'EK',
+            subject: 'ek',
             room: '525',
-            teacher: 'KRA',
-            changed: Changed(),
-            type: ChangeTypes.changed,
+            teacher: 'kra',
+            changed: SubstitutionPlanChanged(),
+            type: SubstitutionPlanChangeTypes.changed,
           ),
-          Change(
+          SubstitutionPlanChange(
             date: DateTime(2019, 7, 8),
             unit: 0,
-            subject: 'EK',
-            changed: Changed(),
+            subject: 'ek',
+            changed: SubstitutionPlanChanged(),
             room: null,
             teacher: null,
-            type: ChangeTypes.changed,
+            type: SubstitutionPlanChangeTypes.changed,
           ),
-          Change(
+          SubstitutionPlanChange(
             date: DateTime(2019, 7, 8),
             unit: 0,
             room: '525',
-            changed: Changed(),
+            changed: SubstitutionPlanChanged(),
             subject: null,
             teacher: null,
-            type: ChangeTypes.changed,
+            type: SubstitutionPlanChangeTypes.changed,
           ),
-          Change(
+          SubstitutionPlanChange(
             date: DateTime(2019, 7, 8),
             unit: 0,
-            teacher: 'KRA',
-            changed: Changed(),
+            teacher: 'kra',
+            changed: SubstitutionPlanChanged(),
             subject: null,
             room: null,
-            type: ChangeTypes.changed,
+            type: SubstitutionPlanChangeTypes.changed,
           ),
-          Change(
+          SubstitutionPlanChange(
             date: DateTime(2019, 7, 8),
             unit: 0,
-            subject: 'PK',
+            subject: 'pk',
             room: '525',
-            teacher: 'KRA',
-            changed: Changed(),
-            type: ChangeTypes.changed,
+            teacher: 'kra',
+            changed: SubstitutionPlanChanged(),
+            type: SubstitutionPlanChangeTypes.changed,
           ),
-          Change(
+          SubstitutionPlanChange(
             date: DateTime(2019, 7, 8),
             unit: 0,
-            subject: 'EK',
+            subject: 'ek',
             room: '526',
-            teacher: 'KRA',
-            changed: Changed(),
-            type: ChangeTypes.changed,
+            teacher: 'kra',
+            changed: SubstitutionPlanChanged(),
+            type: SubstitutionPlanChangeTypes.changed,
           ),
-          Change(
+          SubstitutionPlanChange(
             date: DateTime(2019, 7, 8),
             unit: 0,
-            subject: 'EK',
+            subject: 'ek',
             room: '525',
-            teacher: 'STA',
-            changed: Changed(),
-            type: ChangeTypes.changed,
+            teacher: 'bdn',
+            changed: SubstitutionPlanChanged(),
+            type: SubstitutionPlanChangeTypes.changed,
           ),
-          Change(
+          SubstitutionPlanChange(
             date: DateTime(2019, 7, 8),
             unit: 1,
-            subject: 'EK',
+            subject: 'ek',
             room: '525',
-            teacher: 'KRA',
-            changed: Changed(),
-            type: ChangeTypes.changed,
+            teacher: 'kra',
+            changed: SubstitutionPlanChanged(),
+            type: SubstitutionPlanChangeTypes.changed,
           ),
         ],
       );
       final subject = TimetableSubject(
-        subject: 'EK',
+        subject: 'ek',
         room: '525',
-        teacher: 'KRA',
+        teachers: ['kra', 'bdn'],
         unit: 0,
-        weeks: 'AB',
       );
       expect(
         subject
@@ -172,17 +170,16 @@ void main() {
             .map((change) => change.toJSON())
             .toList()
             .length,
-        7,
+        5,
       );
     });
 
     test('Can create lesson', () {
       final subject = TimetableSubject(
-        teacher: 'KRA',
-        subject: 'EK',
+        teachers: ['kra', 'bdn'],
+        subject: 'ek',
         room: '525',
-        course: 'GK1',
-        weeks: 'AB',
+        course: 'g1',
         unit: 0,
       );
       final lesson = TimetableLesson(
@@ -200,11 +197,10 @@ void main() {
 
     test('Can create lesson from JSON', () {
       final subject = TimetableSubject(
-        teacher: 'KRA',
-        subject: 'EK',
+        teachers: ['kra', 'bdn'],
+        subject: 'ek',
         room: '525',
-        course: 'GK1',
-        weeks: 'AB',
+        course: 'g1',
         unit: 0,
       );
       final lesson = TimetableLesson.fromJSON({
@@ -222,11 +218,10 @@ void main() {
 
     test('Can create JSON from lesson', () {
       final subject = TimetableSubject(
-        teacher: 'KRA',
-        subject: 'EK',
+        teachers: ['kra', 'bdn'],
+        subject: 'ek',
         room: '525',
-        course: 'GK1',
-        weeks: 'AB',
+        course: 'g1',
         unit: 0,
       );
       final lesson = TimetableLesson(
@@ -246,11 +241,10 @@ void main() {
 
     test('Can create lesson from JSON from lesson', () {
       final subject = TimetableSubject(
-        teacher: 'KRA',
-        subject: 'EK',
+        teachers: ['kra', 'bdn'],
+        subject: 'ek',
         room: '525',
-        course: 'GK1',
-        weeks: 'AB',
+        course: 'g1',
         unit: 0,
       );
       final lesson = TimetableLesson(
@@ -335,23 +329,23 @@ void main() {
 
     test('Get correct lesson count', () {
       final selection = Selection([
-        SelectionValue(Keys.selectionBlock('a', true), 'KRA-EK'),
-        SelectionValue(Keys.selectionBlock('b', true), 'KRA-EK'),
-        SelectionValue(Keys.selectionBlock('c', true), 'KRA-EK'),
-        SelectionValue(Keys.selectionBlock('d', true), 'KRA-EK'),
-        SelectionValue(Keys.selectionBlock('e', true), 'KRA-EK'),
-        SelectionValue(Keys.selectionBlock('f', true), 'null-MIT'),
-        SelectionValue(Keys.selectionBlock('g', true), 'KRA-EK'),
-        SelectionValue(Keys.selectionBlock('h', true), 'KRA-EK'),
-        SelectionValue(Keys.selectionBlock('i', true), 'KRA-EK'),
-        SelectionValue(Keys.selectionBlock('j', true), 'KRA-EK'),
-        SelectionValue(Keys.selectionBlock('k', true), 'KRA-EK'),
-        SelectionValue(Keys.selectionBlock('l', true), 'KRA-EK'),
-        SelectionValue(Keys.selectionBlock('m', true), 'null-MIT'),
-        SelectionValue(Keys.selectionBlock('n', true), 'STA-EK'),
-        SelectionValue(Keys.selectionBlock('o', true), 'KRA-EK'),
-        SelectionValue(Keys.selectionBlock('p', true), 'null-FR'),
-        SelectionValue(Keys.selectionBlock('q', true), 'KRA-EK'),
+        SelectionValue('a', 'kra+bdn-ek'),
+        SelectionValue('b', 'kra+bdn-ek'),
+        SelectionValue('c', 'kra+bdn-ek'),
+        SelectionValue('d', 'kra+bdn-ek'),
+        SelectionValue('e', 'kra+bdn-ek'),
+        SelectionValue('f', 'null-mit'),
+        SelectionValue('g', 'kra+bdn-ek'),
+        SelectionValue('h', 'kra+bdn-ek'),
+        SelectionValue('i', 'kra+bdn-ek'),
+        SelectionValue('j', 'kra+bdn-ek'),
+        SelectionValue('k', 'kra+bdn-ek'),
+        SelectionValue('l', 'kra+bdn-ek'),
+        SelectionValue('m', 'null-mit'),
+        SelectionValue('n', 'sta-ek'),
+        SelectionValue('o', 'kra+bdn-ek'),
+        SelectionValue('p', 'null-fr'),
+        SelectionValue('q', 'kra+bdn-ek'),
       ]);
       final days = [
         TimetableDay(
@@ -363,8 +357,8 @@ void main() {
               subjects: [
                 // ignore: missing_required_param
                 TimetableSubject(
-                  subject: 'EK',
-                  teacher: 'KRA',
+                  subject: 'ek',
+                  teachers: ['kra', 'bdn'],
                 ),
               ],
             ),
@@ -374,8 +368,8 @@ void main() {
               subjects: [
                 // ignore: missing_required_param
                 TimetableSubject(
-                  subject: 'EK',
-                  teacher: 'KRA',
+                  subject: 'ek',
+                  teachers: ['kra', 'bdn'],
                 ),
               ],
             ),
@@ -385,8 +379,8 @@ void main() {
               subjects: [
                 // ignore: missing_required_param
                 TimetableSubject(
-                  subject: 'EK',
-                  teacher: 'KRA',
+                  subject: 'ek',
+                  teachers: ['kra', 'bdn'],
                 ),
               ],
             ),
@@ -396,8 +390,8 @@ void main() {
               subjects: [
                 // ignore: missing_required_param
                 TimetableSubject(
-                  subject: 'EK',
-                  teacher: 'KRA',
+                  subject: 'ek',
+                  teachers: ['kra', 'bdn'],
                 ),
               ],
             ),
@@ -407,8 +401,8 @@ void main() {
               subjects: [
                 // ignore: missing_required_param
                 TimetableSubject(
-                  subject: 'EK',
-                  teacher: 'KRA',
+                  subject: 'ek',
+                  teachers: ['kra', 'bdn'],
                 ),
               ],
             ),
@@ -418,7 +412,7 @@ void main() {
               subjects: [
                 // ignore: missing_required_param
                 TimetableSubject(
-                  subject: 'MIT',
+                  subject: 'mit',
                 ),
               ],
             ),
@@ -428,8 +422,8 @@ void main() {
               subjects: [
                 // ignore: missing_required_param
                 TimetableSubject(
-                  subject: 'EK',
-                  teacher: 'KRA',
+                  subject: 'ek',
+                  teachers: ['kra', 'bdn'],
                 ),
               ],
             ),
@@ -444,8 +438,8 @@ void main() {
               subjects: [
                 // ignore: missing_required_param
                 TimetableSubject(
-                  subject: 'EK',
-                  teacher: 'KRA',
+                  subject: 'ek',
+                  teachers: ['kra', 'bdn'],
                 ),
               ],
             ),
@@ -455,8 +449,8 @@ void main() {
               subjects: [
                 // ignore: missing_required_param
                 TimetableSubject(
-                  subject: 'EK',
-                  teacher: 'KRA',
+                  subject: 'ek',
+                  teachers: ['kra', 'bdn'],
                 ),
               ],
             ),
@@ -466,8 +460,8 @@ void main() {
               subjects: [
                 // ignore: missing_required_param
                 TimetableSubject(
-                  subject: 'EK',
-                  teacher: 'KRA',
+                  subject: 'ek',
+                  teachers: ['kra', 'bdn'],
                 ),
               ],
             ),
@@ -477,8 +471,8 @@ void main() {
               subjects: [
                 // ignore: missing_required_param
                 TimetableSubject(
-                  subject: 'EK',
-                  teacher: 'KRA',
+                  subject: 'ek',
+                  teachers: ['kra', 'bdn'],
                 ),
               ],
             ),
@@ -488,8 +482,8 @@ void main() {
               subjects: [
                 // ignore: missing_required_param
                 TimetableSubject(
-                  subject: 'EK',
-                  teacher: 'KRA',
+                  subject: 'ek',
+                  teachers: ['kra', 'bdn'],
                 ),
               ],
             ),
@@ -499,7 +493,7 @@ void main() {
               subjects: [
                 // ignore: missing_required_param
                 TimetableSubject(
-                  subject: 'MIT',
+                  subject: 'mit',
                 ),
               ],
             ),
@@ -509,8 +503,8 @@ void main() {
               subjects: [
                 // ignore: missing_required_param
                 TimetableSubject(
-                  subject: 'EK',
-                  teacher: 'KRA',
+                  subject: 'ek',
+                  teachers: ['kra', 'bdn'],
                 ),
               ],
             ),
@@ -525,8 +519,8 @@ void main() {
               subjects: [
                 // ignore: missing_required_param
                 TimetableSubject(
-                  subject: 'EK',
-                  teacher: 'KRA',
+                  subject: 'ek',
+                  teachers: ['kra', 'bdn'],
                 ),
               ],
             ),
@@ -536,7 +530,7 @@ void main() {
               subjects: [
                 // ignore: missing_required_param
                 TimetableSubject(
-                  subject: 'FR',
+                  subject: 'fr',
                 ),
               ],
             ),
@@ -551,8 +545,8 @@ void main() {
               subjects: [
                 // ignore: missing_required_param
                 TimetableSubject(
-                  subject: 'EK',
-                  teacher: 'KRA',
+                  subject: 'ek',
+                  teachers: ['kra', 'bdn'],
                 ),
               ],
             ),
@@ -562,8 +556,8 @@ void main() {
               subjects: [
                 // ignore: missing_required_param
                 TimetableSubject(
-                  subject: 'EK',
-                  teacher: 'KRA',
+                  subject: 'ek',
+                  teachers: ['kra', 'bdn'],
                 ),
               ],
             ),
@@ -578,8 +572,8 @@ void main() {
               subjects: [
                 // ignore: missing_required_param
                 TimetableSubject(
-                  subject: 'EK',
-                  teacher: 'KRA',
+                  subject: 'ek',
+                  teachers: ['kra', 'bdn'],
                 ),
               ],
             ),
@@ -589,8 +583,8 @@ void main() {
               subjects: [
                 // ignore: missing_required_param
                 TimetableSubject(
-                  subject: 'EK',
-                  teacher: 'KRA',
+                  subject: 'ek',
+                  teachers: ['kra', 'bdn'],
                 ),
               ],
             ),
@@ -605,8 +599,8 @@ void main() {
               subjects: [
                 // ignore: missing_required_param
                 TimetableSubject(
-                  subject: 'EK',
-                  teacher: 'KRA',
+                  subject: 'ek',
+                  teachers: ['kra', 'bdn'],
                 ),
               ],
             ),
@@ -616,19 +610,19 @@ void main() {
               subjects: [
                 // ignore: missing_required_param
                 TimetableSubject(
-                  subject: 'EK',
-                  teacher: 'KRA',
+                  subject: 'ek',
+                  teachers: ['kra', 'bdn'],
                 ),
               ],
             ),
           ],
         ),
       ];
-      expect(days[0].userLessonsCount(selection, true), 7);
-      expect(days[1].userLessonsCount(selection, true), 5);
-      expect(days[2].userLessonsCount(selection, true), 1);
-      expect(days[3].userLessonsCount(selection, true), 1);
-      expect(days[4].userLessonsCount(selection, true), 2);
+      expect(days[0].userLessonsCount(selection), 7);
+      expect(days[1].userLessonsCount(selection), 5);
+      expect(days[2].userLessonsCount(selection), 1);
+      expect(days[3].userLessonsCount(selection), 1);
+      expect(days[4].userLessonsCount(selection), 2);
     });
 
     test('Can create timetable for grade', () {
@@ -637,11 +631,11 @@ void main() {
         lessons: [],
       );
       final timetableForGrade = TimetableForGrade(
-        grade: 'EF',
+        grade: 'ef',
         date: DateTime(2019, 6, 30),
         days: [timetableDay],
       );
-      expect(timetableForGrade.grade, 'EF');
+      expect(timetableForGrade.grade, 'ef');
       expect(
         timetableForGrade.date,
         DateTime(2019, 6, 30),
@@ -662,11 +656,11 @@ void main() {
         lessons: [],
       );
       final timetableForGrade = TimetableForGrade.fromJSON({
-        'grade': 'EF',
+        'grade': 'ef',
         'date': DateTime(2019, 6, 30).toIso8601String(),
         'days': [timetableDay.toJSON()],
       });
-      expect(timetableForGrade.grade, 'EF');
+      expect(timetableForGrade.grade, 'ef');
       expect(
         timetableForGrade.date,
         DateTime(2019, 6, 30),
@@ -687,14 +681,14 @@ void main() {
         lessons: [],
       );
       final timetableForGrade = TimetableForGrade(
-        grade: 'EF',
+        grade: 'ef',
         date: DateTime(2019, 6, 30),
         days: [timetableDay],
       );
       expect(
         timetableForGrade.toJSON(),
         {
-          'grade': 'EF',
+          'grade': 'ef',
           'date': DateTime(2019, 6, 30).toIso8601String(),
           'days': [timetableDay.toJSON()],
         },
@@ -710,7 +704,7 @@ void main() {
         lessons: [],
       );
       final timetableForGrade = TimetableForGrade(
-        grade: 'EF',
+        grade: 'ef',
         date: DateTime(2019, 6, 30),
         days: [timetableDay],
       );
@@ -722,7 +716,7 @@ void main() {
 
     test('Can get correct initial day', () {
       final timetableForGrade = TimetableForGrade(
-        grade: 'EF',
+        grade: 'ef',
         date: DateTime(2019, 6, 30),
         days: [
           TimetableDay(
@@ -734,8 +728,8 @@ void main() {
                 subjects: [
                   // ignore: missing_required_param
                   TimetableSubject(
-                    subject: 'EK',
-                    teacher: 'KRA',
+                    subject: 'ek',
+                    teachers: ['kra', 'bdn'],
                   ),
                 ],
               ),
@@ -762,8 +756,8 @@ void main() {
                 subjects: [
                   // ignore: missing_required_param
                   TimetableSubject(
-                    subject: 'EK',
-                    teacher: 'KRA',
+                    subject: 'ek',
+                    teachers: ['kra', 'bdn'],
                   ),
                 ],
               ),
@@ -772,8 +766,8 @@ void main() {
         ],
       );
       final selection = Selection([
-        SelectionValue(Keys.selectionBlock('a', true), 'KRA-EK'),
-        SelectionValue(Keys.selectionBlock('b', true), 'KRA-EK'),
+        SelectionValue('a', 'kra+bdn-ek'),
+        SelectionValue('b', 'kra+bdn-ek'),
       ]);
       expect(
         timetableForGrade.initialDay(selection, DateTime(2019, 8, 10)),
@@ -799,7 +793,7 @@ void main() {
         lessons: [],
       );
       final timetableForGrade = TimetableForGrade(
-        grade: 'EF',
+        grade: 'ef',
         date: DateTime(2019, 6, 30),
         days: [timetableDay],
       );
@@ -820,7 +814,7 @@ void main() {
         lessons: [],
       );
       final timetableForGrade = TimetableForGrade(
-        grade: 'EF',
+        grade: 'ef',
         date: DateTime(2019, 6, 30),
         days: [timetableDay],
       );
@@ -841,7 +835,7 @@ void main() {
         lessons: [],
       );
       final timetableForGrade = TimetableForGrade(
-        grade: 'EF',
+        grade: 'ef',
         date: DateTime(2019, 6, 30),
         days: [timetableDay],
       );
@@ -862,7 +856,7 @@ void main() {
         lessons: [],
       );
       final timetableForGrade = TimetableForGrade(
-        grade: 'EF',
+        grade: 'ef',
         date: DateTime(2019, 6, 30),
         days: [timetableDay],
       );

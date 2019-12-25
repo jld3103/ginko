@@ -5,8 +5,6 @@ import 'package:backend/src/notifications.dart';
 import 'package:models/models.dart';
 import 'package:mysql1/mysql1.dart';
 import 'package:parsers/parsers.dart';
-import 'package:translations/translation_locales_list.dart';
-import 'package:translations/translations_server.dart';
 import 'package:tuple/tuple.dart';
 
 /// SubstitutionPlanHandler class
@@ -16,6 +14,7 @@ class SubstitutionPlanHandler extends Handler {
     MySqlConnection mySqlConnection,
     this.timetableHandler,
     this.selectionHandler,
+    this.subjectsHandler,
   ) : super(
           Keys.substitutionPlan,
           mySqlConnection,
@@ -26,6 +25,9 @@ class SubstitutionPlanHandler extends Handler {
 
   // ignore: public_member_api_docs
   final SelectionHandler selectionHandler;
+
+  // ignore: public_member_api_docs
+  final SubjectsHandler subjectsHandler;
 
   /// Fetch the latest version from the database
   @override
@@ -114,49 +116,46 @@ class SubstitutionPlanHandler extends Handler {
     if (notificationPlans.isNotEmpty) {
       // ignore: omit_local_variable_types
       final Map<String, List<String>> notifications = {};
-      for (final locale in LocalesList.locales) {
-        for (final substitutionPlan in notificationPlans) {
-          final devicesResults = await mySqlConnection.query(
+      for (final substitutionPlan in notificationPlans) {
+        final devicesResults = await mySqlConnection.query(
+            // ignore: lines_longer_than_80_chars
+            'SELECT username, token FROM users_devices;');
+        for (final row in devicesResults.toList()) {
+          final username = row[0].toString();
+          final token = row[1].toString();
+          final gradeResults = await mySqlConnection.query(
               // ignore: lines_longer_than_80_chars
-              'SELECT username, token FROM users_devices WHERE language = \'$locale\';');
-          for (final row in devicesResults.toList()) {
-            final username = row[0].toString();
-            final token = row[1].toString();
-            final gradeResults = await mySqlConnection.query(
-                // ignore: lines_longer_than_80_chars
-                'SELECT grade FROM users_grade WHERE username = \'$username\';');
-            final grade = gradeResults.toList()[0][0].toString();
-            final settingsResults = await mySqlConnection.query(
-                // ignore: lines_longer_than_80_chars
-                'SELECT settings_value FROM users_settings WHERE username = \'$username\' AND settings_key = \'${Keys.settingsKey(Keys.substitutionPlanNotifications)}\';');
-            bool showNotifications;
-            if (settingsResults.isNotEmpty) {
-              showNotifications = settingsResults.toList()[0][0] == 1;
-            } else {
-              showNotifications = true;
+              'SELECT grade FROM users_grade WHERE username = \'$username\';');
+          final grade = gradeResults.toList()[0][0].toString();
+          final settingsResults = await mySqlConnection.query(
+              // ignore: lines_longer_than_80_chars
+              'SELECT settings_value FROM users_settings WHERE username = \'$username\' AND settings_key = \'${Keys.substitutionPlanNotifications}\';');
+          bool showNotifications;
+          if (settingsResults.isNotEmpty) {
+            showNotifications = settingsResults.toList()[0][0] == 1;
+          } else {
+            showNotifications = true;
+          }
+          if (showNotifications) {
+            final notification = await _createNotification(
+              TimetableForGrade.fromJSON(
+                (await timetableHandler.fetchLatest(User(
+                  grade: grade,
+                  username: null,
+                  password: null,
+                )))
+                    .item1,
+              ),
+              substitutionPlan.substitutionPlans[grades.indexOf(grade)],
+              substitutionPlan.substitutionPlans[grades.indexOf(grade)]
+                  .substitutionPlanDays[0],
+              await selectionHandler.getSelection(username),
+              subjectsHandler,
+            );
+            if (notifications[json.encode(notification.toJSON())] == null) {
+              notifications[json.encode(notification.toJSON())] = [];
             }
-            if (showNotifications) {
-              final notification = _createNotification(
-                TimetableForGrade.fromJSON(
-                  (await timetableHandler.fetchLatest(User(
-                    grade: grade,
-                    username: null,
-                    password: null,
-                    fullName: null,
-                  )))
-                      .item1,
-                ),
-                substitutionPlan.substitutionPlans[grades.indexOf(grade)],
-                substitutionPlan.substitutionPlans[grades.indexOf(grade)]
-                    .substitutionPlanDays[0],
-                await selectionHandler.getSelection(username),
-                locale,
-              );
-              if (notifications[json.encode(notification.toJSON())] == null) {
-                notifications[json.encode(notification.toJSON())] = [];
-              }
-              notifications[json.encode(notification.toJSON())].add(token);
-            }
+            notifications[json.encode(notification.toJSON())].add(token);
           }
         }
       }
@@ -169,33 +168,34 @@ class SubstitutionPlanHandler extends Handler {
     }
   }
 
-  static Notification _createNotification(
+  static Future<Notification> _createNotification(
     TimetableForGrade timetableForGrade,
     SubstitutionPlanForGrade substitutionPlanForGrade,
     SubstitutionPlanDay substitutionPlanDay,
     Selection selection,
-    String language,
-  ) {
+    SubjectsHandler subjectsHandler,
+  ) async {
+    final subjects =
+        Subjects.fromJSON((await subjectsHandler.fetchLatest(null)).item1);
     final changes = substitutionPlanForGrade.changes
         .where((change) => change.date == substitutionPlanDay.date)
         .where((change) {
-      final block = timetableForGrade.days[substitutionPlanDay.date.weekday - 1]
-          .lessons[change.unit].block;
-      final key = Keys.selectionBlock(block, isWeekA(substitutionPlanDay.date));
-      final userSelected = selection.getSelection(key);
-      final originalSubjects =
-          change.getMatchingSubjectsByTimetable(timetableForGrade);
-      if (originalSubjects.length != 1) {
+      final s = timetableForGrade
+          .days[substitutionPlanDay.date.weekday - 1].lessons[change.unit];
+      final userSelected = selection.getSelection(s.block);
+      final matchingSubjects =
+          s.subjects.where((s) => change.subjectMatches(s)).toList();
+      if (matchingSubjects.length != 1) {
         return true;
       }
-      return userSelected == originalSubjects[0].identifier;
+      return userSelected == matchingSubjects[0].identifier;
     }).toList();
     final title =
         // ignore: lines_longer_than_80_chars
-        '${ServerTranslations.weekdays(language)[substitutionPlanDay.date.weekday - 1]} ${outputDateFormat(language).format(substitutionPlanDay.date)}';
+        '${weekdays[substitutionPlanDay.date.weekday - 1]} ${outputDateFormat.format(substitutionPlanDay.date)}';
     final lines = [];
     for (final change in changes) {
-      final completedChange = change.completed(
+      final completedChange = change.completedByLesson(
           timetableForGrade.days[change.date.weekday - 1].lessons[change.unit]);
 
       final buffer = StringBuffer()..write('<b>${change.unit + 1}.</b> ');
@@ -204,31 +204,29 @@ class SubstitutionPlanHandler extends Handler {
           completedChange.subject.isNotEmpty) {
         buffer.write(
             // ignore: lines_longer_than_80_chars
-            '${ServerTranslations.subjects(language)[completedChange.subject]} ');
+            '${Subjects.fromJSON((await subjectsHandler.fetchLatest(null)).item1).subjects[completedChange.subject]} ');
       }
-      if (completedChange.type == ChangeTypes.freeLesson) {
-        buffer.write(ServerTranslations.substitutionPlanFreeLesson(language));
+      if (completedChange.type == SubstitutionPlanChangeTypes.freeLesson) {
+        buffer.write(subjects.subjects['fr']);
       }
-      if (completedChange.type == ChangeTypes.exam) {
-        buffer.write(ServerTranslations.substitutionPlanExam(language));
+      if (completedChange.type == SubstitutionPlanChangeTypes.exam) {
+        buffer.write(subjects.subjects['kl']);
       }
-      if (completedChange.type == ChangeTypes.changed) {
-        buffer.write(ServerTranslations.substitutionPlanChanged(language));
+      if (completedChange.type == SubstitutionPlanChangeTypes.changed) {
+        buffer.write(subjects.subjects['ae']);
       }
       if (completedChange.changed.info != null) {
         buffer.write(' ${completedChange.changed.info}');
       }
       lines.add(buffer.toString());
     }
-    final bigBody = lines.isEmpty
-        ? ServerTranslations.substitutionPlanNoChanges(language)
-        : lines.join('<br/>');
+    final bigBody = lines.isEmpty ? 'Keine Änderungen' : lines.join('<br/>');
     final body = changes.isEmpty
-        ? ServerTranslations.substitutionPlanNoChanges(language)
+        ? 'Keine Änderungen'
         : changes.length == 1
             ? lines[0]
             // ignore: lines_longer_than_80_chars
-            : '${changes.length} ${ServerTranslations.substitutionPlanChanges(language)}';
+            : '${changes.length} Änderungen';
     return Notification(
       title,
       body,
@@ -260,34 +258,34 @@ class SubstitutionPlanHandler extends Handler {
       return SubstitutionPlan(
           substitutionPlans: substitutionPlans[0]
               .substitutionPlans
-              .map((replacementPlan) => replacementPlan.grade)
+              .map((substitutionPlan) => substitutionPlan.grade)
               .map((grade) => SubstitutionPlanForGrade(
                     grade: grade,
                     substitutionPlanDays: substitutionPlans[0]
                         .substitutionPlans[substitutionPlans[0]
                             .substitutionPlans
-                            .map((replacementPlan) => replacementPlan.grade)
+                            .map((substitutionPlan) => substitutionPlan.grade)
                             .toList()
                             .indexOf(grade)]
                         .substitutionPlanDays
                       ..addAll(substitutionPlans[1]
                           .substitutionPlans[substitutionPlans[1]
                               .substitutionPlans
-                              .map((replacementPlan) => replacementPlan.grade)
+                              .map((substitutionPlan) => substitutionPlan.grade)
                               .toList()
                               .indexOf(grade)]
                           .substitutionPlanDays),
                     changes: substitutionPlans[0]
                         .substitutionPlans[substitutionPlans[0]
                             .substitutionPlans
-                            .map((replacementPlan) => replacementPlan.grade)
+                            .map((substitutionPlan) => substitutionPlan.grade)
                             .toList()
                             .indexOf(grade)]
                         .changes
                       ..addAll(substitutionPlans[1]
                           .substitutionPlans[substitutionPlans[1]
                               .substitutionPlans
-                              .map((replacementPlan) => replacementPlan.grade)
+                              .map((substitutionPlan) => substitutionPlan.grade)
                               .toList()
                               .indexOf(grade)]
                           .changes),

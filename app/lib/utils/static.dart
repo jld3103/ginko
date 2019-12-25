@@ -5,6 +5,7 @@ import 'package:ginko/loaders/device.dart';
 import 'package:ginko/loaders/releases.dart';
 import 'package:ginko/loaders/selection.dart';
 import 'package:ginko/loaders/settings.dart';
+import 'package:ginko/loaders/subjects.dart';
 import 'package:ginko/loaders/substitution_plan.dart';
 import 'package:ginko/loaders/timetable.dart';
 import 'package:ginko/loaders/updates.dart';
@@ -18,21 +19,6 @@ import 'package:ginko/plugins/storage/storage.dart';
 class Static {
   // ignore: public_member_api_docs
   static Storage storage;
-
-  // ignore: public_member_api_docs
-  static bool online;
-
-  // ignore: public_member_api_docs
-  static VoidCallback rebuildTimetable;
-
-  // ignore: public_member_api_docs
-  static FutureCallbackShouldRender refreshSubstitutionPlan;
-
-  // ignore: public_member_api_docs
-  static FutureCallbackShouldRender refreshCafetoria;
-
-  // ignore: public_member_api_docs
-  static FutureCallbackShouldRender refreshAiXformation;
 
   // ignore: public_member_api_docs
   static TimetableLoader timetable = TimetableLoader();
@@ -66,6 +52,9 @@ class Static {
 
   // ignore: public_member_api_docs
   static ReleasesLoader releases = ReleasesLoader();
+
+  // ignore: public_member_api_docs
+  static SubjectsLoader subjects = SubjectsLoader();
 
   // ignore: public_member_api_docs
   static FirebaseMessaging firebaseMessaging = FirebaseMessaging();

@@ -25,7 +25,7 @@ class Rooms {
   int get timeStamp => date.millisecondsSinceEpoch ~/ 1000;
 
   // ignore: public_member_api_docs
-  final List<String> rooms;
+  final Map<String, String> rooms;
 
   // ignore: public_member_api_docs
   final DateTime date;

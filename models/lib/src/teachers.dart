@@ -11,7 +11,7 @@ class Teachers {
 
   /// Creates a Teachers object from json
   factory Teachers.fromJSON(json) => Teachers(
-        teachers: json['teachers'].cast<String>(),
+        teachers: json['teachers'].cast<String, String>(),
         date: DateTime.parse(json['date']),
       );
 
@@ -25,7 +25,7 @@ class Teachers {
   int get timeStamp => date.millisecondsSinceEpoch ~/ 1000;
 
   // ignore: public_member_api_docs
-  final List<String> teachers;
+  final Map<String, String> teachers;
 
   // ignore: public_member_api_docs
   final DateTime date;

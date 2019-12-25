@@ -1,7 +1,6 @@
 library pwa;
 
-// ignore: public_member_api_docs
-import 'package:ginko/views/cloud/directory_overhead.dart';
+import 'dart:typed_data';
 
 // ignore: public_member_api_docs
 abstract class PWABase {
@@ -16,4 +15,16 @@ abstract class PWABase {
 
   // ignore: public_member_api_docs
   Future<DummyFile> selectFile();
+}
+
+// ignore: public_member_api_docs
+class DummyFile {
+  // ignore: public_member_api_docs
+  const DummyFile(this.name, this.content);
+
+  // ignore: public_member_api_docs
+  final String name;
+
+  // ignore: public_member_api_docs
+  final Uint8List content;
 }

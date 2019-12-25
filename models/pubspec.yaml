@@ -9,8 +9,6 @@ dependencies:
   meta:
   intl:
   crypto:
-  translations:
-    path: ../translations
 
 dev_dependencies:
   test:

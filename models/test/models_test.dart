@@ -16,17 +16,16 @@ void main() {
       expect(weekdays.length, 5);
     });
 
+    test('Get correct month count', () {
+      expect(months.length, 12);
+    });
+
     test('Dateformat converts correctly', () async {
       await setupDateFormats();
-      expect(outputDateFormat('de').format(DateTime(2019, 7, 5)), '05.07.2019');
-      expect(outputDateFormat('en').format(DateTime(2019, 7, 5)), '07/05/2019');
+      expect(outputDateFormat.format(DateTime(2019, 7, 5)), '05.07.2019');
       expect(
-        outputDateTimeFormat('de').format(DateTime(2019, 7, 5, 7, 53)),
+        outputDateTimeFormat.format(DateTime(2019, 7, 5, 7, 53)),
         '05.07.2019 07:53',
-      );
-      expect(
-        outputDateTimeFormat('en').format(DateTime(2019, 7, 5, 7, 53)),
-        '07/05/2019 07:53',
       );
       expect(parseDate('5.7.2019'), DateTime(2019, 7, 5));
       expect(parseDate('5.7.19'), DateTime(2019, 7, 5));
@@ -35,18 +34,13 @@ void main() {
           () => parseDate('blabla'), throwsA(TypeMatcher<FormatException>()));
     });
 
-    test('Get correct week a', () {
-      expect(isWeekA(DateTime(2019, 1, 1)), true);
-      expect(isWeekA(DateTime(2019, 1, 8)), false);
-    });
-
     test('Get senior grades correct', () {
       expect(isSeniorGrade('5a'), false);
       expect(isSeniorGrade('7c'), false);
       expect(isSeniorGrade('9b'), false);
-      expect(isSeniorGrade('EF'), true);
-      expect(isSeniorGrade('Q1'), true);
-      expect(isSeniorGrade('Q2'), true);
+      expect(isSeniorGrade('ef'), true);
+      expect(isSeniorGrade('q1'), true);
+      expect(isSeniorGrade('q2'), true);
     });
 
     test('Get correct mondays for dates', () {

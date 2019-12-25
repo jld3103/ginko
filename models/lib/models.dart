@@ -2,7 +2,6 @@ library models;
 
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
-import 'package:translations/translations_server.dart';
 
 export 'package:models/src/aixformation.dart';
 export 'package:models/src/cafetoria.dart';
@@ -37,31 +36,44 @@ List<String> grades = [
   '9a',
   '9b',
   '9c',
-  'EF',
-  'Q1',
-  'Q2',
+  'ef',
+  'q1',
+  'q2',
 ];
 
 /// Check if a grade is a senior grade
-bool isSeniorGrade(String grade) =>
-    grade == 'EF' || grade == 'Q1' || grade == 'Q2';
+bool isSeniorGrade(String grade) => grades.indexOf(grade) > 14;
 
 /// List of all weekdays
-List<int> weekdays = [
-  0,
-  1,
-  2,
-  3,
-  4,
-];
+Map<int, String> weekdays = {
+  0: 'Montag',
+  1: 'Dienstag',
+  2: 'Mittwoch',
+  3: 'Donnerstag',
+  4: 'Freitag',
+};
+
+/// List of all months
+Map<int, String> months = {
+  0: 'Januar',
+  1: 'Februar',
+  2: 'März',
+  3: 'April',
+  4: 'Main',
+  5: 'Juni',
+  6: 'Juli',
+  7: 'August',
+  8: 'September',
+  9: 'Oktober',
+  10: 'November',
+  11: 'Dezember',
+};
 
 /// The date format to display all dates in
-DateFormat outputDateFormat(String language) =>
-    DateFormat(ServerTranslations.outputDateFormat(language));
+DateFormat outputDateFormat = DateFormat('dd.MM.y');
 
 /// The date and time format to display all dates and times in
-DateFormat outputDateTimeFormat(String language) =>
-    DateFormat('${ServerTranslations.outputDateFormat(language)} HH:mm');
+DateFormat outputDateTimeFormat = DateFormat('dd.MM.y HH:mm');
 
 var _dateFormats = [];
 
@@ -70,7 +82,7 @@ Future setupDateFormats() async {
   await initializeDateFormatting('de', null);
   _dateFormats = [
     DateFormat.yMMMMd('de'),
-    outputDateFormat('de'),
+    outputDateFormat,
   ];
 }
 
@@ -100,11 +112,8 @@ int weekNumber(DateTime date) {
   return ((dayOfYear - date.weekday + 10) / 7).floor();
 }
 
-/// Check if date is in week a
-bool isWeekA(DateTime date) => (weekNumber(date) + 1) % 2 == 0;
-
 /// Get the Monday of the week
-/// Skips a week of weekend
+/// Skips to next week when weekend
 DateTime monday(DateTime date) {
   var newDate = date.subtract(Duration(
     days: date.weekday - 1,

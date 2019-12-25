@@ -25,7 +25,7 @@ class ReleasesHandler extends Handler {
   @override
   Future update() async {
     final releases = ReleasesParser.extract(
-      json.decode(await ReleasesParser.download()),
+      json.decode(await ReleasesParser.download(Config.githubToken)),
     );
     final dataString = json.encode(releases.toJSON());
     await mySqlConnection.query(

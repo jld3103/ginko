@@ -99,9 +99,9 @@ class CalendarEvent {
       };
 
   /// Get the date string of the event
-  String dateString(String languageCode) {
-    final _dateFormat = DateFormat.yMMMMd(languageCode);
-    final _dateTimeFormat = DateFormat.yMMMMd(languageCode).add_Hm();
+  String get dateString {
+    final _dateFormat = DateFormat.yMMMMd('de');
+    final _dateTimeFormat = DateFormat.yMMMMd('de').add_Hm();
     var dateStr = '';
     if (start.hour != 0 || start.minute != 0) {
       dateStr = _dateTimeFormat.format(start);

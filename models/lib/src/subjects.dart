@@ -11,7 +11,7 @@ class Subjects {
 
   /// Creates a Subjects object from json
   factory Subjects.fromJSON(json) => Subjects(
-        subjects: json['subjects'],
+        subjects: json['subjects'].cast<String, String>(),
         date: DateTime.parse(json['date']),
       );
 
@@ -25,7 +25,7 @@ class Subjects {
   int get timeStamp => date.millisecondsSinceEpoch ~/ 1000;
 
   // ignore: public_member_api_docs
-  final List<String> subjects;
+  final Map<String, String> subjects;
 
   // ignore: public_member_api_docs
   final DateTime date;

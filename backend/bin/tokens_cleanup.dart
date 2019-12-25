@@ -16,11 +16,13 @@ Future main() async {
     db: Config.dbName,
   ));
   log.info('Connected to database');
-  final results =
-      await mySqlConnection.query('SELECT token FROM users_devices;');
+  final results = await mySqlConnection
+      .query('SELECT token, last_active FROM users_devices;');
   for (final row in results.toList()) {
     final token = row[0].toString();
-    final registered = await Notifications.isTokenStillRegistered(token);
+    final lastActive = DateTime.parse(row[1].toString());
+    final registered = (await Notifications.isTokenStillRegistered(token)) ||
+        !(DateTime.now().difference(lastActive).inDays > 90);
     print('$token: $registered');
     if (!registered) {
       await mySqlConnection

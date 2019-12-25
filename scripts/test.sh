@@ -1,6 +1,6 @@
 #!/bin/bash
 
-folders=("app" "models")
+folders=("models")
 for d in "${folders[@]}"; do
   cd "$d" || exit
   if [[ "$d" == "app" ]]; then

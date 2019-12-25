@@ -6,7 +6,6 @@ class Device {
   // ignore: public_member_api_docs
   Device({
     @required this.token,
-    @required this.language,
     @required this.os,
     @required this.version,
   });
@@ -14,7 +13,6 @@ class Device {
   // ignore: public_member_api_docs
   factory Device.fromJSON(json) => Device(
         token: json['token'],
-        language: json['language'],
         os: json['os'],
         version: json['version'],
       );
@@ -22,16 +20,12 @@ class Device {
   // ignore: public_member_api_docs
   Map<String, String> toJSON() => {
         'token': token,
-        'language': language,
         'os': os,
         'version': version,
       };
 
   // ignore: public_member_api_docs
   final String token;
-
-  // ignore: public_member_api_docs
-  final String language;
 
   // ignore: public_member_api_docs
   final String os;

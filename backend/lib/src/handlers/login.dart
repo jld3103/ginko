@@ -37,24 +37,20 @@ class LoginHandler {
         }
       }
       final client =
-          NextCloudClient('nextcloud.aachen-vsa.logoip.de', username, password);
-      final metaData = await client.metaData.getMetaData();
-      var grade = metaData.groups.singleWhere((group) =>
-          grades.contains(group.toUpperCase()) ||
-          grades.contains(group.toLowerCase()));
-      if (!grades.contains(grade)) {
-        grade = grade.toUpperCase();
-      }
+          NextCloudClient('cloud.viktoria.schule', username, password);
+      final files = await client.webDav.ls('/Tausch');
+      final grade = files[0].name.split(' ')[1];
       await _mySqlConnection.query(
           // ignore: lines_longer_than_80_chars
           'INSERT INTO users_password (username, password) VALUES (\'$username\' , \'$hashedPassword\') ON DUPLICATE KEY UPDATE password = \'$hashedPassword\';');
       await _mySqlConnection.query(
           // ignore: lines_longer_than_80_chars
           'INSERT INTO users_grade (username, grade) VALUES (\'$username\' , \'$grade\') ON DUPLICATE KEY UPDATE grade = \'$grade\';');
-      await _mySqlConnection.query(
-          // ignore: lines_longer_than_80_chars
-          'INSERT INTO users_full_name (username, full_name) VALUES (\'$username\' , \'${metaData.fullName}\') ON DUPLICATE KEY UPDATE full_name = \'${metaData.fullName}\';');
       return true;
+    } on RequestException catch (e) {
+      print(e.cause);
+      print(e.response);
+      return false;
       // ignore: avoid_catches_without_on_clauses
     } catch (e, stacktrace) {
       print(e);
@@ -78,16 +74,10 @@ class LoginHandler {
             'SELECT grade FROM users_grade WHERE username = \'$username\';'))
         .toList()[0][0]
         .toString();
-    final fullName = (await _mySqlConnection.query(
-            // ignore: lines_longer_than_80_chars
-            'SELECT full_name FROM users_full_name WHERE username = \'$username\';'))
-        .toList()[0][0]
-        .toString();
     return User(
       username: username,
       password: password,
       grade: grade,
-      fullName: fullName,
     );
   }
 }

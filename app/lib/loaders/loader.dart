@@ -34,7 +34,7 @@ abstract class Loader {
 
   // ignore: public_member_api_docs
   void loadOffline() {
-    if (Static.storage.has(key) && Static.storage.getString(key) != null) {
+    if (hasStoredData) {
       object = fromJSON(Static.storage.getJSON(key));
     }
   }
@@ -66,23 +66,20 @@ abstract class Loader {
                 'Basic ${base64.encode(utf8.encode('$username:$password'))}',
           },
           responseType: ResponseType.plain,
+          connectTimeout: 10000,
+          receiveTimeout: 10000,
         );
       Response response;
       if (post) {
-        response = await dio
-            .post(
-              '$baseUrl/$key',
-              data: body,
-            )
-            .timeout(Duration(seconds: 10));
+        response = await dio.post(
+          '$baseUrl/$key',
+          data: body,
+        );
       } else {
-        response = await dio
-            .get(
-              '$baseUrl/$key',
-            )
-            .timeout(Duration(seconds: 10));
+        response = await dio.get(
+          '$baseUrl/$key',
+        );
       }
-      Static.online = true;
       final data = json.decode(response.toString());
       final credentialsCorrect = data['status'];
       if (credentialsCorrect) {
@@ -102,19 +99,34 @@ abstract class Loader {
       }
       return credentialsCorrect;
     } on DioError catch (e) {
-      Static.online = false;
       print(e);
-      print(e.response);
+      if (e.response != null) {
+        print(e.response);
+      }
       rethrow;
     }
   }
 
   // ignore: public_member_api_docs
   void save() {
-    if (data == null) {
-      Static.storage.setString(key, null);
-    } else {
+    if (hasLoadedData) {
       Static.storage.setJSON(key, toJSON());
+    } else {
+      Static.storage.setString(key, null);
     }
   }
+
+  // ignore: public_member_api_docs
+  void clear() {
+    object = null;
+    _loadedFromOnline = false;
+    save();
+  }
+
+  /// Check if there is any data stored
+  bool get hasStoredData =>
+      Static.storage.has(key) && Static.storage.getString(key) != null;
+
+  /// Check if there is any data loaded
+  bool get hasLoadedData => data != null;
 }

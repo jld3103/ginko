@@ -17,17 +17,6 @@ class Keys {
   static const String selection = 'selection';
 
   // ignore: public_member_api_docs
-  static String selectionBlock(String block, bool weekA) {
-    if (block == null || weekA == null) {
-      return 'selection';
-    }
-    return 'selection-$block-${weekA ? 'a' : 'b'}';
-  }
-
-  // ignore: public_member_api_docs
-  static const String none = 'none';
-
-  // ignore: public_member_api_docs
   static const String calendar = 'calendar';
 
   // ignore: public_member_api_docs
@@ -58,14 +47,6 @@ class Keys {
   static const String settings = 'settings';
 
   // ignore: public_member_api_docs
-  static String settingsKey(String key) {
-    if (key == null) {
-      return 'settings';
-    }
-    return 'settings-$key';
-  }
-
-  // ignore: public_member_api_docs
   static const String substitutionPlanNotifications =
       'substitutionplannotifications';
 
@@ -86,4 +67,13 @@ class Keys {
 
   // ignore: public_member_api_docs
   static const String rooms = 'rooms';
+
+  // ignore: public_member_api_docs
+  static const String login = 'login';
+
+  // ignore: public_member_api_docs
+  static const String home = 'home';
+
+  // ignore: public_member_api_docs
+  static const String choose = 'choose';
 }

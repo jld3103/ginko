@@ -23,6 +23,7 @@ abstract class Handler {
   Future<Tuple2<Map<String, dynamic>, String>> fetchLatest(User user);
 
   // ignore: public_member_api_docs
-  Future<String> fetchLatestResourceID(User user) async =>
-      sha256.convert(utf8.encode((await fetchLatest(user)).item2)).toString();
+  Future<String> fetchLatestResourceID(User user) async => sha256
+      .convert(utf8.encode(json.encode((await fetchLatest(user)).item1)))
+      .toString();
 }

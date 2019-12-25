@@ -19,6 +19,7 @@ class Config {
   static String _cafetoriaUsername;
   static String _cafetoriaPassword;
   static String _fcmServerKey;
+  static String _ghToken;
 
   /// Whether to fetch all data on start
   static bool fetchOnStart = true;
@@ -59,6 +60,9 @@ class Config {
   /// The fcm server key
   static String get fcmServerKey => _fcmServerKey;
 
+  /// The Github token to access the API
+  static String get githubToken => _ghToken;
+
   /// Loads the config from file if it exists else from environment variables
   static void load() {
     final file = File('config.json');
@@ -82,6 +86,7 @@ class Config {
     _cafetoriaUsername = _readString(data, 'cafetoria_username');
     _cafetoriaPassword = _readString(data, 'cafetoria_password');
     _fcmServerKey = _readString(data, 'fcm_server_key');
+    _ghToken = _readString(data, 'gh_token');
   }
 
   static dynamic _readValue(Map<String, dynamic> data, String key) {

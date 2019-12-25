@@ -12,9 +12,11 @@ class ReleasesParser {
       responseType: ResponseType.plain,
     );
 
-  /// Download pdf releases list
-  static Future<String> download() async {
-    final response = await _dio.get(_url).timeout(Duration(seconds: 10));
+  /// Download releases list
+  static Future<String> download(String token) async {
+    final response = await _dio
+        .get(_url, options: Options(headers: {'Authorization': 'token $token'}))
+        .timeout(Duration(seconds: 10));
     return response.toString();
   }
 

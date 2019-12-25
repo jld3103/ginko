@@ -7,7 +7,6 @@ import 'dart:js';
 import 'dart:typed_data';
 
 import 'package:ginko/plugins/pwa/pwa_base.dart';
-import 'package:ginko/views/cloud/directory_overhead.dart';
 import 'package:js/js.dart';
 
 // ignore: avoid_annotating_with_dynamic

@@ -5,6 +5,8 @@ import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.embedding.engine.FlutterEngine;
@@ -82,7 +84,7 @@ public class MainActivity extends FlutterActivity {
                 data.put(key, extra);
             }
         }
-        new MethodChannel(dartExecutor, "plugins.flutter.io/firebase_messaging").invokeMethod(method, data);
+        new Handler(Looper.getMainLooper()).post(() -> new MethodChannel(dartExecutor, "plugins.flutter.io/firebase_messaging").invokeMethod(method, data));
         return true;
     }
 }

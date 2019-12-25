@@ -22,9 +22,12 @@ class DevicesHandler {
     try {
       final user = await login.getUser(request);
       final device = Device.fromJSON(json.decode(content));
+      final date = DateTime.now()
+          .toString()
+          .substring(0, DateTime.now().toString().length - 1);
       await _mySqlConnection.query(
           // ignore: lines_longer_than_80_chars
-          'INSERT INTO users_devices (username, token, language, os, version) VALUES (\'${user.username}\', \'${device.token}\', \'${device.language}\', \'${device.os}\', \'${device.version}\') ON DUPLICATE KEY UPDATE language = \'${device.language}\', os = \'${device.os}\', version = \'${device.version}\';');
+          'INSERT INTO users_devices (username, token, os, version, last_active) VALUES (\'${user.username}\', \'${device.token}\', \'${device.os}\', \'${device.version}\', \'$date\') ON DUPLICATE KEY UPDATE version = \'${device.version}\', last_active = \'$date\';');
       return true;
       // ignore: avoid_catches_without_on_clauses
     } catch (e, stacktrace) {

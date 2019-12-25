@@ -9,3 +9,4 @@ export 'package:parsers/src/subjects.dart';
 export 'package:parsers/src/substitution_plan.dart';
 export 'package:parsers/src/teachers.dart';
 export 'package:parsers/src/timetable.dart';
+export 'package:parsers/src/unstf.dart';

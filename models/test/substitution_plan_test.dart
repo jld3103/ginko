@@ -2,45 +2,45 @@ import 'package:models/models.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('Replacement plan', () {
+  group('Substitution plan', () {
     test('Can create changed', () {
-      final changed = Changed(
-        subject: 'EK',
-        teacher: 'KRA',
+      final changed = SubstitutionPlanChanged(
+        subject: 'ek',
+        teacher: 'kra',
         room: '526',
         info: 'Raumänderung',
       );
-      expect(changed.subject, 'EK');
-      expect(changed.teacher, 'KRA');
+      expect(changed.subject, 'ek');
+      expect(changed.teacher, 'kra');
       expect(changed.room, '526');
       expect(changed.info, 'Raumänderung');
     });
 
     test('Can create changed from JSON', () {
-      final changed = Changed.fromJSON({
-        'subject': 'EK',
-        'teacher': 'KRA',
+      final changed = SubstitutionPlanChanged.fromJSON({
+        'subject': 'ek',
+        'teacher': 'kra',
         'room': '526',
         'info': 'Raumänderung',
       });
-      expect(changed.subject, 'EK');
-      expect(changed.teacher, 'KRA');
+      expect(changed.subject, 'ek');
+      expect(changed.teacher, 'kra');
       expect(changed.room, '526');
       expect(changed.info, 'Raumänderung');
     });
 
     test('Can create JSON from changed', () {
-      final changed = Changed(
-        subject: 'EK',
-        teacher: 'KRA',
+      final changed = SubstitutionPlanChanged(
+        subject: 'ek',
+        teacher: 'kra',
         room: '526',
         info: 'Raumänderung',
       );
       expect(
         changed.toJSON(),
         {
-          'subject': 'EK',
-          'teacher': 'KRA',
+          'subject': 'ek',
+          'teacher': 'kra',
           'room': '526',
           'info': 'Raumänderung',
         },
@@ -48,346 +48,339 @@ void main() {
     });
 
     test('Can create changed from JSON from changed', () {
-      final changed = Changed(
-        subject: 'EK',
-        teacher: 'KRA',
+      final changed = SubstitutionPlanChanged(
+        subject: 'ek',
+        teacher: 'kra',
         room: '526',
         info: 'Raumänderung',
       );
-      expect(Changed.fromJSON(changed.toJSON()).toJSON(), changed.toJSON());
+      expect(SubstitutionPlanChanged.fromJSON(changed.toJSON()).toJSON(),
+          changed.toJSON());
     });
 
     test('Can create change', () {
-      final changed = Changed(
-        subject: 'EK',
-        teacher: 'KRA',
+      final changed = SubstitutionPlanChanged(
+        subject: 'ek',
+        teacher: 'kra',
         room: '526',
         info: 'Raumänderung',
       );
-      final change = Change(
+      final change = SubstitutionPlanChange(
         date: DateTime(2019, 7, 11),
         unit: 0,
-        subject: 'EK',
-        course: 'GK1',
+        subject: 'ek',
+        course: 'g1',
         room: '525',
-        teacher: 'KRA',
+        teacher: 'kra',
         changed: changed,
-        type: ChangeTypes.exam,
+        type: SubstitutionPlanChangeTypes.exam,
       );
       expect(change.date, DateTime(2019, 7, 11));
       expect(change.unit, 0);
-      expect(change.subject, 'EK');
-      expect(change.course, 'GK1');
+      expect(change.subject, 'ek');
+      expect(change.course, 'g1');
       expect(change.room, '525');
-      expect(change.teacher, 'KRA');
+      expect(change.teacher, 'kra');
       expect(change.changed, changed);
-      expect(change.type, ChangeTypes.exam);
+      expect(change.type, SubstitutionPlanChangeTypes.exam);
     });
 
     test('Can create change from JSON', () {
-      final changed = Changed(
-        subject: 'EK',
-        teacher: 'KRA',
+      final changed = SubstitutionPlanChanged(
+        subject: 'ek',
+        teacher: 'kra',
         room: '526',
         info: 'Raumänderung',
       );
-      final change = Change.fromJSON({
+      final change = SubstitutionPlanChange.fromJSON({
         'date': DateTime(2019, 7, 11).toIso8601String(),
         'unit': 0,
-        'subject': 'EK',
-        'course': 'GK1',
+        'subject': 'ek',
+        'course': 'g1',
         'room': '525',
-        'teacher': 'KRA',
+        'teacher': 'kra',
         'changed': changed.toJSON(),
-        'type': ChangeTypes.exam.index,
+        'type': SubstitutionPlanChangeTypes.exam.index,
       });
       expect(change.date, DateTime(2019, 7, 11));
       expect(change.unit, 0);
-      expect(change.subject, 'EK');
-      expect(change.course, 'GK1');
+      expect(change.subject, 'ek');
+      expect(change.course, 'g1');
       expect(change.room, '525');
-      expect(change.teacher, 'KRA');
+      expect(change.teacher, 'kra');
       expect(change.changed.toJSON(), changed.toJSON());
-      expect(change.type, ChangeTypes.exam);
+      expect(change.type, SubstitutionPlanChangeTypes.exam);
     });
 
     test('Can create JSON from change', () {
-      final changed = Changed(
-        subject: 'EK',
-        teacher: 'KRA',
+      final changed = SubstitutionPlanChanged(
+        subject: 'ek',
+        teacher: 'kra',
         room: '526',
         info: 'Raumänderung',
       );
-      final change = Change(
+      final change = SubstitutionPlanChange(
         date: DateTime(2019, 7, 11),
         unit: 0,
-        subject: 'EK',
-        course: 'GK1',
+        subject: 'ek',
+        course: 'g1',
         room: '525',
-        teacher: 'KRA',
+        teacher: 'kra',
         changed: changed,
-        type: ChangeTypes.exam,
+        type: SubstitutionPlanChangeTypes.exam,
       );
       expect(
         change.toJSON(),
         {
           'date': DateTime(2019, 7, 11).toIso8601String(),
           'unit': 0,
-          'subject': 'EK',
-          'course': 'GK1',
+          'subject': 'ek',
+          'course': 'g1',
           'room': '525',
-          'teacher': 'KRA',
+          'teacher': 'kra',
           'changed': changed.toJSON(),
-          'type': ChangeTypes.exam.index,
+          'type': SubstitutionPlanChangeTypes.exam.index,
         },
       );
     });
 
     test('Can create change from JSON from change', () {
-      final changed = Changed(
-        subject: 'EK',
-        teacher: 'KRA',
+      final changed = SubstitutionPlanChanged(
+        subject: 'ek',
+        teacher: 'kra',
         room: '526',
         info: 'Raumänderung',
       );
-      final change = Change(
+      final change = SubstitutionPlanChange(
         date: DateTime(2019, 7, 11),
         unit: 0,
-        subject: 'EK',
-        course: 'GK1',
+        subject: 'ek',
+        course: 'g1',
         room: '525',
-        teacher: 'KRA',
+        teacher: 'kra',
         changed: changed,
-        type: ChangeTypes.exam,
+        type: SubstitutionPlanChangeTypes.exam,
       );
-      expect(Change.fromJSON(change.toJSON()).toJSON(), change.toJSON());
+      expect(SubstitutionPlanChange.fromJSON(change.toJSON()).toJSON(),
+          change.toJSON());
     });
 
     test('Can apply filter', () {
       final changes = [
-        Change(
+        SubstitutionPlanChange(
           date: DateTime(2019, 7, 8),
           unit: 0,
-          subject: 'EK',
+          subject: 'ek',
           room: '525',
-          teacher: 'KRA',
-          changed: Changed(),
-          type: ChangeTypes.changed,
+          teacher: 'kra',
+          changed: SubstitutionPlanChanged(),
+          type: SubstitutionPlanChangeTypes.changed,
         ),
-        Change(
+        SubstitutionPlanChange(
           date: DateTime(2019, 7, 8),
           unit: 0,
-          subject: 'EK',
+          subject: 'ek',
           room: '526',
-          teacher: 'STA',
-          changed: Changed(),
-          type: ChangeTypes.changed,
+          teacher: 'bdn',
+          changed: SubstitutionPlanChanged(),
+          type: SubstitutionPlanChangeTypes.changed,
         ),
-        Change(
+        SubstitutionPlanChange(
           date: DateTime(2019, 7, 8),
           unit: 0,
-          subject: 'PK',
+          subject: 'pk',
           room: '527',
-          teacher: 'KRA',
-          changed: Changed(),
-          type: ChangeTypes.changed,
+          teacher: 'kra',
+          changed: SubstitutionPlanChanged(),
+          type: SubstitutionPlanChangeTypes.changed,
         ),
-        Change(
+        SubstitutionPlanChange(
           date: DateTime(2019, 7, 8),
           unit: 0,
-          subject: 'KR',
+          subject: 'kr',
           room: '527',
-          teacher: 'LIC',
-          changed: Changed(),
-          type: ChangeTypes.changed,
+          teacher: 'lic',
+          changed: SubstitutionPlanChanged(),
+          type: SubstitutionPlanChangeTypes.changed,
         ),
-        Change(
+        SubstitutionPlanChange(
           date: DateTime(2019, 7, 8),
           unit: 0,
-          room: '527',
-          changed: Changed(),
+          room: null,
+          changed: SubstitutionPlanChanged(),
           subject: null,
           teacher: null,
-          type: ChangeTypes.changed,
+          type: SubstitutionPlanChangeTypes.changed,
+          course: 'g1',
         ),
-        Change(
+        SubstitutionPlanChange(
+          date: DateTime(2019, 7, 8),
+          unit: 0,
+          room: '527',
+          changed: SubstitutionPlanChanged(),
+          subject: null,
+          teacher: null,
+          type: SubstitutionPlanChangeTypes.changed,
+        ),
+        SubstitutionPlanChange(
           date: DateTime(2019, 7, 8),
           unit: 1,
           room: '527',
-          changed: Changed(),
+          changed: SubstitutionPlanChanged(),
           subject: null,
           teacher: null,
-          type: ChangeTypes.changed,
+          type: SubstitutionPlanChangeTypes.changed,
         ),
       ];
-      final timetableForGrade = TimetableForGrade(
-        grade: 'EF',
-        date: DateTime(2019, 7, 7),
-        days: [
-          TimetableDay(
-            weekday: 0,
-            lessons: [
-              TimetableLesson(
-                unit: 0,
-                block: 'EFa',
-                subjects: [
-                  TimetableSubject(
-                    subject: 'EK',
-                    room: '525',
-                    teacher: 'KRA',
-                    unit: 0,
-                    weeks: 'AB',
-                  ),
-                  TimetableSubject(
-                    subject: 'EK',
-                    room: '526',
-                    teacher: 'STA',
-                    unit: 0,
-                    weeks: 'AB',
-                  ),
-                  TimetableSubject(
-                    subject: 'PK',
-                    room: '527',
-                    teacher: 'KRA',
-                    unit: 0,
-                    weeks: 'AB',
-                  ),
-                  TimetableSubject(
-                    subject: 'KR',
-                    room: '527',
-                    teacher: 'LIC',
-                    unit: 0,
-                    weeks: 'AB',
-                  ),
-                ],
-              )
-            ],
-          ),
-        ],
+      final subjects = [
+        TimetableSubject(
+          subject: 'ek',
+          room: '525',
+          teachers: ['kra', 'bdn'],
+          unit: 0,
+          course: 'g2',
+        ),
+        TimetableSubject(
+          subject: 'ek',
+          room: '526',
+          teachers: ['bdn'],
+          unit: 0,
+          course: 'g2',
+        ),
+        TimetableSubject(
+          subject: 'pk',
+          room: '527',
+          teachers: ['kra', 'bdn'],
+          unit: 0,
+          course: 'g2',
+        ),
+        TimetableSubject(
+          subject: 'kr',
+          room: '527',
+          teachers: ['lic'],
+          unit: 0,
+          course: 'g2',
+        ),
+        TimetableSubject(
+          subject: null,
+          room: null,
+          teachers: [],
+          unit: 0,
+          course: 'g1',
+        ),
+      ];
+      expect(
+        subjects.where((s) => changes[0].subjectMatches(s)).toList().length,
+        1,
       );
       expect(
-        changes[0].getMatchingSubjectsByTimetable(timetableForGrade) != null,
-        true,
+        subjects.where((s) => changes[1].subjectMatches(s)).toList().length,
+        1,
       );
       expect(
-        changes[1].getMatchingSubjectsByTimetable(timetableForGrade) != null,
-        true,
+        subjects.where((s) => changes[2].subjectMatches(s)).toList().length,
+        1,
       );
       expect(
-        changes[2].getMatchingSubjectsByTimetable(timetableForGrade) != null,
-        true,
+        subjects.where((s) => changes[3].subjectMatches(s)).toList().length,
+        1,
       );
       expect(
-        changes[3].getMatchingSubjectsByTimetable(timetableForGrade) != null,
-        true,
+        subjects.where((s) => changes[4].subjectMatches(s)).toList().length,
+        1,
       );
       expect(
-        changes[4].getMatchingSubjectsByTimetable(timetableForGrade).length,
-        2,
+        subjects.where((s) => changes[5].subjectMatches(s)).toList().length,
+        3,
       );
       expect(
-        changes[5].getMatchingSubjectsByTimetable(timetableForGrade),
-        [],
-      );
-      expect(
-        changes[0].getMatchingSubjectsByLesson(
-                timetableForGrade.days[0].lessons[0]) !=
-            null,
-        true,
-      );
-      expect(
-        changes[1].getMatchingSubjectsByLesson(
-                timetableForGrade.days[0].lessons[0]) !=
-            null,
-        true,
-      );
-      expect(
-        changes[2].getMatchingSubjectsByLesson(
-                timetableForGrade.days[0].lessons[0]) !=
-            null,
-        true,
-      );
-      expect(
-        changes[3].getMatchingSubjectsByLesson(
-                timetableForGrade.days[0].lessons[0]) !=
-            null,
-        true,
-      );
-      expect(
-        changes[4]
-            .getMatchingSubjectsByLesson(timetableForGrade.days[0].lessons[0])
-            .length,
-        2,
-      );
-      expect(
-        changes[5]
-            .getMatchingSubjectsByLesson(timetableForGrade.days[0].lessons[0]),
-        [],
+        subjects.where((s) => changes[6].subjectMatches(s)).toList().length,
+        0,
       );
     });
 
-    test('Can apply filter with fix for sport rooms', () {
-      final changes = [
-        Change(
-          unit: 0,
-          date: DateTime(2019, 7, 11),
-          room: 'KLH',
-          subject: null,
-          teacher: null,
-          changed: null,
-          type: ChangeTypes.changed,
-        ),
-        Change(
-          unit: 0,
-          date: DateTime(2019, 7, 11),
-          room: 'GRH',
-          subject: null,
-          teacher: null,
-          changed: null,
-          type: ChangeTypes.changed,
-        ),
-      ];
-      final lessons = [
-        TimetableLesson(
-          unit: 0,
-          block: 'a',
-          subjects: [
-            TimetableSubject(
-              unit: 0,
-              subject: 'SP',
-              room: 'GRH',
-              teacher: 'GÖB',
-              weeks: 'AB',
-            ),
-          ],
-        ),
-        TimetableLesson(
-          unit: 0,
-          block: 'b',
-          subjects: [
-            TimetableSubject(
-              unit: 0,
-              subject: 'SP',
-              room: 'KLH',
-              teacher: 'GÖB',
-              weeks: 'AB',
-            ),
-          ],
-        ),
-      ];
-      expect(changes[0].getMatchingSubjectsByLesson(lessons[0])[0].room, 'GRH');
-      expect(changes[1].getMatchingSubjectsByLesson(lessons[0])[0].room, 'GRH');
-      expect(changes[0].getMatchingSubjectsByLesson(lessons[1])[0].room, 'KLH');
-      expect(changes[1].getMatchingSubjectsByLesson(lessons[1])[0].room, 'KLH');
-    });
-
-    test('Can complete change', () {
-      final change = Change(
+    test('Can complete change by lesson', () {
+      final change = SubstitutionPlanChange(
         date: DateTime(2019, 7, 11),
         unit: 0,
-        course: 'GK1',
-        changed: Changed(),
-        type: ChangeTypes.changed,
+        course: 'g1',
+        changed: SubstitutionPlanChanged(),
+        type: SubstitutionPlanChangeTypes.changed,
+        subject: null,
+        teacher: null,
+        room: null,
+      );
+      final completedChange = change.completedByLesson(TimetableLesson(
+        unit: 0,
+        block: null,
+        subjects: [
+          TimetableSubject(
+            unit: 0,
+            subject: 'ek',
+            room: '525',
+            teachers: ['kra', 'bdn'],
+          ),
+        ],
+      ));
+      expect(completedChange.subject, 'ek');
+      expect(completedChange.room, '525');
+      expect(completedChange.teacher, 'kra');
+    });
+
+    test('Cannot complete change by lesson if lesson is null', () {
+      final change = SubstitutionPlanChange(
+        date: DateTime(2019, 7, 11),
+        unit: 0,
+        course: 'g1',
+        changed: SubstitutionPlanChanged(),
+        type: SubstitutionPlanChangeTypes.changed,
+        subject: null,
+        teacher: null,
+        room: null,
+      );
+      final completedChange = change.completedByLesson(null);
+      expect(change.toJSON(), completedChange.toJSON());
+    });
+
+    test('Cannot complete change by lesson if multiple subjects match', () {
+      final change = SubstitutionPlanChange(
+        date: DateTime(2019, 7, 11),
+        unit: 0,
+        course: 'g1',
+        changed: SubstitutionPlanChanged(),
+        type: SubstitutionPlanChangeTypes.changed,
+        subject: null,
+        teacher: null,
+        room: null,
+      );
+      final completedChange = change.completedByLesson(TimetableLesson(
+        unit: 0,
+        block: null,
+        subjects: [
+          TimetableSubject(
+            unit: 0,
+            subject: 'ek',
+            room: '525',
+            teachers: ['kra', 'bdn'],
+          ),
+          TimetableSubject(
+            unit: 0,
+            subject: 'ek',
+            room: '525',
+            teachers: ['kra', 'bdn'],
+          ),
+        ],
+      ));
+      expect(change.toJSON(), completedChange.toJSON());
+    });
+
+    test('Can complete change by subject', () {
+      final change = SubstitutionPlanChange(
+        date: DateTime(2019, 7, 11),
+        unit: 0,
+        course: 'g1',
+        changed: SubstitutionPlanChanged(),
+        type: SubstitutionPlanChangeTypes.changed,
         subject: null,
         teacher: null,
         room: null,
@@ -395,25 +388,18 @@ void main() {
       expect(change.subject, null);
       expect(change.room, null);
       expect(change.teacher, null);
-      final completedChange = change.completed(TimetableLesson(
+      final completedChange = change.completedBySubject(TimetableSubject(
         unit: 0,
-        block: null,
-        subjects: [
-          TimetableSubject(
-            unit: 0,
-            weeks: 'AB',
-            subject: 'EK',
-            room: '525',
-            teacher: 'KRA',
-          ),
-        ],
+        subject: 'ek',
+        room: '525',
+        teachers: ['kra', 'bdn'],
       ));
-      expect(completedChange.subject, 'EK');
+      expect(completedChange.subject, 'ek');
       expect(completedChange.room, '525');
-      expect(completedChange.teacher, 'KRA');
+      expect(completedChange.teacher, 'kra');
     });
 
-    test('Can create replacement plan day', () {
+    test('Can create substitution plan day', () {
       final day = SubstitutionPlanDay(
         date: DateTime(2019, 7, 12),
         updated: DateTime(2019, 7, 12, 7, 55),
@@ -422,7 +408,7 @@ void main() {
       expect(day.updated, DateTime(2019, 7, 12, 7, 55));
     });
 
-    test('Can create replacement plan day from JSON', () {
+    test('Can create substitution plan day from JSON', () {
       final day = SubstitutionPlanDay.fromJSON({
         'date': DateTime(2019, 7, 12).toIso8601String(),
         'updated': DateTime(2019, 7, 12, 7, 55).toIso8601String(),
@@ -431,7 +417,7 @@ void main() {
       expect(day.updated, DateTime(2019, 7, 12, 7, 55));
     });
 
-    test('Can create JSON from replacement plan day', () {
+    test('Can create JSON from substitution plan day', () {
       final day = SubstitutionPlanDay(
         date: DateTime(2019, 7, 12),
         updated: DateTime(2019, 7, 12, 7, 55),
@@ -445,7 +431,8 @@ void main() {
       );
     });
 
-    test('Can create replacement plan day from JSON from replacement plan day',
+    test(
+        'Can create substitution plan day from JSON from substitution plan day',
         () {
       final day = SubstitutionPlanDay(
         date: DateTime(2019, 7, 12),
@@ -454,33 +441,33 @@ void main() {
       expect(SubstitutionPlanDay.fromJSON(day.toJSON()).toJSON(), day.toJSON());
     });
 
-    test('Can create replacement plan for grade', () {
+    test('Can create substitution plan for grade', () {
       final day = SubstitutionPlanDay(
         date: DateTime(2019, 7, 12),
         updated: DateTime(2019, 7, 12, 7, 55),
       );
-      final changed = Changed(
-        subject: 'EK',
-        teacher: 'KRA',
+      final changed = SubstitutionPlanChanged(
+        subject: 'ek',
+        teacher: 'kra',
         room: '526',
         info: 'Raumänderung',
       );
-      final change = Change(
+      final change = SubstitutionPlanChange(
         date: DateTime(2019, 7, 11),
         unit: 0,
-        subject: 'EK',
-        course: 'GK1',
+        subject: 'ek',
+        course: 'g1',
         room: '525',
-        teacher: 'KRA',
+        teacher: 'kra',
         changed: changed,
-        type: ChangeTypes.exam,
+        type: SubstitutionPlanChangeTypes.exam,
       );
       final substitutionPlanForGrade = SubstitutionPlanForGrade(
-        grade: 'EF',
+        grade: 'ef',
         substitutionPlanDays: [day],
         changes: [change],
       );
-      expect(substitutionPlanForGrade.grade, 'EF');
+      expect(substitutionPlanForGrade.grade, 'ef');
       expect(
         substitutionPlanForGrade.substitutionPlanDays
             .map((day) => day.toJSON())
@@ -499,33 +486,33 @@ void main() {
       );
     });
 
-    test('Can create replacement plan for grade from JSON', () {
+    test('Can create substitution plan for grade from JSON', () {
       final day = SubstitutionPlanDay(
         date: DateTime(2019, 7, 12),
         updated: DateTime(2019, 7, 12, 7, 55),
       );
-      final changed = Changed(
-        subject: 'EK',
-        teacher: 'KRA',
+      final changed = SubstitutionPlanChanged(
+        subject: 'ek',
+        teacher: 'kra',
         room: '526',
         info: 'Raumänderung',
       );
-      final change = Change(
+      final change = SubstitutionPlanChange(
         date: DateTime(2019, 7, 11),
         unit: 0,
-        subject: 'EK',
-        course: 'GK1',
+        subject: 'ek',
+        course: 'g1',
         room: '525',
-        teacher: 'KRA',
+        teacher: 'kra',
         changed: changed,
-        type: ChangeTypes.exam,
+        type: SubstitutionPlanChangeTypes.exam,
       );
       final substitutionPlanForGrade = SubstitutionPlanForGrade.fromJSON({
-        'grade': 'EF',
+        'grade': 'ef',
         'substitutionPlanDays': [day.toJSON()],
         'changes': [change.toJSON()],
       });
-      expect(substitutionPlanForGrade.grade, 'EF');
+      expect(substitutionPlanForGrade.grade, 'ef');
       expect(
         substitutionPlanForGrade.substitutionPlanDays
             .map((day) => day.toJSON())
@@ -544,36 +531,36 @@ void main() {
       );
     });
 
-    test('Can create JSON from replacement plan for grade', () {
+    test('Can create JSON from substitution plan for grade', () {
       final day = SubstitutionPlanDay(
         date: DateTime(2019, 7, 12),
         updated: DateTime(2019, 7, 12, 7, 55),
       );
-      final changed = Changed(
-        subject: 'EK',
-        teacher: 'KRA',
+      final changed = SubstitutionPlanChanged(
+        subject: 'ek',
+        teacher: 'kra',
         room: '526',
         info: 'Raumänderung',
       );
-      final change = Change(
+      final change = SubstitutionPlanChange(
         date: DateTime(2019, 7, 11),
         unit: 0,
-        subject: 'EK',
-        course: 'GK1',
+        subject: 'ek',
+        course: 'g1',
         room: '525',
-        teacher: 'KRA',
+        teacher: 'kra',
         changed: changed,
-        type: ChangeTypes.exam,
+        type: SubstitutionPlanChangeTypes.exam,
       );
       final substitutionPlanForGrade = SubstitutionPlanForGrade(
-        grade: 'EF',
+        grade: 'ef',
         substitutionPlanDays: [day],
         changes: [change],
       );
       expect(
         substitutionPlanForGrade.toJSON(),
         {
-          'grade': 'EF',
+          'grade': 'ef',
           'substitutionPlanDays': [day.toJSON()],
           'changes': [change.toJSON()],
         },
@@ -582,30 +569,30 @@ void main() {
 
     test(
         // ignore: lines_longer_than_80_chars
-        'Can create replacement plan for grade from JSON from replacement plan for grade',
+        'Can create substitution plan for grade from JSON from substitution plan for grade',
         () {
       final day = SubstitutionPlanDay(
         date: DateTime(2019, 7, 12),
         updated: DateTime(2019, 7, 12, 7, 55),
       );
-      final changed = Changed(
-        subject: 'EK',
-        teacher: 'KRA',
+      final changed = SubstitutionPlanChanged(
+        subject: 'ek',
+        teacher: 'kra',
         room: '526',
         info: 'Raumänderung',
       );
-      final change = Change(
+      final change = SubstitutionPlanChange(
         date: DateTime(2019, 7, 11),
         unit: 0,
-        subject: 'EK',
-        course: 'GK1',
+        subject: 'ek',
+        course: 'g1',
         room: '525',
-        teacher: 'KRA',
+        teacher: 'kra',
         changed: changed,
-        type: ChangeTypes.exam,
+        type: SubstitutionPlanChangeTypes.exam,
       );
       final substitutionPlanForGrade = SubstitutionPlanForGrade(
-        grade: 'EF',
+        grade: 'ef',
         substitutionPlanDays: [day],
         changes: [change],
       );
@@ -616,29 +603,29 @@ void main() {
       );
     });
 
-    test('Can create replacement plan', () {
+    test('Can create substitution plan', () {
       final day = SubstitutionPlanDay(
         date: DateTime(2019, 7, 12),
         updated: DateTime(2019, 7, 12, 7, 55),
       );
-      final changed = Changed(
-        subject: 'EK',
-        teacher: 'KRA',
+      final changed = SubstitutionPlanChanged(
+        subject: 'ek',
+        teacher: 'kra',
         room: '526',
         info: 'Raumänderung',
       );
-      final change = Change(
+      final change = SubstitutionPlanChange(
         date: DateTime(2019, 7, 11),
         unit: 0,
-        subject: 'EK',
-        course: 'GK1',
+        subject: 'ek',
+        course: 'g1',
         room: '525',
-        teacher: 'KRA',
+        teacher: 'kra',
         changed: changed,
-        type: ChangeTypes.exam,
+        type: SubstitutionPlanChangeTypes.exam,
       );
       final substitutionPlanForGrade = SubstitutionPlanForGrade(
-        grade: 'EF',
+        grade: 'ef',
         substitutionPlanDays: [day],
         changes: [change],
       );
@@ -653,29 +640,29 @@ void main() {
           [substitutionPlanForGrade.toJSON()]);
     });
 
-    test('Can create replacement plan from JSON', () {
+    test('Can create substitution plan from JSON', () {
       final day = SubstitutionPlanDay(
         date: DateTime(2019, 7, 12),
         updated: DateTime(2019, 7, 12, 7, 55),
       );
-      final changed = Changed(
-        subject: 'EK',
-        teacher: 'KRA',
+      final changed = SubstitutionPlanChanged(
+        subject: 'ek',
+        teacher: 'kra',
         room: '526',
         info: 'Raumänderung',
       );
-      final change = Change(
+      final change = SubstitutionPlanChange(
         date: DateTime(2019, 7, 11),
         unit: 0,
-        subject: 'EK',
-        course: 'GK1',
+        subject: 'ek',
+        course: 'g1',
         room: '525',
-        teacher: 'KRA',
+        teacher: 'kra',
         changed: changed,
-        type: ChangeTypes.exam,
+        type: SubstitutionPlanChangeTypes.exam,
       );
       final substitutionPlanForGrade = SubstitutionPlanForGrade(
-        grade: 'EF',
+        grade: 'ef',
         substitutionPlanDays: [day],
         changes: [change],
       );
@@ -690,29 +677,29 @@ void main() {
           [substitutionPlanForGrade.toJSON()]);
     });
 
-    test('Can create JSON from replacement plan', () {
+    test('Can create JSON from substitution plan', () {
       final day = SubstitutionPlanDay(
         date: DateTime(2019, 7, 12),
         updated: DateTime(2019, 7, 12, 7, 55),
       );
-      final changed = Changed(
-        subject: 'EK',
-        teacher: 'KRA',
+      final changed = SubstitutionPlanChanged(
+        subject: 'ek',
+        teacher: 'kra',
         room: '526',
         info: 'Raumänderung',
       );
-      final change = Change(
+      final change = SubstitutionPlanChange(
         date: DateTime(2019, 7, 11),
         unit: 0,
-        subject: 'EK',
-        course: 'GK1',
+        subject: 'ek',
+        course: 'g1',
         room: '525',
-        teacher: 'KRA',
+        teacher: 'kra',
         changed: changed,
-        type: ChangeTypes.exam,
+        type: SubstitutionPlanChangeTypes.exam,
       );
       final substitutionPlanForGrade = SubstitutionPlanForGrade(
-        grade: 'EF',
+        grade: 'ef',
         substitutionPlanDays: [day],
         changes: [change],
       );
@@ -727,29 +714,29 @@ void main() {
       );
     });
 
-    test('Can create replacement plan from JSON from replacement plan', () {
+    test('Can create substitution plan from JSON from substitution plan', () {
       final day = SubstitutionPlanDay(
         date: DateTime(2019, 7, 12),
         updated: DateTime(2019, 7, 12, 7, 55),
       );
-      final changed = Changed(
-        subject: 'EK',
-        teacher: 'KRA',
+      final changed = SubstitutionPlanChanged(
+        subject: 'ek',
+        teacher: 'kra',
         room: '526',
         info: 'Raumänderung',
       );
-      final change = Change(
+      final change = SubstitutionPlanChange(
         date: DateTime(2019, 7, 11),
         unit: 0,
-        subject: 'EK',
-        course: 'GK1',
+        subject: 'ek',
+        course: 'g1',
         room: '525',
-        teacher: 'KRA',
+        teacher: 'kra',
         changed: changed,
-        type: ChangeTypes.exam,
+        type: SubstitutionPlanChangeTypes.exam,
       );
       final substitutionPlanForGrade = SubstitutionPlanForGrade(
-        grade: 'EF',
+        grade: 'ef',
         substitutionPlanDays: [day],
         changes: [change],
       );

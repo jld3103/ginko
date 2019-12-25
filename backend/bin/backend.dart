@@ -51,24 +51,16 @@ Future main(List<String> args) async {
   final settings = SettingsHandler(mySqlConnection);
 
   final timetable = TimetableHandler(mySqlConnection);
+  final subjects = SubjectsHandler(mySqlConnection);
   final substitutionPlan = SubstitutionPlanHandler(
     mySqlConnection,
     timetable,
     selection,
+    subjects,
   );
   final calendar = CalendarHandler(mySqlConnection);
-  final teachers = TeachersHandler(
-    mySqlConnection,
-    timetable,
-  );
-  final subjects = SubjectsHandler(
-    mySqlConnection,
-    timetable,
-  );
-  final rooms = RoomsHandler(
-    mySqlConnection,
-    timetable,
-  );
+  final teachers = TeachersHandler(mySqlConnection);
+  final rooms = RoomsHandler(mySqlConnection);
   final aiXformation = AiXformationHandler(mySqlConnection);
   final cafetoria = CafetoriaHandler(mySqlConnection);
   final releases = ReleasesHandler(mySqlConnection);
@@ -79,6 +71,7 @@ Future main(List<String> args) async {
     aiXformation,
     cafetoria,
     releases,
+    subjects,
   ]);
   await setupDateFormats();
 
@@ -134,9 +127,7 @@ Future main(List<String> args) async {
           if (request.method == 'POST' &&
               request.uri.path == '/${Keys.device}') {
             final device = Device.fromJSON(json.decode(body));
-            if (device.token == null ||
-                device.language == null ||
-                device.os == null) {
+            if (device.token == null || device.os == null) {
               response
                 ..statusCode = HttpStatus.ok
                 ..write(json.encode({
@@ -210,6 +201,9 @@ Future main(List<String> args) async {
           } else if (request.method == 'GET' &&
               request.uri.path == '/${Keys.cafetoria}') {
             await buildResponse(request, login, cafetoria);
+          } else if (request.method == 'GET' &&
+              request.uri.path == '/${Keys.subjects}') {
+            await buildResponse(request, login, subjects);
           } else {
             response
               ..statusCode = HttpStatus.ok

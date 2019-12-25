@@ -5,22 +5,29 @@ import 'package:models/models.dart';
 /// handles all subjects parsing
 class SubjectsParser {
   /// Extract subjects
-  static Subjects extract(List<TimetableForGrade> timetables) => Subjects(
-        date: timetables.isNotEmpty
-            ? timetables[0].date
-            : DateTime.fromMillisecondsSinceEpoch(0),
-        subjects: (timetables
-                .map((timetable) => timetable.days
-                    .map((day) => day.lessons
-                        .map((lesson) =>
-                            lesson.subjects.map((subject) => subject.subject))
-                        .expand((x) => x))
-                    .expand((x) => x))
-                .expand((x) => x)
-                .toSet()
-                  ..add('FR'))
-            .where((a) => a != null && a.isNotEmpty)
-            .toList()
-              ..sort(),
-      );
+  static Subjects extract(List<List<String>> table) {
+    final subjects = {};
+    table.where((line) => line[0].startsWith('F1')).forEach((line) =>
+        subjects[line[2].toLowerCase().replaceAll(RegExp('[0-9]'), '')] =
+            line[3].replaceAll('"', ''));
+    subjects.addAll({
+      'fr': 'Freistunde',
+      'kl': 'Klausur',
+      'ae': 'Änderung',
+      'mit': 'Mittagspause',
+      'e': 'Englisch',
+      'f': 'Französisch',
+      'l': 'Latein',
+      's': 'Spanisch',
+      'sw': 'Sozialwissenschaften',
+      'ku': 'Kunst', // Only to be fancy
+      'iv': 'Musik',
+      'none': 'Keine Stunde ausgewählt',
+      '': '',
+    });
+    return Subjects(
+      date: DateTime(2019, 12, 21),
+      subjects: subjects.cast<String, String>(),
+    );
+  }
 }

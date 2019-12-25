@@ -2,7 +2,7 @@ import 'package:meta/meta.dart';
 import 'package:models/models.dart';
 
 /// SubstitutionPlan class
-/// describes all replacement plans for all grades
+/// describes all substitution plans for all grades
 class SubstitutionPlan {
   // ignore: public_member_api_docs
   SubstitutionPlan({
@@ -27,7 +27,7 @@ class SubstitutionPlan {
 }
 
 /// SubstitutionPlanForGrade class
-/// describes a replacement plan for one grade
+/// describes a substitution plan for one grade
 class SubstitutionPlanForGrade {
   // ignore: public_member_api_docs
   SubstitutionPlanForGrade({
@@ -44,9 +44,9 @@ class SubstitutionPlanForGrade {
             .toList()
             .cast<SubstitutionPlanDay>(),
         changes: json['changes']
-            .map((i) => Change.fromJSON(i))
+            .map((i) => SubstitutionPlanChange.fromJSON(i))
             .toList()
-            .cast<Change>(),
+            .cast<SubstitutionPlanChange>(),
       );
 
   /// Creates json from a SubstitutionPlanForGrade object
@@ -68,11 +68,11 @@ class SubstitutionPlanForGrade {
   List<SubstitutionPlanDay> substitutionPlanDays;
 
   // ignore: public_member_api_docs
-  List<Change> changes;
+  List<SubstitutionPlanChange> changes;
 }
 
 /// SubstitutionPlanDay class
-/// describes the day of a replacement plan
+/// describes the day of a substitution plan
 class SubstitutionPlanDay {
   // ignore: public_member_api_docs
   SubstitutionPlanDay({
@@ -99,11 +99,11 @@ class SubstitutionPlanDay {
   DateTime updated;
 }
 
-/// Change class
+/// SubstitutionPlanChange class
 /// describes a change in a subject
-class Change {
+class SubstitutionPlanChange {
   // ignore: public_member_api_docs
-  Change({
+  SubstitutionPlanChange({
     @required this.date,
     @required this.unit,
     @required this.changed,
@@ -114,19 +114,19 @@ class Change {
     this.course,
   });
 
-  /// Creates a Change object from json
-  factory Change.fromJSON(json) => Change(
+  /// Creates a SubstitutionPlanChange object from json
+  factory SubstitutionPlanChange.fromJSON(json) => SubstitutionPlanChange(
         date: DateTime.parse(json['date']),
         unit: json['unit'],
         subject: json['subject'],
         course: json['course'],
         room: json['room'],
         teacher: json['teacher'],
-        changed: Changed.fromJSON(json['changed']),
-        type: ChangeTypes.values[json['type']],
+        changed: SubstitutionPlanChanged.fromJSON(json['changed']),
+        type: SubstitutionPlanChangeTypes.values[json['type']],
       );
 
-  /// Creates json from a Change object
+  /// Creates json from a SubstitutionPlanChange object
   Map<String, dynamic> toJSON() => {
         'date': date.toIso8601String(),
         'unit': unit,
@@ -138,61 +138,71 @@ class Change {
         'type': type?.index,
       };
 
-  /// Get all subject indexes in a lesson that match the change
-  List<TimetableSubject> getMatchingSubjectsByTimetable(
-      TimetableForGrade timetableForGrade) {
-    try {
-      return getMatchingSubjectsByLesson(
-          timetableForGrade.days[date.weekday - 1].lessons[unit]);
-      // ignore: avoid_catching_errors
-    } on RangeError {
-      return [];
+  /// Checks if a subject matches this change
+  bool subjectMatches(TimetableSubject s) {
+    if (s.unit != unit) {
+      return false;
     }
-  }
-
-  /// Get all subject indexes in a lesson that match the change
-  List<TimetableSubject> getMatchingSubjectsByLesson(TimetableLesson lesson) {
-    if (unit != lesson.unit) {
-      return [];
-    }
-    var subjects = lesson.subjects;
-    if (subject != null && subject != '') {
+    var subjects = [s];
+    if (subject != null &&
+        subject != '' &&
+        !subjects
+            .map((s) => s.subject == null || s.subject == '')
+            .toList()
+            .contains(true)) {
       subjects = subjects.where((s) => s.subject == subject).toList();
     }
-    if (teacher != null && teacher != '') {
-      subjects = subjects.where((s) => s.teacher == teacher).toList();
+    if (teacher != null &&
+        teacher != '' &&
+        !subjects
+            .map((s) => s.teachers == null || s.teachers.isNotEmpty)
+            .toList()
+            .contains(true)) {
+      subjects = subjects.where((s) => s.teachers.contains(teacher)).toList();
     }
-    if (room != null && room != '') {
+    if (room != null &&
+        room != '' &&
+        !subjects
+            .map((s) => s.room == null || s.room == '')
+            .toList()
+            .contains(true)) {
       subjects = subjects.where((s) => s.room == room).toList();
     }
-    if (course != null && course != '') {
+    if (course != null &&
+        course != '' &&
+        !subjects
+            .map((s) => s.course == null || s.course == '')
+            .toList()
+            .contains(true)) {
       subjects = subjects.where((s) => s.course == course).toList();
     }
-    if (subjects.isEmpty) {
-      return lesson.subjects;
-    }
-    return subjects;
+    return subjects.isNotEmpty;
   }
 
-  /// Complete the information of this change using the timetable
-  Change completed(TimetableLesson lesson) {
-    final newChange = Change.fromJSON(toJSON());
+  /// Complete the information of this change using a lesson
+  SubstitutionPlanChange completedByLesson(TimetableLesson lesson) {
     if (lesson == null) {
-      return newChange;
+      return SubstitutionPlanChange.fromJSON(toJSON());
     }
-    final subjects = getMatchingSubjectsByLesson(lesson);
+    final subjects = lesson.subjects.where(subjectMatches).toList();
     if (subjects.length != 1) {
-      return newChange;
+      return SubstitutionPlanChange.fromJSON(toJSON());
     }
     final s = subjects[0];
+    return completedBySubject(s);
+  }
+
+  /// Complete the information of this change using a subject
+  SubstitutionPlanChange completedBySubject(TimetableSubject s) {
+    final newChange = SubstitutionPlanChange.fromJSON(toJSON());
     if (subject == null || subject == '') {
       newChange.subject = s.subject;
     }
     if (room == null || room == '') {
       newChange.room = s.room;
     }
-    if (teacher == null || teacher == '') {
-      newChange.teacher = s.teacher;
+    if (teacher == null || teacher.isEmpty) {
+      newChange.teacher = s.teachers[0];
     }
     return newChange;
   }
@@ -216,32 +226,32 @@ class Change {
   String teacher;
 
   // ignore: public_member_api_docs
-  Changed changed;
+  SubstitutionPlanChanged changed;
 
   // ignore: public_member_api_docs
-  ChangeTypes type;
+  SubstitutionPlanChangeTypes type;
 }
 
-/// Changed class
-/// describes what changed in a replacement plan change
-class Changed {
+/// SubstitutionPlanChanged class
+/// describes what changed in a substitution plan change
+class SubstitutionPlanChanged {
   // ignore: public_member_api_docs
-  Changed({
+  SubstitutionPlanChanged({
     this.subject,
     this.teacher,
     this.room,
     this.info,
   });
 
-  /// Creates a Changed object from json
-  factory Changed.fromJSON(json) => Changed(
+  /// Creates a SubstitutionPlanChanged object from json
+  factory SubstitutionPlanChanged.fromJSON(json) => SubstitutionPlanChanged(
         subject: json['subject'],
         teacher: json['teacher'],
         room: json['room'],
         info: json['info'],
       );
 
-  /// Creates json from a Changed object
+  /// Creates json from a SubstitutionPlanChanged object
   Map<String, dynamic> toJSON() => {
         'subject': subject,
         'teacher': teacher,
@@ -262,9 +272,9 @@ class Changed {
   String info;
 }
 
-/// ChangeTypes enum
-/// describes the possible types of a replacement plan change
-enum ChangeTypes {
+/// SubstitutionPlanChangeTypes enum
+/// describes the possible types of a substitution plan change
+enum SubstitutionPlanChangeTypes {
   // ignore: public_member_api_docs
   exam,
   // ignore: public_member_api_docs

@@ -35,8 +35,6 @@ jobs:
           flutter config --enable-web
       - name: Generate icons
         run: ./scripts/icons.sh
-      - name: Generate translations
-        run: ./scripts/translations.sh
       - name: Install hover
         run: |
           go get -u github.com/go-flutter-desktop/hover

@@ -26,7 +26,5 @@ jobs:
           flutter doctor -v
       - name: Generate icons
         run: ./scripts/icons.sh
-      - name: Generate translations
-        run: ./scripts/translations.sh
       - name: Run tests
         run: ./scripts/test.sh

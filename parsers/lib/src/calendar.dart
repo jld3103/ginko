@@ -386,26 +386,26 @@ class CalendarParser {
           minutes: int.parse(timeStr.replaceAll(':', '.').split('.')[1]),
         );
         line = line.split('. ')[0];
-        var b = line.split(' und ')[0];
-        final a = b.split('/')[0] +
-            b
-                .split('/')[1]
-                .replaceAll(':', '.')
-                .split('.')
-                .sublist(1)
-                .join('.');
-        b = b.split('/')[1];
-        var d = line.split(' und ')[1];
-        final c = d.split('/')[0] +
-            d
-                .split('/')[1]
-                .replaceAll(':', '.')
-                .split('.')
-                .sublist(1)
-                .join('.');
-        d = d.split('/')[1];
-        final dates = [a, b, c, d].map(parseDate).toList();
-        for (final date in dates) {
+        // ignore: omit_local_variable_types
+        final List<String> dates = [];
+        final matches = RegExp(
+                '[0-9]{1,2}\.([0-9]{1,2}\.)?\/[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{4}')
+            .allMatches(line)
+            .map((m) => m.group(0))
+            .toList();
+        for (final match in matches) {
+          dates.add(match.split('/')[1]);
+          final prefix = match.split('/')[0];
+          if (prefix.split('.').length == 2) {
+            dates.add(
+                // ignore: lines_longer_than_80_chars
+                '$prefix${match.split('/')[1].split('.')[1]}.${match.split('/')[1].split('.')[2]}');
+          } else if (prefix.split('.').length == 3) {
+            dates.add('$prefix${match.split('/')[1].split('.')[2]}');
+          }
+        }
+
+        for (final date in dates.map(parseDate).toList()) {
           events.add(CalendarEvent(
             name: 'Beratungskonferenz',
             end: date.add(offset),

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:meta/meta.dart';
 import 'package:models/models.dart';
 
@@ -12,8 +10,7 @@ class Timetable {
   });
 
   /// Creates a Timetable object from json
-  factory Timetable.fromJSON(json) =>
-      Timetable(
+  factory Timetable.fromJSON(json) => Timetable(
         timetables: json['timetables']
             .map((i) => TimetableForGrade.fromJSON(i))
             .toList()
@@ -21,8 +18,7 @@ class Timetable {
       );
 
   /// Creates json from a Timetable object
-  Map<String, dynamic> toJSON() =>
-      {
+  Map<String, dynamic> toJSON() => {
         'timetables': timetables.map((i) => i.toJSON()).toList(),
       };
 
@@ -41,8 +37,7 @@ class TimetableForGrade {
   });
 
   /// Creates a TimetableForGrade object from json
-  factory TimetableForGrade.fromJSON(json) =>
-      TimetableForGrade(
+  factory TimetableForGrade.fromJSON(json) => TimetableForGrade(
         grade: json['grade'],
         date: DateTime.parse(json['date']),
         days: json['days']
@@ -52,8 +47,7 @@ class TimetableForGrade {
       );
 
   /// Creates json from a TimetableForGrade object
-  Map<String, dynamic> toJSON() =>
-      {
+  Map<String, dynamic> toJSON() => {
         'grade': grade,
         'date': date.toIso8601String(),
         'days': days.map((i) => i.toJSON()).toList(),
@@ -69,8 +63,7 @@ class TimetableForGrade {
     if (monday(date).isAfter(date)) {
       day = monday(date);
     }
-    final lessonCount =
-    days[day.weekday - 1].userLessonsCount(selection, isWeekA(day));
+    final lessonCount = days[day.weekday - 1].userLessonsCount(selection);
     if (date.isAfter(day.add(Times.getUnitTimes(lessonCount - 1)[1]))) {
       day = day.add(Duration(days: 1));
     }
@@ -103,8 +96,7 @@ class TimetableDay {
   });
 
   /// Creates a TimetableDay object from json
-  factory TimetableDay.fromJSON(json) =>
-      TimetableDay(
+  factory TimetableDay.fromJSON(json) => TimetableDay(
         weekday: json['weekday'],
         lessons: json['lessons']
             .map((i) => TimetableLesson.fromJSON(i))
@@ -113,25 +105,22 @@ class TimetableDay {
       );
 
   /// Creates json from a TimetableDay object
-  Map<String, dynamic> toJSON() =>
-      {
+  Map<String, dynamic> toJSON() => {
         'weekday': weekday,
         'lessons': lessons.map((i) => i.toJSON()).toList(),
       };
 
   /// Get the count of lessons for a selection for the day
-  int userLessonsCount(Selection selection, bool weekA) {
+  int userLessonsCount(Selection selection) {
     for (var i = -1; i < lessons.length; i++) {
       var somethingBetween = false;
       for (var j = i + 1; j < lessons.length; j++) {
         final lesson = lessons[j];
         final selected = lesson.subjects
             .where((subject) =>
-        subject.identifier ==
-            selection
-                .getSelection(Keys.selectionBlock(lesson.block, weekA)))
+                subject.identifier == selection.getSelection(lesson.block))
             .toList();
-        if (selected.isNotEmpty && selected[0].subject != 'FR' && j != 5) {
+        if (selected.isNotEmpty && selected[0].subject != 'fr' && j != 5) {
           somethingBetween = true;
         }
       }
@@ -163,8 +152,7 @@ class TimetableLesson {
   });
 
   /// Creates a TimetableLesson object from json
-  factory TimetableLesson.fromJSON(json) =>
-      TimetableLesson(
+  factory TimetableLesson.fromJSON(json) => TimetableLesson(
         unit: json['unit'],
         block: json['block'],
         subjects: json['subjects']
@@ -174,8 +162,7 @@ class TimetableLesson {
       );
 
   /// Creates json from a TimetableLesson object
-  Map<String, dynamic> toJSON() =>
-      {
+  Map<String, dynamic> toJSON() => {
         'unit': unit,
         'block': block,
         'subjects': subjects.map((i) => i.toJSON()).toList(),
@@ -196,57 +183,42 @@ class TimetableLesson {
 class TimetableSubject {
   // ignore: public_member_api_docs
   TimetableSubject({
-    @required this.teacher,
+    @required this.teachers,
     @required this.subject,
     @required this.room,
-    @required this.weeks,
     @required this.unit,
     this.course,
   });
 
   /// Creates a TimetableSubject object from json
-  factory TimetableSubject.fromJSON(json, int unit) =>
-      TimetableSubject(
-        teacher: json['teacher'],
+  factory TimetableSubject.fromJSON(json, int unit) => TimetableSubject(
+        teachers: json['teachers']?.cast<String>(),
         subject: json['subject'],
         room: json['room'],
         course: json['course'],
-        weeks: json['weeks'],
         unit: unit,
       );
 
   /// Creates json from a TimetableSubject object
-  Map<String, dynamic> toJSON() =>
-      {
-        'teacher': teacher,
+  Map<String, dynamic> toJSON() => {
+        'teachers': teachers,
         'subject': subject,
         'room': room,
         'course': course,
-        'weeks': weeks,
       };
 
   /// Get the changes that match this subject
-  List<Change> getMatchingChanges(
-      SubstitutionPlanForGrade substitutionPlanForGrade) =>
+  List<SubstitutionPlanChange> getMatchingChanges(
+          SubstitutionPlanForGrade substitutionPlanForGrade) =>
       substitutionPlanForGrade.changes
-          .where((change) =>
-      change
-          .getMatchingSubjectsByLesson(TimetableLesson(
-        unit: unit,
-        block: null,
-        subjects: [this],
-      ))
-          .where((subject) =>
-      json.encode(subject.toJSON()) == json.encode(toJSON()))
-          .toList()
-          .isNotEmpty)
+          .where((change) => change.subjectMatches(this))
           .toList();
 
   // ignore: public_member_api_docs
-  String get identifier => '$teacher-$subject';
+  String get identifier => '${teachers?.join('+')}-$subject';
 
   // ignore: public_member_api_docs
-  String teacher;
+  List<String> teachers;
 
   // ignore: public_member_api_docs
   String subject;
@@ -256,9 +228,6 @@ class TimetableSubject {
 
   // ignore: public_member_api_docs
   String course;
-
-  // ignore: public_member_api_docs
-  String weeks;
 
   // ignore: public_member_api_docs
   int unit;
