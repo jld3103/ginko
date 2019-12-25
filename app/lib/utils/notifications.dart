@@ -2,6 +2,9 @@ import 'package:after_layout/after_layout.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ginko/aixformation/aixformation_page.dart';
+import 'package:ginko/app/app_page.dart';
+import 'package:ginko/cafetoria/cafetoria_page.dart';
 import 'package:ginko/plugins/platform/platform.dart';
 import 'package:ginko/utils/static.dart';
 import 'package:models/models.dart';
@@ -58,19 +61,30 @@ class _NotificationsWidgetState extends State<NotificationsWidget>
     switch (data[Keys.type]) {
       case Keys.substitutionPlan:
         callback = () async {
-          await Navigator.of(context).pushNamed('/${Keys.substitutionPlan}');
+          await Navigator.of(context).pushReplacement(PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) => AppPage(
+              page: 0,
+              loading: false,
+            ),
+          ));
         };
         text = 'Neuer Vertretungsplan';
         break;
       case Keys.cafetoria:
         callback = () async {
-          await Navigator.of(context).pushNamed('/${Keys.cafetoria}');
+          await Navigator.of(context).pushReplacement(PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) =>
+                CafetoriaPage(),
+          ));
         };
         text = 'Neue Cafetoria-Menüs';
         break;
       case Keys.aiXformation:
         callback = () async {
-          await Navigator.of(context).pushNamed('/${Keys.aiXformation}');
+          await Navigator.of(context).pushReplacement(PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) =>
+                AiXformationPage(),
+          ));
         };
         text = 'Neuer AiXformation-Artikel';
         break;
@@ -98,15 +112,26 @@ class _NotificationsWidgetState extends State<NotificationsWidget>
     switch (data['type']) {
       case Keys.substitutionPlan:
         await widget.fetchData();
-        await Navigator.of(context).pushNamed('/${Keys.substitutionPlan}');
+        await Navigator.of(context).pushReplacement(PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) => AppPage(
+            page: 0,
+            loading: false,
+          ),
+        ));
         break;
       case Keys.cafetoria:
         await widget.fetchData();
-        await Navigator.of(context).pushNamed('/${Keys.cafetoria}');
+        await Navigator.of(context).pushReplacement(PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              CafetoriaPage(),
+        ));
         break;
       case Keys.aiXformation:
         await widget.fetchData();
-        await Navigator.of(context).pushNamed('/${Keys.aiXformation}');
+        await Navigator.of(context).pushReplacement(PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              AiXformationPage(),
+        ));
         break;
       default:
         print('Unknown key: ${data['type']}');
