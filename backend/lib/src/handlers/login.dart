@@ -37,7 +37,7 @@ class LoginHandler {
         }
       }
       final client =
-          NextCloudClient('cloud.viktoria.schule', username, password);
+          NextCloudClient('nextcloud.aachen-vsa.logoip.de', username, password);
       final files = await client.webDav.ls('/Tausch');
       final grade = files[0].name.split(' ')[1];
       await _mySqlConnection.query(

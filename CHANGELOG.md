@@ -1,4 +1,14 @@
 
+# 2019-12-27  
+ jld3103: Fix login performance issues  
+ jld3103: Color and layout improvements  
+
+# 2019-12-25  
+ jld3103: Remove animation from notification routing  
+ jld3103: Fix PWA color  
+ jld3103: Fix web fonts  
+ jld3103: Complete app and structure redesign [BREAKING CHANGE]  
+
 # 2019-12-10  
  jld3103: Unpin dependencies  
 
