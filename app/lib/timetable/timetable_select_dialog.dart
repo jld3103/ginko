@@ -38,8 +38,7 @@ class TimetableSelectDialog extends StatelessWidget {
                         ),
                         child: TimetableRow(
                           showUnit: false,
-                          keepPadding: false,
-                          keepIndicator: false,
+                          showSplit: false,
                           subject: subject,
                         ),
                       ),

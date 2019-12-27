@@ -13,6 +13,7 @@ import 'package:ginko/settings/settings_page.dart';
 import 'package:ginko/utils/static.dart';
 import 'package:ginko/utils/theme.dart';
 import 'package:models/models.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 Future main() async {
   if (Platform().isDesktop) {
@@ -20,6 +21,8 @@ Future main() async {
   }
 
   WidgetsFlutterBinding.ensureInitialized();
+
+  timeago.setLocaleMessages('de', timeago.DeMessages());
 
   Static.storage = Storage();
   await Static.storage.init();

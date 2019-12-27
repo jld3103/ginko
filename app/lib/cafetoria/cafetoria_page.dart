@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ginko/cafetoria/cafetoria_row.dart';
-import 'package:ginko/utils/size_limit.dart';
 import 'package:ginko/utils/static.dart';
 
 // ignore: public_member_api_docs
@@ -14,15 +13,21 @@ class CafetoriaPage extends StatelessWidget {
         body: Scrollbar(
           child: ListView(
             shrinkWrap: true,
-            padding: EdgeInsets.all(10),
             children: Static.cafetoria.data.days
-                .map((day) => Center(
-                      child: SizeLimit(
-                        child: CafetoriaRow(
-                          day: day,
-                          showDate: true,
-                        ),
-                      ),
+                .map((day) => Column(
+                      children: day.menus
+                          .map(
+                            (menu) => Container(
+                              margin: EdgeInsets.all(10),
+                              child: CafetoriaRow(
+                                day: day,
+                                menu: menu,
+                                showDate: true,
+                              ),
+                            ),
+                          )
+                          .toList()
+                          .cast<Widget>(),
                     ))
                 .toList()
                 .cast<Widget>(),

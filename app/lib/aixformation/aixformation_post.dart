@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:ginko/aixformation/aixformation_utils.dart';
 import 'package:ginko/plugins/platform/platform.dart';
+import 'package:ginko/utils/icons_texts.dart';
 import 'package:ginko/utils/size_limit.dart';
 import 'package:models/models.dart';
 import 'package:share/share.dart';
@@ -93,48 +94,14 @@ class AiXformationPost extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Icon(
-                              Icons.person,
-                              color: Colors.black54,
-                              size: 18,
-                            ),
-                            Container(
-                              width: 5,
-                              height: 1,
-                              color: Colors.transparent,
-                            ),
-                            Text(
-                              post.author ?? '',
-                              style: TextStyle(
-                                color: Colors.black54,
-                                fontSize: 14,
-                              ),
-                            ),
-                            Container(
-                              width: 20,
-                              height: 1,
-                              color: Colors.transparent,
-                            ),
-                            Icon(
-                              Icons.event,
-                              color: Colors.black54,
-                              size: 18,
-                            ),
-                            Container(
-                              width: 5,
-                              height: 1,
-                              color: Colors.transparent,
-                            ),
-                            Text(
-                              outputDateFormat.format(post.date),
-                              style: TextStyle(
-                                color: Colors.black54,
-                                fontSize: 14,
-                              ),
-                            ),
+                        IconsTexts(
+                          icons: [
+                            Icons.event,
+                            Icons.person,
+                          ],
+                          texts: [
+                            outputDateFormat.format(post.date),
+                            post.author,
                           ],
                         ),
                         Container(

@@ -14,12 +14,14 @@ class AiXformationPage extends StatelessWidget {
         body: Scrollbar(
           child: ListView(
             shrinkWrap: true,
-            padding: EdgeInsets.all(10),
             children: Static.aiXformation.data.posts
                 .map((post) => Center(
                       child: SizeLimit(
-                        child: AiXformationRow(
-                          post: post,
+                        child: Container(
+                          margin: EdgeInsets.all(10),
+                          child: AiXformationRow(
+                            post: post,
+                          ),
                         ),
                       ),
                     ))

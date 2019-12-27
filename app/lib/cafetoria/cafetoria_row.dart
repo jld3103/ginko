@@ -1,7 +1,10 @@
 import 'package:after_layout/after_layout.dart';
 import 'package:flutter/material.dart';
+import 'package:ginko/utils/custom_row.dart';
+import 'package:ginko/utils/icons_texts.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:models/models.dart';
 
 // ignore: public_member_api_docs
@@ -9,14 +12,22 @@ class CafetoriaRow extends StatefulWidget {
   // ignore: public_member_api_docs
   const CafetoriaRow({
     @required this.day,
+    @required this.menu,
     this.showDate = false,
+    this.showSplit = true,
   });
 
   // ignore: public_member_api_docs
   final CafetoriaDay day;
 
   // ignore: public_member_api_docs
+  final CafetoriaMenu menu;
+
+  // ignore: public_member_api_docs
   final bool showDate;
+
+  // ignore: public_member_api_docs
+  final bool showSplit;
 
   @override
   State<StatefulWidget> createState() => _CafetoriaRowState();
@@ -39,62 +50,25 @@ class _CafetoriaRowState extends State<CafetoriaRow>
     if (_timeFormat == null) {
       return Container();
     }
-    return Container(
-      padding: EdgeInsets.only(top: 10, bottom: 10),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            width: 50,
-            height: 50,
-            margin: EdgeInsets.all(5),
-            alignment: Alignment.center,
-            child: Icon(
-              Icons.restaurant,
-            ),
-          ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (widget.showDate)
-                  Container(
-                    margin: EdgeInsets.only(bottom: 10),
-                    child: Text(
-                      // ignore: lines_longer_than_80_chars
-                      '${weekdays[widget.day.date.weekday - 1]} ${outputDateFormat.format(widget.day.date)}',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ...widget.day.menus
-                    .map(
-                      (menu) => Container(
-                        margin: EdgeInsets.only(bottom: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              // ignore: lines_longer_than_80_chars
-                              '${menu.name}${menu.price != 0 ? ' (${menu.price}€)' : ''}',
-                            ),
-                            if (menu.times.isNotEmpty)
-                              Text(
-                                menu.times
-                                    .map((time) => _timeFormat
-                                        .format(DateTime(0).add(time)))
-                                    .toList()
-                                    .join(' - '),
-                              ),
-                          ],
-                        ),
-                      ),
-                    )
-                    .toList()
-              ],
-            ),
-          ),
+    return CustomRow(
+      leading: Icon(
+        Icons.restaurant,
+      ),
+      title:
+          // ignore: lines_longer_than_80_chars
+          '${widget.menu.name} (${weekdays[widget.day.date.weekday - 1]} ${outputDateFormat.format(widget.day.date)})',
+      subtitle: IconsTexts(
+        icons: [
+          MdiIcons.currencyEur,
+          if (widget.menu.times.isNotEmpty) Icons.timer,
+        ],
+        texts: [
+          widget.menu.price.toString().replaceAll('.', ','),
+          if (widget.menu.times.isNotEmpty)
+            widget.menu.times
+                .map((time) => _timeFormat.format(DateTime(0).add(time)))
+                .toList()
+                .join(' - '),
         ],
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:ginko/utils/custom_row.dart';
 import 'package:ginko/utils/static.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:models/models.dart';
@@ -11,8 +12,7 @@ class TimetableRow extends StatelessWidget {
   const TimetableRow({
     @required this.subject,
     this.showUnit = true,
-    this.keepPadding = true,
-    this.keepIndicator = true,
+    this.showSplit = true,
     Key key,
   })  : assert(subject != null, 'subject must not be null'),
         super(key: key);
@@ -24,10 +24,7 @@ class TimetableRow extends StatelessWidget {
   final bool showUnit;
 
   // ignore: public_member_api_docs
-  final bool keepPadding;
-
-  // ignore: public_member_api_docs
-  final bool keepIndicator;
+  final bool showSplit;
 
   @override
   Widget build(BuildContext context) {
@@ -44,71 +41,41 @@ class TimetableRow extends StatelessWidget {
         ((times[1].inMinutes % 60).toString().length == 1 ? '0' : '') +
             (times[1].inMinutes % 60).toString();
     final timeStr = '$startHour:$startMinute - $endHour:$endMinute';
-    return Container(
-      height: 40,
-      child: Row(
-        children: [
-          if (keepPadding)
-            Container(
-              width: 10,
-              color: Colors.transparent,
-              child: showUnit && unit != 5
-                  ? Center(
-                      child: Text(
-                        (unit + 1).toString(),
-                        style: TextStyle(
-                          fontSize: 16,
-                        ),
-                      ),
-                    )
-                  : null,
-            ),
-          if (keepIndicator)
-            Container(
-              height: 40,
-              width: 2.5,
-              margin: EdgeInsets.only(
-                top: 1,
-                right: 5,
-                bottom: 1,
-                left: 5,
+    return CustomRow(
+      showSplit:
+          !(subject.subject == 'mit' || subject.subject == 'none') && showSplit,
+      leading: showUnit && unit != 5
+          ? Center(
+              child: Text(
+                (unit + 1).toString(),
+                style: TextStyle(
+                  fontSize: 16,
+                ),
               ),
-              color: Colors.transparent,
-            ),
-          Expanded(
-            flex: 1,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment:
-                  subject.subject == 'mit' || subject.subject == 'none'
-                      ? CrossAxisAlignment.center
-                      : CrossAxisAlignment.start,
-              children: [
-                if (Static.subjects.hasLoadedData)
-                  Text(
-                    Static.subjects.data.subjects[subject.subject],
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight:
-                          subject.subject == 'mit' || subject.subject == 'none'
-                              ? null
-                              : FontWeight.bold,
-                      color:
-                          subject.subject == 'mit' || subject.subject == 'none'
-                              ? Colors.black
-                              : Theme.of(context).accentColor,
-                    ),
-                  ),
-                if (subject.subject != 'mit' && subject.subject != 'none')
-                  Text(
-                    timeStr,
-                    style: TextStyle(
-                      color: Colors.black54,
-                    ),
-                  ),
-              ],
-            ),
-          ),
+            )
+          : null,
+      titleAlignment: subject.subject == 'mit' || subject.subject == 'none'
+          ? CrossAxisAlignment.center
+          : CrossAxisAlignment.start,
+      title: Static.subjects.hasLoadedData
+          ? Static.subjects.data.subjects[subject.subject]
+          : null,
+      titleFontWeight: subject.subject == 'mit' || subject.subject == 'none'
+          ? FontWeight.normal
+          : null,
+      titleColor: subject.subject == 'mit' || subject.subject == 'none'
+          ? Colors.black
+          : Theme.of(context).accentColor,
+      subtitle: subject.subject != 'mit' && subject.subject != 'none'
+          ? Text(
+              timeStr,
+              style: TextStyle(
+                color: Colors.black54,
+              ),
+            )
+          : null,
+      last: Row(
+        children: [
           if (subject.subject != 'mit' && subject.subject != 'none')
             Container(
               width: 24,

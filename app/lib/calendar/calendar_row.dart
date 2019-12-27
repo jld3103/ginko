@@ -2,6 +2,7 @@ import 'package:add_2_calendar/add_2_calendar.dart';
 import 'package:after_layout/after_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:ginko/plugins/platform/platform.dart';
+import 'package:ginko/utils/custom_row.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:models/models.dart';
 
@@ -11,6 +12,7 @@ class CalendarRow extends StatefulWidget {
   const CalendarRow({
     @required this.event,
     this.showDate = false,
+    this.showSplit = true,
   });
 
   // ignore: public_member_api_docs
@@ -18,6 +20,9 @@ class CalendarRow extends StatefulWidget {
 
   // ignore: public_member_api_docs
   final bool showDate;
+
+  // ignore: public_member_api_docs
+  final bool showSplit;
 
   @override
   _CalendarRowState createState() => _CalendarRowState();
@@ -38,35 +43,20 @@ class _CalendarRowState extends State<CalendarRow>
   @override
   Widget build(BuildContext context) => !_initialized
       ? Container()
-      : Container(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                width: 50,
-                height: 50,
-                margin: EdgeInsets.all(5),
-                alignment: Alignment.center,
-                child: Icon(
-                  Icons.calendar_today,
-                ),
-              ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.event.name,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(widget.event.dateString),
-                  ],
-                ),
-              ),
-              if (Platform().isMobile)
-                IconButton(
+      : CustomRow(
+          showSplit: widget.showSplit,
+          leading: Icon(
+            Icons.calendar_today,
+          ),
+          title: '${widget.event.name}',
+          subtitle: Text(
+            widget.event.dateString,
+            style: TextStyle(
+              color: Colors.black54,
+            ),
+          ),
+          last: Platform().isMobile
+              ? IconButton(
                   onPressed: () {
                     final startDate = widget.event.start.subtract(Duration(
                       hours: widget.event.start.hour,
@@ -87,8 +77,7 @@ class _CalendarRowState extends State<CalendarRow>
                     ));
                   },
                   icon: Icon(Icons.add),
-                ),
-            ],
-          ),
+                )
+              : null,
         );
 }

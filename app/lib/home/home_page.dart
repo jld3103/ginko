@@ -81,47 +81,40 @@ class HomePage extends StatelessWidget {
             },
           ),
         SizeLimit(
-          child: Container(
-            padding: EdgeInsets.all(10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (subjects.isEmpty &&
-                    (!Static.timetable.hasLoadedData ||
-                        !Static.selection.hasLoadedData))
-                  Container(
-                    height: 60,
-                    color: Colors.transparent,
-                  )
-                else
-                  ...(subjects.length > 3 ? subjects.sublist(0, 3) : subjects)
-                      .map((subject) => Container(
-                            margin: EdgeInsets.only(
-                              top: 10,
-                              right: 20,
-                              bottom: 10,
-                              left: 20,
-                            ),
-                            child: Column(
-                              children: [
-                                TimetableRow(
-                                  subject: subject,
-                                ),
-                                ...changes
-                                    .where(
-                                        (change) => change.unit == subject.unit)
-                                    .map((change) => SubstitutionPlanRow(
-                                          change: change
-                                              .completedBySubject(subject),
-                                          showUnit: false,
-                                        ))
-                                    .toList()
-                                    .cast<Widget>(),
-                              ],
-                            ),
-                          )),
-              ],
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (subjects.isEmpty &&
+                  (!Static.timetable.hasLoadedData ||
+                      !Static.selection.hasLoadedData))
+                Container(
+                  height: 60,
+                  color: Colors.transparent,
+                )
+              else
+                ...(subjects.length > 3 ? subjects.sublist(0, 3) : subjects)
+                    .map((subject) => Container(
+                          margin: EdgeInsets.all(10),
+                          child: Column(
+                            children: [
+                              TimetableRow(
+                                subject: subject,
+                              ),
+                              ...changes
+                                  .where(
+                                      (change) => change.unit == subject.unit)
+                                  .map((change) => SubstitutionPlanRow(
+                                        change:
+                                            change.completedBySubject(subject),
+                                        showUnit: false,
+                                        keepPadding: true,
+                                      ))
+                                  .toList()
+                                  .cast<Widget>(),
+                            ],
+                          ),
+                        )),
+            ],
           ),
         ),
       ],
@@ -151,28 +144,20 @@ class HomePage extends StatelessWidget {
           )
         else
           SizeLimit(
-            child: Container(
-              padding: EdgeInsets.all(10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (Static.substitutionPlan.hasLoadedData)
-                    ...(changes.length > 3 ? changes.sublist(0, 3) : changes)
-                        .map((change) => Container(
-                              margin: EdgeInsets.only(
-                                top: 10,
-                                right: 20,
-                                bottom: 10,
-                                left: 20,
-                              ),
-                              child: SubstitutionPlanRow(
-                                change: change,
-                              ),
-                            ))
-                        .toList()
-                        .cast<Widget>()
-                ],
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (Static.substitutionPlan.hasLoadedData)
+                  ...(changes.length > 3 ? changes.sublist(0, 3) : changes)
+                      .map((change) => Container(
+                            margin: EdgeInsets.all(10),
+                            child: SubstitutionPlanRow(
+                              change: change,
+                            ),
+                          ))
+                      .toList()
+                      .cast<Widget>()
+              ],
             ),
           ),
       ],
@@ -191,8 +176,11 @@ class HomePage extends StatelessWidget {
         if (Static.aiXformation.hasLoadedData)
           ...Static.aiXformation.data.posts
               .sublist(0, size == ScreenSize.small ? 2 : 3)
-              .map((post) => AiXformationRow(
-                    post: post,
+              .map((post) => Container(
+                    margin: EdgeInsets.all(10),
+                    child: AiXformationRow(
+                      post: post,
+                    ),
                   ))
               .toList()
               .cast<Widget>(),
@@ -221,15 +209,31 @@ class HomePage extends StatelessWidget {
             color: Colors.transparent,
           )
         else
-          ...(days.length > 2 ? days.sublist(0, 2) : days)
-              .map((day) => SizeLimit(
-                    child: CafetoriaRow(
-                      day: day,
-                      showDate: true,
-                    ),
-                  ))
-              .toList()
-              .cast<Widget>(),
+          SizeLimit(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ...(days.length > 2 ? days.sublist(0, 2) : days)
+                    .map((day) => Column(
+                          children: day.menus
+                              .map(
+                                (menu) => Container(
+                                  margin: EdgeInsets.all(10),
+                                  child: CafetoriaRow(
+                                    day: day,
+                                    menu: menu,
+                                    showDate: true,
+                                  ),
+                                ),
+                              )
+                              .toList()
+                              .cast<Widget>(),
+                        ))
+                    .toList()
+                    .cast<Widget>(),
+              ],
+            ),
+          ),
       ],
     );
     final events = Static.calendar.hasLoadedData
@@ -254,14 +258,21 @@ class HomePage extends StatelessWidget {
             color: Colors.transparent,
           )
         else
-          ...(events.length > 3 ? events.sublist(0, 3) : events)
-              .map((event) => SizeLimit(
-                    child: CalendarRow(
-                      event: event,
-                    ),
-                  ))
-              .toList()
-              .cast<Widget>(),
+          SizeLimit(
+            child: Column(
+              children: [
+                ...(events.length > 3 ? events.sublist(0, 3) : events)
+                    .map((event) => Container(
+                          margin: EdgeInsets.all(10),
+                          child: CalendarRow(
+                            event: event,
+                          ),
+                        ))
+                    .toList()
+                    .cast<Widget>(),
+              ],
+            ),
+          ),
       ],
     );
     return Scrollbar(

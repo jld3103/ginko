@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ginko/substitution_plan/substitution_plan_row.dart';
+import 'package:ginko/utils/icons_texts.dart';
 import 'package:ginko/utils/list_group_header.dart';
 import 'package:ginko/utils/screen_sizes.dart';
 import 'package:ginko/utils/size_limit.dart';
@@ -114,12 +115,7 @@ class _SubstitutionPlanPageState extends State<SubstitutionPlanPage>
                 ...myChanges
                     .map((change) => SizeLimit(
                           child: Container(
-                            margin: EdgeInsets.only(
-                              top: 10,
-                              right: 20,
-                              bottom: 10,
-                              left: 20,
-                            ),
+                            margin: EdgeInsets.all(10),
                             child: SubstitutionPlanRow(
                               change: change,
                             ),
@@ -133,12 +129,7 @@ class _SubstitutionPlanPageState extends State<SubstitutionPlanPage>
               ...notMyChanges
                   .map((change) => SizeLimit(
                         child: Container(
-                          margin: EdgeInsets.only(
-                            top: 10,
-                            right: 20,
-                            bottom: 10,
-                            left: 20,
-                          ),
+                          margin: EdgeInsets.all(10),
                           child: SubstitutionPlanRow(
                             change: change,
                           ),
@@ -150,67 +141,25 @@ class _SubstitutionPlanPageState extends State<SubstitutionPlanPage>
             return Scrollbar(
               child: ListView(
                 shrinkWrap: true,
-                padding: EdgeInsets.only(top: 10, bottom: 10),
                 children: [
                   if (Static.substitutionPlan.hasLoadedData)
                     Column(
                       children: [
                         Container(
-                          margin: EdgeInsets.only(
-                            top: 5,
-                            right: 20,
-                            left: 20,
-                          ),
-                          child: Column(
-                            children: [
-                              Container(
-                                padding: EdgeInsets.only(bottom: 15, top: 5),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.timer,
-                                      color: Colors.black54,
-                                    ),
-                                    Container(
-                                      child: Text(
-                                        timeago.format(Static
-                                            .substitutionPlan
-                                            .data
-                                            .substitutionPlanDays[index]
-                                            .updated),
-                                        style: TextStyle(
-                                          color: Colors.black54,
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      width: 20,
-                                      height: 1,
-                                      color: Colors.transparent,
-                                    ),
-                                    Icon(
-                                      Icons.event,
-                                      color: Colors.black54,
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.only(
-                                        left: 5,
-                                      ),
-                                      child: Text(
-                                        outputDateFormat.format(Static
-                                            .substitutionPlan
-                                            .data
-                                            .substitutionPlanDays[index]
-                                            .date),
-                                        style: TextStyle(
-                                          color: Colors.black54,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                          margin: EdgeInsets.all(10),
+                          child: IconsTexts(
+                            icons: [
+                              Icons.timer,
+                              Icons.event,
+                            ],
+                            texts: [
+                              timeago.format(
+                                Static.substitutionPlan.data
+                                    .substitutionPlanDays[index].updated,
+                                locale: 'de',
                               ),
+                              outputDateFormat.format(Static.substitutionPlan
+                                  .data.substitutionPlanDays[index].date),
                             ],
                           ),
                         ),

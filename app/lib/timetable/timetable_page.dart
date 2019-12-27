@@ -103,12 +103,7 @@ class _TimetablePageState extends State<TimetablePage>
                           }
                         },
                         child: Container(
-                          margin: EdgeInsets.only(
-                            top: 10,
-                            right: 20,
-                            bottom: 10,
-                            left: 20,
-                          ),
+                          margin: EdgeInsets.all(10),
                           child: Column(
                             children: [
                               TimetableRow(
@@ -123,20 +118,13 @@ class _TimetablePageState extends State<TimetablePage>
                                 showUnit: getScreenSize(
                                         MediaQuery.of(context).size.width) !=
                                     ScreenSize.big,
-                                keepPadding: getScreenSize(
-                                        MediaQuery.of(context).size.width) !=
-                                    ScreenSize.big,
                               ),
                               ...changes
                                   .map((change) => SubstitutionPlanRow(
                                         change:
                                             change.completedByLesson(lesson),
                                         showUnit: false,
-                                        keepPadding: getScreenSize(
-                                                MediaQuery.of(context)
-                                                    .size
-                                                    .width) !=
-                                            ScreenSize.big,
+                                        keepPadding: true,
                                       ))
                                   .toList()
                                   .cast<Widget>(),
