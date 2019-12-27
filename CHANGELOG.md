@@ -1,6 +1,7 @@
 
 # 2019-12-27  
- jld3103: Fix broken desktop cross-compiling  
+ jld3103: Fix home page not showing next lessons  
+ jld3103: Fix desktop  
  jld3103: Fix login performance issues  
  jld3103: Color and layout improvements  
 

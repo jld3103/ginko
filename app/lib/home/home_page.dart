@@ -24,7 +24,10 @@ class HomePage extends StatelessWidget {
                 .weekday -
             1
         : 0;
-    final day = monday(DateTime.now()).add(Duration(days: weekday));
+    final day = Static.selection.hasLoadedData && Static.timetable.hasLoadedData
+        ? Static.timetable.data
+            .initialDay(Static.selection.data, DateTime.now())
+        : monday(DateTime.now()).add(Duration(days: weekday));
     final subjects = Static.timetable.hasLoadedData
         ? Static.timetable.data.days[weekday].lessons
             .map((lesson) {
@@ -84,9 +87,9 @@ class HomePage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (subjects.isEmpty &&
-                  (!Static.timetable.hasLoadedData ||
-                      !Static.selection.hasLoadedData))
+              if (subjects.isEmpty ||
+                  !Static.timetable.hasLoadedData ||
+                  !Static.selection.hasLoadedData)
                 Container(
                   height: 60,
                   color: Colors.transparent,
