@@ -1,5 +1,6 @@
 
 # 2019-12-27  
+ jld3103: Fix broken desktop cross-compiling  
  jld3103: Fix login performance issues  
  jld3103: Color and layout improvements  
 
