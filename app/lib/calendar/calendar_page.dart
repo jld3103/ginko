@@ -190,7 +190,7 @@ class _CalendarPageState extends State<CalendarPage>
     const headerHeight = 36;
     const otherPadding = 0.0;
     final height =
-        MediaQuery.of(context).size.height - headerHeight - otherPadding - 57;
+        MediaQuery.of(context).size.height - headerHeight - otherPadding - 81;
     final width = MediaQuery.of(context).size.width - otherPadding * 2 - 1;
 
     final tabs = [];

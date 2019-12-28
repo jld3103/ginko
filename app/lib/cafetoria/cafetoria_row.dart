@@ -56,7 +56,7 @@ class _CafetoriaRowState extends State<CafetoriaRow>
       ),
       title:
           // ignore: lines_longer_than_80_chars
-          '${widget.menu.name} (${weekdays[widget.day.date.weekday - 1]} ${outputDateFormat.format(widget.day.date)})',
+          '${widget.menu.name}${widget.showDate ? '(${weekdays[widget.day.date.weekday - 1]} ${outputDateFormat.format(widget.day.date)})' : ''}',
       subtitle: IconsTexts(
         icons: [
           MdiIcons.currencyEur,

@@ -1,5 +1,7 @@
 
 # 2019-12-28  
+ jld3103: Add calendar and cafetoria to timetable day  
+ jld3103: Small fixes  
  jld3103: Update desktop packaging  
 
 # 2019-12-27  

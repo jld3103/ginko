@@ -13,7 +13,8 @@ class CafetoriaPage extends StatelessWidget {
         body: Scrollbar(
           child: ListView(
             shrinkWrap: true,
-            children: Static.cafetoria.data.days
+            children: (Static.cafetoria.data.days
+                  ..sort((a, b) => a.date.compareTo(b.date)))
                 .map((day) => Column(
                       children: day.menus
                           .map(

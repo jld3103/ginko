@@ -191,7 +191,8 @@ class HomePage extends StatelessWidget {
     );
     final days = Static.cafetoria.hasLoadedData
         ? (Static.cafetoria.data.days
-                .where((d) => d.date.isAfter(day.subtract(Duration(days: 1))))
+                .where(
+                    (d) => d.date.isAfter(day.subtract(Duration(seconds: 1))))
                 .toList()
                   ..sort((a, b) => a.date.compareTo(b.date)))
             .toList()
