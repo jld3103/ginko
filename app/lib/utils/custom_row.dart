@@ -46,47 +46,44 @@ class CustomRow extends StatelessWidget {
   final bool showSplit;
 
   @override
-  Widget build(BuildContext context) => Container(
-        height: 40,
-        child: Row(
-          children: [
-            if (leading != null)
-              Container(
-                width: 30,
-                child: Center(
-                  child: leading,
-                ),
-              ),
-            if (showSplit ?? true)
-              Container(
-                height: 40,
-                width: 2.5,
-                margin: EdgeInsets.only(
-                  right: 5,
-                ),
-                color: splitColor ?? Theme.of(context).primaryColor,
-              ),
-            Expanded(
-              flex: 1,
-              child: Column(
-                crossAxisAlignment: titleAlignment ?? CrossAxisAlignment.start,
-                children: [
-                  if (title != null)
-                    Text(
-                      title,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: titleFontWeight ?? FontWeight.bold,
-                        color: titleColor ?? Theme.of(context).accentColor,
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  if (subtitle != null) subtitle,
-                ],
+  Widget build(BuildContext context) => Row(
+        children: [
+          if (leading != null)
+            Container(
+              width: 30,
+              child: Center(
+                child: leading,
               ),
             ),
-            if (last != null) last,
-          ],
-        ),
+          if (showSplit ?? true)
+            Container(
+              height: 40,
+              width: 2.5,
+              margin: EdgeInsets.only(
+                right: 5,
+              ),
+              color: splitColor ?? Theme.of(context).primaryColor,
+            ),
+          Expanded(
+            flex: 1,
+            child: Column(
+              crossAxisAlignment: titleAlignment ?? CrossAxisAlignment.start,
+              children: [
+                if (title != null)
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: titleFontWeight ?? FontWeight.bold,
+                      color: titleColor ?? Theme.of(context).accentColor,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                if (subtitle != null) subtitle,
+              ],
+            ),
+          ),
+          if (last != null) last,
+        ],
       );
 }

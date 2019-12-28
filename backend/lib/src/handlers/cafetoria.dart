@@ -82,6 +82,9 @@ class CafetoriaHandler extends Handler {
       for (final row in devicesResults.toList()) {
         final username = row[0].toString();
         final token = row[1].toString();
+        if (token == '') {
+          continue;
+        }
         final settingsResults = await mySqlConnection.query(
             // ignore: lines_longer_than_80_chars
             'SELECT settings_value FROM users_settings WHERE username = \'$username\' AND settings_key = \'${Keys.cafetoriaNotifications}\';');

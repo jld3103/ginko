@@ -4,7 +4,7 @@ go 1.13
 
 require (
 	github.com/gen2brain/dlgs v0.0.0-20191023125645-8832682fb7f8 // indirect
-	github.com/go-flutter-desktop/go-flutter v0.34.0
+	github.com/go-flutter-desktop/go-flutter v0.34.1-0.20191227132350-c4c03d13f0e6
 	github.com/go-flutter-desktop/plugins/path_provider v0.3.3
 	github.com/go-flutter-desktop/plugins/shared_preferences v0.4.3
 	github.com/go-flutter-desktop/plugins/url_launcher v0.1.2

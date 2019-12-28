@@ -127,7 +127,7 @@ Future main(List<String> args) async {
           if (request.method == 'POST' &&
               request.uri.path == '/${Keys.device}') {
             final device = Device.fromJSON(json.decode(body));
-            if (device.token == null || device.os == null) {
+            if (device.version == null || device.os == null) {
               response
                 ..statusCode = HttpStatus.ok
                 ..write(json.encode({

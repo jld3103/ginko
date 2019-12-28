@@ -123,6 +123,9 @@ class SubstitutionPlanHandler extends Handler {
         for (final row in devicesResults.toList()) {
           final username = row[0].toString();
           final token = row[1].toString();
+          if (token == '') {
+            continue;
+          }
           final gradeResults = await mySqlConnection.query(
               // ignore: lines_longer_than_80_chars
               'SELECT grade FROM users_grade WHERE username = \'$username\';');

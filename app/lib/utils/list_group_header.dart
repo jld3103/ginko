@@ -33,8 +33,9 @@ class ListGroupHeader extends StatelessWidget {
         onTap: onTap,
         child: Container(
           height: TabBar(
-            tabs: const [],
-          ).preferredSize.height,
+                tabs: const [],
+              ).preferredSize.height +
+              1,
           decoration: getScreenSize(MediaQuery.of(context).size.width) !=
                   ScreenSize.small
               ? BoxDecoration(

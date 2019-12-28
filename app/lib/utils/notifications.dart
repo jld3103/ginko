@@ -45,8 +45,8 @@ class _NotificationsWidgetState extends State<NotificationsWidget>
           await _foregroundNotification(context, data);
         },
       );
-      await updateTokens(context);
     }
+    await updateTokens(context);
     if (Platform().isAndroid) {
       await MethodChannel('de.ginko').invokeMethod('channel_registered');
     }
@@ -149,19 +149,23 @@ class _NotificationsWidgetState extends State<NotificationsWidget>
 
 /// Update all tokens
 Future updateTokens(BuildContext context) async {
+  final platformName = Platform().platformName;
+  final version = await Static.releases.getCurrentAppVersion();
+  var token = '';
   if ((Platform().isMobile || Platform().isWeb) &&
       await Static.firebaseMessaging.hasNotificationPermissions()) {
-    final token = await Static.firebaseMessaging.getToken();
-    if (token != 'null') {
-      Static.device.object = Device(
-        token: token,
-        os: Platform().platformName,
-        version: await Static.releases.getCurrentAppVersion(),
-      );
-      try {
-        await Static.device.forceLoadOnline();
-        // ignore: empty_catches
-      } on DioError {}
+    final t = await Static.firebaseMessaging.getToken();
+    if (t != 'null') {
+      token = t;
     }
   }
+  Static.device.object = Device(
+    token: token,
+    os: platformName,
+    version: version,
+  );
+  try {
+    await Static.device.forceLoadOnline();
+    // ignore: empty_catches
+  } on DioError {}
 }

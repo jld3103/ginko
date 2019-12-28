@@ -109,6 +109,10 @@ if (workbox) {
         new workbox.strategies.NetworkOnly()
     );
     workbox.routing.registerRoute(
+        /.*pubspec\.yaml/gm,
+        new workbox.strategies.NetworkOnly()
+    );
+    workbox.routing.registerRoute(
         /.*\.js/,
         new workbox.strategies.NetworkFirst(),
     );

@@ -91,7 +91,7 @@ class _AppPageState extends State<AppPage>
         }
         await Static.selection.forceLoadOnline();
         await Static.settings.forceLoadOnline();
-        if (Static.device.data != null && Static.device.data.token != '') {
+        if (Static.device.data != null) {
           await Static.device.forceLoadOnline();
         }
         if (mounted) {
