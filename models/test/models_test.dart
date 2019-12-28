@@ -13,7 +13,7 @@ void main() {
     });
 
     test('Get correct weekday count', () {
-      expect(weekdays.length, 5);
+      expect(weekdays.length, 7);
     });
 
     test('Get correct month count', () {
