@@ -1,5 +1,6 @@
 
 # 2020-01-05  
+ jld3103: Fix color in custom row and indent in timetable  
  jld3103: Fix notification navigation  
  jld3103: Remove broken snap packaging  
 

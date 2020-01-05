@@ -222,7 +222,11 @@ class _TimetablePageState extends State<TimetablePage>
                                           change:
                                               change.completedByLesson(lesson),
                                           showUnit: false,
-                                          keepPadding: true,
+                                          keepPadding: getScreenSize(
+                                                  MediaQuery.of(context)
+                                                      .size
+                                                      .width) !=
+                                              ScreenSize.big,
                                         ))
                                     .toList()
                                     .cast<Widget>(),
