@@ -72,7 +72,7 @@ class _NotificationsWidgetState extends State<NotificationsWidget>
         break;
       case Keys.cafetoria:
         callback = () async {
-          await Navigator.of(context).pushReplacement(PageRouteBuilder(
+          await Navigator.of(context).push(PageRouteBuilder(
             pageBuilder: (context, animation, secondaryAnimation) =>
                 CafetoriaPage(),
           ));
@@ -81,7 +81,7 @@ class _NotificationsWidgetState extends State<NotificationsWidget>
         break;
       case Keys.aiXformation:
         callback = () async {
-          await Navigator.of(context).pushReplacement(PageRouteBuilder(
+          await Navigator.of(context).push(PageRouteBuilder(
             pageBuilder: (context, animation, secondaryAnimation) =>
                 AiXformationPage(),
           ));
@@ -121,14 +121,14 @@ class _NotificationsWidgetState extends State<NotificationsWidget>
         break;
       case Keys.cafetoria:
         await widget.fetchData();
-        await Navigator.of(context).pushReplacement(PageRouteBuilder(
+        await Navigator.of(context).push(PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) =>
               CafetoriaPage(),
         ));
         break;
       case Keys.aiXformation:
         await widget.fetchData();
-        await Navigator.of(context).pushReplacement(PageRouteBuilder(
+        await Navigator.of(context).push(PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) =>
               AiXformationPage(),
         ));

@@ -1,5 +1,6 @@
 
 # 2020-01-05  
+ jld3103: Fix notification navigation  
  jld3103: Remove broken snap packaging  
 
 # 2019-12-28  
