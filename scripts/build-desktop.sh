@@ -2,7 +2,7 @@
 cd app || cd ..
 flutter clean
 mkdir -p ../artifacts
-formats=("linux-appimage" "linux-deb" "linux-snap" "linux-rpm" "windows-msi" "darwin-pkg" "darwin-dmg")
+formats=("linux-appimage" "linux-deb" "linux-rpm" "windows-msi" "darwin-pkg" "darwin-dmg")
 for format in "${formats[@]}"; do
   rm -rf go/build
   hover build "$format" "$@"

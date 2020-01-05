@@ -1,4 +1,7 @@
 
+# 2020-01-05  
+ jld3103: Remove broken snap packaging  
+
 # 2019-12-28  
  jld3103: Fix test  
  jld3103: Add calendar and cafetoria to timetable day  
