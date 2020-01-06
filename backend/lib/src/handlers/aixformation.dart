@@ -95,7 +95,10 @@ class AiXformationHandler extends Handler {
         // ignore: lines_longer_than_80_chars
         'SELECT data FROM data_aixformation WHERE date_time = \'${posts.date}\';');
     if (results.isNotEmpty) {
-      return;
+      final storedData = results.toList()[0][0].toString();
+      if (storedData == dataString) {
+        return;
+      }
     }
     await mySqlConnection.query(
         // ignore: lines_longer_than_80_chars

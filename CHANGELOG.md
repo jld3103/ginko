@@ -1,4 +1,7 @@
 
+# 2020-01-06  
+ jld3103: Fix AiXformation parsing  
+
 # 2020-01-05  
  jld3103: Fix color in custom row and indent in timetable  
  jld3103: Fix notification navigation  

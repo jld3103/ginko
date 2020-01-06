@@ -56,26 +56,65 @@ class AiXformationParser {
           print(e);
         }
       }
-      if (media[post['featured_media'].toString()] == null) {
-        final url = '$_url/media/${post['featured_media']}';
-        try {
-          final sizes = json.decode(
-              (await _dio.get(url).timeout(Duration(seconds: 10)))
-                  .toString())['media_details']['sizes'];
-          media[post['featured_media'].toString()] = {
-            'thumbnail': sizes['thumbnail']['source_url'],
-            'medium': sizes['medium']['source_url'],
-            'full': sizes['full']['source_url'],
-          };
-        } on DioError catch (e) {
-          print(url);
-          print(e.response);
-          print(e);
-          media[post['featured_media'].toString()] = {
-            'thumbnail': post['jetpack_featured_media_url'],
-            'medium': post['jetpack_featured_media_url'],
-            'full': post['jetpack_featured_media_url'],
-          };
+      var mediaID = '';
+      if (post['featured_media'].toString() == '0') {
+        if (post['jetpack_featured_media_url'] == '') {
+          mediaID = post['id'].toString();
+        } else {
+          mediaID = post['featured_media'].toString();
+        }
+      } else {
+        mediaID = post['featured_media'].toString();
+      }
+      if (mediaID == '') {
+        throw Exception('Media ID not set');
+      }
+      if (media[mediaID] == null) {
+        if (post['featured_media'].toString() == '0') {
+          if (post['jetpack_featured_media_url'] == '') {
+            final content = parse(
+                (await _dio.get(post['link']).timeout(Duration(seconds: 10)))
+                    .toString());
+            final imgs = content
+                .querySelectorAll('img')
+                .where((e) => e.attributes['data-src'] != null)
+                .map((e) => e.attributes['data-src'])
+                .where((l) => l.startsWith('//'))
+                .map((l) => 'https:$l')
+                .toList();
+            media[mediaID] = {
+              'thumbnail': imgs[0],
+              'medium': imgs[0],
+              'full': imgs[0],
+            };
+          } else {
+            media[mediaID] = {
+              'thumbnail': post['jetpack_featured_media_url'],
+              'medium': post['jetpack_featured_media_url'],
+              'full': post['jetpack_featured_media_url'],
+            };
+          }
+        } else {
+          final url = '$_url/media/${post['featured_media']}';
+          try {
+            final sizes = json.decode(
+                (await _dio.get(url).timeout(Duration(seconds: 10)))
+                    .toString())['media_details']['sizes'];
+            media[mediaID] = {
+              'thumbnail': sizes['thumbnail']['source_url'],
+              'medium': sizes['medium']['source_url'],
+              'full': sizes['full']['source_url'],
+            };
+          } on DioError catch (e) {
+            print(url);
+            print(e.response);
+            print(e);
+            media[mediaID] = {
+              'thumbnail': post['jetpack_featured_media_url'],
+              'medium': post['jetpack_featured_media_url'],
+              'full': post['jetpack_featured_media_url'],
+            };
+          }
         }
       }
       for (final tag in post['tags']) {
@@ -101,9 +140,9 @@ class AiXformationParser {
           content:
               document.outerHtml.replaceAll(RegExp('<script.*script>'), ''),
           url: post['link'],
-          thumbnailUrl: media[post['featured_media'].toString()]['thumbnail'],
-          mediumUrl: media[post['featured_media'].toString()]['medium'],
-          fullUrl: media[post['featured_media'].toString()]['full'],
+          thumbnailUrl: media[mediaID]['thumbnail'],
+          mediumUrl: media[mediaID]['medium'],
+          fullUrl: media[mediaID]['full'],
           author: users[post['author'].toString()],
           tags: post['tags']
               .map((tagId) => tags[tagId.toString()])
