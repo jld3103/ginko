@@ -1,4 +1,7 @@
 
+# 2020-01-16  
+ jld3103: Fix change layout  
+
 # 2020-01-06  
  jld3103: Fix AiXformation notifications  
  jld3103: Fix AiXformation parsing  

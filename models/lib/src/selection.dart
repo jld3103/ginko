@@ -38,6 +38,19 @@ class Selection {
       values[0].value = value;
     }
   }
+
+  /// Check if identifiers match
+  bool doIdentifiersMatch(String one, String two) {
+    if (one == two) {
+      return true;
+    }
+    if (one.split('-')[1] == two.split('-')[1] &&
+        (one.split('-')[0].contains(two.split('-')[0]) ||
+            two.split('-')[0].contains(one.split('-')[0]))) {
+      return true;
+    }
+    return false;
+  }
 }
 
 /// SelectionValue class

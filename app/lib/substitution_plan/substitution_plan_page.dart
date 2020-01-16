@@ -63,10 +63,11 @@ class _SubstitutionPlanPageState extends State<SubstitutionPlanPage>
                     .map((lesson) {
                       final subjects = (lesson.subjects.length > 1
                               ? lesson.subjects
-                                  .where((subject) =>
-                                      Static.selection.data
-                                          .getSelection(lesson.block) ==
-                                      subject.identifier)
+                                  .where((subject) => Static.selection.data
+                                      .doIdentifiersMatch(
+                                          Static.selection.data
+                                              .getSelection(lesson.block),
+                                          subject.identifier))
                                   .toList()
                               : lesson.subjects)
                           .toList();

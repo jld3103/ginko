@@ -62,10 +62,15 @@ class SubstitutionPlanRow extends StatelessWidget {
               ),
             )
           : keepPadding ? Container() : null,
-      title: Static.subjects.hasLoadedData ? infoText.join(' ') : null,
+      title: Static.subjects.hasLoadedData
+          ? (infoText.isNotEmpty
+              ? infoText.join(' ')
+              : Static.subjects.data.subjects[change.subject])
+          : null,
       subtitle: Static.subjects.hasLoadedData &&
               infoText.join(' ') !=
-                  Static.subjects.data.subjects[change.subject]
+                  Static.subjects.data.subjects[change.subject] &&
+              infoText.isNotEmpty
           ? Text(
               Static.subjects.data.subjects[change.subject],
               style: TextStyle(
@@ -76,7 +81,14 @@ class SubstitutionPlanRow extends StatelessWidget {
           : null,
       last: Row(
         children: [
-          if (change.type != SubstitutionPlanChangeTypes.freeLesson)
+          if (change.type != SubstitutionPlanChangeTypes.freeLesson ||
+              Static.timetable.data.days[change.date.weekday - 1]
+                      .lessons[change.unit].subjects
+                      .where((s) =>
+                          Static.subjects.data.subjects[s.subject] ==
+                          Static.subjects.data.subjects[change.subject])
+                      .length >
+                  1)
             Container(
               width: 24,
               margin: EdgeInsets.only(right: 10),
@@ -86,28 +98,38 @@ class SubstitutionPlanRow extends StatelessWidget {
                   Text(
                     change.changed.teacher != null
                         ? change.changed.teacher.toUpperCase()
-                        : '',
+                        : change.teacher != null
+                            ? change.teacher.toUpperCase()
+                            : '',
                     style: GoogleFonts.ubuntuMono(
                       fontSize: 16,
                     ),
                   ),
-                  if (change.teacher != change.changed.teacher)
-                    Text(
-                      change.teacher != null
-                          ? change.teacher.toUpperCase()
-                          : '',
-                      style: GoogleFonts.ubuntuMono(
-                        fontSize: 16,
-                        textStyle: TextStyle(
-                          color: Colors.black54,
-                          decoration: TextDecoration.lineThrough,
-                        ),
+                  Text(
+                    change.teacher != null &&
+                            change.changed.teacher != null &&
+                            change.teacher != change.changed.teacher
+                        ? change.teacher.toUpperCase()
+                        : '',
+                    style: GoogleFonts.ubuntuMono(
+                      fontSize: 16,
+                      textStyle: TextStyle(
+                        color: Colors.black54,
+                        decoration: TextDecoration.lineThrough,
                       ),
                     ),
+                  ),
                 ],
               ),
             ),
-          if (change.type != SubstitutionPlanChangeTypes.freeLesson)
+          if (change.type != SubstitutionPlanChangeTypes.freeLesson ||
+              Static.timetable.data.days[change.date.weekday - 1]
+                      .lessons[change.unit].subjects
+                      .where((s) =>
+                          Static.subjects.data.subjects[s.subject] ==
+                          Static.subjects.data.subjects[change.subject])
+                      .length >
+                  1)
             Container(
               width: 24,
               child: Column(
@@ -116,22 +138,25 @@ class SubstitutionPlanRow extends StatelessWidget {
                   Text(
                     change.changed.room != null
                         ? change.changed.room.toUpperCase()
-                        : '',
+                        : change.room != null ? change.room.toUpperCase() : '',
                     style: GoogleFonts.ubuntuMono(
                       fontSize: 16,
                     ),
                   ),
-                  if (change.room != change.changed.room)
-                    Text(
-                      change.room != null ? change.room.toUpperCase() : '',
-                      style: GoogleFonts.ubuntuMono(
-                        fontSize: 16,
-                        textStyle: TextStyle(
-                          color: Colors.black54,
-                          decoration: TextDecoration.lineThrough,
-                        ),
+                  Text(
+                    change.room != null &&
+                            change.changed.room != null &&
+                            change.room != change.changed.room
+                        ? change.room.toUpperCase()
+                        : '',
+                    style: GoogleFonts.ubuntuMono(
+                      fontSize: 16,
+                      textStyle: TextStyle(
+                        color: Colors.black54,
+                        decoration: TextDecoration.lineThrough,
                       ),
                     ),
+                  ),
                 ],
               ),
             ),

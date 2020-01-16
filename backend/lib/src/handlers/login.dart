@@ -24,7 +24,7 @@ class LoginHandler {
       final encodedString =
           request.headers.value('authorization').split(' ')[1];
       final decodedString = utf8.decode(base64.decode(encodedString));
-      final username = decodedString.split(':')[0];
+      final username = decodedString.split(':')[0].toLowerCase();
       final password = decodedString.split(':')[1];
       final hashedPassword = sha256.convert(utf8.encode(password)).toString();
       final results = await _mySqlConnection.query(
@@ -63,7 +63,7 @@ class LoginHandler {
   Future<User> getUser(HttpRequest request) async {
     final encodedString = request.headers.value('authorization').split(' ')[1];
     final decodedString = utf8.decode(base64.decode(encodedString));
-    final username = decodedString.split(':')[0];
+    final username = decodedString.split(':')[0].toLowerCase();
     final password = (await _mySqlConnection.query(
             // ignore: lines_longer_than_80_chars
             'SELECT password FROM users_password WHERE username = \'$username\';'))

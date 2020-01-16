@@ -79,7 +79,7 @@ class CustomRow extends StatelessWidget {
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),
-                if (subtitle != null) subtitle,
+                if (subtitle != null) subtitle else Text(''),
               ],
             ),
           ),
