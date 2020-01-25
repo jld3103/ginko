@@ -1,4 +1,10 @@
 
+# 2020-01-25  
+ jld3103: Add empty row  
+ jld3103: Fix calendar overflow  
+ jld3103: Fix Cafetoria loading and layout  
+ jld3103: Fix AiXformation parsing and notifications  
+
 # 2020-01-16  
  jld3103: Fix change layout  
 

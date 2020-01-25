@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ginko/substitution_plan/substitution_plan_row.dart';
+import 'package:ginko/utils/empty_row.dart';
 import 'package:ginko/utils/icons_texts.dart';
 import 'package:ginko/utils/list_group_header.dart';
 import 'package:ginko/utils/screen_sizes.dart';
@@ -108,10 +109,7 @@ class _SubstitutionPlanPageState extends State<SubstitutionPlanPage>
                 title: 'Meine Vertretungen',
               ),
               if (myChanges.isEmpty)
-                Container(
-                  height: 60,
-                  color: Colors.transparent,
-                )
+                EmptyRow()
               else
                 ...myChanges
                     .map((change) => SizeLimit(
@@ -127,17 +125,20 @@ class _SubstitutionPlanPageState extends State<SubstitutionPlanPage>
               ListGroupHeader(
                 title: 'Weitere Vertretungen',
               ),
-              ...notMyChanges
-                  .map((change) => SizeLimit(
-                        child: Container(
-                          margin: EdgeInsets.all(10),
-                          child: SubstitutionPlanRow(
-                            change: change,
+              if (notMyChanges.isEmpty)
+                EmptyRow()
+              else
+                ...notMyChanges
+                    .map((change) => SizeLimit(
+                          child: Container(
+                            margin: EdgeInsets.all(10),
+                            child: SubstitutionPlanRow(
+                              change: change,
+                            ),
                           ),
-                        ),
-                      ))
-                  .toList()
-                  .cast<Widget>(),
+                        ))
+                    .toList()
+                    .cast<Widget>(),
             ];
             return Scrollbar(
               child: ListView(

@@ -7,6 +7,7 @@ import 'package:ginko/cafetoria/cafetoria_row.dart';
 import 'package:ginko/calendar/calendar_row.dart';
 import 'package:ginko/substitution_plan/substitution_plan_row.dart';
 import 'package:ginko/timetable/timetable_row.dart';
+import 'package:ginko/utils/empty_row.dart';
 import 'package:ginko/utils/list_group_header.dart';
 import 'package:ginko/utils/screen_sizes.dart';
 import 'package:ginko/utils/size_limit.dart';
@@ -91,10 +92,7 @@ class HomePage extends StatelessWidget {
               if (subjects.isEmpty ||
                   !Static.timetable.hasLoadedData ||
                   !Static.selection.hasLoadedData)
-                Container(
-                  height: 60,
-                  color: Colors.transparent,
-                )
+                EmptyRow()
               else
                 ...(subjects.length > 3 ? subjects.sublist(0, 3) : subjects)
                     .map((subject) => Container(
@@ -142,10 +140,7 @@ class HomePage extends StatelessWidget {
             },
           ),
         if (changes.isEmpty)
-          Container(
-            height: 60,
-            color: Colors.transparent,
-          )
+          EmptyRow()
         else
           SizeLimit(
             child: Column(
@@ -209,10 +204,7 @@ class HomePage extends StatelessWidget {
             },
           ),
         if (!Static.cafetoria.hasLoadedData || afterDays.isEmpty)
-          Container(
-            height: 60,
-            color: Colors.transparent,
-          )
+          EmptyRow()
         else
           SizeLimit(
             child: Column(
@@ -250,10 +242,7 @@ class HomePage extends StatelessWidget {
             },
           ),
         if (!Static.calendar.hasLoadedData || events.isEmpty)
-          Container(
-            height: 60,
-            color: Colors.transparent,
-          )
+          EmptyRow()
         else
           SizeLimit(
             child: Column(

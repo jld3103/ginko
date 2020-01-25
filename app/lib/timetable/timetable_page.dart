@@ -6,6 +6,7 @@ import 'package:ginko/calendar/calendar_row.dart';
 import 'package:ginko/substitution_plan/substitution_plan_row.dart';
 import 'package:ginko/timetable/timetable_row.dart';
 import 'package:ginko/timetable/timetable_select_dialog.dart';
+import 'package:ginko/utils/empty_row.dart';
 import 'package:ginko/utils/list_group_header.dart';
 import 'package:ginko/utils/screen_sizes.dart';
 import 'package:ginko/utils/size_limit.dart';
@@ -70,10 +71,7 @@ class _TimetablePageState extends State<TimetablePage>
                     },
                   ),
                 if (!Static.calendar.hasLoadedData || events.isEmpty)
-                  Container(
-                    height: 60,
-                    color: Colors.transparent,
-                  )
+                  EmptyRow()
                 else
                   SizeLimit(
                     child: Column(
@@ -111,10 +109,7 @@ class _TimetablePageState extends State<TimetablePage>
                     },
                   ),
                 if (!Static.cafetoria.hasLoadedData || days.isEmpty)
-                  Container(
-                    height: 60,
-                    color: Colors.transparent,
-                  )
+                  EmptyRow()
                 else
                   SizeLimit(
                     child: Column(
@@ -241,8 +236,8 @@ class _TimetablePageState extends State<TimetablePage>
                       height: 46,
                       color: Colors.transparent,
                     ),
-                  if (events.isNotEmpty) calendarView,
-                  if (days.isNotEmpty) cafetoriaView,
+                  calendarView,
+                  cafetoriaView,
                 ],
               ),
             );
