@@ -49,6 +49,7 @@ class _CalendarRowState extends State<CalendarRow>
             Icons.calendar_today,
           ),
           title: '${widget.event.name}',
+          titleOverflow: TextOverflow.visible,
           subtitle: Text(
             widget.event.dateString,
             style: TextStyle(

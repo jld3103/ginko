@@ -13,6 +13,7 @@ class CustomRow extends StatelessWidget {
     this.titleColor,
     this.titleFontWeight,
     this.titleAlignment,
+    this.titleOverflow,
     this.splitColor,
     this.showSplit,
     Key key,
@@ -38,6 +39,9 @@ class CustomRow extends StatelessWidget {
 
   // ignore: public_member_api_docs
   final CrossAxisAlignment titleAlignment;
+
+  // ignore: public_member_api_docs
+  final TextOverflow titleOverflow;
 
   // ignore: public_member_api_docs
   final Color splitColor;
@@ -77,7 +81,7 @@ class CustomRow extends StatelessWidget {
                       fontWeight: titleFontWeight ?? FontWeight.bold,
                       color: titleColor ?? Theme.of(context).accentColor,
                     ),
-                    overflow: TextOverflow.ellipsis,
+                    overflow: titleOverflow ?? TextOverflow.ellipsis,
                   ),
                 if (subtitle != null) subtitle else Text(''),
               ],
