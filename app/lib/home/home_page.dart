@@ -190,25 +190,25 @@ class HomePage extends StatelessWidget {
               .cast<Widget>(),
       ],
     );
-    final days = Static.cafetoria.hasLoadedData
-        ? (Static.cafetoria.data.days
-                .where(
-                    (d) => d.date.isAfter(day.subtract(Duration(seconds: 1))))
-                .toList()
-                  ..sort((a, b) => a.date.compareTo(b.date)))
+    final allDays = Static.cafetoria.hasLoadedData
+        ? (Static.cafetoria.data.days.toList()
+              ..sort((a, b) => a.date.compareTo(b.date)))
             .toList()
         : [];
+    final afterDays = allDays
+        .where((d) => d.date.isAfter(day.subtract(Duration(seconds: 1))))
+        .toList();
     final cafetoriaView = Column(
       children: [
         if (Static.cafetoria.hasLoadedData)
           ListGroupHeader(
-            title: 'Cafétoria',
-            counter: days.length - 2,
+            title: 'Cafétoria - ${weekdays[weekday]}',
+            counter: allDays.length - 1,
             onTap: () {
               Navigator.of(context).pushNamed('/${Keys.cafetoria}');
             },
           ),
-        if (!Static.cafetoria.hasLoadedData || days.isEmpty)
+        if (!Static.cafetoria.hasLoadedData || afterDays.isEmpty)
           Container(
             height: 60,
             color: Colors.transparent,
@@ -217,26 +217,18 @@ class HomePage extends StatelessWidget {
           SizeLimit(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ...(days.length > 2 ? days.sublist(0, 2) : days)
-                    .map((day) => Column(
-                          children: day.menus
-                              .map(
-                                (menu) => Container(
-                                  margin: EdgeInsets.all(10),
-                                  child: CafetoriaRow(
-                                    day: day,
-                                    menu: menu,
-                                    showDate: true,
-                                  ),
-                                ),
-                              )
-                              .toList()
-                              .cast<Widget>(),
-                        ))
-                    .toList()
-                    .cast<Widget>(),
-              ],
+              children: afterDays.first.menus
+                  .map(
+                    (menu) => Container(
+                      margin: EdgeInsets.all(10),
+                      child: CafetoriaRow(
+                        day: allDays.first,
+                        menu: menu,
+                      ),
+                    ),
+                  )
+                  .toList()
+                  .cast<Widget>(),
             ),
           ),
       ],

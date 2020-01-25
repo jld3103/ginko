@@ -17,7 +17,7 @@ class CafetoriaHandler extends Handler {
   Future<Tuple2<Map<String, dynamic>, String>> fetchLatest(User user) async {
     final results = await mySqlConnection.query(
         // ignore: lines_longer_than_80_chars
-        'SELECT data FROM data_cafetoria ORDER BY date_time DESC LIMIT 5;');
+        'SELECT data FROM data_cafetoria WHERE date_time > \'${monday(DateTime.now()).subtract(Duration(seconds: 1)).toIso8601String()}\';');
     final cafetoria = Cafetoria(
       saldo: null,
       days: results

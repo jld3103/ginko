@@ -23,6 +23,7 @@ void main() {
     test('Dateformat converts correctly', () async {
       await setupDateFormats();
       expect(outputDateFormat.format(DateTime(2019, 7, 5)), '05.07.2019');
+      expect(shortOutputDateFormat.format(DateTime(2019, 7, 5)), '05.07');
       expect(
         outputDateTimeFormat.format(DateTime(2019, 7, 5, 7, 53)),
         '05.07.2019 07:53',
