@@ -78,8 +78,8 @@ Future main(List<String> args) async {
   await setupAutoFetchers(
     log,
     mySqlConnection,
-    minutely: [substitutionPlan],
-    hourly: [aiXformation, releases],
+    minutely: [substitutionPlan, aiXformation],
+    hourly: [releases],
     daily: [timetable, calendar, teachers, subjects, rooms, cafetoria],
   );
 

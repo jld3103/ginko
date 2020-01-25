@@ -18,8 +18,9 @@ class AiXformationParser {
 
   /// Download posts list
   static Future<String> download() async {
-    final response =
-        await _dio.get('$_url/posts').timeout(Duration(seconds: 10));
+    final response = await _dio
+        .get('$_url/posts?per_page=100')
+        .timeout(Duration(seconds: 10));
     return response.toString();
   }
 
@@ -137,8 +138,9 @@ class AiXformationParser {
           id: post['id'],
           date: DateTime.parse(post['date']),
           title: unescape.convert(post['title']['rendered']),
-          content:
-              document.outerHtml.replaceAll(RegExp('<script.*script>'), ''),
+          content: document.outerHtml
+              .replaceAll(RegExp('<script.*script>'), '')
+              .replaceAll('″', '\"'),
           url: post['link'],
           thumbnailUrl: media[mediaID]['thumbnail'],
           mediumUrl: media[mediaID]['medium'],

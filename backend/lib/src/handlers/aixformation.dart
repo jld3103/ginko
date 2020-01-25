@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:backend/backend.dart';
 import 'package:backend/src/notifications.dart';
+import 'package:html/parser.dart' show parse;
 import 'package:models/models.dart';
 import 'package:mysql1/mysql1.dart';
 import 'package:parsers/parsers.dart';
@@ -120,7 +121,7 @@ class AiXformationHandler extends Handler {
         .where((post) => post.date == escapedAiXformation.date)
         .single;
     final title = post.title;
-    final body = '${post.content.substring(0, 500)}...';
+    final body = '${parse(post.content).body.text.substring(0, 500)}...';
     final bigBody = body;
     final notification = Notification(
       title,
