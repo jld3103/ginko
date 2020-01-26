@@ -9,7 +9,7 @@ dependencies:
   logging:
   colorize:
   mysql1:
-  nextcloud:
+  dio:
   crypto:
   meta:
   tuple:

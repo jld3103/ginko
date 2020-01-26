@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:crypto/crypto.dart';
+import 'package:dio/dio.dart';
 import 'package:models/models.dart';
 import 'package:mysql1/mysql1.dart';
-import 'package:nextcloud/nextcloud.dart';
 
 /// LoginHandler class
 class LoginHandler {
@@ -36,10 +36,19 @@ class LoginHandler {
           return true;
         }
       }
-      final client =
-          NextCloudClient('nextcloud.aachen-vsa.logoip.de', username, password);
-      final files = await client.webDav.ls('/Tausch');
-      final grade = files[0].name.split(' ')[1];
+      final data = await (Dio()
+            ..options = BaseOptions(
+              headers: {
+                'authorization':
+                    // ignore: lines_longer_than_80_chars
+                    'Basic ${base64.encode(utf8.encode('$username:$password'))}',
+              },
+              responseType: ResponseType.plain,
+              connectTimeout: 10000,
+              receiveTimeout: 10000,
+            ))
+          .get('http://89.1.28.21/login');
+      final grade = json.decode(data.toString())['grade'];
       await _mySqlConnection.query(
           // ignore: lines_longer_than_80_chars
           'INSERT INTO users_password (username, password) VALUES (\'$username\' , \'$hashedPassword\') ON DUPLICATE KEY UPDATE password = \'$hashedPassword\';');
@@ -47,9 +56,7 @@ class LoginHandler {
           // ignore: lines_longer_than_80_chars
           'INSERT INTO users_grade (username, grade) VALUES (\'$username\' , \'$grade\') ON DUPLICATE KEY UPDATE grade = \'$grade\';');
       return true;
-    } on RequestException catch (e) {
-      print(e.cause);
-      print(e.response);
+    } on DioError {
       return false;
       // ignore: avoid_catches_without_on_clauses
     } catch (e, stacktrace) {

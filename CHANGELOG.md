@@ -1,4 +1,7 @@
 
+# 2020-01-26  
+ jld3103: Switch authentication to real server  
+
 # 2020-01-25  
  jld3103: Bump version  
  jld3103: Add empty row  
