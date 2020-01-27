@@ -1,5 +1,9 @@
 
+# 2020-01-27  
+ jld3103: Fix substitution plan page showing changes based on time  
+
 # 2020-01-26  
+ jld3103: Fix broken app  
  jld3103: Switch authentication to real server  
 
 # 2020-01-25  

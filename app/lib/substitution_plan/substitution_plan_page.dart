@@ -80,9 +80,7 @@ class _SubstitutionPlanPageState extends State<SubstitutionPlanPage>
                     .where((subject) =>
                         subject != null &&
                         subject.subject != 'fr' &&
-                        subject.subject != 'mit' &&
-                        DateTime.now().isBefore(
-                            day.add(Times.getUnitTimes(subject.unit)[1])))
+                        subject.subject != 'mit')
                     .toList()
                 : [];
             final myChanges = [];
