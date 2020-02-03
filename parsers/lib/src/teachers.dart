@@ -1,4 +1,5 @@
 import 'package:models/models.dart';
+import 'package:parsers/parsers.dart';
 
 // ignore: avoid_classes_with_only_static_members
 /// TeachersParser class
@@ -11,7 +12,7 @@ class TeachersParser {
         (line) =>
             teachers[line[2].toLowerCase()] = line[3].replaceAll('"', ''));
     return Teachers(
-      date: DateTime(2019, 12, 21),
+      date: UNSTFDate,
       teachers: teachers.cast<String, String>(),
     );
   }

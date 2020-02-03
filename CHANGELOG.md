@@ -1,4 +1,7 @@
 
+# 2020-02-03  
+ jld3103: Fix new timetable  
+
 # 2020-01-27  
  jld3103: Fix substitution plan page showing changes based on time  
 

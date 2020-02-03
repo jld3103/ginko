@@ -1,4 +1,5 @@
 import 'package:models/models.dart';
+import 'package:parsers/parsers.dart';
 
 // ignore: avoid_classes_with_only_static_members
 /// SubjectsParser class
@@ -15,7 +16,6 @@ class SubjectsParser {
       'kl': 'Klausur',
       'ae': 'Änderung',
       'mit': 'Mittagspause',
-      'e': 'Englisch',
       'f': 'Französisch',
       'l': 'Latein',
       's': 'Spanisch',
@@ -26,7 +26,7 @@ class SubjectsParser {
       '': '',
     });
     return Subjects(
-      date: DateTime(2019, 12, 21),
+      date: UNSTFDate,
       subjects: subjects.cast<String, String>(),
     );
   }

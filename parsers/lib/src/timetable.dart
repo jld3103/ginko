@@ -7,7 +7,6 @@ import 'package:parsers/parsers.dart';
 class TimetableParser {
   /// Extract timetables
   static Timetable extract(List<List<String>> table) {
-    final date = DateTime(2019, 12, 21);
     final timetable = Timetable(timetables: []);
     final lines = table.where((line) => line[0].startsWith('U')).toList();
     for (var i = 0; i < lines.length; i++) {
@@ -44,13 +43,13 @@ class TimetableParser {
         final block = definingLines[0][1];
         final numberOfLessons = int.parse(definingLines[1][2]);
         for (final grade in grades) {
-          if (grade == 'ag') {
+          if (grade == 'ag' || grade == '') {
             continue;
           }
           TimetableForGrade t;
           if (timetable.timetables.where((t) => t.grade == grade).isEmpty) {
             t = TimetableForGrade(
-              date: date,
+              date: UNSTFDate,
               grade: grade,
               days: List.generate(
                 5,
@@ -93,10 +92,7 @@ class TimetableParser {
               final subjectsToUpdate = t.days[day].lessons
                   .singleWhere((lesson) => lesson.unit == unit)
                   .subjects
-                  .where((s) =>
-                      s.subject == subject &&
-                      s.course == course &&
-                      s.room == room);
+                  .where((s) => s.subject == subject && s.course == course);
               if (subjectsToUpdate.isNotEmpty) {
                 for (final subject in subjectsToUpdate) {
                   subject.teachers =

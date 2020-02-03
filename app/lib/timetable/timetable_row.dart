@@ -85,7 +85,10 @@ class TimetableRow extends StatelessWidget {
                 children: [
                   if (subject.teachers != null)
                     Text(
-                      '${subject.teachers[0].toUpperCase()}\n',
+                      // ignore: lines_longer_than_80_chars
+                      '${(subject.teachers.map((t) => t.toUpperCase()).toList()..addAll([
+                          if (subject.teachers.length == 1) ''
+                        ])).join('\n')}',
                       style: GoogleFonts.ubuntuMono(
                         fontSize: 16,
                       ),

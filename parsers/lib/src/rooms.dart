@@ -1,4 +1,5 @@
 import 'package:models/models.dart';
+import 'package:parsers/parsers.dart';
 
 // ignore: avoid_classes_with_only_static_members
 /// RoomsParser class
@@ -16,7 +17,7 @@ class RoomsParser {
             .replaceAll('"', '')
             .replaceAll(' ', ''))] = line[3].replaceAll('"', ''));
     return Rooms(
-      date: DateTime(2019, 12, 21),
+      date: UNSTFDate,
       rooms: rooms.cast<String, String>(),
     );
   }
