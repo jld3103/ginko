@@ -36,7 +36,7 @@ class TimetableParser {
         var grades = [definingLines[0][2].toLowerCase()];
         if (definingLines.length > 2 && definingLines[2][0] == 'U6') {
           grades = definingLines[2]
-              .sublist(3, definingLines[2].length - 2)
+              .sublist(3, definingLines[2].length - 1)
               .map((grade) => grade.toLowerCase())
               .toList();
         }

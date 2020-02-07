@@ -1,4 +1,7 @@
 
+# 2020-02-07  
+ jld3103: Fix shared course parsing  
+
 # 2020-02-03  
  jld3103: Fix new timetable  
 
