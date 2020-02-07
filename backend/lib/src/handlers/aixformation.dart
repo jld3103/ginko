@@ -124,6 +124,7 @@ class AiXformationHandler extends Handler {
     final body = '${parse(post.content).body.text.substring(0, 500)}...';
     final bigBody = body;
     final notification = Notification(
+      Keys.aiXformation,
       title,
       body,
       bigBody,
@@ -131,7 +132,7 @@ class AiXformationHandler extends Handler {
         Keys.type: Keys.aiXformation,
       },
     );
-    final tokens = [];
+    final tokens = <String>[];
     final devicesResults = await mySqlConnection.query(
         // ignore: lines_longer_than_80_chars
         'SELECT username, token FROM users_devices;');
@@ -154,6 +155,9 @@ class AiXformationHandler extends Handler {
         tokens.add(token);
       }
     }
-    await Notifications.sendNotification(notification, tokens.cast<String>());
+    final cached = await Notifications.checkNotificationCached(
+        notification, mySqlConnection, tokens);
+    await Notifications.sendNotification(
+        notification, tokens.where((t) => !cached[tokens.indexOf(t)]).toList());
   }
 }

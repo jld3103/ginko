@@ -58,7 +58,6 @@ class CafetoriaHandler extends Handler {
     }
     if (notificationDays.isNotEmpty) {
       // ignore: omit_local_variable_types
-      final Map<String, List<String>> notifications = {};
       const title = 'Cafétoria';
       final body =
           // ignore: lines_longer_than_80_chars
@@ -69,6 +68,7 @@ class CafetoriaHandler extends Handler {
               '${weekdays[day.date.weekday - 1]} (${day.menus.length} Menüs)')
           .join('<br/>');
       final notification = Notification(
+        Keys.cafetoria,
         title,
         body,
         bigBody,
@@ -76,6 +76,7 @@ class CafetoriaHandler extends Handler {
           Keys.type: Keys.cafetoria,
         },
       );
+      final tokens = <String>[];
       final devicesResults = await mySqlConnection.query(
           // ignore: lines_longer_than_80_chars
           'SELECT username, token FROM users_devices;');
@@ -95,18 +96,13 @@ class CafetoriaHandler extends Handler {
           showNotifications = true;
         }
         if (showNotifications) {
-          if (notifications[json.encode(notification.toJSON())] == null) {
-            notifications[json.encode(notification.toJSON())] = [];
-          }
-          notifications[json.encode(notification.toJSON())].add(token);
+          tokens.add(token);
         }
       }
-      for (final notification in notifications.keys) {
-        await Notifications.sendNotification(
-          Notification.fromJSON(json.decode(notification)),
-          notifications[notification],
-        );
-      }
+      final cached = await Notifications.checkNotificationCached(
+          notification, mySqlConnection, tokens);
+      await Notifications.sendNotification(notification,
+          tokens.where((t) => !cached[tokens.indexOf(t)]).toList());
     }
   }
 }

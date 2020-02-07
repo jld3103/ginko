@@ -154,6 +154,8 @@ class SubstitutionPlanHandler extends Handler {
                   .substitutionPlanDays[0],
               await selectionHandler.getSelection(username),
               subjectsHandler,
+              notificationPlans.indexOf(substitutionPlan),
+              mySqlConnection,
             );
             if (notifications[json.encode(notification.toJSON())] == null) {
               notifications[json.encode(notification.toJSON())] = [];
@@ -163,9 +165,14 @@ class SubstitutionPlanHandler extends Handler {
         }
       }
       for (final notification in notifications.keys) {
+        final n = Notification.fromJSON(json.decode(notification));
+        final cached = await Notifications.checkNotificationCached(
+            n, mySqlConnection, notifications[notification]);
         await Notifications.sendNotification(
-          Notification.fromJSON(json.decode(notification)),
-          notifications[notification],
+          n,
+          notifications[notification]
+              .where((t) => !cached[notifications[notification].indexOf(t)])
+              .toList(),
         );
       }
     }
@@ -177,6 +184,8 @@ class SubstitutionPlanHandler extends Handler {
     SubstitutionPlanDay substitutionPlanDay,
     Selection selection,
     SubjectsHandler subjectsHandler,
+    int index,
+    MySqlConnection mySqlConnection,
   ) async {
     final subjects =
         Subjects.fromJSON((await subjectsHandler.fetchLatest(null)).item1);
@@ -231,6 +240,7 @@ class SubstitutionPlanHandler extends Handler {
             // ignore: lines_longer_than_80_chars
             : '${changes.length} Änderungen';
     return Notification(
+      '${Keys.substitutionPlan}-$index',
       title,
       body,
       bigBody,
