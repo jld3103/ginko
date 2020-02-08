@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 // ignore: public_member_api_docs
 Widget getLoadingPlaceholder(BuildContext context) => Container(
-      height: 56,
-      width: 56,
+      height: 50,
+      width: 50,
       child: Center(
         child: SizedBox(
           width: 20,

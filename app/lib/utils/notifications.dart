@@ -2,7 +2,7 @@ import 'package:after_layout/after_layout.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:ginko/aixformation/aixformation_page.dart';
+import 'package:ginko/aixformation/aixformation_post.dart';
 import 'package:ginko/app/app_page.dart';
 import 'package:ginko/cafetoria/cafetoria_page.dart';
 import 'package:ginko/plugins/platform/platform.dart';
@@ -60,32 +60,16 @@ class _NotificationsWidgetState extends State<NotificationsWidget>
     String text;
     switch (data[Keys.type]) {
       case Keys.substitutionPlan:
-        callback = () async {
-          await Navigator.of(context).pushReplacement(PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) => AppPage(
-              page: 0,
-              loading: false,
-            ),
-          ));
-        };
+        callback = _openSubstitutionPlan;
         text = 'Neuer Vertretungsplan';
         break;
       case Keys.cafetoria:
-        callback = () async {
-          await Navigator.of(context).push(PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) =>
-                CafetoriaPage(),
-          ));
-        };
+        callback = _openCafetoria;
         text = 'Neue Cafetoria-Menüs';
         break;
       case Keys.aiXformation:
-        callback = () async {
-          await Navigator.of(context).push(PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) =>
-                AiXformationPage(),
-          ));
-        };
+        // ignore: missing_required_param
+        callback = () async => _openAiXformation(Post(url: data['url']));
         text = 'Neuer AiXformation-Artikel';
         break;
     }
@@ -112,32 +96,43 @@ class _NotificationsWidgetState extends State<NotificationsWidget>
     switch (data['type']) {
       case Keys.substitutionPlan:
         await widget.fetchData();
-        await Navigator.of(context).pushReplacement(PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) => AppPage(
-            page: 0,
-            loading: false,
-          ),
-        ));
+        await _openSubstitutionPlan();
         break;
       case Keys.cafetoria:
         await widget.fetchData();
-        await Navigator.of(context).push(PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) =>
-              CafetoriaPage(),
-        ));
+        await _openCafetoria();
         break;
       case Keys.aiXformation:
         await widget.fetchData();
-        await Navigator.of(context).push(PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) =>
-              AiXformationPage(),
-        ));
+        // ignore: missing_required_param
+        await _openAiXformation(Post(url: data['url']));
         break;
       default:
-        print('Unknown key: ${data['type']}');
+        print('Unknown key: ${data[Keys.type]}');
         break;
     }
   }
+
+  Future _openSubstitutionPlan() =>
+      Navigator.of(context).pushReplacement(PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => AppPage(
+          page: 0,
+          loading: false,
+        ),
+      ));
+
+  Future _openCafetoria() => Navigator.of(context).push(PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            CafetoriaPage(),
+      ));
+
+  Future _openAiXformation(Post post) =>
+      Navigator.of(context).push(PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            AiXformationPost(
+          post: post,
+        ),
+      ));
 
   @override
   Widget build(BuildContext context) => Container();

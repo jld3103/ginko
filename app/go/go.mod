@@ -11,7 +11,7 @@ require (
 	github.com/go-gl/glfw v0.0.0-20191125211704-12ad95a8df72 // indirect
 	github.com/golang/snappy v0.0.1 // indirect
 	github.com/gopherjs/gopherjs v0.0.0-20191106031601-ce3c9ade29de // indirect
-	github.com/mattn/go-sqlite3 v2.0.2+incompatible // indirect
+	github.com/mattn/go-sqlite3 v2.0.3+incompatible // indirect
 	github.com/nealwon/go-flutter-plugin-sqlite v0.0.0-20190909095325-db6bdfd6b983
 	github.com/pkg/errors v0.9.1
 )

@@ -130,6 +130,7 @@ class AiXformationHandler extends Handler {
       bigBody,
       data: {
         Keys.type: Keys.aiXformation,
+        'url': post.url,
       },
     );
     final tokens = <String>[];

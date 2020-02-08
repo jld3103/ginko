@@ -1,4 +1,7 @@
 
+# 2020-02-08  
+ jld3103: Switch to web view for AiXformation and open article directly  
+
 # 2020-02-07  
  jld3103: Add notification cache  
  jld3103: Fix shared course parsing  

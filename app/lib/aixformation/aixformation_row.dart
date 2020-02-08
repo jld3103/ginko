@@ -7,6 +7,7 @@ import 'package:ginko/utils/custom_row.dart';
 import 'package:ginko/utils/icons_texts.dart';
 import 'package:models/models.dart';
 import 'package:transparent_image/transparent_image.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // ignore: public_member_api_docs
 class AiXformationRow extends StatelessWidget {
@@ -21,14 +22,23 @@ class AiXformationRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => InkWell(
-        onTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => AiXformationPost(
-                post: post,
+        onTap: () async {
+          if (Platform().isMobile) {
+            await Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => AiXformationPost(
+                  post: post,
+                ),
               ),
-            ),
-          );
+            );
+          } else {
+            final url = post.url;
+            if (await canLaunch(url)) {
+              await launch(url);
+            } else {
+              throw Exception('Could not launch $url');
+            }
+          }
         },
         child: CustomRow(
           leading: Platform().isWeb
@@ -45,6 +55,8 @@ class AiXformationRow extends StatelessWidget {
                 )
               : CachedNetworkImage(
                   imageUrl: post.thumbnailUrl,
+                  height: 50,
+                  width: 50,
                   placeholder: (context, url) => getLoadingPlaceholder(context),
                   errorWidget: (context, url, error) => Icon(Icons.error),
                 ),

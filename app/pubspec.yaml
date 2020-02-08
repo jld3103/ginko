@@ -18,7 +18,6 @@ dependencies:
   shared_preferences:
   material_design_icons_flutter:
   cached_network_image: ^2.0.0-rc
-  flutter_html:
   url_launcher:
   share:
   transparent_image:
@@ -30,6 +29,7 @@ dependencies:
   js:
   google_fonts:
   add_2_calendar:
+  webview_flutter:
   models:
     path: ../models
 
