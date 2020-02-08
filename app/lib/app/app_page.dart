@@ -225,6 +225,7 @@ class _AppPageState extends State<AppPage>
           child: Icon(
             Icons.notifications_off,
             size: 28,
+            color: Colors.black45,
           ),
         ),
       if (_installing)
@@ -251,6 +252,7 @@ class _AppPageState extends State<AppPage>
           child: Icon(
             MdiIcons.cellphoneArrowDown,
             size: 28,
+            color: Colors.black45,
           ),
         ),
     ];

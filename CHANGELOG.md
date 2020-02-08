@@ -1,5 +1,6 @@
 
 # 2020-02-08  
+ jld3103: Fix icon color  
  jld3103: Fix web font loading performance  
  jld3103: Recreate desktop layout  
  jld3103: Fix fonts  
