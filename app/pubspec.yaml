@@ -22,7 +22,6 @@ dependencies:
   share:
   transparent_image:
   after_layout:
-  path_provider:
   timeago:
   dio:
   version:
@@ -35,6 +34,12 @@ dependencies:
 
 dev_dependencies:
   flutter_launcher_icons:
+
+dependency_overrides:
+  google_fonts:
+    git:
+      url: https://github.com/jld3103/google-fonts-flutter
+      ref: fix/web-path_provider
 
 flutter:
   uses-material-design: true
