@@ -9,6 +9,8 @@ import 'package:ginko/plugins/platform/platform.dart';
 import 'package:ginko/utils/static.dart';
 import 'package:models/models.dart';
 
+typedef FutureCallback = Future Function();
+
 // ignore: public_member_api_docs
 class NotificationsWidget extends StatefulWidget {
   // ignore: public_member_api_docs

@@ -126,7 +126,11 @@ class _AppPageState extends State<AppPage>
       length: 3,
       vsync: this,
       initialIndex: _currentTab = widget.page,
-    );
+    )..addListener(() {
+        setState(() {
+          _currentTab = _tabController.index;
+        });
+      });
     _loading = widget.loading;
     if (_loading) {
       Static.user.loadOffline();
@@ -419,8 +423,8 @@ class _AppPageState extends State<AppPage>
             child: Scaffold(
               body: Stack(
                 children: [
-                  IndexedStack(
-                    index: _currentTab,
+                  TabBarView(
+                    controller: _tabController,
                     children: pages
                         .map((page) => page.content)
                         .toList()
