@@ -107,12 +107,14 @@ class _TimetablePageState extends State<TimetablePage> {
             return [
               Column(
                 children: [
-                  ListGroupHeader(
-                    title: 'Termine',
-                    onTap: () {
-                      Navigator.of(context).pushNamed('/${Keys.calendar}');
-                    },
-                  ),
+                  if (getScreenSize(MediaQuery.of(context).size.width) !=
+                      ScreenSize.big)
+                    ListGroupHeader(
+                      title: 'Termine',
+                      onTap: () {
+                        Navigator.of(context).pushNamed('/${Keys.calendar}');
+                      },
+                    ),
                   if (events.isEmpty)
                     EmptyRow()
                   else
@@ -135,12 +137,14 @@ class _TimetablePageState extends State<TimetablePage> {
               ),
               Column(
                 children: [
-                  ListGroupHeader(
-                    title: 'Cafétoria',
-                    onTap: () {
-                      Navigator.of(context).pushNamed('/${Keys.cafetoria}');
-                    },
-                  ),
+                  if (getScreenSize(MediaQuery.of(context).size.width) !=
+                      ScreenSize.big)
+                    ListGroupHeader(
+                      title: 'Cafétoria',
+                      onTap: () {
+                        Navigator.of(context).pushNamed('/${Keys.cafetoria}');
+                      },
+                    ),
                   if (days.isEmpty)
                     EmptyRow()
                   else
