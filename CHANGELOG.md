@@ -1,5 +1,6 @@
 
 # 2020-02-08  
+ jld3103: Bump version  
  jld3103: Fix desktop layout group headers in timetable  
  jld3103: Fix icon color  
  jld3103: Fix web font loading performance  
