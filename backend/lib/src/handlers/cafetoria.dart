@@ -41,7 +41,10 @@ class CafetoriaHandler extends Handler {
     );
     final notificationDays = [];
     for (final day in cafetoria.days) {
-      final dataString = json.encode(day.toJSON()).replaceAll('\\n', '');
+      final dataString = json
+          .encode(day.toJSON())
+          .replaceAll('\\n', '')
+          .replaceAll('"', '\\"');
       final results = await mySqlConnection.query(
           // ignore: lines_longer_than_80_chars
           'SELECT data FROM data_cafetoria WHERE date_time = \'${day.date}\';');
