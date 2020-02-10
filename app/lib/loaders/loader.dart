@@ -125,7 +125,10 @@ abstract class Loader {
 
   /// Check if there is any data stored
   bool get hasStoredData =>
-      Static.storage.has(key) && Static.storage.getString(key) != null;
+      Static.storage.has(key) &&
+      Static.storage.getString(key) != null &&
+      Static.storage.getString(key) != 'null' &&
+      Static.storage.getString(key) != '';
 
   /// Check if there is any data loaded
   bool get hasLoadedData => data != null;

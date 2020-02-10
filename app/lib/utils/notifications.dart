@@ -151,18 +151,17 @@ Future updateTokens(BuildContext context) async {
   var token = '';
   if ((Platform().isMobile || Platform().isWeb) &&
       await Static.firebaseMessaging.hasNotificationPermissions()) {
-    final t = await Static.firebaseMessaging.getToken();
-    if (t != 'null') {
-      token = t;
-    }
+    token = await Static.firebaseMessaging.getToken();
   }
-  Static.device.object = Device(
-    token: token,
-    os: platformName,
-    version: version,
-  );
-  try {
-    await Static.device.forceLoadOnline();
-    // ignore: empty_catches
-  } on DioError {}
+  if (token != '' && token != 'null') {
+    Static.device.object = Device(
+      token: token,
+      os: platformName,
+      version: version,
+    );
+    try {
+      await Static.device.forceLoadOnline();
+      // ignore: empty_catches
+    } on DioError {}
+  }
 }
