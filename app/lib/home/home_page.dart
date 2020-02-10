@@ -11,6 +11,7 @@ import 'package:ginko/utils/list_group_header.dart';
 import 'package:ginko/utils/screen_sizes.dart';
 import 'package:ginko/utils/size_limit.dart';
 import 'package:ginko/utils/static.dart';
+import 'package:ginko/utils/theme.dart';
 import 'package:models/models.dart';
 
 // ignore: public_member_api_docs
@@ -288,17 +289,20 @@ class HomePage extends StatelessWidget {
           )
         : Container();
     if (size == ScreenSize.small) {
-      return Scrollbar(
-        child: ListView(
-          shrinkWrap: true,
-          padding: EdgeInsets.all(0),
-          children: [
-            timetableView,
-            substitutionPlanView,
-            calendarView,
-            cafetoriaView,
-            aiXformationView,
-          ],
+      return Container(
+        color: backgroundColor(context),
+        child: Scrollbar(
+          child: ListView(
+            shrinkWrap: true,
+            padding: EdgeInsets.all(0),
+            children: [
+              timetableView,
+              substitutionPlanView,
+              calendarView,
+              cafetoriaView,
+              aiXformationView,
+            ],
+          ),
         ),
       );
     }

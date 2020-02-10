@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:ginko/utils/custom_grid.dart';
+import 'package:ginko/utils/theme.dart';
 
 // ignore: public_member_api_docs
 class CustomGridTabsList extends StatefulWidget {
@@ -8,6 +11,7 @@ class CustomGridTabsList extends StatefulWidget {
     @required this.tab,
     @required this.children,
     @required this.append,
+    this.wrap,
     Key key,
   }) : super(key: key);
 
@@ -19,6 +23,9 @@ class CustomGridTabsList extends StatefulWidget {
 
   // ignore: public_member_api_docs
   final List<List<Widget>> append;
+
+  // ignore: public_member_api_docs
+  final WidgetCallback wrap;
 
   @override
   _CustomGridTabsListState createState() => _CustomGridTabsListState();
@@ -51,35 +58,53 @@ class _CustomGridTabsListState extends State<CustomGridTabsList> {
         TabBar(
               tabs: const [],
             ).preferredSize.height *
-            2;
+            3.5;
+    final content = widget.wrap != null
+        ? widget.wrap(Column(
+            children: [
+              ...widget.tab,
+            ],
+          ))
+        : Column(
+            children: [
+              ...widget.tab,
+            ],
+          );
     return Stack(
       children: [
-        Scrollbar(
-          child: ListView(
-            controller: _scrollController,
-            shrinkWrap: true,
-            children: [
-              ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: contentHeight,
-                ),
-                child: Column(
-                  children: [
-                    ...widget.tab,
-                  ],
-                ),
-              ),
-              if (widget.append != null)
-                ...widget.append[widget.children.indexOf(widget.tab)]
-            ],
+        Container(
+          color: backgroundColor(context),
+          child: Scrollbar(
+            child: ListView(
+              controller: _scrollController,
+              shrinkWrap: true,
+              children: [
+                if (widget.append == null)
+                  ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: contentHeight,
+                    ),
+                    child: content,
+                  ),
+                if (widget.append != null)
+                  Container(
+                    margin: EdgeInsets.only(
+                      bottom: contentHeight - widget.tab.length * 60,
+                    ),
+                    child: content,
+                  ),
+                if (widget.append != null)
+                  ...widget.append[widget.children.indexOf(widget.tab)]
+              ],
+            ),
           ),
         ),
         if (widget.append != null)
           Container(
             alignment: Alignment.bottomCenter,
             child: AnimatedOpacity(
-              opacity: _offset > 60 ? 0 : 1,
-              duration: Duration(milliseconds: 10),
+              opacity: _offset > 10 ? 0 : 1,
+              duration: Duration(milliseconds: 100),
               child: GestureDetector(
                 onTap: () {
                   _scrollController.animateTo(
@@ -93,6 +118,7 @@ class _CustomGridTabsListState extends State<CustomGridTabsList> {
                   child: Icon(
                     Icons.keyboard_arrow_down,
                     size: 30,
+                    color: textColor(context),
                   ),
                 ),
               ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ginko/utils/custom_button.dart';
 import 'package:ginko/utils/size_limit.dart';
 import 'package:ginko/utils/static.dart';
+import 'package:ginko/utils/theme.dart';
 import 'package:models/models.dart';
 
 /// SettingsPage class
@@ -31,7 +32,12 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          title: Text('Einstellungen'),
+          title: Text(
+            'Einstellungen',
+            style: TextStyle(
+              color: textColor(context),
+            ),
+          ),
           elevation: 2,
         ),
         body: Center(
@@ -42,7 +48,14 @@ class _SettingsPageState extends State<SettingsPage> {
                 padding: EdgeInsets.all(5),
                 children: [
                   CheckboxListTile(
-                    title: Text('Vertretungsplanbenachrichtigungen anzeigen'),
+                    title: Text(
+                      'Vertretungsplanbenachrichtigungen anzeigen',
+                      style: TextStyle(
+                        color: textColor(context),
+                      ),
+                    ),
+                    checkColor: lightColor,
+                    activeColor: Theme.of(context).accentColor,
                     value: _substitutionPlanNotifications,
                     onChanged: (value) async {
                       setState(() {
@@ -58,7 +71,14 @@ class _SettingsPageState extends State<SettingsPage> {
                     },
                   ),
                   CheckboxListTile(
-                    title: Text('AiXformation-Benachrichtigungen anzeigen'),
+                    title: Text(
+                      'AiXformation-Benachrichtigungen anzeigen',
+                      style: TextStyle(
+                        color: textColor(context),
+                      ),
+                    ),
+                    checkColor: lightColor,
+                    activeColor: Theme.of(context).accentColor,
                     value: _aiXformationNotifications,
                     onChanged: (value) async {
                       setState(() {
@@ -74,7 +94,14 @@ class _SettingsPageState extends State<SettingsPage> {
                     },
                   ),
                   CheckboxListTile(
-                    title: Text('Cafétoria-Benachrichtigungen anzeigen'),
+                    title: Text(
+                      'Cafétoria-Benachrichtigungen anzeigen',
+                      style: TextStyle(
+                        color: textColor(context),
+                      ),
+                    ),
+                    checkColor: lightColor,
+                    activeColor: Theme.of(context).accentColor,
                     value: _cafetoriaNotifications,
                     onChanged: (value) async {
                       setState(() {
@@ -109,7 +136,12 @@ class _SettingsPageState extends State<SettingsPage> {
                           Static.subjects.clear();
                           Navigator.of(context).pushReplacementNamed('/');
                         },
-                        child: Text('Abmelden'),
+                        child: Text(
+                          'Abmelden',
+                          style: TextStyle(
+                            color: darkColor,
+                          ),
+                        ),
                       ),
                     ),
                   ),

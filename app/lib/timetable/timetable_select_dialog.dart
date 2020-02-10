@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ginko/timetable/timetable_row.dart';
 import 'package:ginko/utils/dialog_content_wrapper.dart';
+import 'package:ginko/utils/theme.dart';
 import 'package:models/models.dart';
 
 // ignore: public_member_api_docs
@@ -21,8 +22,12 @@ class TimetableSelectDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SimpleDialog(
         title: Text(
-            // ignore: lines_longer_than_80_chars
-            '${weekdays[weekday]} ${lesson.unit + 1}.'),
+          // ignore: lines_longer_than_80_chars
+          '${weekdays[weekday]} ${lesson.unit + 1}.',
+          style: TextStyle(
+            color: textColor(context),
+          ),
+        ),
         children: [
           DialogContentWrapper(
             children: lesson.subjects

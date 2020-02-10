@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ginko/calendar/calendar_grid_event.dart';
 import 'package:ginko/calendar/calendar_grid_item.dart';
 import 'package:ginko/utils/static.dart';
+import 'package:ginko/utils/theme.dart';
 import 'package:models/models.dart';
 
 // ignore: public_member_api_docs
@@ -190,7 +191,7 @@ class _CalendarPageState extends State<CalendarPage>
     const headerHeight = 36;
     const otherPadding = 0.0;
     final height =
-        MediaQuery.of(context).size.height - headerHeight - otherPadding - 81;
+        MediaQuery.of(context).size.height - headerHeight - otherPadding - 82;
     final width = MediaQuery.of(context).size.width - otherPadding * 2 - 1;
 
     final tabs = [];
@@ -243,6 +244,7 @@ class _CalendarPageState extends State<CalendarPage>
                 '${months[month]} $year',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
+                  color: textColor(context),
                 ),
               ),
             ),
@@ -250,8 +252,12 @@ class _CalendarPageState extends State<CalendarPage>
           Container(
             decoration: BoxDecoration(
               border: Border(
-                top: BorderSide(color: Colors.grey.shade500),
-                left: BorderSide(color: Colors.grey.shade500),
+                top: BorderSide(
+                  color: textColor(context).withOpacity(0.5),
+                ),
+                left: BorderSide(
+                  color: textColor(context).withOpacity(0.5),
+                ),
               ),
             ),
             margin: EdgeInsets.only(
@@ -285,7 +291,12 @@ class _CalendarPageState extends State<CalendarPage>
     }
     return Scaffold(
       appBar: AppBar(
-        title: Text('Kalender'),
+        title: Text(
+          'Kalender',
+          style: TextStyle(
+            color: textColor(context),
+          ),
+        ),
         elevation: 2,
       ),
       body: TabBarView(

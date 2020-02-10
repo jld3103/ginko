@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ginko/calendar/calendar_row.dart';
 import 'package:ginko/utils/custom_button.dart';
 import 'package:ginko/utils/dialog_content_wrapper.dart';
+import 'package:ginko/utils/theme.dart';
 import 'package:models/models.dart';
 
 // ignore: public_member_api_docs
@@ -22,7 +23,12 @@ class CalendarEventDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SimpleDialog(
         contentPadding: EdgeInsets.only(left: 5, right: 5, top: 10),
-        title: Text(date == null ? 'Termin' : outputDateFormat.format(date)),
+        title: Text(
+          date == null ? 'Termin' : outputDateFormat.format(date),
+          style: TextStyle(
+            color: textColor(context),
+          ),
+        ),
         children: [
           DialogContentWrapper(
             children: [
@@ -35,7 +41,10 @@ class CalendarEventDialog extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('Ok'),
+                child: Text(
+                  'Ok',
+                  style: TextStyle(color: darkColor),
+                ),
               ),
             ],
           ),

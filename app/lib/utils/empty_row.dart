@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ginko/utils/theme.dart';
 
 // ignore: public_member_api_docs
 class EmptyRow extends StatelessWidget {
@@ -11,6 +12,7 @@ class EmptyRow extends StatelessWidget {
           'Keine Einträge vorhanden',
           style: TextStyle(
             fontSize: 16,
+            color: textColor(context),
           ),
         ),
       );

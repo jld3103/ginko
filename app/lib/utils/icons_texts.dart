@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ginko/utils/theme.dart';
 
 // ignore: public_member_api_docs
 class IconsTexts extends StatelessWidget {
@@ -34,8 +35,8 @@ class IconsTexts extends StatelessWidget {
             children: [
               Icon(
                 icon,
-                color: Colors.black54,
                 size: 18,
+                color: textColor(context),
               ),
               Container(
                 width: 2.5,
@@ -45,7 +46,7 @@ class IconsTexts extends StatelessWidget {
               Text(
                 text,
                 style: TextStyle(
-                  color: Colors.black54,
+                  color: textColor(context),
                   fontSize: 14,
                 ),
               ),

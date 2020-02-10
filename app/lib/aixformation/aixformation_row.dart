@@ -5,6 +5,7 @@ import 'package:ginko/aixformation/aixformation_utils.dart';
 import 'package:ginko/plugins/platform/platform.dart';
 import 'package:ginko/utils/custom_row.dart';
 import 'package:ginko/utils/icons_texts.dart';
+import 'package:ginko/utils/theme.dart';
 import 'package:models/models.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -56,10 +57,13 @@ class AiXformationRow extends StatelessWidget {
                     width: 40,
                     placeholder: (context, url) =>
                         getLoadingPlaceholder(context),
-                    errorWidget: (context, url, error) => Icon(Icons.error),
+                    errorWidget: (context, url, error) => Icon(
+                      Icons.error,
+                      color: textColor(context),
+                    ),
                   ),
             title: post.title,
-            titleColor: Colors.black87,
+            titleColor: textColor(context),
             titleFontWeight: FontWeight.normal,
             subtitle: IconsTexts(
               icons: [

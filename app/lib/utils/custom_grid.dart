@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:ginko/utils/custom_grid_tabs_list.dart';
+import 'package:ginko/utils/theme.dart';
 
 // ignore: public_member_api_docs
 class CustomGrid extends StatefulWidget {
@@ -13,6 +14,7 @@ class CustomGrid extends StatefulWidget {
     this.childrenRowPrepend,
     this.appendRowPrepend,
     this.initialHorizontalIndex = 0,
+    this.tabsChildrenWrap,
     Key key,
   }) : super(key: key);
 
@@ -36,6 +38,9 @@ class CustomGrid extends StatefulWidget {
 
   // ignore: public_member_api_docs
   final int initialHorizontalIndex;
+
+  // ignore: public_member_api_docs
+  final WidgetCallback tabsChildrenWrap;
 
   @override
   _CustomGridState createState() => _CustomGridState();
@@ -83,7 +88,11 @@ class _CustomGridState extends State<CustomGrid>
                         bottom: 10,
                       ),
                       child: Text(
-                          widget.columnPrepend[widget.children.indexOf(c)]),
+                        widget.columnPrepend[widget.children.indexOf(c)],
+                        style: TextStyle(
+                          color: textColor(context),
+                        ),
+                      ),
                     ))
                 .toList(),
           ),
@@ -93,6 +102,7 @@ class _CustomGridState extends State<CustomGrid>
                 .map((tab) => CustomGridTabsList(
                       tab: tab,
                       append: widget.append,
+                      wrap: widget.tabsChildrenWrap,
                       children: widget.children,
                     ))
                 .toList(),
@@ -112,68 +122,72 @@ class _CustomGridState extends State<CustomGrid>
             .reversed
             .toList()[0]
         : 0;
-    return Scrollbar(
-      child: ListView(
-        shrinkWrap: true,
-        children: List.generate(
-          childrenCount + appendCount + 1,
-          (row) => Container(
-            decoration: row == 0 ||
-                    (row >= childrenCount && row < childrenCount + appendCount)
-                ? BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        width: 1,
-                        color: Colors.black38,
-                      ),
-                    ),
-                  )
-                : null,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: List.generate(
-                widget.children.length +
-                    (widget.childrenRowPrepend != null ? 1 : 0),
-                (column) {
-                  Widget child = Container();
-                  if (row == 0 && column == 0) {
-                    child = Container();
-                  } else if (row == 0) {
-                    child = Container(
-                      margin: EdgeInsets.only(top: 20, bottom: 10),
-                      alignment: Alignment.topCenter,
-                      color: Theme.of(context).primaryColor,
-                      child: Text(
-                        widget.columnPrepend[column - 1],
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
+    return Container(
+      color: backgroundColor(context),
+      child: Scrollbar(
+        child: ListView(
+          shrinkWrap: true,
+          children: List.generate(
+            childrenCount + appendCount + 1,
+            (row) => Container(
+              decoration: row == 0 ||
+                      (row >= childrenCount &&
+                          row < childrenCount + appendCount)
+                  ? BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          width: 1,
+                          color: textColor(context),
                         ),
                       ),
+                    )
+                  : null,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: List.generate(
+                  widget.children.length +
+                      (widget.childrenRowPrepend != null ? 1 : 0),
+                  (column) {
+                    Widget child = Container();
+                    if (row == 0 && column == 0) {
+                      child = Container();
+                    } else if (row == 0) {
+                      child = Container(
+                        margin: EdgeInsets.only(top: 20, bottom: 10),
+                        alignment: Alignment.topCenter,
+                        color: Theme.of(context).primaryColor,
+                        child: Text(
+                          widget.columnPrepend[column - 1],
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: textColor(context),
+                          ),
+                        ),
+                      );
+                    } else if (row <= childrenCount) {
+                      if (column == 0 && widget.childrenRowPrepend != null) {
+                        child = widget.childrenRowPrepend[row - 1];
+                      } else {
+                        if (widget.children[column - 1].length > row - 1) {
+                          child = widget.children[column - 1][row - 1];
+                        }
+                      }
+                    } else if (widget.append != null) {
+                      final index = row - childrenCount - 1;
+                      if (column == 0 && widget.appendRowPrepend != null) {
+                        child = widget.appendRowPrepend[index];
+                      } else {
+                        if (widget.append[column - 1].length > index) {
+                          child = widget.append[column - 1][index];
+                        }
+                      }
+                    }
+                    return Expanded(
+                      flex: column == 0 ? 1 : 3,
+                      child: child,
                     );
-                  } else if (row <= childrenCount) {
-                    if (column == 0 && widget.childrenRowPrepend != null) {
-                      child = widget.childrenRowPrepend[row - 1];
-                    } else {
-                      if (widget.children[column - 1].length > row - 1) {
-                        child = widget.children[column - 1][row - 1];
-                      }
-                    }
-                  } else if (widget.append != null) {
-                    final index = row - childrenCount - 1;
-                    if (column == 0 && widget.appendRowPrepend != null) {
-                      child = widget.appendRowPrepend[index];
-                    } else {
-                      if (widget.append[column - 1].length > index) {
-                        child = widget.append[column - 1][index];
-                      }
-                    }
-                  }
-                  return Expanded(
-                    flex: column == 0 ? 1 : 3,
-                    child: child,
-                  );
-                },
+                  },
+                ),
               ),
             ),
           ),
@@ -183,7 +197,7 @@ class _CustomGridState extends State<CustomGrid>
   }
 }
 
-typedef WidgetIndexCallback = Widget Function(int index);
+typedef WidgetCallback = Widget Function(Widget child);
 
 // ignore: public_member_api_docs
 enum CustomGridType {

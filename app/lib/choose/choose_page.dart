@@ -8,6 +8,7 @@ import 'package:ginko/utils/custom_circular_progress_indicator.dart';
 import 'package:ginko/utils/screen_sizes.dart';
 import 'package:ginko/utils/size_limit.dart';
 import 'package:ginko/utils/static.dart';
+import 'package:ginko/utils/theme.dart';
 import 'package:models/models.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -62,6 +63,7 @@ class _ChoosePageState extends State<ChoosePage>
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
+                          color: textColor(context),
                         ),
                       ),
                       SizeLimit(
@@ -115,6 +117,11 @@ class _ChoosePageState extends State<ChoosePage>
         onPressed: () {
           Navigator.of(context).pushReplacementNamed('/login');
         },
-        child: Text('Anmelden'),
+        child: Text(
+          'Anmelden',
+          style: TextStyle(
+            color: darkColor,
+          ),
+        ),
       );
 }

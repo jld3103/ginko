@@ -11,6 +11,7 @@ import 'package:ginko/utils/list_group_header.dart';
 import 'package:ginko/utils/screen_sizes.dart';
 import 'package:ginko/utils/size_limit.dart';
 import 'package:ginko/utils/static.dart';
+import 'package:ginko/utils/theme.dart';
 import 'package:models/models.dart';
 
 // ignore: public_member_api_docs
@@ -53,7 +54,7 @@ class _TimetablePageState extends State<TimetablePage> {
                   '${index + 1}',
                   style: TextStyle(
                     fontSize: 16,
-                    color: Colors.black,
+                    color: textColor(context),
                   ),
                 ),
               ),
@@ -67,7 +68,7 @@ class _TimetablePageState extends State<TimetablePage> {
                   'Termine',
                   style: TextStyle(
                     fontSize: 16,
-                    color: Colors.black,
+                    color: textColor(context),
                   ),
                 ),
               ),
@@ -79,7 +80,7 @@ class _TimetablePageState extends State<TimetablePage> {
                   'Cafétoria',
                   style: TextStyle(
                     fontSize: 16,
-                    color: Colors.black,
+                    color: textColor(context),
                   ),
                 ),
               ),
@@ -175,6 +176,18 @@ class _TimetablePageState extends State<TimetablePage> {
                 ].map((x) => SizeLimit(child: x)).toList().cast<Widget>(),
             ];
           }),
+          tabsChildrenWrap: (child) => Container(
+            margin: EdgeInsets.only(
+              bottom: 10,
+              left: 5,
+              right: 5,
+              top: 5,
+            ),
+            child: Card(
+              elevation: 3,
+              child: child,
+            ),
+          ),
           children: List.generate(
             5,
             (weekday) =>

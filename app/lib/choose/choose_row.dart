@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ginko/choose/choose_utils.dart';
+import 'package:ginko/utils/theme.dart';
 import 'package:models/models.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -21,20 +22,28 @@ class ChooseRow extends StatelessWidget {
             launch(asset.url);
           },
           child: ListTile(
-            leading: Icon(getOSIcon(asset)),
+            leading: Icon(
+              getOSIcon(asset),
+              color: textColor(context),
+            ),
             title: Row(
               children: [
                 Expanded(
                   flex: 2,
                   child: Text(
-                    // ignore: lines_longer_than_80_chars
                     '${getOSName(asset)} (64-bit)',
+                    style: TextStyle(
+                      color: textColor(context),
+                    ),
                   ),
                 ),
                 Expanded(
                   flex: 1,
                   child: Text(
                     getFileExtension(asset),
+                    style: TextStyle(
+                      color: textColor(context),
+                    ),
                   ),
                 ),
               ],

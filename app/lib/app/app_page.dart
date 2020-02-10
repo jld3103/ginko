@@ -11,6 +11,7 @@ import 'package:ginko/utils/custom_linear_progress_indicator.dart';
 import 'package:ginko/utils/notifications.dart';
 import 'package:ginko/utils/screen_sizes.dart';
 import 'package:ginko/utils/static.dart';
+import 'package:ginko/utils/theme.dart';
 import 'package:ginko/utils/updates.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -203,7 +204,7 @@ class _AppPageState extends State<AppPage>
           child: Icon(
             Icons.notifications_off,
             size: 28,
-            color: Colors.black45,
+            color: textColor(context),
           ),
         ),
       if (_installing)
@@ -226,7 +227,7 @@ class _AppPageState extends State<AppPage>
           child: Icon(
             MdiIcons.cellphoneArrowDown,
             size: 28,
-            color: Colors.black45,
+            color: textColor(context),
           ),
         ),
     ];
@@ -244,17 +245,20 @@ class _AppPageState extends State<AppPage>
                   child: Container(
                     padding: EdgeInsets.all(7.5),
                     decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Color(0xFFC8C8C8),
-                          spreadRadius: 0.5,
-                          blurRadius: 1,
-                        ),
-                      ],
+                      boxShadow: MediaQuery.of(context).platformBrightness ==
+                              Brightness.light
+                          ? [
+                              BoxShadow(
+                                color: Color(0xFFC8C8C8),
+                                spreadRadius: 0.5,
+                                blurRadius: 1,
+                              ),
+                            ]
+                          : null,
                       color: Theme.of(context).primaryColor,
                       borderRadius: BorderRadius.all(Radius.circular(24)),
                       border: Border.all(
-                        color: Colors.black,
+                        color: textColor(context),
                         width:
                             getScreenSize(MediaQuery.of(context).size.width) ==
                                     ScreenSize.small
@@ -268,6 +272,7 @@ class _AppPageState extends State<AppPage>
                           : Static.user.data.grade,
                       style: GoogleFonts.ubuntuMono(
                         fontSize: 22,
+                        color: textColor(context),
                       ),
                     ),
                   ),
@@ -289,6 +294,7 @@ class _AppPageState extends State<AppPage>
             icon: Icon(
               Icons.settings,
               size: 28,
+              color: textColor(context),
             ),
           ),
         ],
@@ -306,6 +312,7 @@ class _AppPageState extends State<AppPage>
             icon: Icon(
               MdiIcons.calendarMonth,
               size: 28,
+              color: textColor(context),
             ),
           ),
         ],
@@ -318,7 +325,9 @@ class _AppPageState extends State<AppPage>
         Container(
           decoration: BoxDecoration(
             boxShadow: getScreenSize(MediaQuery.of(context).size.width) ==
-                    ScreenSize.small
+                        ScreenSize.small &&
+                    MediaQuery.of(context).platformBrightness ==
+                        Brightness.light
                 ? [
                     BoxShadow(
                       color: Color(0xAAC8C8C8),
@@ -349,7 +358,7 @@ class _AppPageState extends State<AppPage>
                                         MediaQuery.of(context).size.width) ==
                                     ScreenSize.small
                             ? Theme.of(context).accentColor
-                            : Colors.black54,
+                            : textColor(context),
                       ),
                     ))
                 .toList()
@@ -360,7 +369,12 @@ class _AppPageState extends State<AppPage>
     );
     return Scaffold(
       appBar: AppBar(
-        title: Text(pages[_currentTab].title),
+        title: Text(
+          pages[_currentTab].title,
+          style: TextStyle(
+            color: textColor(context),
+          ),
+        ),
         automaticallyImplyLeading: false,
         actions: pages[_currentTab].actions,
         elevation: _currentTab == 1 &&

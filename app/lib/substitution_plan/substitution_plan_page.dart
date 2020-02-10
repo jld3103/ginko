@@ -7,6 +7,7 @@ import 'package:ginko/utils/list_group_header.dart';
 import 'package:ginko/utils/screen_sizes.dart';
 import 'package:ginko/utils/size_limit.dart';
 import 'package:ginko/utils/static.dart';
+import 'package:ginko/utils/theme.dart';
 import 'package:models/models.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -40,7 +41,7 @@ class _SubstitutionPlanPageState extends State<SubstitutionPlanPage> {
                   'Meine Vertretungen',
                   style: TextStyle(
                     fontSize: 16,
-                    color: Colors.black,
+                    color: textColor(context),
                   ),
                 ),
               ),
@@ -52,7 +53,7 @@ class _SubstitutionPlanPageState extends State<SubstitutionPlanPage> {
                   'Weitere Vertretungen',
                   style: TextStyle(
                     fontSize: 16,
-                    color: Colors.black,
+                    color: textColor(context),
                   ),
                 ),
               ),

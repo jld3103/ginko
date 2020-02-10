@@ -4,6 +4,7 @@ import 'package:ginko/cafetoria/cafetoria_row.dart';
 import 'package:ginko/utils/list_group_header.dart';
 import 'package:ginko/utils/size_limit.dart';
 import 'package:ginko/utils/static.dart';
+import 'package:ginko/utils/theme.dart';
 import 'package:models/models.dart';
 
 // ignore: public_member_api_docs
@@ -14,7 +15,12 @@ class CafetoriaPage extends StatelessWidget {
         (Static.cafetoria.data.days..sort((a, b) => a.date.compareTo(b.date)));
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cafétoria'),
+        title: Text(
+          'Cafétoria',
+          style: TextStyle(
+            color: textColor(context),
+          ),
+        ),
         elevation: 2,
       ),
       body: Scrollbar(

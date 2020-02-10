@@ -7,6 +7,7 @@ import 'package:ginko/app/app_page.dart';
 import 'package:ginko/cafetoria/cafetoria_page.dart';
 import 'package:ginko/plugins/platform/platform.dart';
 import 'package:ginko/utils/static.dart';
+import 'package:ginko/utils/theme.dart';
 import 'package:models/models.dart';
 
 typedef FutureCallback = Future Function();
@@ -85,7 +86,12 @@ class _NotificationsWidgetState extends State<NotificationsWidget>
             await callback();
           },
         ),
-        content: Text(text),
+        content: Text(
+          text,
+          style: TextStyle(
+            color: lightColor,
+          ),
+        ),
       ));
       _lastSnackbar = DateTime.now();
     }

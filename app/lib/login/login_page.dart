@@ -5,6 +5,7 @@ import 'package:ginko/utils/custom_button.dart';
 import 'package:ginko/utils/custom_circular_progress_indicator.dart';
 import 'package:ginko/utils/size_limit.dart';
 import 'package:ginko/utils/static.dart';
+import 'package:ginko/utils/theme.dart';
 
 // ignore: public_member_api_docs
 class _LoginPage extends StatefulWidget {
@@ -27,7 +28,12 @@ class _LoginPageState extends State<_LoginPage> {
       if (_usernameFieldController.text.isEmpty ||
           _passwordFieldController.text.isEmpty) {
         Scaffold.of(context).showSnackBar(SnackBar(
-          content: Text('Username und Passwort erforderlich'),
+          content: Text(
+            'Username und Passwort erforderlich',
+            style: TextStyle(
+              color: lightColor,
+            ),
+          ),
         ));
         return;
       }
@@ -46,7 +52,12 @@ class _LoginPageState extends State<_LoginPage> {
         return;
       } else {
         Scaffold.of(context).showSnackBar(SnackBar(
-          content: Text('Die Anmeldedaten sind falsch'),
+          content: Text(
+            'Die Anmeldedaten sind falsch',
+            style: TextStyle(
+              color: lightColor,
+            ),
+          ),
         ));
         _passwordFieldController.clear();
         FocusScope.of(context).requestFocus(_passwordFieldFocus);
@@ -56,7 +67,12 @@ class _LoginPageState extends State<_LoginPage> {
         _checkingLogin = false;
       });
       Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text('Deine Anmeldung konnte nicht überprüft werden'),
+        content: Text(
+          'Deine Anmeldung konnte nicht überprüft werden',
+          style: TextStyle(
+            color: lightColor,
+          ),
+        ),
       ));
     }
   }
@@ -66,11 +82,14 @@ class _LoginPageState extends State<_LoginPage> {
     final usernameField = TextField(
       obscureText: false,
       enabled: !_checkingLogin,
+      style: TextStyle(
+        color: textColor(context),
+      ),
       decoration: InputDecoration(
         hintText: 'Username',
         enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.grey,
+            color: darkColor,
             width: 2,
           ),
         ),
@@ -89,11 +108,14 @@ class _LoginPageState extends State<_LoginPage> {
     final passwordField = TextField(
       obscureText: true,
       enabled: !_checkingLogin,
+      style: TextStyle(
+        color: textColor(context),
+      ),
       decoration: InputDecoration(
         hintText: 'Passwort',
         enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.grey,
+            color: darkColor,
             width: 2,
           ),
         ),
@@ -123,25 +145,33 @@ class _LoginPageState extends State<_LoginPage> {
                 width: 25,
                 color: Theme.of(context).primaryColor,
               )
-            : Text('Anmelden'),
+            : Text(
+                'Anmelden',
+                style: TextStyle(
+                  color: darkColor,
+                ),
+              ),
       ),
     );
-    return Center(
-      child: Scrollbar(
-        child: ListView(
-          shrinkWrap: true,
-          padding: EdgeInsets.all(10),
-          children: [
-            SizeLimit(
-              child: Column(
-                children: [
-                  usernameField,
-                  passwordField,
-                  submitButton,
-                ],
+    return Container(
+      color: backgroundColor(context),
+      child: Center(
+        child: Scrollbar(
+          child: ListView(
+            shrinkWrap: true,
+            padding: EdgeInsets.all(10),
+            children: [
+              SizeLimit(
+                child: Column(
+                  children: [
+                    usernameField,
+                    passwordField,
+                    submitButton,
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

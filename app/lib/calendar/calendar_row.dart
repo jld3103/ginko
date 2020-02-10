@@ -3,6 +3,7 @@ import 'package:after_layout/after_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:ginko/plugins/platform/platform.dart';
 import 'package:ginko/utils/custom_row.dart';
+import 'package:ginko/utils/theme.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:models/models.dart';
 
@@ -47,13 +48,14 @@ class _CalendarRowState extends State<CalendarRow>
           showSplit: widget.showSplit,
           leading: Icon(
             Icons.calendar_today,
+            color: textColor(context),
           ),
           title: '${widget.event.name}',
           titleOverflow: TextOverflow.visible,
           subtitle: Text(
             widget.event.dateString,
             style: TextStyle(
-              color: Colors.black54,
+              color: textColor(context),
             ),
           ),
           last: Platform().isMobile
@@ -77,7 +79,10 @@ class _CalendarRowState extends State<CalendarRow>
                       allDay: startDate != endDate,
                     ));
                   },
-                  icon: Icon(Icons.add),
+                  icon: Icon(
+                    Icons.add,
+                    color: textColor(context),
+                  ),
                 )
               : null,
         );

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:ginko/aixformation/aixformation_utils.dart';
 import 'package:ginko/plugins/platform/platform.dart';
+import 'package:ginko/utils/theme.dart';
 import 'package:models/models.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -32,16 +33,27 @@ class _AiXformationPostState extends State<AiXformationPost> {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          title: Text('AiXformation'),
+          title: Text(
+            'AiXformation',
+            style: TextStyle(
+              color: textColor(context),
+            ),
+          ),
           elevation: 2,
           actions: [
             IconButton(
-              icon: Icon(Icons.open_in_new),
+              icon: Icon(
+                Icons.open_in_new,
+                color: textColor(context),
+              ),
               onPressed: () => launch(widget.post.url),
             ),
             if (Platform().isMobile)
               IconButton(
-                icon: Icon(Icons.share),
+                icon: Icon(
+                  Icons.share,
+                  color: textColor(context),
+                ),
                 onPressed: () {
                   Share.share(widget.post.url);
                 },

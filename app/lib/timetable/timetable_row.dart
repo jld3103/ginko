@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:ginko/utils/custom_row.dart';
 import 'package:ginko/utils/static.dart';
+import 'package:ginko/utils/theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:models/models.dart';
 
@@ -49,6 +50,7 @@ class TimetableRow extends StatelessWidget {
                 (unit + 1).toString(),
                 style: TextStyle(
                   fontSize: 18,
+                  color: textColor(context),
                 ),
               ),
             )
@@ -63,13 +65,13 @@ class TimetableRow extends StatelessWidget {
           ? FontWeight.normal
           : null,
       titleColor: subject.subject == 'mit' || subject.subject == 'none'
-          ? Colors.black
+          ? textColor(context)
           : Theme.of(context).accentColor,
       subtitle: subject.subject != 'mit' && subject.subject != 'none'
           ? Text(
               timeStr,
               style: TextStyle(
-                color: Colors.black54,
+                color: textColor(context),
               ),
             )
           : null,
@@ -90,6 +92,7 @@ class TimetableRow extends StatelessWidget {
                         ])).join('\n')}',
                       style: GoogleFonts.ubuntuMono(
                         fontSize: 16,
+                        color: textColor(context),
                       ),
                     ),
                 ],
@@ -106,6 +109,7 @@ class TimetableRow extends StatelessWidget {
                       '${subject.room.toUpperCase()}\n',
                       style: GoogleFonts.ubuntuMono(
                         fontSize: 16,
+                        color: textColor(context),
                       ),
                     ),
                 ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:ginko/utils/theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 // ignore: public_member_api_docs
@@ -57,7 +58,6 @@ class ListGroupHeader extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 22,
                               color: Theme.of(context).accentColor,
-                              //fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
@@ -71,7 +71,7 @@ class ListGroupHeader extends StatelessWidget {
                               style: GoogleFonts.ubuntuMono(
                                 fontSize: 20,
                                 textStyle: TextStyle(
-                                  color: Colors.black54,
+                                  color: textColor(context),
                                 ),
                               ),
                             ),

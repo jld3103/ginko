@@ -2,6 +2,7 @@ import 'package:after_layout/after_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:ginko/utils/custom_row.dart';
 import 'package:ginko/utils/icons_texts.dart';
+import 'package:ginko/utils/theme.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -49,6 +50,7 @@ class _CafetoriaRowState extends State<CafetoriaRow>
     return CustomRow(
       leading: Icon(
         Icons.restaurant,
+        color: textColor(context),
       ),
       title: widget.menu.name,
       subtitle: IconsTexts(

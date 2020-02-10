@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:ginko/utils/custom_row.dart';
 import 'package:ginko/utils/static.dart';
+import 'package:ginko/utils/theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:models/models.dart';
 
@@ -57,6 +58,7 @@ class SubstitutionPlanRow extends StatelessWidget {
                 (change.unit + 1).toString(),
                 style: TextStyle(
                   fontSize: 18,
+                  color: textColor(context),
                 ),
               ),
             )
@@ -74,7 +76,7 @@ class SubstitutionPlanRow extends StatelessWidget {
               Static.subjects.data.subjects[change.subject],
               style: TextStyle(
                 decoration: TextDecoration.lineThrough,
-                color: Colors.black54,
+                color: textColor(context),
               ),
             )
           : null,
@@ -102,6 +104,7 @@ class SubstitutionPlanRow extends StatelessWidget {
                             : '',
                     style: GoogleFonts.ubuntuMono(
                       fontSize: 16,
+                      color: textColor(context),
                     ),
                   ),
                   Text(
@@ -113,7 +116,7 @@ class SubstitutionPlanRow extends StatelessWidget {
                     style: GoogleFonts.ubuntuMono(
                       fontSize: 16,
                       textStyle: TextStyle(
-                        color: Colors.black54,
+                        color: textColor(context),
                         decoration: TextDecoration.lineThrough,
                       ),
                     ),
@@ -140,6 +143,7 @@ class SubstitutionPlanRow extends StatelessWidget {
                         : change.room != null ? change.room.toUpperCase() : '',
                     style: GoogleFonts.ubuntuMono(
                       fontSize: 16,
+                      color: textColor(context),
                     ),
                   ),
                   Text(
@@ -151,7 +155,7 @@ class SubstitutionPlanRow extends StatelessWidget {
                     style: GoogleFonts.ubuntuMono(
                       fontSize: 16,
                       textStyle: TextStyle(
-                        color: Colors.black54,
+                        color: textColor(context),
                         decoration: TextDecoration.lineThrough,
                       ),
                     ),
