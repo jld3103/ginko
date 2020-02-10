@@ -59,8 +59,10 @@ class _CustomGridTabsListState extends State<CustomGridTabsList> {
             controller: _scrollController,
             shrinkWrap: true,
             children: [
-              SizedBox(
-                height: contentHeight,
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: contentHeight,
+                ),
                 child: Column(
                   children: [
                     ...widget.tab,
@@ -76,7 +78,7 @@ class _CustomGridTabsListState extends State<CustomGridTabsList> {
           Container(
             alignment: Alignment.bottomCenter,
             child: AnimatedOpacity(
-              opacity: _offset > 0 ? 0 : 1,
+              opacity: _offset > 60 ? 0 : 1,
               duration: Duration(milliseconds: 10),
               child: GestureDetector(
                 onTap: () {

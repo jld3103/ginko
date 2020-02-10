@@ -1,4 +1,10 @@
 
+# 2020-02-10  
+ jld3103: Fix timetable layout  
+ jld3103: Add android in app updates  
+ jld3103: Layout redesign  
+ jld3103: Fix cafetoria parsing  
+
 # 2020-02-08  
  jld3103: Bump version  
  jld3103: Fix desktop layout group headers in timetable  
