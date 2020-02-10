@@ -42,15 +42,8 @@ class _ChoosePageState extends State<ChoosePage>
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       GestureDetector(
-                        onTap: () async {
-                          const url =
-                              'https://play.google.com/store/apps/details?id=de.ginko';
-                          if (await canLaunch(url)) {
-                            await launch(url);
-                          } else {
-                            throw Exception('Could not launch $url');
-                          }
-                        },
+                        onTap: () => launch(
+                            'https://play.google.com/store/apps/details?id=de.ginko'),
                         child: Image.network(
                           'https://play.google.com/intl/en_us/badges/static/images/badges/de_badge_web_generic.png',
                           height: 100,

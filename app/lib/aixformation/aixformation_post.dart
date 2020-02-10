@@ -37,14 +37,7 @@ class _AiXformationPostState extends State<AiXformationPost> {
           actions: [
             IconButton(
               icon: Icon(Icons.open_in_new),
-              onPressed: () async {
-                final url = widget.post.url;
-                if (await canLaunch(url)) {
-                  await launch(url);
-                } else {
-                  throw Exception('Could not launch $url');
-                }
-              },
+              onPressed: () => launch(widget.post.url),
             ),
             if (Platform().isMobile)
               IconButton(

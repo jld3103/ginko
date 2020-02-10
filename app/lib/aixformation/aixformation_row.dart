@@ -32,12 +32,7 @@ class AiXformationRow extends StatelessWidget {
               ),
             );
           } else {
-            final url = post.url;
-            if (await canLaunch(url)) {
-              await launch(url);
-            } else {
-              throw Exception('Could not launch $url');
-            }
+            await launch(post.url);
           }
         },
         child: SizedBox(

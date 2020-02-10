@@ -11,11 +11,10 @@ import 'package:ginko/utils/custom_linear_progress_indicator.dart';
 import 'package:ginko/utils/notifications.dart';
 import 'package:ginko/utils/screen_sizes.dart';
 import 'package:ginko/utils/static.dart';
+import 'package:ginko/utils/updates.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:models/models.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:version/version.dart';
 
 // ignore: public_member_api_docs
 class AppPage extends StatefulWidget {
@@ -177,21 +176,6 @@ class _AppPageState extends State<AppPage>
           await Static.firebaseMessaging.hasNotificationPermissions();
       _canInstall = _pwa.canInstall();
       setState(() {});
-    }
-    if (Static.releases.data != null &&
-        Platform().isDesktop &&
-        Version.parse(Static.releases.data.version) >
-            Version.parse(await Static.releases.getCurrentAppVersion())) {
-      Scaffold.of(context).showSnackBar(SnackBar(
-        duration: Duration(seconds: 30),
-        content: Text('Eine neue App-Version ist verfügbar'),
-        action: SnackBarAction(
-          label: 'Aktualisieren',
-          onPressed: () {
-            launch(Static.releases.data.url);
-          },
-        ),
-      ));
     }
     if (_loading) {
       await _fetchData();
@@ -402,16 +386,11 @@ class _AppPageState extends State<AppPage>
             child: Scaffold(
               body: Stack(
                 children: [
-                  IndexedStack(
-                    index: _currentTab,
-                    children: pages
-                        .map((page) => page.content)
-                        .toList()
-                        .cast<Widget>(),
-                  ),
+                  pages[_currentTab].content,
                   NotificationsWidget(
                     fetchData: _fetchData,
                   ),
+                  UpdatesWidget(),
                 ],
               ),
             ),

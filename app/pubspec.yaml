@@ -29,6 +29,7 @@ dependencies:
   google_fonts:
   add_2_calendar:
   webview_flutter:
+  in_app_update:
   models:
     path: ../models
 
