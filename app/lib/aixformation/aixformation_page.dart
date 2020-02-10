@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ginko/aixformation/aixformation_row.dart';
 import 'package:ginko/utils/size_limit.dart';
@@ -10,6 +9,7 @@ class AiXformationPage extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
           title: Text('AiXformation'),
+          elevation: 2,
         ),
         body: Scrollbar(
           child: ListView(

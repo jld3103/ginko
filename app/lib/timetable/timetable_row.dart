@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:ginko/utils/custom_row.dart';
@@ -49,7 +48,7 @@ class TimetableRow extends StatelessWidget {
               child: Text(
                 (unit + 1).toString(),
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 18,
                 ),
               ),
             )

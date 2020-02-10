@@ -1,7 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:ginko/utils/custom_button.dart';
+import 'package:ginko/utils/custom_circular_progress_indicator.dart';
 import 'package:ginko/utils/size_limit.dart';
 import 'package:ginko/utils/static.dart';
 
@@ -113,18 +114,14 @@ class _LoginPageState extends State<_LoginPage> {
     final submitButton = Container(
       margin: EdgeInsets.only(top: 10),
       width: double.infinity,
-      child: RaisedButton(
+      child: CustomButton(
         focusNode: _submitButtonFocus,
         onPressed: _submitLogin,
         child: _checkingLogin
-            ? SizedBox(
+            ? CustomCircularProgressIndicator(
                 height: 25,
                 width: 25,
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                      Theme.of(context).accentColor),
-                  strokeWidth: 2,
-                ),
+                color: Theme.of(context).primaryColor,
               )
             : Text('Anmelden'),
       ),

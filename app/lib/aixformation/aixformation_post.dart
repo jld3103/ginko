@@ -33,6 +33,7 @@ class _AiXformationPostState extends State<AiXformationPost> {
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
           title: Text('AiXformation'),
+          elevation: 2,
           actions: [
             IconButton(
               icon: Icon(Icons.open_in_new),

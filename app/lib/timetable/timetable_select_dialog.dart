@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ginko/timetable/timetable_row.dart';
 import 'package:ginko/utils/dialog_content_wrapper.dart';

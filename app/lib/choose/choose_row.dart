@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ginko/choose/choose_utils.dart';
 import 'package:models/models.dart';

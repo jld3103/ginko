@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ginko/calendar/calendar_row.dart';
+import 'package:ginko/utils/custom_button.dart';
 import 'package:ginko/utils/dialog_content_wrapper.dart';
 import 'package:models/models.dart';
 
@@ -31,7 +31,7 @@ class CalendarEventDialog extends StatelessWidget {
                         event: event,
                       ))
                   .toList(),
-              RaisedButton(
+              CustomButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },

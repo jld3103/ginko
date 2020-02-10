@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ginko/utils/custom_button.dart';
 import 'package:ginko/utils/size_limit.dart';
 import 'package:ginko/utils/static.dart';
 import 'package:models/models.dart';
@@ -32,6 +32,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
           title: Text('Einstellungen'),
+          elevation: 2,
         ),
         body: Center(
           child: SizeLimit(
@@ -92,7 +93,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     margin: EdgeInsets.only(top: 20, left: 5, right: 5),
                     child: SizedBox(
                       width: double.infinity,
-                      child: RaisedButton(
+                      child: CustomButton(
                         onPressed: () {
                           Static.user.clear();
                           Static.device.clear();

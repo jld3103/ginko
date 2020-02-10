@@ -286,6 +286,7 @@ class _CalendarPageState extends State<CalendarPage>
     return Scaffold(
       appBar: AppBar(
         title: Text('Kalender'),
+        elevation: 2,
       ),
       body: TabBarView(
         controller: controller,

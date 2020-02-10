@@ -1,8 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:ginko/plugins/platform/platform.dart';
-import 'package:ginko/utils/screen_sizes.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 // ignore: public_member_api_docs
@@ -10,6 +7,7 @@ class ListGroupHeader extends StatelessWidget {
   // ignore: public_member_api_docs
   const ListGroupHeader({
     @required this.title,
+    @required this.children,
     this.center = false,
     this.counter = 0,
     this.onTap,
@@ -18,6 +16,9 @@ class ListGroupHeader extends StatelessWidget {
 
   // ignore: public_member_api_docs
   final String title;
+
+  // ignore: public_member_api_docs
+  final List<Widget> children;
 
   // ignore: public_member_api_docs
   final bool center;
@@ -29,52 +30,58 @@ class ListGroupHeader extends StatelessWidget {
   final VoidCallback onTap;
 
   @override
-  Widget build(BuildContext context) => InkWell(
-        onTap: onTap,
-        child: Container(
-          height: TabBar(
-                tabs: const [],
-              ).preferredSize.height +
-              1,
-          decoration: getScreenSize(MediaQuery.of(context).size.width) !=
-                  ScreenSize.small
-              ? BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      width: 1,
-                      color: Colors.black38,
-                    ),
-                  ),
-                )
-              : null,
-          child: AppBar(
-            title: Text(
-              title,
-              style: TextStyle(
-                fontSize: 18,
-              ),
-            ),
-            automaticallyImplyLeading: false,
-            elevation: getScreenSize(MediaQuery.of(context).size.width) ==
-                    ScreenSize.small
-                ? (Platform().isWeb ? 1 : 3)
-                : 0,
-            actions: [
-              if (counter > 0)
-                Center(
-                  child: Container(
-                    margin: EdgeInsets.only(right: 9),
-                    child: Text(
-                      '+${counter >= 10 ? counter : '$counter '}',
-                      style: GoogleFonts.ubuntuMono(
-                        fontSize: 20,
-                        textStyle: TextStyle(
-                          color: Colors.black54,
+  Widget build(BuildContext context) => Container(
+        margin: EdgeInsets.only(
+          bottom: 10,
+          left: 5,
+          right: 5,
+          top: 5,
+        ),
+        child: Card(
+          elevation: 3,
+          child: Column(
+            children: [
+              InkWell(
+                onTap: onTap,
+                child: Container(
+                  height: TabBar(
+                    tabs: const [],
+                  ).preferredSize.height,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          margin: EdgeInsets.only(left: 15),
+                          child: Text(
+                            title,
+                            style: TextStyle(
+                              fontSize: 22,
+                              color: Theme.of(context).accentColor,
+                              //fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                      if (counter > 0)
+                        Center(
+                          child: Container(
+                            margin: EdgeInsets.only(right: 9),
+                            child: Text(
+                              '+${counter >= 10 ? counter : '$counter '}',
+                              style: GoogleFonts.ubuntuMono(
+                                fontSize: 20,
+                                textStyle: TextStyle(
+                                  color: Colors.black54,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
                 ),
+              ),
+              ...children,
             ],
           ),
         ),

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ginko/substitution_plan/substitution_plan_row.dart';
 import 'package:ginko/utils/custom_grid.dart';
@@ -17,24 +16,15 @@ class SubstitutionPlanPage extends StatefulWidget {
   _SubstitutionPlanPageState createState() => _SubstitutionPlanPageState();
 }
 
-class _SubstitutionPlanPageState extends State<SubstitutionPlanPage>
-    with SingleTickerProviderStateMixin {
-  TabController _tabController;
-
-  @override
-  void initState() {
-    _tabController = TabController(vsync: this, length: 2);
-    super.initState();
-  }
-
+class _SubstitutionPlanPageState extends State<SubstitutionPlanPage> {
   @override
   Widget build(BuildContext context) => Static.timetable.hasLoadedData &&
           Static.substitutionPlan.hasLoadedData
       ? CustomGrid(
-          type:
-              getScreenSize(MediaQuery.of(context).size.width) == ScreenSize.big
-                  ? CustomGridType.grid
-                  : CustomGridType.tabs,
+          type: getScreenSize(MediaQuery.of(context).size.width) ==
+                  ScreenSize.small
+              ? CustomGridType.tabs
+              : CustomGridType.grid,
           columnPrepend: Static.substitutionPlan.data.substitutionPlanDays
               .map((day) => weekdays[day.date.weekday - 1])
               .toList(),
@@ -121,81 +111,85 @@ class _SubstitutionPlanPageState extends State<SubstitutionPlanPage>
                 }
               }
               notMyChanges = notMyChanges.toSet().toList();
+              final myChangesWidget = myChanges.isEmpty
+                  ? EmptyRow()
+                  : Column(
+                      children: [
+                        ...myChanges
+                            .map((change) => SizeLimit(
+                                  child: Container(
+                                    margin: EdgeInsets.all(10),
+                                    child: SubstitutionPlanRow(
+                                      change: change,
+                                    ),
+                                  ),
+                                ))
+                            .toList()
+                            .cast<Widget>(),
+                      ],
+                    );
+              final notMyChangesWidget = notMyChanges.isEmpty
+                  ? EmptyRow()
+                  : Column(
+                      children: [
+                        ...notMyChanges
+                            .map((change) => SizeLimit(
+                                  child: Container(
+                                    margin: EdgeInsets.all(10),
+                                    child: SubstitutionPlanRow(
+                                      change: change,
+                                    ),
+                                  ),
+                                ))
+                            .toList()
+                            .cast<Widget>(),
+                      ],
+                    );
               final items = [
-                Column(
-                  children: [
-                    if (getScreenSize(MediaQuery.of(context).size.width) !=
-                        ScreenSize.big)
-                      ListGroupHeader(
-                        title: 'Meine Vertretungen',
-                      ),
-                    if (myChanges.isEmpty)
-                      EmptyRow()
-                    else
-                      Column(
-                        children: [
-                          ...myChanges
-                              .map((change) => SizeLimit(
-                                    child: Container(
-                                      margin: EdgeInsets.all(10),
-                                      child: SubstitutionPlanRow(
-                                        change: change,
-                                      ),
-                                    ),
-                                  ))
-                              .toList()
-                              .cast<Widget>(),
-                        ],
-                      ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    if (getScreenSize(MediaQuery.of(context).size.width) !=
-                        ScreenSize.big)
-                      ListGroupHeader(
-                        title: 'Weitere Vertretungen',
-                      ),
-                    if (notMyChanges.isEmpty)
-                      EmptyRow()
-                    else
-                      Column(
-                        children: [
-                          ...notMyChanges
-                              .map((change) => SizeLimit(
-                                    child: Container(
-                                      margin: EdgeInsets.all(10),
-                                      child: SubstitutionPlanRow(
-                                        change: change,
-                                      ),
-                                    ),
-                                  ))
-                              .toList()
-                              .cast<Widget>(),
-                        ],
-                      ),
-                  ],
-                ),
+                if (getScreenSize(MediaQuery.of(context).size.width) !=
+                    ScreenSize.small)
+                  myChangesWidget
+                else
+                  ListGroupHeader(
+                    title: 'Meine Vertretungen',
+                    children: [
+                      myChangesWidget,
+                    ],
+                  ),
+                if (getScreenSize(MediaQuery.of(context).size.width) !=
+                    ScreenSize.small)
+                  notMyChangesWidget
+                else
+                  ListGroupHeader(
+                    title: 'Weitere Vertretungen',
+                    children: [
+                      notMyChangesWidget,
+                    ],
+                  ),
               ];
               return [
                 Center(
                   child: SizeLimit(
-                    child: Container(
-                      margin: EdgeInsets.all(20),
-                      child: IconsTexts(
-                        icons: [
-                          Icons.timer,
-                          Icons.event,
-                        ],
-                        texts: [
-                          timeago.format(
-                            Static.substitutionPlan.data
-                                .substitutionPlanDays[index].updated,
-                            locale: 'de',
-                          ),
-                          outputDateFormat.format(Static.substitutionPlan.data
-                              .substitutionPlanDays[index].date),
-                        ],
+                    child: Card(
+                      elevation: 3,
+                      margin: EdgeInsets.all(10),
+                      child: Container(
+                        padding: EdgeInsets.all(10),
+                        child: IconsTexts(
+                          icons: [
+                            Icons.event,
+                            Icons.timer,
+                          ],
+                          texts: [
+                            outputDateFormat.format(Static.substitutionPlan.data
+                                .substitutionPlanDays[index].date),
+                            timeago.format(
+                              Static.substitutionPlan.data
+                                  .substitutionPlanDays[index].updated,
+                              locale: 'de',
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

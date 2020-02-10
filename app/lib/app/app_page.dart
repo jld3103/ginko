@@ -6,6 +6,8 @@ import 'package:ginko/plugins/platform/platform.dart';
 import 'package:ginko/plugins/pwa/pwa.dart';
 import 'package:ginko/substitution_plan/substitution_plan_page.dart';
 import 'package:ginko/timetable/timetable_page.dart';
+import 'package:ginko/utils/custom_circular_progress_indicator.dart';
+import 'package:ginko/utils/custom_linear_progress_indicator.dart';
 import 'package:ginko/utils/notifications.dart';
 import 'package:ginko/utils/screen_sizes.dart';
 import 'package:ginko/utils/static.dart';
@@ -112,8 +114,7 @@ class _AppPageState extends State<AppPage>
   }
 
   Future _launchLogin() async {
-    if (getScreenSize(MediaQuery.of(context).size.width) == ScreenSize.big &&
-        Platform().isWeb) {
+    if (Platform().isWeb) {
       await Navigator.of(context).pushReplacementNamed('/${Keys.choose}');
     } else {
       await Navigator.of(context).pushReplacementNamed('/${Keys.login}');
@@ -203,11 +204,7 @@ class _AppPageState extends State<AppPage>
       if (_permissionsChecking)
         FlatButton(
           onPressed: () {},
-          child: CircularProgressIndicator(
-            valueColor:
-                AlwaysStoppedAnimation<Color>(Theme.of(context).accentColor),
-            strokeWidth: 2,
-          ),
+          child: CustomCircularProgressIndicator(),
         ),
       if (!_permissionsGranted && !_permissionsChecking)
         FlatButton(
@@ -231,11 +228,7 @@ class _AppPageState extends State<AppPage>
       if (_installing)
         FlatButton(
           onPressed: () {},
-          child: CircularProgressIndicator(
-            valueColor:
-                AlwaysStoppedAnimation<Color>(Theme.of(context).accentColor),
-            strokeWidth: 2,
-          ),
+          child: CustomCircularProgressIndicator(),
         ),
       if (_canInstall && !_installing)
         FlatButton(
@@ -347,9 +340,9 @@ class _AppPageState extends State<AppPage>
                     ScreenSize.small
                 ? [
                     BoxShadow(
-                      color: Color(0xFFC8C8C8),
-                      spreadRadius: 1.25,
-                      blurRadius: 1,
+                      color: Color(0xAAC8C8C8),
+                      spreadRadius: 1,
+                      blurRadius: 1.5,
                     ),
                   ]
                 : null,
@@ -382,23 +375,6 @@ class _AppPageState extends State<AppPage>
                 .cast<Widget>(),
           ),
         ),
-        if (getScreenSize(MediaQuery.of(context).size.width) !=
-            ScreenSize.small)
-          Container(
-            height: 1,
-            margin: EdgeInsets.only(top: 1),
-            width: double.infinity,
-            decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: Color(0xFFC8C8C8),
-                  spreadRadius: 1.25,
-                  blurRadius: 1,
-                ),
-              ],
-              color: Theme.of(context).primaryColor,
-            ),
-          ),
       ],
     );
     return Scaffold(
@@ -406,18 +382,19 @@ class _AppPageState extends State<AppPage>
         title: Text(pages[_currentTab].title),
         automaticallyImplyLeading: false,
         actions: pages[_currentTab].actions,
-        elevation: 0,
+        elevation: _currentTab == 1 &&
+                getScreenSize(MediaQuery.of(context).size.width) ==
+                    ScreenSize.small
+            ? 2
+            : 0,
+        bottom: _loading
+            ? CustomLinearProgressIndicator(
+                backgroundColor: Theme.of(context).primaryColor,
+              )
+            : null,
       ),
       body: Column(
         children: [
-          SizedBox(
-            height: 3,
-            child: _loading
-                ? LinearProgressIndicator(
-                    backgroundColor: Theme.of(context).primaryColor,
-                  )
-                : Container(),
-          ),
           if (getScreenSize(MediaQuery.of(context).size.width) !=
               ScreenSize.small)
             tabBar,
@@ -425,8 +402,8 @@ class _AppPageState extends State<AppPage>
             child: Scaffold(
               body: Stack(
                 children: [
-                  TabBarView(
-                    controller: _tabController,
+                  IndexedStack(
+                    index: _currentTab,
                     children: pages
                         .map((page) => page.content)
                         .toList()

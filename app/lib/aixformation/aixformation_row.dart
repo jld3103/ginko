@@ -40,38 +40,42 @@ class AiXformationRow extends StatelessWidget {
             }
           }
         },
-        child: CustomRow(
-          leading: Platform().isWeb
-              ? Stack(
-                  children: [
-                    getLoadingPlaceholder(context),
-                    FadeInImage.memoryNetwork(
-                      height: 50,
-                      width: 50,
-                      placeholder: kTransparentImage,
-                      image: post.thumbnailUrl,
-                    ),
-                  ],
-                )
-              : CachedNetworkImage(
-                  imageUrl: post.thumbnailUrl,
-                  height: 50,
-                  width: 50,
-                  placeholder: (context, url) => getLoadingPlaceholder(context),
-                  errorWidget: (context, url, error) => Icon(Icons.error),
-                ),
-          title: post.title,
-          titleFontWeight: FontWeight.w500,
-          titleColor: Colors.black87,
-          subtitle: IconsTexts(
-            icons: [
-              Icons.event,
-              Icons.person,
-            ],
-            texts: [
-              outputDateFormat.format(post.date),
-              post.author ?? '',
-            ],
+        child: SizedBox(
+          height: 40,
+          child: CustomRow(
+            leading: Platform().isWeb
+                ? Stack(
+                    children: [
+                      getLoadingPlaceholder(context),
+                      FadeInImage.memoryNetwork(
+                        height: 40,
+                        width: 40,
+                        placeholder: kTransparentImage,
+                        image: post.thumbnailUrl,
+                      ),
+                    ],
+                  )
+                : CachedNetworkImage(
+                    imageUrl: post.thumbnailUrl,
+                    height: 40,
+                    width: 40,
+                    placeholder: (context, url) =>
+                        getLoadingPlaceholder(context),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
+                  ),
+            title: post.title,
+            titleColor: Colors.black87,
+            titleFontWeight: FontWeight.normal,
+            subtitle: IconsTexts(
+              icons: [
+                Icons.event,
+                Icons.person,
+              ],
+              texts: [
+                outputDateFormat.format(post.date),
+                post.author ?? '',
+              ],
+            ),
           ),
         ),
       );

@@ -104,76 +104,75 @@ class _TimetablePageState extends State<TimetablePage> {
                           ..sort((a, b) => a.date.compareTo(b.date)))
                     .toList()
                 : [];
-            return [
-              Column(
-                children: [
-                  if (getScreenSize(MediaQuery.of(context).size.width) !=
-                      ScreenSize.big)
-                    ListGroupHeader(
-                      title: 'Termine',
-                      onTap: () {
-                        Navigator.of(context).pushNamed('/${Keys.calendar}');
-                      },
+            final calendarWidget = events.isEmpty
+                ? EmptyRow()
+                : SizeLimit(
+                    child: Column(
+                      children: [
+                        ...events
+                            .map((event) => Container(
+                                  margin: EdgeInsets.all(10),
+                                  child: CalendarRow(
+                                    event: event,
+                                  ),
+                                ))
+                            .toList()
+                            .cast<Widget>(),
+                      ],
                     ),
-                  if (events.isEmpty)
-                    EmptyRow()
-                  else
-                    SizeLimit(
-                      child: Column(
-                        children: [
-                          ...events
-                              .map((event) => Container(
-                                    margin: EdgeInsets.all(10),
-                                    child: CalendarRow(
-                                      event: event,
-                                    ),
-                                  ))
-                              .toList()
-                              .cast<Widget>(),
-                        ],
-                      ),
-                    ),
-                ],
-              ),
-              Column(
-                children: [
-                  if (getScreenSize(MediaQuery.of(context).size.width) !=
-                      ScreenSize.big)
-                    ListGroupHeader(
-                      title: 'Cafétoria',
-                      onTap: () {
-                        Navigator.of(context).pushNamed('/${Keys.cafetoria}');
-                      },
-                    ),
-                  if (days.isEmpty)
-                    EmptyRow()
-                  else
-                    SizeLimit(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ...days
-                              .map((day) => Column(
-                                    children: day.menus
-                                        .map(
-                                          (menu) => Container(
-                                            margin: EdgeInsets.all(10),
-                                            child: CafetoriaRow(
-                                              day: day,
-                                              menu: menu,
-                                            ),
+                  );
+            final cafetoriaWidget = days.isEmpty
+                ? EmptyRow()
+                : SizeLimit(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ...days
+                            .map((day) => Column(
+                                  children: day.menus
+                                      .map(
+                                        (menu) => Container(
+                                          margin: EdgeInsets.all(10),
+                                          child: CafetoriaRow(
+                                            day: day,
+                                            menu: menu,
                                           ),
-                                        )
-                                        .toList()
-                                        .cast<Widget>(),
-                                  ))
-                              .toList()
-                              .cast<Widget>(),
-                        ],
-                      ),
+                                        ),
+                                      )
+                                      .toList()
+                                      .cast<Widget>(),
+                                ))
+                            .toList()
+                            .cast<Widget>(),
+                      ],
                     ),
-                ],
-              ),
+                  );
+            return [
+              if (getScreenSize(MediaQuery.of(context).size.width) ==
+                  ScreenSize.big) ...[
+                calendarWidget,
+                cafetoriaWidget,
+              ] else
+                ...[
+                  ListGroupHeader(
+                    title: 'Termine',
+                    onTap: () {
+                      Navigator.of(context).pushNamed('/${Keys.calendar}');
+                    },
+                    children: [
+                      calendarWidget,
+                    ],
+                  ),
+                  ListGroupHeader(
+                    title: 'Cafétoria',
+                    onTap: () {
+                      Navigator.of(context).pushNamed('/${Keys.cafetoria}');
+                    },
+                    children: [
+                      cafetoriaWidget,
+                    ],
+                  ),
+                ].map((x) => SizeLimit(child: x)).toList().cast<Widget>(),
             ];
           }),
           children: List.generate(

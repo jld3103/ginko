@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -78,7 +77,7 @@ class CustomRow extends StatelessWidget {
                     title,
                     style: TextStyle(
                       fontSize: 16,
-                      fontWeight: titleFontWeight ?? FontWeight.bold,
+                      fontWeight: titleFontWeight ?? FontWeight.w600,
                       color: titleColor ?? Theme.of(context).accentColor,
                     ),
                     overflow: titleOverflow ?? TextOverflow.ellipsis,
